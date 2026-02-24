@@ -23,6 +23,8 @@ import { getChatSession, extractFileTextViaAI } from '../services/geminiService'
 import { AgentToolRegistry, AgentMemoryStore, registerBuiltInTools } from '../services/agent';
 import { ProfessionalDocumentExporter } from '../services/ProfessionalDocumentExporter';
 import type { ProfessionalDocument, DocumentSection } from '../services/ProfessionalDocumentExporter';
+import { downloadAsDocx } from '../services/DocxExporter';
+import type { DocxDocumentMeta } from '../services/DocxExporter';
 import AdaptiveQuestionnaire from '../services/AdaptiveQuestionnaire';
 import { BWConsultantAgenticAI } from '../services/BWConsultantAgenticAI';
 import CaseStudyAnalyzer from '../services/CaseStudyAnalyzer';
@@ -2438,6 +2440,20 @@ ${agentRegistry.current.toManifest()}`;
     URL.revokeObjectURL(url);
   }, []);
 
+  const downloadSingleDocAsDocx = useCallback(async (doc: {title: string; content: string; category: 'report' | 'letter'}) => {
+    const meta: DocxDocumentMeta = {
+      title: doc.title,
+      subtitle: `${caseStudy.organizationName || 'Client'} — ${caseStudy.country || 'Global'}`,
+      preparedFor: caseStudy.organizationName || 'Client',
+      preparedBy: 'BW Global Advisory — NEXUS AI',
+      date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
+      reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+      classification: 'CONFIDENTIAL',
+      jurisdiction: caseStudy.jurisdiction || caseStudy.country,
+    };
+    await downloadAsDocx(doc.content, meta);
+  }, [caseStudy]);
+
   // Generate selected documents
   const handleGenerateDocuments = useCallback(async () => {
     // Helper: parse AI markdown output into DocumentSection[]
@@ -4504,13 +4520,22 @@ Use concrete facts from the case. No template language. Write the complete repor
                           {doc.category === 'letter' ? <Mail size={11} className="text-blue-500 shrink-0" /> : <FileText size={11} className="text-slate-500 shrink-0" />}
                           <span className="text-[11px] text-slate-800 truncate">{doc.title}</span>
                         </div>
-                        <button
-                          onClick={() => downloadSingleDoc(doc)}
-                          className="shrink-0 ml-2 p-1 hover:bg-stone-100 text-slate-500 rounded"
-                          title="Download this document as HTML"
-                        >
-                          <Download size={12} />
-                        </button>
+                        <div className="flex gap-0.5 shrink-0 ml-2">
+                          <button
+                            onClick={() => downloadSingleDoc(doc)}
+                            className="p-1 hover:bg-stone-100 text-slate-500 rounded"
+                            title="Download as HTML (open in browser → print to PDF)"
+                          >
+                            <Download size={12} />
+                          </button>
+                          <button
+                            onClick={() => downloadSingleDocAsDocx(doc)}
+                            className="p-1 hover:bg-blue-50 text-blue-500 rounded text-[9px] font-bold leading-none w-5 h-5 flex items-center justify-center"
+                            title="Download as Word (.docx)"
+                          >
+                            W
+                          </button>
+                        </div>
                       </div>
                     ))}
                     <p className="text-[10px] text-slate-500 pt-1">Open HTML in browser → File → Print → Save as PDF</p>
