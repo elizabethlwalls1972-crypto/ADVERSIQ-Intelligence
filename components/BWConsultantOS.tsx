@@ -500,7 +500,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only'>('selected');
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
+  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);
   const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
   const [_adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
   const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
@@ -2394,25 +2394,13 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       return;
     }
 
-    const criticalCaseGaps = getCriticalCaseGaps();
+    const criticalCaseGaps = getCriticalCaseGaps().filter(g => g.severity === 'critical' || g.severity === 'high');
     if (criticalCaseGaps.length > 0) {
       setCurrentPhase('discovery');
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
         content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" or "Resolve Top Gap" to close the highest-impact gap first.`,
-        timestamp: new Date(),
-        phase: 'recommendations'
-      }]);
-      return;
-    }
-
-    if (caseMethodGaps.length > 0) {
-      setCurrentPhase('discovery');
-      setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: `Generation blocked by Case Study Method Layer. Resolve these first:\n- ${caseMethodGaps.join('\n- ')}`,
         timestamp: new Date(),
         phase: 'recommendations'
       }]);
@@ -4300,9 +4288,9 @@ Each selected output must include:
                     </label>
                     <button
                       onClick={handleGenerateDocuments}
-                      disabled={isLoading || readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0}
+                      disabled={isLoading || readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0}
                       className={`mt-3 w-full py-3 font-medium text-sm flex items-center justify-center gap-2 transition-all ${
-                        isLoading || readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0
+                        isLoading || readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0
                           ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                           : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
@@ -4318,9 +4306,9 @@ Each selected output must include:
                         </>
                       )}
                     </button>
-                    {(readinessScore < 80 || !allowAllDocumentAccess || criticalCaseGaps.length > 0) && (
+                    {(readinessScore < 80 || criticalCaseGaps.filter(g => g.severity === 'critical' || g.severity === 'high').length > 0) && (
                       <p className="text-[10px] mt-2 text-amber-700 bg-amber-50 border border-amber-200 p-2">
-                        Generation requires readiness ≥ 80, access permission enabled, and no critical case gaps.
+                        Generation requires readiness ≥ 80 and no critical or high-priority case gaps.
                       </p>
                     )}
                   </>
