@@ -2281,6 +2281,11 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                       </div>
                     </div>
                   )}
+                  {lastRewriteMode && (
+                    <div className="text-[11px] text-stone-500">
+                      Shortcuts: Undo <span className="font-mono">Ctrl/Cmd+Z</span> · Redo <span className="font-mono">Ctrl/Cmd+Y</span> or <span className="font-mono">Ctrl/Cmd+Shift+Z</span>
+                    </div>
+                  )}
                   {rewriteHistoryIndex >= 0 && rewriteHistory.length > 0 && (
                     <div className="text-[11px] text-stone-500">
                       Rewrite history step {rewriteHistoryIndex + 1} of {rewriteHistory.length}
