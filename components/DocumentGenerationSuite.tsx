@@ -47,6 +47,8 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
   const [lastRewriteMode, setLastRewriteMode] = useState<RewriteMode | null>(null);
   const [rewriteBaseContent, setRewriteBaseContent] = useState<string>('');
   const [originalGeneratedContent, setOriginalGeneratedContent] = useState<string>('');
+  const [rewriteHistory, setRewriteHistory] = useState<string[]>([]);
+  const [rewriteHistoryIndex, setRewriteHistoryIndex] = useState(-1);
   const [showRedline, setShowRedline] = useState(false);
 
   // Calculate decision deadline once to avoid impure function calls during render
@@ -386,6 +388,8 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
     setSelectedDocument(null);
     clearRewriteState();
     setOriginalGeneratedContent('');
+    setRewriteHistory([]);
+    setRewriteHistoryIndex(-1);
   };
 
   const generateDocument = async (docType: DocumentType) => {
@@ -471,6 +475,8 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
     const adjusted = adjustByLength(contextApplied);
     setGeneratedContent(adjusted);
     setOriginalGeneratedContent(adjusted);
+    setRewriteHistory([adjusted]);
+    setRewriteHistoryIndex(0);
     setIsGenerating(false);
     onDocumentGenerated?.(docType, contextApplied);
   };
@@ -1989,13 +1995,57 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
     setGeneratedContent(updated);
     setLastRewriteMode(mode);
     setShowRedline(true);
+
+    const currentIndex = rewriteHistoryIndex;
+    setRewriteHistory((prev) => {
+      const truncated = currentIndex >= 0 ? prev.slice(0, currentIndex + 1) : [];
+      if (truncated[truncated.length - 1] === updated) {
+        return truncated;
+      }
+      return [...truncated, updated];
+    });
+    setRewriteHistoryIndex(currentIndex >= 0 ? currentIndex + 1 : 0);
   };
 
   const hasPendingRewrite = Boolean(lastRewriteMode && rewriteBaseContent && rewriteBaseContent !== generatedContent);
+  const hasUndoRewrite = rewriteHistoryIndex > 0;
+  const hasRedoRewrite = rewriteHistoryIndex >= 0 && rewriteHistoryIndex < rewriteHistory.length - 1;
+
+  const undoRewrite = () => {
+    if (!hasUndoRewrite) return;
+    const currentContent = rewriteHistory[rewriteHistoryIndex];
+    const nextIndex = rewriteHistoryIndex - 1;
+    const previousContent = rewriteHistory[nextIndex];
+    if (previousContent === undefined) return;
+
+    setGeneratedContent(previousContent);
+    if (currentContent !== undefined) {
+      setRewriteBaseContent(currentContent);
+      setShowRedline(true);
+    }
+    setRewriteHistoryIndex(nextIndex);
+  };
+
+  const redoRewrite = () => {
+    if (!hasRedoRewrite) return;
+    const currentContent = rewriteHistory[rewriteHistoryIndex];
+    const nextIndex = rewriteHistoryIndex + 1;
+    const nextContent = rewriteHistory[nextIndex];
+    if (nextContent === undefined) return;
+
+    setGeneratedContent(nextContent);
+    if (currentContent !== undefined) {
+      setRewriteBaseContent(currentContent);
+      setShowRedline(true);
+    }
+    setRewriteHistoryIndex(nextIndex);
+  };
 
   const acceptRewrite = () => {
     if (!hasPendingRewrite) return;
     setOriginalGeneratedContent(generatedContent);
+    setRewriteHistory([generatedContent]);
+    setRewriteHistoryIndex(0);
     clearRewriteState();
   };
 
@@ -2187,6 +2237,12 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                     <div className="flex items-center justify-between gap-3">
                       <div className="text-[11px] text-stone-500">Last rewrite applied: {lastRewriteMode}</div>
                       <div className="flex items-center gap-2">
+                        <button onClick={undoRewrite} disabled={!hasUndoRewrite} className={`text-[11px] px-2 py-1 rounded border ${hasUndoRewrite ? 'border-blue-300 text-blue-700 hover:bg-blue-50' : 'border-stone-200 text-stone-400 cursor-not-allowed'}`}>
+                          Undo Rewrite
+                        </button>
+                        <button onClick={redoRewrite} disabled={!hasRedoRewrite} className={`text-[11px] px-2 py-1 rounded border ${hasRedoRewrite ? 'border-blue-300 text-blue-700 hover:bg-blue-50' : 'border-stone-200 text-stone-400 cursor-not-allowed'}`}>
+                          Redo Rewrite
+                        </button>
                         <button onClick={() => setShowRedline(prev => !prev)} className="text-[11px] px-2 py-1 border border-stone-300 rounded text-stone-700 hover:bg-stone-50">
                           {showRedline ? 'Hide Redline' : 'Show Redline'}
                         </button>
@@ -2197,6 +2253,11 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
                           Revert to Original
                         </button>
                       </div>
+                    </div>
+                  )}
+                  {rewriteHistoryIndex >= 0 && rewriteHistory.length > 0 && (
+                    <div className="text-[11px] text-stone-500">
+                      Rewrite history step {rewriteHistoryIndex + 1} of {rewriteHistory.length}
                     </div>
                   )}
                   {showRedline && rewriteBaseContent && rewriteBaseContent !== generatedContent && (
