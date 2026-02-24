@@ -44,12 +44,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [demoTyping, setDemoTyping] = useState(false);
     const demoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const DEMO_MESSAGES = [
-        { role: 'user' as const, text: "I'm head of strategy at Cairns Regional Development Authority in Queensland, Australia. We're looking to attract a major cold-chain logistics hub — there's a developer expressing interest. I need to understand the investment case, key risks, and which partners we should be engaging." },
-        { role: 'system' as const, text: 'NSIL extracting signals… Jurisdiction: Australia — Queensland. Sector: Logistics / Cold-chain. Audience: Regional Development Authority. Policy Pack: Asia-Pacific Advisory (APEC alignment, IFC PS1–PS8, Australian Privacy Act). Readiness: 42% → proceeding.' },
-        { role: 'assistant' as const, text: "Good. Cairns has a structurally strong case for cold-chain logistics — it sits at the intersection of Australia's tropical agriculture corridor and the Indo-Pacific trade route. Let me frame the investment case and flag the issues you'd need to resolve before taking this to a board.\n\n**Investment case:**\nCairns Airport's international freight capacity, the Port of Cairns expansion pipeline, and proximity to Queensland's mango, banana, and sugar export volumes create genuine demand pull. A cold-chain hub here isn't speculative — it de-risks perishable export supply chains that currently route through Brisbane at significant cost and spoilage exposure.\n\n**Risk profile (3 critical flags):**\n1. Counterparty integrity — the developer's track record in infrastructure delivery at this scale needs CIS verification before any LOI is signed.\n2. Competing priority risk — Far North Queensland has a history of large infrastructure announcements that stall when federal/state funding cycles shift.\n3. Workforce availability — the skilled cold-chain operations workforce isn't local; a workforce strategy needs to be part of the proposal from day one.\n\n**Partners worth engaging now:**\nFremantle Ports (logistics benchmarking), NAIF (Northern Australia Infrastructure Facility — likely funder), Woolworths and Coles supply chain divisions (anchor tenants validate demand), and James Cook University (workforce pipeline and regional development advocacy).\n\nWhat's your decision deadline, and is the developer bringing equity or seeking a public co-investment structure?" },
-        { role: 'system' as const, text: 'Case file updated. Consultant Gate: 6 gaps remaining. Next critical question queued. Readiness: 61%. Documents available: Investment Prospectus, Due Diligence Framework, NAIF Submission Brief, Stakeholder Engagement Plan, Risk Register.' },
-        { role: 'user' as const, text: "The developer wants a public-private structure. NAIF submission deadline is in 8 weeks. We need a board-ready package." },
-        { role: 'assistant' as const, text: "Eight weeks is tight but workable. For a NAIF submission with a co-investment structure, you'll need to hit four things simultaneously.\n\n**What needs to happen in the next 8 weeks:**\n1. **Financial model** — CAPEX/OPEX split, IRR for both public and private tranches, sensitivity analysis on throughput assumptions (2 scenarios minimum: conservative and base-case).\n2. **Counterparty diligence** — CIS verification on the developer, governance structure for the special purpose vehicle, equity split and decision rights.\n3. **Demand validation** — at least one anchor tenant LOI or a signed commercial intent letter. NAIF will require evidence of private sector demand.\n4. **Community and environmental** — Far North Queensland triggers indigenous land-use considerations; early engagement with First Nations representatives is both mandatory and strategically smart.\n\n**Documents I'll generate from your case file:**\n- NAIF Submission Brief (executive case + financial structure)\n- Investment Prospectus (board version)\n- Risk Register with severity scoring\n- Stakeholder Engagement Plan (developer, NAIF, anchor tenants, council, First Nations)\n- Letter of Intent template for anchor tenant outreach\n\nShall I start with the NAIF brief and the risk register, or do you need the financial model framework first?" },
+        { role: 'user' as const, text: "Head of strategy, Cairns Regional Development Authority. We want to attract a cold-chain logistics hub — developer has expressed interest. Need the investment case, critical risks, and who we should be engaging." },
+        { role: 'system' as const, text: 'Jurisdiction: Australia — Queensland · Sector: Logistics / Cold-chain · Policy Pack: Asia-Pacific Advisory · Readiness: 42% → proceeding.' },
+        { role: 'assistant' as const, text: "Cairns has a structurally strong case — airport freight capacity, Port expansion, and Queensland's agriculture corridor create real demand pull.\n\n3 critical flags: counterparty integrity (CIS verification required), competing priority risk (FNQ infrastructure stall history), workforce gap (no local cold-chain talent pool).\n\nEngage now: NAIF (likely funder), Woolworths/Coles (anchor tenant demand validation), James Cook University (workforce pipeline).\n\nIs the developer bringing equity or seeking public co-investment?" },
+        { role: 'system' as const, text: 'Case file updated · Readiness: 61% · 5 documents queued: Investment Prospectus, Due Diligence Framework, NAIF Brief, Stakeholder Plan, Risk Register.' },
+        { role: 'user' as const, text: "Public-private structure. NAIF deadline is 8 weeks. We need a board-ready package." },
+        { role: 'assistant' as const, text: "Eight weeks is workable. Four tracks in parallel: financial model (CAPEX/OPEX, IRR for both tranches), counterparty diligence (CIS + SPV governance), anchor tenant LOI (NAIF requires private demand evidence), First Nations early engagement (mandatory for FNQ).\n\nGenerating: NAIF Submission Brief, Investment Prospectus (board version), Risk Register, Stakeholder Engagement Plan, LOI template.\n\nStart with NAIF brief and risk register, or financial model framework first?" },
     ];
 
     useEffect(() => {
@@ -540,75 +540,63 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
 
             {/* BW CONSULTANT AI DEMO - Display Mode Only */}
-            <section className="py-10 px-4 bg-white">
-                <div className="max-w-7xl mx-auto">
+            <section className="py-8 px-4 bg-white">
+                <div className="max-w-3xl mx-auto">
                     {/* Header */}
-                    <div className="mb-6 flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+                    <div className="mb-3 flex items-center justify-between gap-3">
                         <div>
-                            <p className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Meet Your AI Partner</p>
-                            <h2 className="text-3xl font-bold text-slate-900">BW Consultant AI</h2>
+                            <p className="text-[10px] font-semibold text-blue-600 uppercase tracking-wider mb-0.5">Meet Your AI Partner</p>
+                            <h2 className="text-xl font-bold text-slate-900">BW Consultant AI</h2>
                         </div>
-                        <p className="text-sm text-slate-600 max-w-xl leading-relaxed">
-                            A live session. A real scenario. This is what BW Consultant looks like in action.
+                        <p className="text-xs text-slate-400 max-w-xs leading-relaxed hidden sm:block">
+                            A real scenario, automated for display. This is BW Consultant in action.
                         </p>
                     </div>
 
                     {/* Demo Window */}
-                    <div className="shadow-2xl overflow-hidden border border-slate-200 flex flex-col" style={{ fontFamily: "'Söhne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
+                    <div className="rounded-xl shadow-md overflow-hidden border border-slate-200 flex flex-col">
                         {/* Banner */}
-                        <div
-                            className="px-6 py-4 flex items-center justify-between relative overflow-hidden"
-                            style={{
-                                backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                            }}
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/85 via-blue-800/70 to-blue-900/50" />
-                            <div className="relative z-10 flex items-center gap-3">
-                                <h3 className="text-xl font-bold text-white">BW Consultant</h3>
-                                <span className="text-blue-200 text-xs">Powered by NSIL Agentic Runtime</span>
-                                <span className="px-2 py-0.5 bg-blue-500/30 border border-blue-400/40 text-blue-200 text-[10px] font-semibold rounded-full">DEMO</span>
+                        <div className="px-4 py-2 bg-slate-900 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
+                                    <span className="text-white font-bold text-[8px]">BW</span>
+                                </div>
+                                <span className="text-sm font-semibold text-white">BW Consultant</span>
+                                <span className="text-slate-400 text-[10px]">· NSIL Agentic Runtime</span>
+                                <span className="px-1.5 py-0.5 bg-blue-600/40 border border-blue-500/40 text-blue-300 text-[9px] font-semibold rounded-full">DEMO</span>
                             </div>
-                            <div className="relative z-10 hidden md:flex items-center gap-4">
-                                <span className="text-xs text-blue-200">Intake &rarr; Discovery &rarr; Analysis &rarr; Recommendations &rarr; Generation</span>
-                            </div>
+                            <span className="hidden sm:block text-[9px] text-slate-500">Intake → Discovery → Analysis → Recommendations → Generation</span>
                         </div>
 
                         {/* Chat Messages */}
-                        <div className="bg-white min-h-[520px] max-h-[600px] overflow-y-auto p-6 space-y-4">
+                        <div className="bg-white max-h-[400px] overflow-y-auto p-4 space-y-3">
                             {/* Scenario label */}
                             <div className="flex justify-center">
-                                <span className="text-[11px] px-3 py-1 bg-slate-100 border border-slate-200 text-slate-500 rounded-full">Scenario: Regional Development Authority — Cold-Chain Logistics Hub, North Queensland, Australia</span>
+                                <span className="text-[9px] px-2.5 py-0.5 bg-slate-100 border border-slate-200 text-slate-400 rounded-full">Cairns Regional Development Authority — Cold-Chain Logistics Hub, North Queensland</span>
                             </div>
 
                             {DEMO_MESSAGES.slice(0, demoChatStep).map((msg, i) => (
-                                <div
-                                    key={i}
-                                    className={`flex ${
-                                        msg.role === 'user' ? 'justify-end' : 'justify-start'
-                                    }`}
-                                >
+                                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     {msg.role === 'system' && (
-                                        <div className="max-w-[85%] px-3 py-2 bg-indigo-50 border border-indigo-200 rounded-lg">
-                                            <p className="text-[11px] text-indigo-700 font-mono leading-relaxed">
-                                                <span className="font-bold text-indigo-900">NSIL</span> &bull; {msg.text}
+                                        <div className="max-w-[90%] px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-md">
+                                            <p className="text-[10px] text-indigo-600 font-mono leading-relaxed">
+                                                <span className="font-bold text-indigo-800">NSIL</span> &bull; {msg.text}
                                             </p>
                                         </div>
                                     )}
                                     {msg.role === 'user' && (
-                                        <div className="max-w-[75%] px-4 py-3 bg-blue-600 text-white rounded-2xl rounded-br-sm shadow-sm">
-                                            <p className="text-sm leading-relaxed">{msg.text}</p>
+                                        <div className="max-w-[70%] px-3 py-2 bg-blue-600 text-white rounded-xl rounded-br-sm shadow-sm">
+                                            <p className="text-xs leading-relaxed">{msg.text}</p>
                                         </div>
                                     )}
                                     {msg.role === 'assistant' && (
-                                        <div className="max-w-[85%] flex gap-3">
-                                            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <span className="text-white font-bold text-[10px]">BW</span>
+                                        <div className="max-w-[88%] flex gap-2">
+                                            <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <span className="text-white font-bold text-[8px]">BW</span>
                                             </div>
-                                            <div className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl rounded-tl-sm shadow-sm">
-                                                <p className="text-[11px] font-semibold text-blue-700 mb-1">BW Consultant</p>
-                                                <p className="text-sm text-slate-800 leading-relaxed whitespace-pre-line">{msg.text}</p>
+                                            <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl rounded-tl-sm">
+                                                <p className="text-[10px] font-semibold text-blue-700 mb-0.5">BW Consultant</p>
+                                                <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line">{msg.text}</p>
                                             </div>
                                         </div>
                                     )}
@@ -618,15 +606,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Typing indicator */}
                             {demoTyping && (
                                 <div className="flex justify-start">
-                                    <div className="flex gap-3">
-                                        <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <span className="text-white font-bold text-[10px]">BW</span>
+                                    <div className="flex gap-2">
+                                        <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center flex-shrink-0">
+                                            <span className="text-white font-bold text-[8px]">BW</span>
                                         </div>
-                                        <div className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl rounded-tl-sm">
+                                        <div className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl rounded-tl-sm">
                                             <div className="flex items-center gap-1">
-                                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                                <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                                             </div>
                                         </div>
                                     </div>
@@ -635,35 +623,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             {/* Replay / CTA when done */}
                             {demoChatStep >= DEMO_MESSAGES.length && !demoTyping && (
-                                <div className="flex flex-col items-center gap-3 pt-4">
-                                    <div className="flex items-center gap-2 text-xs text-slate-400">
-                                        <div className="w-1 h-1 bg-emerald-400 rounded-full" />
-                                        Session complete — 5 documents queued for generation
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <button
-                                            onClick={() => { setDemoChatStep(0); setDemoTyping(false); }}
-                                            className="text-xs px-4 py-2 border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors rounded-lg"
-                                        >
-                                            Replay demo
-                                        </button>
-                                        <button
-                                            onClick={() => termsAccepted && onEnterPlatform?.()}
-                                            className="text-xs px-4 py-2 bg-blue-600 text-white hover:bg-blue-500 transition-colors rounded-lg font-semibold"
-                                        >
-                                            Launch BW Consultant &rarr;
-                                        </button>
-                                    </div>
+                                <div className="flex items-center justify-center gap-3 pt-2">
+                                    <span className="text-[10px] text-slate-400">Session complete &mdash; 5 documents queued</span>
+                                    <button
+                                        onClick={() => { setDemoChatStep(0); setDemoTyping(false); }}
+                                        className="text-[10px] px-3 py-1 border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors rounded"
+                                    >
+                                        Replay
+                                    </button>
+                                    <button
+                                        onClick={() => termsAccepted && onEnterPlatform?.()}
+                                        className="text-[10px] px-3 py-1 bg-blue-600 text-white hover:bg-blue-500 transition-colors rounded font-semibold"
+                                    >
+                                        Launch BW Consultant &rarr;
+                                    </button>
                                 </div>
                             )}
                         </div>
 
                         {/* Footer status bar */}
-                        <div className="px-4 py-2 bg-slate-900 border-t border-slate-700 flex items-center justify-between">
-                            <p className="text-[10px] text-slate-400">
-                                NSIL Agentic Runtime &mdash; Sovereign-grade intelligence &bull; Display mode
-                            </p>
-                            <p className="text-[10px] text-slate-500">Readiness: {Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%</p>
+                        <div className="px-3 py-1.5 bg-slate-900 border-t border-slate-700 flex items-center justify-between">
+                            <p className="text-[9px] text-slate-500">NSIL Agentic Runtime &bull; Display mode</p>
+                            <p className="text-[9px] text-slate-500">Readiness: {Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%</p>
                         </div>
                     </div>
                 </div>
