@@ -2098,7 +2098,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     onClick={() => setUnifiedActiveTab('protocol')}
                                     className={`px-4 py-3 text-sm font-semibold transition-all border-b-2 ${unifiedActiveTab === 'protocol' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
                                 >
-                                    10-Step Protocol
+                                    BW Consultant
                                 </button>
                                 <button 
                                     onClick={() => setUnifiedActiveTab('documents')}
@@ -2125,62 +2125,83 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="p-6 md:p-8 space-y-6 text-sm text-slate-700 leading-relaxed">
 
                             {/* Introduction - always visible */}
-                            <p>This page explains exactly how the system works &mdash; from the moment you start entering data to the final board-ready documents it produces. Three stages: <strong>Adaptive Multi-Phase Intake</strong> (the structured protocol that captures your opportunity in measurable terms with case-method gating), <strong>Adversarial Analysis</strong> (46+ formulas, 5 personas debating every angle, Monte Carlo simulation, Regional Development Kernel with partner intelligence and causal graphs), and <strong>Institutional Output</strong> (247+ document types across 15 categories and 156+ letter templates, all populated with your actual scores and reasoning). Plus <strong>Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.</p>
+                            <div className="bg-white border border-blue-200 rounded-xl p-5 shadow-sm">
+                                <div className="flex items-start gap-4 mb-4">
+                                    <div className="w-11 h-11 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span className="text-white font-bold text-xs">BW</span>
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-slate-900">BW Consultant</p>
+                                        <p className="text-xs text-blue-600 font-medium mt-0.5">Powered by NSIL Agentic Runtime &bull; Case Study Builder</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-1 mb-4 flex-wrap">
+                                    {['Intake','Discovery','Analysis','Recommendations','Generation'].map((phase, i, arr) => (
+                                        <span key={phase} className="flex items-center gap-1">
+                                            <span className="px-2.5 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full text-xs font-semibold">{phase}</span>
+                                            {i < arr.length - 1 && <span className="text-slate-300 text-xs">&rarr;</span>}
+                                        </span>
+                                    ))}
+                                </div>
+                                <p className="text-sm text-slate-700 leading-relaxed">
+                                    BW Consultant is the conversational intelligence layer that feeds the full analysis engine. Instead of a form, you talk. The system listens, asks the highest-value follow-up questions, builds the structured case brief in the background, and routes it through three stages: <strong className="text-slate-900">Adaptive Intake</strong> (10 dimensions captured through natural conversation with case-method gating), <strong className="text-slate-900">Adversarial Analysis</strong> (46+ formulas, 5 personas, Monte Carlo across 5,000 scenarios, Regional Development Kernel with partner intelligence and causal graphs), and <strong className="text-slate-900">Institutional Output</strong> (247+ document types across 15 categories and 156+ letter templates, all populated with your actual scores and traceable reasoning &mdash; not AI placeholder text). Plus <strong className="text-slate-900">Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.
+                                </p>
+                            </div>
 
                             {/* TAB CONTENT: Protocol */}
                             {unifiedActiveTab === 'protocol' && (
                                 <>
-                                    <h4 className="text-lg font-bold text-slate-900 pt-2">Stage 1 &mdash; The Ten-Step Protocol</h4>
-                                    <p>Most users complete this in 30-45 minutes. Each step captures a critical dimension of your opportunity. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.</p>
+                                    <h4 className="text-lg font-bold text-slate-900 pt-2">What BW Consultant Captures &mdash; 10 Dimensions</h4>
+                                    <p>BW Consultant builds the case brief through conversation, not a form. It asks the highest-value question at each point, infers facts from context, and structures the intake across 10 dimensions. Most sessions complete this in 30&ndash;45 minutes. By the end, the reasoning engine has clear scope, quantified assumptions, full risk visibility, and a consistent dataset it can trust.</p>
 
-                                    <div className="border-l-2 border-slate-300 pl-4 space-y-4">
+                                    <div className="border-l-2 border-blue-200 pl-4 space-y-4">
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 1: Opportunity Definition</p>
+                                            <p className="font-semibold text-slate-900">1. Opportunity Definition</p>
                                             <p className="text-slate-600">Project name, type, sector, target region, investment scale, timeline. The foundation everything else builds on.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 2: Strategic Alignment</p>
+                                            <p className="font-semibold text-slate-900">2. Strategic Alignment</p>
                                             <p className="text-slate-600">Alignment with national/regional policy, SDG mapping, government priority status, bilateral agreements.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 3: Market Analysis</p>
+                                            <p className="font-semibold text-slate-900">3. Market Analysis</p>
                                             <p className="text-slate-600">Demand drivers, supply gaps, competitive landscape, pricing dynamics, growth trajectory.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 4: Financial Structure</p>
+                                            <p className="font-semibold text-slate-900">4. Financial Structure</p>
                                             <p className="text-slate-600">CAPEX, OPEX, revenue model, funding mix, IRR targets, payback expectations, currency exposure.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 5: Risk Assessment</p>
+                                            <p className="font-semibold text-slate-900">5. Risk Assessment</p>
                                             <p className="text-slate-600">Political, regulatory, operational, financial, environmental, social risks with probability and impact.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 6: Stakeholder Mapping</p>
+                                            <p className="font-semibold text-slate-900">6. Stakeholder Mapping</p>
                                             <p className="text-slate-600">Government bodies, investors, partners, communities, regulators &mdash; influence, interest, engagement strategy.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 7: Implementation Pathway</p>
+                                            <p className="font-semibold text-slate-900">7. Implementation Pathway</p>
                                             <p className="text-slate-600">Phasing, milestones, dependencies, critical path, resource requirements, decision gates.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 8: Compliance Requirements</p>
+                                            <p className="font-semibold text-slate-900">8. Compliance Requirements</p>
                                             <p className="text-slate-600">Permits, licenses, environmental approvals, sector-specific regulations, international standards.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 9: Partnership Terms</p>
+                                            <p className="font-semibold text-slate-900">9. Partnership Terms</p>
                                             <p className="text-slate-600">Equity split, governance structure, decision rights, exit mechanisms, IP ownership, non-compete clauses.</p>
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-slate-900">Step 10: Success Metrics</p>
+                                            <p className="font-semibold text-slate-900">10. Success Metrics</p>
                                             <p className="text-slate-600">KPIs, monitoring framework, reporting requirements, adjustment triggers, exit criteria.</p>
                                         </div>
                                     </div>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Stage 2 &mdash; Adversarial Analysis</h4>
-                                    <p>Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 38+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show you the real distribution of outcomes, not just the optimistic case.</p>
+                                    <p>Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies across your inputs. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 38+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show the real distribution of outcomes &mdash; not just the optimistic case. The Regional Development Kernel maps structural twin regions worldwide and builds a causal Problem-to-Solution Graph. The Partner Intelligence Engine ranks co-investors and delivery partners by fit, reliability, and local legitimacy.</p>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Stage 3 &mdash; Institutional Output</h4>
-                                    <p>Every score, every debate conclusion, every simulation result flows into document generation. 247 document types across 15 categories. 156 letter templates for every stage of deal-making. All populated with your actual data, exact scores, and traceable reasoning &mdash; not AI-generated placeholder text. The 15th category &mdash; Case Study Intelligence &mdash; lets you upload existing reports, proposals, or case studies and receive full NSIL analysis with scored sections, adversarial debate, historical parallels, and recommended documents.</p>
+                                    <p>Every score, every debate conclusion, every simulation result flows into document generation. 247 document types across 15 categories. 156 letter templates for every stage of deal-making &mdash; LOIs to closing briefs. All populated with your actual data, exact scores, and traceable reasoning &mdash; not AI-generated placeholder text. The 15th category, Case Study Intelligence, lets you upload existing reports, proposals, or case studies and receive full NSIL analysis with scored sections, adversarial debate, historical parallels, and recommended documents.</p>
                                 </>
                             )}
 
