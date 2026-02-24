@@ -1070,6 +1070,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
 
   // Process user input through real AI
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
+    const trimmedInput = userInput.trim();
+    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmedInput);
+    if (isGreetingOnly) {
+      return `Hello — I'm ready to help. Share your situation, and I'll answer directly while building your case in the background.`;
+    }
+
     try {
       const policyPack = resolvePolicyPack(caseStudy);
       const systemPrompt = `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
@@ -1113,11 +1119,16 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       const response = await chatSession.current.sendMessage({ 
         message: `${systemPrompt}\n\nUser says: ${userInput}` 
       });
-      
-      return response.text || "I understand. Let me process that information.";
+
+      const responseText = response.text?.trim();
+      if (!responseText || /chat service unavailable/i.test(responseText)) {
+        return "I can continue from current context. Share your decision owner, jurisdiction, and objective, and I will proceed.";
+      }
+
+      return responseText;
     } catch (error) {
       console.error('AI processing error:', error);
-      return "I'm having trouble connecting to my analysis engine. Let me continue with what I understand so far.";
+      return "I can continue from current context and still move this forward. Share your decision owner, jurisdiction, and objective, and I will proceed.";
     }
   }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
 
@@ -1603,8 +1614,10 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       setCurrentPhase(inferredPhase);
 
       const nextFollowUp = getHighestValueFollowUp(caseDraft);
-      const likelyDirectQuestion = /\?|\b(hello|hi|thanks|explain|what|why|how|who|can you|could you|should we)\b/i.test(userContent);
-      if (nextFollowUp && (liveReadiness < 80 || likelyDirectQuestion)) {
+      const trimmedUserContent = userContent.trim();
+      const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmedUserContent);
+      const likelyDirectQuestion = /\?|\b(explain|what|why|how|who|can you|could you|should we)\b/i.test(trimmedUserContent);
+      if (nextFollowUp && !isGreetingOnly && (liveReadiness < 80 || likelyDirectQuestion)) {
         responseContent = `${responseContent}\n\nOne high-value detail to improve decision quality:\n${nextFollowUp}`;
         setAdaptiveQuestionsAsked(prev => prev + 1);
       }
