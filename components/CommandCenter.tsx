@@ -1451,14 +1451,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Header */}
                         <section className="py-10 px-6 md:px-8 bg-gradient-to-r from-slate-900 to-slate-800">
                             <div className="max-w-4xl mx-auto">
-                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm mb-3 font-bold">HOW YOU FEED THE BRAIN</p>
-                                <h2 className="text-2xl md:text-3xl font-light text-white mb-2">The Ten-Step Protocol</h2>
+                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm mb-3 font-bold">BW CONSULTANT</p>
+                                <h2 className="text-2xl md:text-3xl font-light text-white mb-2">You Talk. It Thinks. Then It Builds.</h2>
                                 <p className="text-base text-blue-300 mb-4 flex items-center gap-2 font-medium">
                                     <span className="inline-block w-2 h-2 bg-blue-400 rounded-full"></span>
-                                    Most users complete this in 30-45 minutes
+                                    No forms. No templates. Just a conversation.
                                 </p>
                                 <p className="text-base text-slate-300 leading-relaxed">
-                                    Each step captures a critical dimension of your opportunity. By the end, you have clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.
+                                    BW Consultant is an agentic AI that works the way a senior analyst does — it asks the right questions, challenges your assumptions, and builds the case brief as you talk. By the time you&rsquo;re done, the system has enough structured, validated intelligence to run the full analysis engine.
                                 </p>
                             </div>
                         </section>
@@ -1467,9 +1467,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <section className="py-8 px-6 md:px-8 bg-slate-50 border-b border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-5 mb-6">
-                                    <h3 className="text-lg font-semibold text-slate-900 mb-3">Most tools generate text. This system validates reality.</h3>
+                                    <h3 className="text-lg font-semibold text-slate-900 mb-3">Most AI tools generate text. BW Consultant validates reality.</h3>
                                     <p className="text-sm text-slate-700 leading-relaxed">
-                                        It treats your input as a hypothesis, tests it against evidence, and then produces a defensible, board-ready package. The workflow has <strong className="text-blue-700">three stages</strong>, each designed to transform raw ideas into rigorous, auditable intelligence.
+                                        Your inputs aren&rsquo;t taken at face value &mdash; they&rsquo;re treated as hypotheses. The system cross-checks them against live data, runs them through adversarial personas, and tests them across 5,000 scenarios before anything reaches a document. The conversation feeds <strong className="text-blue-700">three stages</strong>, each designed to transform what you know into something a board can act on.
                                     </p>
                                 </div>
 
@@ -1484,7 +1484,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             <span className="text-xs text-blue-600 uppercase tracking-wider font-bold">STAGE ONE</span>
                                         </div>
                                         <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-blue-700">Structured Intake</h4>
-                                        <p className="text-xs text-slate-600">Define the opportunity in measurable terms through the 10-step protocol</p>
+                                        <p className="text-xs text-slate-600">BW Consultant captures scope, mandate, context, and constraints through natural conversation</p>
                                         <p className="text-xs text-blue-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
                                     </button>
 
@@ -1520,9 +1520,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* The 10 Steps Grid */}
                         <section className="py-8 px-6 md:px-8 bg-white">
                             <div className="max-w-4xl mx-auto">
-                                <p className="text-blue-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">STAGE 1: STRUCTURED INTAKE</p>
-                                <h3 className="text-xl font-semibold text-slate-900 mb-2">The Ten Steps</h3>
-                                <p className="text-sm text-slate-600 mb-6">Click any step to see detailed data requirements:</p>
+                                <p className="text-blue-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">WHAT BW CONSULTANT CAPTURES</p>
+                                <h3 className="text-xl font-semibold text-slate-900 mb-2">Ten Dimensions. One Conversation.</h3>
+                                <p className="text-sm text-slate-600 mb-6">BW Consultant builds this picture as you talk &mdash; no forms, no fields to fill. Click any dimension to see what it captures:</p>
 
                                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
                                     {tenStepProtocol.map((item) => (
@@ -1581,9 +1581,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* What Happens After Intake */}
                         <section className="py-8 px-6 md:px-8 bg-slate-50 border-t border-slate-200">
                             <div className="max-w-4xl mx-auto">
-                                <h3 className="text-lg font-semibold text-slate-900 mb-4">What Happens After You Submit</h3>
+                                <h3 className="text-lg font-semibold text-slate-900 mb-4">What the System Does With It</h3>
                                 <p className="text-sm text-slate-700 leading-relaxed mb-6">
-                                    Once the ten-step intake is complete, your structured inputs, validated scores, and risk assessments become the raw material for the final stage: turning analysis into action. The system runs every formula, debates every angle, and compiles everything into professional deliverables.
+                                    Once BW Consultant has enough to work with, the analysis engine activates. Your conversation becomes a structured dataset &mdash; scored, stress-tested, and cross-referenced against live intelligence. The system runs every formula, runs every argument, and compiles the output into institutional-grade deliverables ready for any decision-maker.
                                 </p>
 
                                 <div className="grid md:grid-cols-2 gap-4">
@@ -1615,14 +1615,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                 </div>
 
-                                {/* Letter Templates Button */}
-                                <button 
-                                    onClick={() => setShowProtocolLetters(true)}
-                                    className="mt-6 w-full py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-sm text-sm font-bold hover:from-slate-700 hover:to-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg"
-                                >
-                                    <Mail size={16} />
-                                    View All 156 Letter Templates
-                                </button>
                             </div>
                         </section>
 

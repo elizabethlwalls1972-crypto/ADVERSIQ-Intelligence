@@ -594,6 +594,23 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     }
   }, [liveDataCache]);
 
+  const resolvePolicyPack = useCallback((draft: CaseStudy): JurisdictionPolicyPack => {
+    const context = `${draft.country} ${draft.jurisdiction}`.toLowerCase();
+    const matched = JURISDICTION_POLICY_PACKS.find((pack) =>
+      pack.triggers.some((trigger) => context.includes(trigger))
+    );
+
+    return matched || {
+      id: 'global-default',
+      label: 'Global Advisory Pack',
+      triggers: [],
+      regulatoryTone: 'executive-brief',
+      requiredSupportDocuments: ['Decision brief', 'Risk register', 'Stakeholder map'],
+      requiredLetters: ['Primary counterpart letter'],
+      complianceFocus: ['Cross-jurisdiction consistency', 'Traceable assumptions']
+    };
+  }, []);
+
   const buildMessageProvenance = useCallback((draft: CaseStudy, readiness: number, additionalSources: string[] = []) => {
     const sources: string[] = [];
 
@@ -684,23 +701,6 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     timeline: draft.decisionDeadline,
     context: draft.additionalContext
   }), []);
-
-  const resolvePolicyPack = useCallback((draft: CaseStudy): JurisdictionPolicyPack => {
-    const context = `${draft.country} ${draft.jurisdiction}`.toLowerCase();
-    const matched = JURISDICTION_POLICY_PACKS.find((pack) =>
-      pack.triggers.some((trigger) => context.includes(trigger))
-    );
-
-    return matched || {
-      id: 'global-default',
-      label: 'Global Advisory Pack',
-      triggers: [],
-      regulatoryTone: 'executive-brief',
-      requiredSupportDocuments: ['Decision brief', 'Risk register', 'Stakeholder map'],
-      requiredLetters: ['Primary counterpart letter'],
-      complianceFocus: ['Cross-jurisdiction consistency', 'Traceable assumptions']
-    };
-  }, []);
 
   const consultantCaseProfile = useMemo(() => {
     const hasIdentity = Boolean(caseStudy.userName.trim() || caseStudy.contactRole.trim() || caseStudy.organizationName.trim());
