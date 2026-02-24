@@ -465,7 +465,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [copied, setCopied] = useState(false);
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
   const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
-  const [adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
+  const [_adaptiveQuestionsAsked, setAdaptiveQuestionsAsked] = useState(0);
   const [skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
   const [readinessScore, setReadinessScore] = useState(0);
   const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
@@ -485,72 +485,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastKernelSignalRef = useRef<string>('');
   const chatSession = useRef(getChatSession());
-  const intakeQuestionIndex = useRef(0);
   const agenticAIRef = useRef(new BWConsultantAgenticAI());
-
-  // Intake questions progression
-  const intakeQuestions = [
-    {
-      key: 'userName',
-      question: `Hello, I'm your BW Consultant AI. I will build your case file, diagnose your situation, and recommend the right reports, documents, and letters.
-
-Let's start properly:
-
-**What is your full name?**`
-    },
-    {
-      key: 'organizationName',
-      question: `Great. **What organization do you represent?**`
-    },
-    {
-      key: 'organizationType',
-      question: `**What type of organization is it?** (government agency, private company, NGO, investor, legal advisory, regional council, etc.)`
-    },
-    {
-      key: 'contactRole',
-      question: `**What is your role and decision authority?** (e.g., CEO, legal counsel, policy director, project lead)`
-    },
-    {
-      key: 'country',
-      question: `**Which country and region are you operating in?**`
-    },
-    {
-      key: 'jurisdiction',
-      question: `**What legal/regulatory jurisdiction should this follow?** (national, state/provincial, international standard, mixed)`
-    },
-    {
-      key: 'organizationMandate',
-      question: `**What mandate are you accountable for?** (investment attraction, compliance, procurement, partnerships, litigation, policy delivery, etc.)`
-    },
-    {
-      key: 'situationType',
-      question: `**What type of matter is this?** (investment, partnership, market entry, compliance, dispute, strategic decision, due diligence)`
-    },
-    {
-      key: 'currentMatter',
-      question: `Now detail the case:
-
-**What exactly is happening, who is involved, and what decision must be made?**`
-    },
-    {
-      key: 'objectives',
-      question: `**What is your objective and desired outcome?** Include measurable targets if possible.`
-    },
-    {
-      key: 'targetAudience',
-      question: `**Who is the primary audience for final outputs?** (board, regulator, ministry, investor, partner, court, internal executive team)`
-    },
-    {
-      key: 'decisionDeadline',
-      question: `**What is your decision deadline / timeline?**`
-    },
-    {
-      key: 'constraints',
-      question: `Final intake question:
-
-**What constraints must be respected?** (budget, timeline, politics, compliance, resources, stakeholder sensitivity)`
-    }
-  ];
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -559,9 +494,6 @@ Let's start properly:
       container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
     }
   }, [messages]);
-
-  // Intake questions (static)
-  const intakeQuestionsRef = useRef(intakeQuestions);
 
   const computeReadiness = useCallback((draft: CaseStudy) => {
     const weightedChecks = [
@@ -684,7 +616,12 @@ Let's start properly:
         userName: null as string | null,
         country: null as string | null,
         jurisdiction: null as string | null,
+        organizationName: null as string | null,
+        organizationType: null as string | null,
+        contactRole: null as string | null,
         objectives: null as string | null,
+        currentMatter: null as string | null,
+        constraints: null as string | null,
         targetAudience: null as string | null,
         decisionDeadline: null as string | null,
         evidenceNote: null as string | null
@@ -692,9 +629,16 @@ Let's start properly:
     }
 
     const userName = normalized.match(/\b(?:i am|i'm|my name is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b/i)?.[1] || null;
+    const organizationName = normalized.match(/\b(?:organization|company|agency|institution|we are|i represent|from)\s*(?:is|:)?\s*([A-Z][A-Za-z0-9&.,\-\s]{2,80})\b/i)?.[1]?.trim() || null;
+    const organizationType = normalized.match(/\b(government agency|private company|ngo|non-profit|investor|bank|development bank|regional council|legal advisory|ministry|public sector|multilateral)\b/i)?.[1] || null;
+    const contactRole = normalized.match(/\b(?:i am the|my role is|i serve as|i am)\s+([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
     const country = normalized.match(/\b(?:in|from|operating in|country)\s+([A-Z][A-Za-z\s]{2,40})\b/i)?.[1]?.trim() || null;
     const jurisdiction = normalized.match(/\b(?:jurisdiction|regulatory regime|legal framework)\s*(?:is|:)?\s*([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
     const objectives = normalized.match(/\b(?:objective is|goal is|we aim to|we want to|wish to achieve)\s+([^\n.]{12,220})/i)?.[1]?.trim() || null;
+    const currentMatter = normalized.length >= 40 ? normalized : null;
+    const constraints = normalized.match(/\b(?:constraint|limit|limitation|budget|timeline|deadline|compliance|resource|political)\b/i)
+      ? normalized
+      : null;
     const targetAudience = normalized.match(/\b(?:for|to|audience|decision makers?)\s+(board|investors?|regulator[s]?|ministry|government|court|executive team|partners?)\b/i)?.[1] || null;
     const decisionDeadline = normalized.match(/\b(?:deadline|due|by|before)\s*[:-]?\s*([^\n.]{3,60})/i)?.[1]?.trim() || null;
     const evidenceNote = /\b(evidence|annex|dataset|source|kpi|metric|report|attachment)\b/i.test(normalized)
@@ -703,9 +647,14 @@ Let's start properly:
 
     return {
       userName,
+      organizationName,
+      organizationType,
+      contactRole,
       country,
       jurisdiction,
       objectives,
+      currentMatter,
+      constraints,
       targetAudience,
       decisionDeadline,
       evidenceNote
@@ -1086,15 +1035,15 @@ Let's start properly:
     }
   }, [recommendationBoostMap]);
 
-  // Start with first intake question
+  // Start with autonomous welcome message
   useEffect(() => {
     if (messages.length === 0) {
       const initialMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: intakeQuestionsRef.current[0].question,
+        content: "Hello, I'm your BW Consultant AI. I can answer direct questions, run autonomous strategic analysis, and build your case file in the background from natural conversation. Tell me what you're working on, or ask anything and I'll adapt.",
         timestamp: new Date(),
-        phase: 'intake'
+        phase: 'discovery'
       };
       setMessages([initialMessage]);
     }
@@ -1123,7 +1072,7 @@ Let's start properly:
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
     try {
       const policyPack = resolvePolicyPack(caseStudy);
-      const systemPrompt = `You are BW Consultant AI, an expert business intelligence consultant. You are currently in the "${currentPhase}" phase of building a case study.
+      const systemPrompt = `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
@@ -1140,12 +1089,12 @@ ${consultantGateReady ? 'READY' : `BLOCKED: ${consultantGateMissing.join('; ')}`
 User's latest input: "${userInput}"
 Phase context: ${context}
 
-Instructions based on phase:
-- INTAKE: Ask clarifying questions to gather baseline information. Be warm but professional.
-- DISCOVERY: Probe deeper into the specifics. Ask about stakeholders, risks, opportunities, and details not yet covered.
-- ANALYSIS: Synthesize what you've learned. Identify patterns, risks, and opportunities.
-- RECOMMENDATIONS: Based on the case, recommend specific documents and letters that would help.
-- GENERATION: Generate professional document content.
+Autonomous operating instructions:
+- First, answer the user's actual request directly (including non-case or off-topic questions).
+- Second, infer and update useful case facts from the conversation context.
+- Third, if critical information is missing, ask only one highest-value follow-up question.
+- Never force a rigid scripted questionnaire.
+- Be natural, concise, and decision-focused.
 
 Policy pack execution rules:
 - Respect regulatory tone: ${policyPack.regulatoryTone}
@@ -1159,7 +1108,7 @@ Consultant operating rules:
 - If data is incomplete, ask the single highest-value question that improves decision quality.
 - Convert provided information into action-oriented outputs, not generic commentary.
 
-Respond naturally and helpfully. If in intake/discovery, end with a clarifying question. Keep responses focused and actionable.`;
+Respond naturally and helpfully. Keep responses focused and actionable.`;
 
       const response = await chatSession.current.sendMessage({ 
         message: `${systemPrompt}\n\nUser says: ${userInput}` 
@@ -1170,64 +1119,16 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       console.error('AI processing error:', error);
       return "I'm having trouble connecting to my analysis engine. Let me continue with what I understand so far.";
     }
-  }, [currentPhase, caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
+  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
 
-  // Handle intake progression
-  const progressIntake = useCallback((userResponse: string) => {
-    const currentQ = intakeQuestionsRef.current[intakeQuestionIndex.current];
-    
-    // Update case study based on which question was answered
-    switch (currentQ.key) {
-      case 'userName':
-        setCaseStudy(prev => ({ ...prev, userName: userResponse }));
-        break;
-      case 'organizationName':
-        setCaseStudy(prev => ({ ...prev, organizationName: userResponse }));
-        break;
-      case 'organizationType':
-        setCaseStudy(prev => ({ ...prev, organizationType: userResponse }));
-        break;
-      case 'contactRole':
-        setCaseStudy(prev => ({ ...prev, contactRole: userResponse }));
-        break;
-      case 'country':
-        setCaseStudy(prev => ({ ...prev, country: userResponse }));
-        break;
-      case 'jurisdiction':
-        setCaseStudy(prev => ({ ...prev, jurisdiction: userResponse }));
-        break;
-      case 'organizationMandate':
-        setCaseStudy(prev => ({ ...prev, organizationMandate: userResponse }));
-        break;
-      case 'situationType':
-        setCaseStudy(prev => ({ ...prev, situationType: userResponse }));
-        break;
-      case 'currentMatter':
-        setCaseStudy(prev => ({ ...prev, currentMatter: userResponse }));
-        break;
-      case 'objectives':
-        setCaseStudy(prev => ({ ...prev, objectives: userResponse }));
-        break;
-      case 'targetAudience':
-        setCaseStudy(prev => ({ ...prev, targetAudience: userResponse }));
-        break;
-      case 'decisionDeadline':
-        setCaseStudy(prev => ({ ...prev, decisionDeadline: userResponse }));
-        break;
-      case 'constraints':
-        setCaseStudy(prev => ({ ...prev, constraints: userResponse }));
-        break;
-    }
-
-    intakeQuestionIndex.current += 1;
-
-    // Check if intake complete
-    if (intakeQuestionIndex.current >= intakeQuestionsRef.current.length) {
-      setCurrentPhase('discovery');
-      return null; // Signal to use AI for next response
-    }
-
-    return intakeQuestionsRef.current[intakeQuestionIndex.current].question;
+  const getHighestValueFollowUp = useCallback((draft: CaseStudy) => {
+    if (!draft.organizationName.trim()) return 'Which organization is the decision owner for this matter?';
+    if (!draft.country.trim() || !draft.jurisdiction.trim()) return 'Which country and legal jurisdiction should this analysis follow?';
+    if (draft.objectives.trim().length < 20) return 'What exact outcome do you need, and how will success be measured?';
+    if (draft.currentMatter.trim().length < 60) return 'What exactly is happening now, who is involved, and what decision must be made next?';
+    if (draft.targetAudience.trim().length < 3) return 'Who is the primary decision audience (board, ministry, regulator, investor, or partner)?';
+    if (draft.decisionDeadline.trim().length < 3) return 'What is the decision deadline and what happens if it slips?';
+    return null;
   }, []);
 
   // Generate document recommendations based on case
@@ -1619,24 +1520,36 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
 
     const hasSignalUpdate = Boolean(
       extractedSignals.userName ||
+      extractedSignals.organizationName ||
+      extractedSignals.organizationType ||
+      extractedSignals.contactRole ||
       extractedSignals.country ||
       extractedSignals.jurisdiction ||
       extractedSignals.objectives ||
+      extractedSignals.currentMatter ||
+      extractedSignals.constraints ||
       extractedSignals.targetAudience ||
       extractedSignals.decisionDeadline ||
       extractedSignals.evidenceNote
     );
+
+    const userMessagePhase = readinessScore < 55 ? 'discovery' : readinessScore < 80 ? 'analysis' : 'recommendations';
 
     if (hasSignalUpdate) {
       setCaseStudy(prev => {
         const next = { ...prev };
 
         if (extractedSignals.userName && !next.userName.trim()) next.userName = extractedSignals.userName;
+        if (extractedSignals.organizationName && !next.organizationName.trim()) next.organizationName = extractedSignals.organizationName;
+        if (extractedSignals.organizationType && !next.organizationType.trim()) next.organizationType = extractedSignals.organizationType;
+        if (extractedSignals.contactRole && !next.contactRole.trim()) next.contactRole = extractedSignals.contactRole;
         if (extractedSignals.country && !next.country.trim()) next.country = extractedSignals.country;
         if (extractedSignals.jurisdiction && !next.jurisdiction.trim()) next.jurisdiction = extractedSignals.jurisdiction;
         if (extractedSignals.targetAudience && !next.targetAudience.trim()) next.targetAudience = extractedSignals.targetAudience;
         if (extractedSignals.decisionDeadline && !next.decisionDeadline.trim()) next.decisionDeadline = extractedSignals.decisionDeadline;
         if (extractedSignals.objectives && next.objectives.trim().length < 20) next.objectives = extractedSignals.objectives;
+        if (extractedSignals.currentMatter && next.currentMatter.trim().length < 60) next.currentMatter = extractedSignals.currentMatter;
+        if (extractedSignals.constraints && next.constraints.trim().length < 20) next.constraints = extractedSignals.constraints;
         if (extractedSignals.evidenceNote && !next.additionalContext.some((entry) => entry === `Evidence Note: ${extractedSignals.evidenceNote}`)) {
           next.additionalContext = [...next.additionalContext, `Evidence Note: ${extractedSignals.evidenceNote}`];
         }
@@ -1651,7 +1564,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
       role: 'user',
       content: userContent,
       timestamp: new Date(),
-      phase: currentPhase
+      phase: userMessagePhase
     };
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
@@ -1659,120 +1572,70 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     setIsLoading(true);
 
     try {
-      let responseContent: string;
+      setCaseStudy(prev => ({
+        ...prev,
+        additionalContext: [...prev.additionalContext, userContent]
+      }));
 
-      if (currentPhase === 'intake') {
-        // Use structured intake progression
-        const nextQuestion = progressIntake(userContent);
-        if (nextQuestion) {
-          responseContent = nextQuestion;
-        } else {
-          // Intake complete, transition to discovery with AI
-          setAdaptiveQuestionsAsked(0);
-          responseContent = await processWithAI(
-            userContent, 
-            `User has completed baseline intake. Now entering discovery phase. Based on what you know, ask deeper questions about their specific situation, stakeholders involved, risks, timeline, and any other relevant details. Build understanding to recommend appropriate documents.`
-          );
-          
-          // Update case with additional context
+      let responseContent = await processWithAI(
+        userContent,
+        `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.`
+      );
+
+      const caseDraft: CaseStudy = {
+        ...caseStudy,
+        userName: extractedSignals.userName && !caseStudy.userName.trim() ? extractedSignals.userName : caseStudy.userName,
+        organizationName: extractedSignals.organizationName && !caseStudy.organizationName.trim() ? extractedSignals.organizationName : caseStudy.organizationName,
+        organizationType: extractedSignals.organizationType && !caseStudy.organizationType.trim() ? extractedSignals.organizationType : caseStudy.organizationType,
+        contactRole: extractedSignals.contactRole && !caseStudy.contactRole.trim() ? extractedSignals.contactRole : caseStudy.contactRole,
+        country: extractedSignals.country && !caseStudy.country.trim() ? extractedSignals.country : caseStudy.country,
+        jurisdiction: extractedSignals.jurisdiction && !caseStudy.jurisdiction.trim() ? extractedSignals.jurisdiction : caseStudy.jurisdiction,
+        objectives: extractedSignals.objectives && caseStudy.objectives.trim().length < 20 ? extractedSignals.objectives : caseStudy.objectives,
+        currentMatter: extractedSignals.currentMatter && caseStudy.currentMatter.trim().length < 60 ? extractedSignals.currentMatter : caseStudy.currentMatter,
+        constraints: extractedSignals.constraints && caseStudy.constraints.trim().length < 20 ? extractedSignals.constraints : caseStudy.constraints,
+        targetAudience: extractedSignals.targetAudience && !caseStudy.targetAudience.trim() ? extractedSignals.targetAudience : caseStudy.targetAudience,
+        decisionDeadline: extractedSignals.decisionDeadline && !caseStudy.decisionDeadline.trim() ? extractedSignals.decisionDeadline : caseStudy.decisionDeadline,
+        additionalContext: [...caseStudy.additionalContext, userContent]
+      };
+
+      const liveReadiness = computeReadiness(caseDraft);
+      const inferredPhase: CasePhase = liveReadiness < 55 ? 'discovery' : liveReadiness < 80 ? 'analysis' : 'recommendations';
+      setCurrentPhase(inferredPhase);
+
+      const nextFollowUp = getHighestValueFollowUp(caseDraft);
+      const likelyDirectQuestion = /\?|\b(hello|hi|thanks|explain|what|why|how|who|can you|could you|should we)\b/i.test(userContent);
+      if (nextFollowUp && (liveReadiness < 80 || likelyDirectQuestion)) {
+        responseContent = `${responseContent}\n\nOne high-value detail to improve decision quality:\n${nextFollowUp}`;
+        setAdaptiveQuestionsAsked(prev => prev + 1);
+      }
+
+      try {
+        const agenticInsights = await agenticAIRef.current.consult(toAgenticParams(caseDraft), 'case_discovery');
+        if (agenticInsights.length > 0) {
+          const insightSummary = agenticInsights
+            .slice(0, 2)
+            .map((insight) => `• ${insight.title}: ${insight.content}`)
+            .join('\n');
+
           setCaseStudy(prev => ({
             ...prev,
-            additionalContext: [...prev.additionalContext, userContent]
+            aiInsights: [...prev.aiInsights, ...agenticInsights.slice(0, 2).map(i => `${i.title}: ${i.content}`)]
           }));
+
+          setMessages(prev => [...prev, {
+            id: crypto.randomUUID(),
+            role: 'system',
+            content: `NSIL Agentic Insight\n${insightSummary}`,
+            timestamp: new Date(),
+            phase: inferredPhase
+          }]);
         }
-      } else if (currentPhase === 'discovery') {
-        const liveReadiness = computeReadiness(caseStudy);
+      } catch (agenticError) {
+        console.warn('Agentic insight generation failed:', agenticError);
+      }
 
-        try {
-          const agenticInsights = await agenticAIRef.current.consult(toAgenticParams(caseStudy), 'case_discovery');
-          if (agenticInsights.length > 0) {
-            const insightSummary = agenticInsights
-              .slice(0, 2)
-              .map((insight) => `• ${insight.title}: ${insight.content}`)
-              .join('\n');
-
-            setCaseStudy(prev => ({
-              ...prev,
-              aiInsights: [...prev.aiInsights, ...agenticInsights.slice(0, 2).map(i => `${i.title}: ${i.content}`)]
-            }));
-
-            setMessages(prev => [...prev, {
-              id: crypto.randomUUID(),
-              role: 'system',
-              content: `NSIL Agentic Insight\n${insightSummary}`,
-              timestamp: new Date(),
-              phase: 'discovery'
-            }]);
-          }
-        } catch (agenticError) {
-          console.warn('Agentic insight generation failed:', agenticError);
-        }
-
-        // AI-driven discovery
-        responseContent = await processWithAI(
-          userContent,
-          `Continue gathering information with consultant precision. Prioritize decision-owner identity, operating geography/jurisdiction, and measurable objective. If enough context exists, transition to analysis with a concise case synthesis and ask what is still missing.`
-        );
-        
-        setCaseStudy(prev => ({
-          ...prev,
-          additionalContext: [...prev.additionalContext, userContent]
-        }));
-
-        const adaptiveFollowUp = AdaptiveQuestionnaire.getNextQuestion(
-          skillLevel,
-          {
-            organizationName: caseStudy.organizationName,
-            strategicIntent: caseStudy.objectives,
-            customData: {
-              mandate: caseStudy.organizationMandate,
-              jurisdiction: caseStudy.jurisdiction,
-              audience: caseStudy.targetAudience,
-              latestInput: userContent
-            }
-          },
-          adaptiveQuestionsAsked
-        );
-
-        // Check if ready to move to recommendations
-        const discoveryCount = messages.filter(m => m.phase === 'discovery' && m.role === 'user').length;
-        if (consultantGateReady && (liveReadiness >= 80 || discoveryCount >= 5)) {
-          setCurrentPhase('analysis');
-          generateRecommendations();
-        } else if (!consultantGateReady) {
-          responseContent += `\n\nConsultant gate is still blocked. Provide these missing essentials:\n- ${consultantGateMissing.slice(0, 4).join('\n- ')}`;
-        } else if (adaptiveFollowUp && adaptiveQuestionsAsked < 4) {
-          responseContent += `\n\nTo improve your case precision, I need one more detail:\n${adaptiveFollowUp}`;
-          setAdaptiveQuestionsAsked(prev => prev + 1);
-        }
-      } else if (currentPhase === 'analysis') {
-        responseContent = await processWithAI(
-          userContent,
-          `You are now analyzing the case. Provide a consultant-grade synthesis covering: (1) client profile and origin, (2) objective to achieve, (3) constraints/risks, (4) decision options, and then transition to the most relevant documents.`
-        );
-        setCurrentPhase('recommendations');
+      if (liveReadiness >= 70) {
         generateRecommendations();
-      } else if (currentPhase === 'recommendations') {
-        if (!consultantGateReady) {
-          setCurrentPhase('discovery');
-          responseContent = `Before recommendations, consultant gate requirements are missing:\n- ${consultantGateMissing.join('\n- ')}\n\nPlease provide these so I can produce decision-grade outputs.`;
-        } else if (readinessScore < 80) {
-          setCurrentPhase('discovery');
-          responseContent = `Your case file readiness is currently ${readinessScore}%. I need a little more information before recommending final outputs. Please provide more detail on stakeholders, evidence, and decision constraints.`;
-        } else {
-        // User is selecting documents
-        responseContent = await processWithAI(
-          userContent,
-          `User is in document selection phase. Help them choose the right documents or proceed to generation if they've selected.`
-        );
-        }
-      } else {
-        // Generation phase
-        responseContent = await processWithAI(
-          userContent,
-          `Generate professional document content based on the case study and user's request.`
-        );
-        setGeneratedContent(responseContent);
       }
 
       // Add AI response
@@ -1781,7 +1644,7 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
         role: 'assistant',
         content: responseContent,
         timestamp: new Date(),
-        phase: currentPhase
+        phase: inferredPhase
       };
       setMessages(prev => [...prev, aiMessage]);
 
@@ -1803,19 +1666,14 @@ Respond naturally and helpfully. If in intake/discovery, end with a clarifying q
     uploadedFiles,
     currentPhase,
     readFileContent,
-    progressIntake,
     processWithAI,
     generateRecommendations,
-    messages,
-    adaptiveQuestionsAsked,
     caseStudy,
     computeReadiness,
     readinessScore,
-    skillLevel,
-    toAgenticParams
+    toAgenticParams,
+    getHighestValueFollowUp
     ,extractConsultantSignals
-    ,consultantGateReady
-    ,consultantGateMissing
   ]);
 
   // Handle file selection
