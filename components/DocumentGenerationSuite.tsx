@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FileText, Download, Copy, CheckCircle, AlertCircle, DollarSign } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { RefinedIntake, ReportData, ReportParameters } from '../types';
@@ -2011,25 +2011,10 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
   const hasUndoRewrite = rewriteHistoryIndex > 0;
   const hasRedoRewrite = rewriteHistoryIndex >= 0 && rewriteHistoryIndex < rewriteHistory.length - 1;
 
-  const undoRewrite = () => {
-    if (!hasUndoRewrite) return;
-    const currentContent = rewriteHistory[rewriteHistoryIndex];
-    const nextIndex = rewriteHistoryIndex - 1;
-    const previousContent = rewriteHistory[nextIndex];
-    if (previousContent === undefined) return;
+  const applyHistoryStep = (nextIndex: number) => {
+    if (nextIndex < 0 || nextIndex >= rewriteHistory.length || nextIndex === rewriteHistoryIndex) return;
 
-    setGeneratedContent(previousContent);
-    if (currentContent !== undefined) {
-      setRewriteBaseContent(currentContent);
-      setShowRedline(true);
-    }
-    setRewriteHistoryIndex(nextIndex);
-  };
-
-  const redoRewrite = () => {
-    if (!hasRedoRewrite) return;
     const currentContent = rewriteHistory[rewriteHistoryIndex];
-    const nextIndex = rewriteHistoryIndex + 1;
     const nextContent = rewriteHistory[nextIndex];
     if (nextContent === undefined) return;
 
@@ -2040,6 +2025,47 @@ Adopt the above practices to strengthen trust, accelerate approvals, and improve
     }
     setRewriteHistoryIndex(nextIndex);
   };
+
+  const undoRewrite = () => {
+    if (!hasUndoRewrite) return;
+    applyHistoryStep(rewriteHistoryIndex - 1);
+  };
+
+  const redoRewrite = () => {
+    if (!hasRedoRewrite) return;
+    applyHistoryStep(rewriteHistoryIndex + 1);
+  };
+
+  useEffect(() => {
+    const shouldEnableShortcuts = Boolean(selectedDocument) && !isGenerating && generatedBatch.length === 0;
+    if (!shouldEnableShortcuts) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const tagName = target?.tagName?.toLowerCase();
+      if (tagName === 'input' || tagName === 'textarea' || tagName === 'select' || target?.isContentEditable) {
+        return;
+      }
+
+      const key = event.key.toLowerCase();
+      const isCtrlOrMeta = event.ctrlKey || event.metaKey;
+      const isUndo = isCtrlOrMeta && !event.altKey && !event.shiftKey && key === 'z';
+      const isRedo = isCtrlOrMeta && !event.altKey && (key === 'y' || (event.shiftKey && key === 'z'));
+
+      if (isUndo && hasUndoRewrite) {
+        event.preventDefault();
+        applyHistoryStep(rewriteHistoryIndex - 1);
+      }
+
+      if (isRedo && hasRedoRewrite) {
+        event.preventDefault();
+        applyHistoryStep(rewriteHistoryIndex + 1);
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [selectedDocument, isGenerating, generatedBatch.length, hasUndoRewrite, hasRedoRewrite, rewriteHistoryIndex, rewriteHistory]);
 
   const acceptRewrite = () => {
     if (!hasPendingRewrite) return;
