@@ -37,6 +37,11 @@ interface Message {
   content: string;
   timestamp: Date;
   phase?: CasePhase;
+  provenance?: {
+    confidence: number;
+    confidenceBand: 'low' | 'medium' | 'high';
+    sources: string[];
+  };
 }
 
 type ExecutionTaskStatus = 'queued' | 'running' | 'completed' | 'failed';
@@ -514,6 +519,35 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       task.id === id ? { ...task, status, detail } : task
     )));
   }, []);
+
+  const buildMessageProvenance = useCallback((draft: CaseStudy, readiness: number, additionalSources: string[] = []) => {
+    const sources: string[] = [];
+
+    if (draft.uploadedDocuments.length > 0) {
+      sources.push(`Uploaded evidence: ${draft.uploadedDocuments.slice(0, 3).join(', ')}${draft.uploadedDocuments.length > 3 ? '…' : ''}`);
+    }
+
+    if (draft.additionalContext.length > 0) {
+      sources.push(`Conversation context notes: ${draft.additionalContext.length}`);
+    }
+
+    if (draft.aiInsights.length > 0) {
+      sources.push(`Prior AI/NSIL insights: ${draft.aiInsights.length}`);
+    }
+
+    sources.push(`Policy pack: ${resolvePolicyPack(draft).label}`);
+    sources.push(...additionalSources.filter(Boolean));
+
+    const evidenceSignals = Math.min(5, draft.uploadedDocuments.length + (draft.additionalContext.length > 0 ? 1 : 0) + (draft.aiInsights.length > 0 ? 1 : 0));
+    const confidence = Math.max(35, Math.min(95, Math.round(readiness * 0.6 + evidenceSignals * 8)));
+    const confidenceBand: 'low' | 'medium' | 'high' = confidence >= 75 ? 'high' : confidence >= 55 ? 'medium' : 'low';
+
+    return {
+      confidence,
+      confidenceBand,
+      sources
+    };
+  }, [resolvePolicyPack]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -1731,6 +1765,7 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
       const inferredPhase: CasePhase = liveReadiness < 55 ? 'discovery' : liveReadiness < 80 ? 'analysis' : 'recommendations';
       setCurrentPhase(inferredPhase);
       setExecutionTaskStatus('ingestion', 'completed', `Case readiness inferred at ${liveReadiness}% (${inferredPhase})`);
+      let responseProvenance = buildMessageProvenance(caseDraft, liveReadiness);
 
       const assistantMessageId = crypto.randomUUID();
       setMessages(prev => [...prev, {
@@ -1792,6 +1827,8 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
           .map((insight) => `• ${insight.title}: ${insight.content}`)
           .join('\n');
 
+        responseProvenance = buildMessageProvenance(caseDraft, liveReadiness, [`NSIL insights in this turn: ${agenticInsights.length}`]);
+
         setCaseStudy(prev => ({
           ...prev,
           aiInsights: [...prev.aiInsights, ...agenticInsights.slice(0, 2).map(i => `${i.title}: ${i.content}`)]
@@ -1802,9 +1839,20 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
           role: 'system',
           content: `NSIL Agentic Insight\n${insightSummary}`,
           timestamp: new Date(),
-          phase: inferredPhase
+          phase: inferredPhase,
+          provenance: {
+            confidence: Math.min(95, Math.max(60, Math.round(liveReadiness * 0.7 + 20))),
+            confidenceBand: liveReadiness >= 75 ? 'high' : liveReadiness >= 55 ? 'medium' : 'low',
+            sources: ['NSIL Agentic Insight Engine', 'Current case draft signals', `Readiness score: ${liveReadiness}%`]
+          }
         }]);
       }
+
+      setMessages(prev => prev.map((msg) => (
+        msg.id === assistantMessageId
+          ? { ...msg, content: responseContent, phase: inferredPhase, provenance: responseProvenance }
+          : msg
+      )));
 
       if (liveReadiness >= 70) {
         generateRecommendations();
@@ -1836,6 +1884,7 @@ Respond naturally and helpfully. Keep responses focused and actionable.`;
     generateRecommendations,
     caseStudy,
     computeReadiness,
+    buildMessageProvenance,
     readinessScore,
     toAgenticParams,
     getHighestValueFollowUp
@@ -3107,6 +3156,29 @@ Each selected output must include:
                               .replace(/\n/g, '<br />')
                           }} 
                         />
+                        {msg.provenance && msg.role !== 'user' && (
+                          <div className="mt-2 pt-2 border-t border-stone-200 space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] text-slate-500">Confidence:</span>
+                              <span className={`text-[10px] px-1.5 py-0.5 border ${
+                                msg.provenance.confidenceBand === 'high'
+                                  ? 'bg-green-50 text-green-700 border-green-200'
+                                  : msg.provenance.confidenceBand === 'medium'
+                                    ? 'bg-amber-50 text-amber-700 border-amber-200'
+                                    : 'bg-red-50 text-red-700 border-red-200'
+                              }`}>
+                                {msg.provenance.confidenceBand.toUpperCase()} ({msg.provenance.confidence}%)
+                              </span>
+                            </div>
+                            {msg.provenance.sources.length > 0 && (
+                              <ul className="text-[10px] text-slate-500 space-y-0.5">
+                                {msg.provenance.sources.slice(0, 3).map((source, idx) => (
+                                  <li key={`${msg.id}-source-${idx}`}>• {source}</li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
