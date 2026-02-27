@@ -515,6 +515,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');
   const [reactiveDraftHint, setReactiveDraftHint] = useState('');
   const [executionTimeline, setExecutionTimeline] = useState<ExecutionTask[]>([]);
+  const [showExecutionTimeline, setShowExecutionTimeline] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');
   
   // Case study state
@@ -1316,7 +1317,6 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
     const policyPack = resolvePolicyPack(caseStudy);
     const caseReadiness = computeReadiness(caseStudy);
-    const isOpeningMessage = caseReadiness < 20 && userInput.trim().length < 30;
     return `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
 
 Current case context:
@@ -1333,9 +1333,12 @@ ${consultantGateReady ? 'READY' : `BLOCKED: ${consultantGateMissing.join('; ')}`
 
 User's latest input: "${userInput}"
 Phase context: ${context}
-${isOpeningMessage ? `
-INTAKE MODE — Case readiness is below 20% and no case profile exists yet. Introduce yourself briefly as BW Consultant AI, then in a single natural response collect all four mandatory intake fields: (1) client name and role, (2) organization name and type, (3) country and jurisdiction this concerns, (4) the specific objective or problem to be resolved. Ask for all four together — do not give strategic advice yet. You must know WHO, WHERE, and WHAT before delivering analysis.` : caseReadiness < 50 ? `
-DISCOVERY MODE — Case is ${caseReadiness}% complete. While answering the user, actively surface the single most critical missing field and ask for it.` : ''}
+
+Case enrichment mode:
+- Case readiness is currently ${caseReadiness}%.
+- Maintain direct-answer-first behavior in every turn.
+- Enrich profile fields silently from conversation context when available.
+- Ask at most one concise follow-up only when it materially improves the current answer.
 
 Autonomous operating instructions:
 - First, answer the user's actual request directly (including non-case or off-topic questions).
@@ -1360,6 +1363,17 @@ Respond naturally and helpfully. Keep responses focused and actionable.
 
 ${agentRegistry.current.toManifest()}`;
   }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness]);
+
+  const buildNaturalFallbackReply = useCallback((userInput: string) => {
+    const trimmed = userInput.trim();
+    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed);
+
+    if (isGreetingOnly) {
+      return 'Hello — I can help with strategy, risk, partnerships, market entry, compliance, or document drafting. Tell me what decision you are trying to make right now, and I’ll give you a direct recommendation.';
+    }
+
+    return 'I’m tracking your context in the background. Share the decision you need to make (or the question you need answered), and I’ll respond directly with a concrete next-step recommendation.';
+  }, []);
 
   // Process user input through real AI
   const processWithAI = useCallback(async (userInput: string, context: string): Promise<string> => {
@@ -1399,15 +1413,15 @@ ${agentRegistry.current.toManifest()}`;
 
       const responseText = response.text?.trim();
       if (!responseText || /chat service unavailable/i.test(responseText)) {
-        return "I can continue from current context. Share your decision owner, jurisdiction, and objective, and I will proceed.";
+        return buildNaturalFallbackReply(userInput);
       }
 
       return responseText;
     } catch (error) {
       console.error('AI processing error:', error);
-      return "I can continue from current context and still move this forward. Share your decision owner, jurisdiction, and objective, and I will proceed.";
+      return buildNaturalFallbackReply(userInput);
     }
-  }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing]);
+  }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, buildNaturalFallbackReply]);
 
   const processWithAIStream = useCallback(async (
     userInput: string,
@@ -1430,7 +1444,7 @@ ${agentRegistry.current.toManifest()}`;
 
       const finalText = aggregate.trim();
       if (!finalText || /chat service unavailable/i.test(finalText)) {
-        const fallback = "I can continue from current context. Share your decision owner, jurisdiction, and objective, and I will proceed.";
+        const fallback = buildNaturalFallbackReply(userInput);
         onChunk(fallback);
         return fallback;
       }
@@ -1442,7 +1456,7 @@ ${agentRegistry.current.toManifest()}`;
       onChunk(fallbackText);
       return fallbackText;
     }
-  }, [buildConsultantPrompt, processWithAI]);
+  }, [buildConsultantPrompt, processWithAI, buildNaturalFallbackReply]);
 
   const getHighestValueFollowUp = useCallback((draft: CaseStudy) => {
     if (!draft.organizationName.trim()) return 'Which organization is the decision owner for this matter?';
@@ -1977,8 +1991,8 @@ ${agentRegistry.current.toManifest()}`;
       const ingestionDetail = extractedFieldCount > 0
         ? `${extractedFieldCount} field${extractedFieldCount !== 1 ? 's' : ''} extracted — readiness ${liveReadiness}% (${inferredPhase})`
         : liveReadiness < 15
-          ? `No case data in message — intake pending (readiness: ${liveReadiness}%)`
-          : `Readiness ${liveReadiness}% (${inferredPhase}) — intake ongoing`;
+          ? `Conversation captured — profile enrichment continues in background (readiness ${liveReadiness}%)`
+          : `Readiness ${liveReadiness}% (${inferredPhase}) — background enrichment active`;
       setExecutionTaskStatus('ingestion', 'completed', ingestionDetail);
       let responseProvenance = buildMessageProvenance(caseDraft, liveReadiness);
 
@@ -2010,7 +2024,7 @@ ${agentRegistry.current.toManifest()}`;
         : (() => {
             setExecutionTaskStatus('insight', 'skipped',
               liveReadiness < 25
-                ? `Case readiness ${liveReadiness}% — scan requires intake data`
+                ? `Background analysis deferred until more context is available`
                 : 'Greeting turn — intelligence scan deferred'
             );
             return Promise.resolve([]);
@@ -2074,10 +2088,10 @@ ${agentRegistry.current.toManifest()}`;
       const likelyDirectQuestion = /\?|\b(explain|what|why|how|who|can you|could you|should we)\b/i.test(trimmedUserContent);
 
       if (isGreetingOnly || liveReadiness < 10) {
-        setExecutionTaskStatus('followup', 'skipped', 'Intake not started — identity and objectives pending');
+        setExecutionTaskStatus('followup', 'skipped', 'No follow-up needed for this turn');
       } else {
         setExecutionTaskStatus('followup', 'running', 'Evaluating next highest-value clarification');
-        if (nextFollowUp && (liveReadiness < 80 || likelyDirectQuestion)) {
+        if (nextFollowUp && liveReadiness < 80 && !likelyDirectQuestion) {
           responseContent = `${responseContent}\n\nOne high-value detail to improve decision quality:\n${nextFollowUp}`;
           setAdaptiveQuestionsAsked(prev => prev + 1);
           setExecutionTaskStatus('followup', 'completed', 'Follow-up question appended');
@@ -4202,10 +4216,17 @@ Use concrete facts from the case. No template language. Write the complete repor
                     </>
                   )}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setShowExecutionTimeline((prev) => !prev)}
+                  className="px-3 py-2 text-xs border border-stone-300 bg-stone-50 text-slate-700 hover:bg-stone-100"
+                >
+                  {showExecutionTimeline ? 'Hide Runtime' : 'Show Runtime'}
+                </button>
               </div>
-              {executionTimeline.length > 0 && (
+              {showExecutionTimeline && executionTimeline.length > 0 && (
                 <div className="max-w-4xl mx-auto mt-2 border border-stone-200 bg-stone-50 px-3 py-2">
-                  <p className="text-[11px] font-semibold text-slate-800">Planner / Executor Timeline</p>
+                  <p className="text-[11px] font-semibold text-slate-800">Background Runtime</p>
                   <div className="mt-1 grid md:grid-cols-2 gap-1.5">
                     {executionTimeline.map((task) => (
                       <div key={task.id} className="flex items-start justify-between gap-2 border border-stone-200 bg-white px-2 py-1">
