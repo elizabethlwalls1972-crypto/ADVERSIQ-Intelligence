@@ -1223,6 +1223,21 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return liveInsightResults.filter((item) => item.bucket === liveInsightFilter);
   }, [liveInsightResults, liveInsightFilter]);
 
+  const liveInsightPinnedLinks = useMemo(() => {
+    const pinned = new Set<string>();
+
+    caseStudy.additionalContext.forEach((entry) => {
+      const marker = '| ';
+      if (!entry.startsWith('Pinned live source')) return;
+      const index = entry.lastIndexOf(marker);
+      if (index < 0) return;
+      const link = entry.slice(index + marker.length).trim();
+      if (link) pinned.add(link);
+    });
+
+    return pinned;
+  }, [caseStudy.additionalContext]);
+
   const liveInsightLeads = useMemo(() => ({
     global: liveInsightVisibleResults.find((item) => item.bucket === 'news') || null,
     funding: liveInsightVisibleResults.find((item) => item.bucket === 'finance') || null,
@@ -1770,6 +1785,38 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       setLiveInsightLoading(false);
     }
   }, [liveInsightQuery, liveInsightBaseQuery, quickCountryFocus]);
+
+  const handlePinLiveInsightToDraft = useCallback((item: LiveInsightResult) => {
+    const evidenceLine = `Pinned live source (${item.bucket}): ${item.title} — ${item.source} | ${item.link}`;
+
+    setCaseStudy((prev) => {
+      if (prev.additionalContext.includes(evidenceLine)) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        additionalContext: [...prev.additionalContext, evidenceLine]
+      };
+    });
+
+    setMessages((prev) => {
+      const pinMessage = `Pinned to live draft evidence: ${item.title} (${item.source}).`;
+      const alreadyNoted = prev.some((msg) => msg.content === pinMessage);
+      if (alreadyNoted) return prev;
+
+      return [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: 'system',
+          content: pinMessage,
+          timestamp: new Date(),
+          phase: 'discovery'
+        }
+      ];
+    });
+  }, []);
 
   useEffect(() => {
     if (!quickCountryFocus.trim() && !quickBusinessTarget.trim() && !quickCustomFocus.trim() && !quickCustomSector.trim()) {
@@ -6025,15 +6072,28 @@ Use concrete facts from the case. No template language. Write the complete repor
                     {!liveInsightLoading && liveInsightVisibleResults.length > 0 && (
                       <div className="mt-1.5 space-y-1">
                         {liveInsightVisibleResults.slice(0, 4).map((item, idx) => (
-                          <a
-                            key={`${item.link}-${idx}`}
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block text-[9px] text-slate-700 hover:text-emerald-700"
-                          >
-                            • {item.title} <span className="text-slate-400">({item.source})</span>
-                          </a>
+                          <div key={`${item.link}-${idx}`} className="flex items-start gap-1.5">
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex-1 text-[9px] text-slate-700 hover:text-emerald-700"
+                            >
+                              • {item.title} <span className="text-slate-400">({item.source})</span>
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => handlePinLiveInsightToDraft(item)}
+                              disabled={liveInsightPinnedLinks.has(item.link)}
+                              className={`px-1.5 py-0.5 text-[9px] border ${
+                                liveInsightPinnedLinks.has(item.link)
+                                  ? 'bg-emerald-100 text-emerald-700 border-emerald-300'
+                                  : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                              }`}
+                            >
+                              {liveInsightPinnedLinks.has(item.link) ? 'Pinned' : 'Pin to Draft'}
+                            </button>
+                          </div>
                         ))}
                       </div>
                     )}
