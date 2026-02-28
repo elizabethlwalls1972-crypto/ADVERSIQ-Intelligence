@@ -1209,6 +1209,32 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-lg text-white/90 leading-relaxed mb-6 max-w-3xl mx-auto">
                         During this beta phase and in future subscriptions, <strong className="text-white font-bold">10% of every paid transaction</strong> goes back into initiatives that support regional development.
                     </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto mb-6 text-left">
+                        <div className="bg-white/10 border border-white/20 p-4">
+                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Starter Access</p>
+                            <h3 className="text-xl font-bold text-white mb-1">5 Days</h3>
+                            <p className="text-sm text-blue-100 mb-2">Full Access Pass</p>
+                            <p className="text-2xl font-bold text-white">Free</p>
+                        </div>
+                        <div className="bg-white/10 border border-white/20 p-4">
+                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
+                            <h3 className="text-xl font-bold text-white mb-1">3 Months</h3>
+                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
+                            <p className="text-2xl font-bold text-white">$239</p>
+                        </div>
+                        <div className="bg-white/10 border border-white/20 p-4">
+                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
+                            <h3 className="text-xl font-bold text-white mb-1">6 Months</h3>
+                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
+                            <p className="text-2xl font-bold text-white">$429</p>
+                        </div>
+                        <div className="bg-white/10 border border-white/20 p-4">
+                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
+                            <h3 className="text-xl font-bold text-white mb-1">12 Months</h3>
+                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
+                            <p className="text-2xl font-bold text-white">$610</p>
+                        </div>
+                    </div>
                     <p className="text-base text-blue-100 italic">
                         A new voice for regions. A new standard for how opportunity is evaluated &mdash; anywhere in the world.
                     </p>
