@@ -229,6 +229,7 @@ interface GlobalIssuePack {
 }
 
 type LiveInsightBucket = 'government' | 'finance' | 'news' | 'entities';
+type LiveInsightFilter = 'all' | LiveInsightBucket;
 
 interface LiveInsightResult {
   title: string;
@@ -667,6 +668,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [liveInsightError, setLiveInsightError] = useState('');
   const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
   const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState('');
+  const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
@@ -1216,12 +1218,17 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     return parts.filter(Boolean).join(' — ');
   }, [quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label, quickCountryFocus, quickBusinessTarget]);
 
+  const liveInsightVisibleResults = useMemo(() => {
+    if (liveInsightFilter === 'all') return liveInsightResults;
+    return liveInsightResults.filter((item) => item.bucket === liveInsightFilter);
+  }, [liveInsightResults, liveInsightFilter]);
+
   const liveInsightLeads = useMemo(() => ({
-    global: liveInsightResults.find((item) => item.bucket === 'news') || null,
-    funding: liveInsightResults.find((item) => item.bucket === 'finance') || null,
-    regulatory: liveInsightResults.find((item) => item.bucket === 'government') || null,
-    opportunity: liveInsightResults.find((item) => item.bucket === 'entities') || null
-  }), [liveInsightResults]);
+    global: liveInsightVisibleResults.find((item) => item.bucket === 'news') || null,
+    funding: liveInsightVisibleResults.find((item) => item.bucket === 'finance') || null,
+    regulatory: liveInsightVisibleResults.find((item) => item.bucket === 'government') || null,
+    opportunity: liveInsightVisibleResults.find((item) => item.bucket === 'entities') || null
+  }), [liveInsightVisibleResults]);
 
   const regionalKernel = useMemo(() => {
     return RegionalDevelopmentOrchestrator.run({
@@ -5984,6 +5991,28 @@ Use concrete facts from the case. No template language. Write the complete repor
                     <p className="mt-1 text-[9px] text-slate-500">
                       Pulls live Google/Serper news and web signals for government, banking/finance, company, and partnership intelligence.
                     </p>
+                    <div className="mt-1 flex flex-wrap items-center gap-1">
+                      {([
+                        ['all', 'All'],
+                        ['government', 'Government'],
+                        ['finance', 'Banking/Finance'],
+                        ['entities', 'Companies/Partners'],
+                        ['news', 'News']
+                      ] as Array<[LiveInsightFilter, string]>).map(([value, label]) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => setLiveInsightFilter(value)}
+                          className={`px-1.5 py-0.5 text-[9px] border ${
+                            liveInsightFilter === value
+                              ? 'bg-emerald-600 text-white border-emerald-600'
+                              : 'bg-white text-slate-700 border-stone-300 hover:bg-stone-50'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
                     {liveInsightUpdatedAt && (
                       <p className="mt-1 text-[9px] text-emerald-700">Last updated: {new Date(liveInsightUpdatedAt).toLocaleString()}</p>
                     )}
@@ -5993,9 +6022,9 @@ Use concrete facts from the case. No template language. Write the complete repor
                         <Loader2 className="w-3 h-3 animate-spin" /> Fetching live results...
                       </p>
                     )}
-                    {!liveInsightLoading && liveInsightResults.length > 0 && (
+                    {!liveInsightLoading && liveInsightVisibleResults.length > 0 && (
                       <div className="mt-1.5 space-y-1">
-                        {liveInsightResults.slice(0, 4).map((item, idx) => (
+                        {liveInsightVisibleResults.slice(0, 4).map((item, idx) => (
                           <a
                             key={`${item.link}-${idx}`}
                             href={item.link}
