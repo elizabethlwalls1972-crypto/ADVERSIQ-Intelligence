@@ -1848,6 +1848,37 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     });
   }, []);
 
+  const handleUnpinLiveInsightFromDraft = useCallback((item: { title: string; link: string; source?: string; bucket?: LiveInsightBucket }) => {
+    setCaseStudy((prev) => {
+      const nextContext = prev.additionalContext.filter((entry) => {
+        if (!entry.startsWith('Pinned live source (')) return true;
+        const hasSameLink = entry.includes(`| ${item.link}`);
+        const hasSameTitle = entry.includes(`: ${item.title} —`);
+        return !(hasSameLink || hasSameTitle);
+      });
+
+      if (nextContext.length === prev.additionalContext.length) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        additionalContext: nextContext
+      };
+    });
+
+    setMessages((prev) => ([
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: 'system',
+        content: `Removed pinned source from draft evidence: ${item.title}.`,
+        timestamp: new Date(),
+        phase: 'discovery'
+      }
+    ]));
+  }, []);
+
   useEffect(() => {
     if (!quickCountryFocus.trim() && !quickBusinessTarget.trim() && !quickCustomFocus.trim() && !quickCustomSector.trim()) {
       return;
@@ -6132,15 +6163,23 @@ Use concrete facts from the case. No template language. Write the complete repor
                         <p className="text-[9px] font-semibold text-emerald-800">Pinned Sources</p>
                         <div className="mt-1 space-y-1">
                           {liveInsightPinnedEntries.map((item, idx) => (
-                            <a
-                              key={`${item.link}-pinned-${idx}`}
-                              href={item.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block text-[9px] text-slate-700 hover:text-emerald-700"
-                            >
-                              • {item.title} <span className="text-slate-400">({item.source || item.bucket})</span>
-                            </a>
+                            <div key={`${item.link}-pinned-${idx}`} className="flex items-start gap-1.5">
+                              <a
+                                href={item.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 text-[9px] text-slate-700 hover:text-emerald-700"
+                              >
+                                • {item.title} <span className="text-slate-400">({item.source || item.bucket})</span>
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => handleUnpinLiveInsightFromDraft(item)}
+                                className="px-1.5 py-0.5 text-[9px] border bg-white text-slate-700 border-stone-300 hover:bg-stone-50"
+                              >
+                                Unpin
+                              </button>
+                            </div>
                           ))}
                         </div>
                       </div>
