@@ -2206,21 +2206,18 @@ ${agentRegistry.current.toManifest()}`;
   }, []);
 
   const shouldAskOutputClarification = useCallback((draft: CaseStudy, input: string, intent: DeliverableIntent): boolean => {
+    void draft;
     if (intent !== 'unknown') return false;
 
-    const hasIdentity = draft.organizationName.trim().length > 1 || draft.userName.trim().length > 1;
-    const hasLocation = draft.country.trim().length > 1 || draft.jurisdiction.trim().length > 1;
-    const hasDecision = draft.currentMatter.trim().length >= 40 || draft.objectives.trim().length >= 25;
-    const confusionSignal = /\b(no sense|confus|unclear|not clear|what do you need|what is needed|no clarity)\b/i.test(input);
-
-    return confusionSignal || (!hasDecision && (!hasIdentity || !hasLocation));
+    const explicitFormatSelectionRequest = /\b(choose format|output format|which format|pick a format|not sure which format|what format should i use|a\)|b\)|c\)|d\)|e\)|f\))\b/i.test(input);
+    return explicitFormatSelectionRequest;
   }, []);
 
   const buildOutputClarificationPrompt = useCallback((draft: CaseStudy) => {
     const knownIdentity = draft.organizationName || draft.userName || 'Not provided yet';
     const knownLocation = draft.country || draft.jurisdiction || 'Not provided yet';
 
-    return `You are right to ask for clarity first. To give you the exact output you need, choose one option:\n\nA) Quick background insight (3–5 bullets)\nB) Concrete next-step recommendation\nC) Full report (board-ready)\nD) Letter/document draft\nE) Full case pack (report + letters)\nF) Not sure — recommend best format\n\nThen reply with these 5 items:\n1) Who you are (role + organisation)\n2) Location/jurisdiction\n3) Decision you need to make\n4) Deadline\n5) Audience (board, ministry, investor, partner, community)\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
+    return `I can format this a few ways—pick one and I’ll generate it now:\n\nA) Quick background insight (3–5 bullets)\nB) Concrete next-step recommendation\nC) Full report (board-ready)\nD) Letter/document draft\nE) Full case pack (report + letters)\nF) Not sure — recommend best format\n\nReply with A–F (or say "just answer normally").\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
   }, []);
 
   const isLowSignalInsight = useCallback((title: string, content: string, confidence?: number): boolean => {

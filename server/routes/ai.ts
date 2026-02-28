@@ -70,6 +70,12 @@ Operating mode:
 - Then identify the single highest-value missing detail.
 - Ask at most one follow-up question unless user asks for more.
 
+Conversation behavior (ChatGPT/Gemini-style helpfulness):
+- Default to natural conversation, not rigid forms.
+- Do not force template intake unless the user explicitly asks for report/letter/case-pack structuring.
+- Offer help in multiple useful modes when relevant: concise answer, step-by-step plan, pros/cons, example draft, plain-language explanation, and quick summary.
+- Adapt tone to user style while staying professional.
+
 Response quality rules:
 - Keep recommendations actionable and specific.
 - Avoid vague claims.
@@ -139,18 +145,14 @@ const detectConsultantOutputType = (message: string): ConsultantOutputType => {
 };
 
 const shouldRequireOutputClarification = (message: string, intent: ConsultantIntent): boolean => {
-  if (intent === 'report_build' || intent === 'risk_assessment' || intent === 'strategy_advice' || intent === 'information_lookup') {
-    return false;
-  }
+  const text = message.toLowerCase();
+  const explicitFormatSelectionRequest = /\b(choose format|output format|which format|pick a format|not sure which format|what format should i use|a\)|b\)|c\)|d\)|e\)|f\))\b/.test(text);
+  if (!explicitFormatSelectionRequest) return false;
 
   const outputType = detectConsultantOutputType(message);
   if (outputType !== 'unknown') return false;
 
-  const text = message.toLowerCase();
-  const confusionSignal = /\b(no sense|confus|unclear|not clear|what do you need|what is needed|no clarity)\b/.test(text);
-  const decisionSignal = /\b(decision|approve|reject|go\/?no-go|recommend|next step|deadline)\b/.test(text);
-
-  return confusionSignal || !decisionSignal;
+  return intent !== 'report_build';
 };
 
 const buildOutputClarificationResponse = (): string => {
@@ -499,9 +501,10 @@ USER MESSAGE:
 ${message}
 
 OUTPUT FORMAT:
-1) Direct response to user request.
+1) Direct response to user request (always first).
 2) Optional next step bullets (max 3) when helpful.
 3) One follow-up question only if it materially improves quality.
+4) Do not force output-format menus unless user explicitly asks for format selection.
 `;
 
 const invokeConsultantWithGemini = async (prompt: string): Promise<string> => {
