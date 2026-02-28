@@ -669,6 +669,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
   const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState('');
   const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');
+  const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
@@ -1581,16 +1582,18 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       };
     });
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        role: 'system',
-        content: `Quick Consultant synced to BW Consultant context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the live draft report inputs.`,
-        timestamp: new Date(),
-        phase: 'discovery'
-      }
-    ]);
+    if (trigger === 'manual-sync') {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          role: 'system',
+          content: `Quick Consultant synced to BW Consultant context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the live draft report inputs.`,
+          timestamp: new Date(),
+          phase: 'discovery'
+        }
+      ]);
+    }
   }, [quickCountryFocus, quickBusinessTarget, quickCustomFocus, pilotFocus, quickCustomSector, activeIssuePack.label]);
 
   const handleAddCustomPilotOption = useCallback(() => {
@@ -1908,18 +1911,6 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       }
     ]));
   }, []);
-
-  useEffect(() => {
-    if (!quickCountryFocus.trim() && !quickBusinessTarget.trim() && !quickCustomFocus.trim() && !quickCustomSector.trim()) {
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      void fetchLiveWorldInsights(liveInsightBaseQuery, true);
-    }, 900);
-
-    return () => window.clearTimeout(timeout);
-  }, [quickCountryFocus, quickBusinessTarget, quickCustomFocus, quickCustomSector, activeIssuePack.id, liveInsightBaseQuery, fetchLiveWorldInsights]);
 
   useEffect(() => {
     setReadinessScore(computeReadiness(caseStudy));
@@ -6119,7 +6110,10 @@ Use concrete facts from the case. No template language. Write the complete repor
                       />
                       <button
                         type="button"
-                        onClick={() => void fetchLiveWorldInsights()}
+                        onClick={() => {
+                          setLiveInsightsRequested(true);
+                          void fetchLiveWorldInsights();
+                        }}
                         disabled={liveInsightLoading}
                         className="px-2 py-1 text-[10px] border border-emerald-600 bg-emerald-600 text-white disabled:opacity-60"
                       >
@@ -6155,12 +6149,15 @@ Use concrete facts from the case. No template language. Write the complete repor
                       <p className="mt-1 text-[9px] text-emerald-700">Last updated: {new Date(liveInsightUpdatedAt).toLocaleString()}</p>
                     )}
                     {liveInsightError && <p className="mt-1 text-[9px] text-red-600">{liveInsightError}</p>}
+                    {!liveInsightsRequested && !liveInsightLoading && (
+                      <p className="mt-1 text-[9px] text-emerald-700">Run Live Search to load world insights for your current case.</p>
+                    )}
                     {liveInsightLoading && (
                       <p className="mt-1 text-[9px] text-emerald-700 flex items-center gap-1">
                         <Loader2 className="w-3 h-3 animate-spin" /> Fetching live results...
                       </p>
                     )}
-                    {!liveInsightLoading && liveInsightVisibleResults.length > 0 && (
+                    {liveInsightsRequested && !liveInsightLoading && liveInsightVisibleResults.length > 0 && (
                       <div className="mt-1.5 space-y-1">
                         {liveInsightVisibleResults.slice(0, 4).map((item, idx) => (
                           <div key={`${item.link}-${idx}`} className="flex items-start gap-1.5">
@@ -6188,7 +6185,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                         ))}
                       </div>
                     )}
-                    {liveInsightPinnedEntries.length > 0 && (
+                    {liveInsightsRequested && liveInsightPinnedEntries.length > 0 && (
                       <div className="mt-1.5 border-t border-emerald-200 pt-1.5">
                         <div className="flex items-center justify-between gap-2">
                           <p className="text-[9px] font-semibold text-emerald-800">Pinned Sources</p>
@@ -6224,6 +6221,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </div>
                     )}
                   </div>
+                  {liveInsightsRequested && (
                   <div className="space-y-1.5">
                     {/* Global trends for focus area */}
                     <div className="bg-white border border-emerald-200 px-2 py-1.5">
@@ -6315,6 +6313,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                       </div>
                     )}
                   </div>
+                  )}
                   <p className="mt-2 text-[9px] text-emerald-600 italic">These insights are woven into your consultant responses and draft documents.</p>
                 </div>
 
