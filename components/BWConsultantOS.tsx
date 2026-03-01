@@ -41,6 +41,9 @@ import { DocumentTypeRouter } from '../services/DocumentTypeRouter';
 import { IntelligentDocumentGenerator } from '../services/IntelligentDocumentGenerator';
 import LettersCatalogModal from './LettersCatalogModal';
 import { InputValidationEngine } from '../services/InputValidationEngine';
+import ReportOptionsPanel from './ReportOptionsPanel';
+import { ReportLengthRouter, type ReportOptionsMenu, type ReportTierKey } from '../services/ReportLengthRouter';
+import { PDFAnnotationService } from '../services/PDFAnnotationService';
 
 // ============================================================================
 // TYPES
@@ -965,6 +968,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
+  // Report options panel — shown after document upload
+  const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
+  const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
+  const [reportOptionsDocType, setReportOptionsDocType] = useState('');
+  const [showReportOptions, setShowReportOptions] = useState(false);
+  const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
   const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');
   const [preferredOutputMode, setPreferredOutputMode] = useState<'auto' | 'letter' | 'document' | 'case-study' | 'full-pack'>('auto');
@@ -3551,6 +3560,26 @@ ${agentRegistry.current.toManifest()}`;
           return merged.sort((a, b) => b.relevance - a.relevance);
         });
       }
+
+      // ── Report Options Menu — computed from uploaded document richness ──────
+      const combinedUploadText = fileContents.join('\n\n');
+      const uploadWordCount = ReportLengthRouter.estimateWordCount(combinedUploadText);
+      const textLower = combinedUploadText.toLowerCase();
+      const uploadMenu = ReportLengthRouter.computeOptions({
+        sourceWordCount: uploadWordCount,
+        caseReadiness: 0,
+        enginesActivated: brainCtxRef.current ? 12 : 3,
+        jurisdiction: caseStudy.country || 'Unknown',
+        sector: caseStudy.organizationType || 'Government / Policy',
+        hasConflict: textLower.includes('conflict') || textLower.includes('insurgency') || textLower.includes('rebel'),
+        hasMultipleRegions: textLower.includes('regions') || textLower.includes('provincial') || textLower.includes('municipalities'),
+        hasMultistakeholder: textLower.includes('stakeholder') || textLower.includes('donor') || textLower.includes('multilateral'),
+      });
+      setUploadedFileContentsRef(fileContents);
+      setReportOptionsDocTitle(uploadedFiles[0]?.name.replace(/\.[^/.]+$/, '') ?? 'Uploaded Document');
+      setReportOptionsDocType('Uploaded Document');
+      setReportOptionsMenu(uploadMenu);
+      setShowReportOptions(true);
     }
 
     const hasSignalUpdate = Boolean(
@@ -6099,6 +6128,83 @@ Use concrete facts from the case. No template language. Write the complete repor
               
               <div ref={messagesEndRef} />
             </div>
+
+            {/* ── Report Options Panel — shown after document upload ─────────── */}
+            {showReportOptions && reportOptionsMenu && (
+              <div className="px-4 py-4 max-w-3xl mx-auto w-full">
+                <ReportOptionsPanel
+                  menu={reportOptionsMenu}
+                  documentTitle={reportOptionsDocTitle}
+                  documentType={reportOptionsDocType}
+                  onSelectTier={(tierKey: ReportTierKey, includeAnnotation: boolean) => {
+                    setShowReportOptions(false);
+                    const tier = ReportLengthRouter.getTier(tierKey);
+                    setInputValue(
+                      `Generate a ${tier.label} (${tier.wordRange} words, ${tier.sectionCount} sections) based on the uploaded document.\n\nRequired sections:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso prepare key source passage annotations for the annotated PDF export.' : ''}`
+                    );
+                  }}
+                  onAddReport={(_id: string, title: string) => {
+                    setRecommendedDocs(prev => {
+                      if (prev.some(d => d.title === title)) return prev;
+                      return [...prev, {
+                        id: `options-panel-${Date.now()}`,
+                        title,
+                        description: `Additional report selected from document options panel`,
+                        icon: <FileText size={18} />,
+                        category: 'report' as const,
+                        relevance: 80,
+                        rationale: 'Selected from report options panel after document upload analysis.',
+                        pageRange: '8-20 pages',
+                        supportingDocuments: [],
+                      }];
+                    });
+                  }}
+                  onAddLetter={(_id: string, title: string) => {
+                    setRecommendedDocs(prev => {
+                      if (prev.some(d => d.title === title)) return prev;
+                      return [...prev, {
+                        id: `options-letter-${Date.now()}`,
+                        title,
+                        description: `Letter selected from document options panel`,
+                        icon: <Mail size={18} />,
+                        category: 'letter' as const,
+                        relevance: 75,
+                        rationale: 'Selected from letter options panel after document upload analysis.',
+                        pageRange: '1-4 pages',
+                        supportingDocuments: [],
+                      }];
+                    });
+                  }}
+                  onGenerateAnnotatedPDF={() => {
+                    const text = uploadedFileContentsRef[0] ?? '';
+                    const paragraphs = text
+                      .split(/\n\n+/)
+                      .filter(p => p.trim().length > 120)
+                      .slice(0, 10);
+                    const annotations = paragraphs.map((p, i) => ({
+                      label: `Passage ${i + 1}`,
+                      sourceText: p.slice(0, 300),
+                      analysisText:
+                        'Key passage from uploaded document. Submit the document in chat to generate full OS annotations with NSIL, HistoricalMatcher, and PartnerIntelligence analysis.',
+                      engineSources: ['NSIL', 'HistoricalMatcher'],
+                      severity: 'insight' as const,
+                    }));
+                    PDFAnnotationService.generate({
+                      documentTitle: reportOptionsDocTitle,
+                      documentType: reportOptionsDocType,
+                      jurisdiction: caseStudy.country || 'Unknown',
+                      preparedFor: caseStudy.organizationName || 'Government Member',
+                      reportId: `BWGA-${Date.now()}`,
+                      executiveSummary:
+                        `This annotated PDF was generated from an uploaded document by the BW NEXUS AI system. ` +
+                        `${paragraphs.length} key passages have been flagged. Submit the document in the chat conversation to generate full intelligence-annotated responses for each passage.`,
+                      annotations,
+                    });
+                  }}
+                  onDismiss={() => setShowReportOptions(false)}
+                />
+              </div>
+            )}
 
             {/* Uploaded Files Preview */}
             {uploadedFiles.length > 0 && (
