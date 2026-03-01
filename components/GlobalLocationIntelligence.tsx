@@ -12,6 +12,13 @@ import { deepLocationResearch, type DeepResearchResult } from '../services/deepL
 // Automatic Search Integration
 import { automaticSearchService } from '../services/AutomaticSearchService';
 import { bwConsultantAI } from '../services/BWConsultantAgenticAI';
+// Location intelligence cluster
+import { locationResearchCache } from '../services/locationResearchCache';
+import { autonomousResearchAgent } from '../services/autonomousResearchAgent';
+import { documentGenerator } from '../services/locationIntelligenceDocumentGenerator';
+import { osintSearch, type OsintResult } from '../services/osintSearchService';
+import { comprehensiveLiveSearch } from '../services/liveLocationSearchService';
+import { locationResearchManager } from '../services/agenticLocationIntelligence';
 
 // Type alias for backwards compatibility
 type SourceCitation = { title: string; url: string; type: string; reliability: string };
@@ -82,6 +89,10 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
   const [generatedDocument, setGeneratedDocument] = useState<string | null>(null);
   const [documentType, setDocumentType] = useState<'letter' | 'report' | 'briefing'>('report');
   const [autoBackfillTriggered, setAutoBackfillTriggered] = useState(false);
+  const [osintResults, setOsintResults] = useState<OsintResult[]>([]);
+  const [dataCompletenessScore, setDataCompletenessScore] = useState<number | null>(null);
+  // Keep locationResearchManager available for agentic sub-tasks
+  const _agentManager = locationResearchManager;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -205,6 +216,19 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
     
     try {
+      // Check locationResearchCache first — prevents redundant API calls
+      try {
+        await locationResearchCache.initialize();
+        const cached = await locationResearchCache.getFullResult(trimmedQuery);
+        if (cached) {
+          setLiveProfile(cached.profile as unknown as CityProfile);
+          setResearchResult(cached as unknown as MultiSourceResult);
+          setResearchProgress({ stage: 'Complete', progress: 100, message: 'Loaded from research cache' });
+          setIsResearching(false);
+          return;
+        }
+      } catch (_ce) { /* cache unavailable — proceed with live research */ }
+
       // Use automatic search service for enhanced results
       await automaticSearchService.triggerSearch(trimmedQuery, 'user_search', 'high');
 
@@ -229,6 +253,23 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         }
       }
 
+      // comprehensiveLiveSearch fallback — if Gemini returned nothing
+      if (!result) {
+        try {
+          setResearchProgress({ stage: 'Live Search', progress: 25, message: `Trying live data sources for ${trimmedQuery}...` });
+          const liveProfile = await comprehensiveLiveSearch(trimmedQuery, (p) =>
+            setResearchProgress({ stage: p.stage, progress: p.progress, message: p.message })
+          );
+          if (liveProfile) {
+            setLiveProfile(liveProfile);
+            setResearchResult({ profile: liveProfile, sources: [], summary: liveProfile.city, dataQuality: { completeness: 60, freshness: 'Live', sourcesCount: 0, leaderDataVerified: false, economicDataYear: 'Current' } } as unknown as MultiSourceResult);
+            setResearchProgress({ stage: 'Complete', progress: 100, message: 'Live search complete' });
+            setIsResearching(false);
+            return;
+          }
+        } catch (_le) { /* live search unavailable */ }
+      }
+
       if (result) {
         setLiveProfile(result.profile);
         // Transform to MultiSourceResult format for compatibility
@@ -241,6 +282,27 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
 
         // Trigger consultant AI analysis of the results
         await bwConsultantAI.consult({ locationQuery: trimmedQuery, searchResult: result }, 'location_search_complete');
+
+        // Save to cache for future lookups
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          await locationResearchCache.saveFullResult(trimmedQuery, multiResult as any);
+        } catch (_e) { /* cache save failed */ }
+
+        // OSINT enrichment — government, statistics, business sources
+        try {
+          const osint = await osintSearch(`${trimmedQuery} government economy investment trade`, ['government', 'statistics', 'business'], 6);
+          setOsintResults(osint);
+        } catch (_e) { /* osint unavailable */ }
+
+        // Autonomous gap analysis — data completeness scoring
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const gaps = autonomousResearchAgent.analyzeDataGaps(multiResult as any, result.profile);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const score = autonomousResearchAgent.calculateCompletenessScore(multiResult as any, gaps);
+          setDataCompletenessScore(score);
+        } catch (_e) { /* gap analysis unavailable */ }
       } else {
         setLoadingError(`Could not find intelligence for "${trimmedQuery}". Please try a different search term.`);
         setHasSelection(false);
@@ -402,14 +464,46 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         }
       };
 
-      const document = await generateDocument(
-        intelligence,
-        documentType,
-        'Valued Partner',
-        `Investment and partnership opportunities in ${activeProfile.city}, ${activeProfile.country}`
-      );
+      // Try typed location document generator first
+      let documentText: string | null = null;
+      if (researchResult) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const typed = documentType === 'report'
+            ? documentGenerator.generateCountryProfile(researchResult as any)
+            : documentType === 'briefing'
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ? documentGenerator.generateInvestmentBrief(researchResult as any)
+            : null;
+          if (typed) {
+            documentText = [
+              `# ${typed.title}`,
+              '',
+              `**Executive Summary**`,
+              typed.executiveSummary,
+              '',
+              `**Key Findings**`,
+              typed.keyFindings.map((f: string) => `- ${f}`).join('\n'),
+              '',
+              ...typed.sections.map((s: { title: string; content: string }) => `## ${s.title}\n${s.content}`),
+              '',
+              `**Recommendations**`,
+              typed.recommendations.map((r: string) => `- ${r}`).join('\n'),
+            ].join('\n');
+          }
+        } catch (_dge) { /* typed generator unavailable — fall back to AI */ }
+      }
 
-      setGeneratedDocument(document);
+      if (!documentText) {
+        documentText = await generateDocument(
+          intelligence,
+          documentType,
+          'Valued Partner',
+          `Investment and partnership opportunities in ${activeProfile.city}, ${activeProfile.country}`
+        );
+      }
+
+      setGeneratedDocument(documentText);
     } catch (error) {
       console.error('Document generation failed:', error);
       alert('Document generation failed. Please check your OpenAI API key configuration.');
@@ -451,6 +545,8 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setGovernmentLeaders([]);
     setRegionalComparisons(null);
     setShowPersonCard(false);
+    setOsintResults([]);
+    setDataCompletenessScore(null);
   };
 
   // Auto-scroll to top when a profile is selected
@@ -979,6 +1075,37 @@ th { background: #f1f5f9; }
                 </div>
               </div>
             </div>
+
+            {/* Data Intelligence Panel — completeness score + OSINT sources */}
+            {(dataCompletenessScore !== null || osintResults.length > 0) && (
+              <div className="flex flex-wrap items-center gap-4 px-3 py-2 bg-slate-800/60 border border-slate-700 rounded-lg text-xs">
+                {dataCompletenessScore !== null && (
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className={`w-3.5 h-3.5 ${dataCompletenessScore >= 75 ? 'text-emerald-400' : dataCompletenessScore >= 50 ? 'text-amber-400' : 'text-red-400'}`} />
+                    <span className="text-slate-400">Data Completeness:</span>
+                    <span className={`font-bold ${dataCompletenessScore >= 75 ? 'text-emerald-400' : dataCompletenessScore >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                      {dataCompletenessScore}%
+                    </span>
+                  </div>
+                )}
+                {osintResults.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Database className="w-3.5 h-3.5 text-blue-400" />
+                    <span className="text-slate-400">OSINT:</span>
+                    {osintResults.slice(0, 4).map((r, i) => (
+                      <a key={i} href={r.link} target="_blank" rel="noopener noreferrer"
+                        className="text-blue-400 hover:underline truncate max-w-[130px] capitalize"
+                        title={r.title}>
+                        {r.displayLink}
+                      </a>
+                    ))}
+                    {osintResults.length > 4 && (
+                      <span className="text-slate-500">+{osintResults.length - 4} more</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* About This Location */}
             <section>
