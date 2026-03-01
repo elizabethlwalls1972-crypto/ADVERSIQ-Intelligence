@@ -35,6 +35,7 @@ import MissionGraphService from '../services/autonomy/MissionGraphService';
 import type { MissionSnapshot } from '../types/autonomy';
 import { RegionalDevelopmentOrchestrator } from '../services/RegionalDevelopmentOrchestrator';
 import type { PartnerCandidate } from '../services/PartnerIntelligenceEngine';
+import BrainIntegrationService, { type BrainContext } from '../services/BrainIntegrationService';
 
 // ============================================================================
 // TYPES
@@ -754,6 +755,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const spokenMsgIds = useRef<Set<string>>(new Set());
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // Background brain context — updated on every enrichment pass
+  const brainCtxRef = useRef<BrainContext | null>(null);
   // Preload browser voices (Chrome loads them async)
   useEffect(() => {
     if (typeof window !== 'undefined' && window.speechSynthesis) {
@@ -3581,6 +3584,14 @@ ${agentRegistry.current.toManifest()}`;
       const deliverableIntent = classifyDeliverableIntent(trimmedUserContent);
       const shouldPromptForOutputClarification = shouldAskOutputClarification(caseDraft, trimmedUserContent, deliverableIntent);
       const shouldRunInsights = liveReadiness >= 25 && !isGreetingOnly && !shouldPromptForOutputClarification;
+      // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
+      const brainEnrichmentPromise = liveReadiness >= 30 && !isGreetingOnly && !shouldPromptForOutputClarification
+        ? BrainIntegrationService.enrich(
+            { country: caseDraft.country, organizationName: caseDraft.organizationName, sector: caseDraft.organizationType || undefined },
+            liveReadiness,
+            trimmedUserContent
+          ).catch((e) => { console.warn('[Brain] non-fatal:', e); return null; })
+        : Promise.resolve(null);
       const agenticInsightsPromise = shouldRunInsights
         ? (async () => {
             setExecutionTaskStatus('insight', 'running', 'Running NSIL signal extraction in parallel');
@@ -3615,11 +3626,17 @@ ${agentRegistry.current.toManifest()}`;
         setExecutionTaskStatus('response', 'completed', 'Clarification menu delivered before deep analysis');
       } else {
         setExecutionTaskStatus('response', 'running', 'Streaming consultant response');
+        const brainCtx = await brainEnrichmentPromise;
+        if (brainCtx) {
+          brainCtxRef.current = brainCtx;
+          setExecutionTaskStatus('insight', 'completed', `Brain: ${BrainIntegrationService.summarise(brainCtx)}`);
+        }
+        const brainBlock = brainCtxRef.current?.promptBlock ?? '';
         setIsStreamingResponse(true);
         displayedMsgIds.current.add(assistantMessageId);
         responseContent = await processWithAIStream(
           userContent,
-          `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.`,
+          `Autonomous mixed-initiative mode: answer user intent first, then move the case forward with one highest-value follow-up if required. Do not run scripted intake.${brainBlock}`,
           (streamText) => {
             setMessages(prev => prev.map((msg) => (
               msg.id === assistantMessageId ? { ...msg, content: streamText } : msg
