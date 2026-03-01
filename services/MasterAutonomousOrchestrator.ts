@@ -334,8 +334,9 @@ export class MasterAutonomousOrchestrator {
     if (ci?.seam?.score && ci.seam.score > 0) { dimensionScores.seam = ci.seam.score; filledDimensions++; }
     if (ci?.ivas?.ivasScore && ci.ivas.ivasScore > 0) { dimensionScores.ivas = ci.ivas.ivasScore; filledDimensions++; }
     if (ci?.scf?.totalEconomicImpactUSD && ci.scf.totalEconomicImpactUSD > 0) { dimensionScores.scf = Math.min(100, ci.scf.totalEconomicImpactUSD / 1e6); filledDimensions++; }
-    if ((ci as any)?.gdi && typeof (ci as any).gdi === 'object') { dimensionScores.gdi = 70; filledDimensions++; }
-    if ((ci as any)?.cvi && typeof (ci as any).cvi === 'object') { dimensionScores.cvi = 70; filledDimensions++; }
+    const ciExt = ci as Record<string, unknown>;
+    if (ciExt?.gdi && typeof ciExt.gdi === 'object') { dimensionScores.gdi = 70; filledDimensions++; }
+    if (ciExt?.cvi && typeof ciExt.cvi === 'object') { dimensionScores.cvi = 70; filledDimensions++; }
 
     const completeness = (filledDimensions / totalDimensions) * 100;
     const avgDimensionScore = Object.values(dimensionScores).length > 0
