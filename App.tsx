@@ -38,6 +38,7 @@ import { bwConsultantAI, type ConsultantInsight } from './services/BWConsultantA
 // EventBus for ecosystem connectivity
 import { EventBus, type EcosystemPulse } from './services/EventBus';
 import { ReportsService } from './services/ReportsService';
+import { initAutonomousRuntime } from './services/autonomousRuntime';
 // Location intelligence types
 import { type CityProfile } from './data/globalLocationProfiles';
 import { type LocationResult } from './services/geminiLocationService';
@@ -79,6 +80,9 @@ const App: React.FC = () => {
         };
         loadReports();
     }, []);
+
+    // Bootstrap autonomous runtime services once on mount
+    useEffect(() => { initAutonomousRuntime(); }, []);
 
     // Generation State
     const [insights, setInsights] = useState<CopilotInsight[]>([]);

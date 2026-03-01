@@ -41,6 +41,9 @@ import { calculateMaturityScores, generateAIInsights } from './maturityEngine';
 import { ProblemToSolutionGraphService } from './ProblemToSolutionGraphService';
 import { GlobalDataFabricService } from './GlobalDataFabricService';
 import { DerivedIndexService } from './DerivedIndexService';
+import MotivationDetector from './MotivationDetector';
+import CounterfactualEngine from './CounterfactualEngine';
+import { narrativeSynthesisEngine } from './narrativeSynthesisEngine';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -103,6 +106,10 @@ export interface BrainContext {
   problemGraph: any | null;
   /** Global data fabric — normalised signals snapshot */
   dataFabric: any | null;
+  /** Motivation detector — stakeholder motivation red-flags */
+  motivationAnalysis: any | null;
+  /** Counterfactual engine — what-if scenario analysis */
+  counterfactualAnalysis: any | null;
   /** Derived indices — PRI/TCO/CRI extended scores */
   derivedIndices: { pri?: any; cri?: any } | null;
 }
@@ -349,6 +356,16 @@ export class BrainIntegrationService {
     const dataFabric = (() => { try { return country ? GlobalDataFabricService.buildSnapshot(country, (params as any).jurisdiction || country, [(params as any).organizationType || '', (params as any).sector || ''].filter(Boolean)) : null; } catch { return null; } })();
     // IFC assessment (sync path — assessProject is synchronous)
     const ifcAssessment = (() => { try { return (country && ((params as any).sector || (params as any).organizationType)) ? IFCGlobalStandardsEngine.assessProject({ country, sector: (params as any).sector || (params as any).organizationType || 'investment', projectType: (params as any).organizationType || 'investment', investmentSizeM: 10, hasESMS: readiness >= 60, hasLaborPolicies: true, prohibitsChildLabor: true, prohibitsForcedLabor: true, hasOHSProgram: readiness >= 50 }) : null; } catch { return null; } })();
+
+    // Motivation Detector — stakeholder motivation red-flags (sync static)
+    const motivationAnalysis = (() => { try { return MotivationDetector.analyze(params as ReportParameters); } catch { return null; } })();
+
+    // Counterfactual Engine — what-if scenario modelling (sync static)
+    const counterfactualAnalysis = (() => { try { return CounterfactualEngine.analyze(params); } catch { return null; } })();
+
+    // narrativeSynthesisEngine — bound for future prompt reference (singleton)
+    const _narrativeSynth = narrativeSynthesisEngine;
+    void _narrativeSynth;
 
     // Stored partners (synchronous localStorage read)
     const storedPartners = (() => { try { return PartnerComparisonEngine.getPartners().slice(0, 3); } catch { return []; } })();
@@ -638,6 +655,8 @@ export class BrainIntegrationService {
       maturityScores,
       problemGraph,
       dataFabric,
+      motivationAnalysis,
+      counterfactualAnalysis,
       derivedIndices: null, // async path handled by Promise.allSettled above — populated on next enrich() call
     };
 
