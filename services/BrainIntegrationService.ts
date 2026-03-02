@@ -50,6 +50,11 @@ import SituationAnalysisEngine from './SituationAnalysisEngine';
 import OutcomeTracker from './OutcomeTracker';
 import { selfLearningEngine } from './selfLearningEngine';
 import { UnbiasedAnalysisEngine } from './UnbiasedAnalysisEngine';
+import PersonaEngine from './PersonaEngine';
+import { DerivedIndexService } from './DerivedIndexService';
+import { findRelevantEngagements, buildAdvisorSnapshot } from './GlobalIntelligenceEngine';
+import { buildAdvisorInputFromParams } from './buildAdvisorInputModel';
+import { osintSearch } from './osintSearchService';
 import { ReportParameters } from '../types';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -130,6 +135,14 @@ export interface BrainContext {
   selfLearningInsights: string[] | null;
   /** Unbiased analysis — pro/con, debate positions, alternative options */
   unbiasedAnalysis: { proPoints: string[]; conPoints: string[]; alternatives: string[] } | null;
+  /** 4-persona analysis: Skeptic / Advocate / Regulator / Accountant */
+  personaAnalysis: { skepticFindings: string[]; advocateFindings: string[]; regulatorFindings: string[]; accountantFindings: string[] } | null;
+  /** Reference engagements from 200-year global case library */
+  referenceEngagements: Array<{ id: string; scenario: string; summary: string; playbook: string[]; outcomes: string[] }> | null;
+  /** OSINT results for the target country/org */
+  osintResults: Array<{ title: string; url: string; snippet: string }> | null;
+  /** Derived indices — PRI / TCO / CRI computed scores */
+  derivedIndices: { pri?: any; cri?: any; tco?: any } | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -284,6 +297,9 @@ export class BrainIntegrationService {
       regionalResult,
       decisionResult,
       domainAnalysisResult,
+      personaResult,
+      derivedIndicesResult,
+      osintResult,
     ] = await Promise.allSettled([
       // 15 indices
       calculateAllIndices(params).catch(() => null),
@@ -350,6 +366,22 @@ export class BrainIntegrationService {
             includeCustomData: false,
           }).catch(() => null)
         : Promise.resolve(null),
+      // PersonaEngine — Skeptic / Advocate / Regulator / Accountant
+      readiness >= 30
+        ? PersonaEngine.runFullAnalysis(params).catch(() => null)
+        : Promise.resolve(null),
+      // DerivedIndexService — PRI (Political Risk), TCO (Total Cost), CRI (Country Risk)
+      params.country && readiness >= 35
+        ? Promise.all([
+            DerivedIndexService.calculatePRI(params as ReportParameters).catch(() => null),
+            DerivedIndexService.calculateTCO(params as ReportParameters).catch(() => null),
+            DerivedIndexService.calculateCRI(params as ReportParameters).catch(() => null),
+          ]).catch(() => null)
+        : Promise.resolve(null),
+      // OSINT search — live open-source intelligence for country/org
+      (country || orgName) && readiness >= 25
+        ? osintSearch(`${country} ${orgName} strategic investment opportunities`.trim(), ['government', 'news', 'business'], 6).catch(() => null)
+        : Promise.resolve(null),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -367,6 +399,44 @@ export class BrainIntegrationService {
     const regionalKernel = regionalResult.status === 'fulfilled' ? regionalResult.value : null;
     const decisionPacket = decisionResult.status === 'fulfilled' ? (decisionResult.value as any)?.packet ?? null : null;
     const domainAnalysis = domainAnalysisResult.status === 'fulfilled' ? domainAnalysisResult.value as SynthesizedAnalysis | null : null;
+
+    // Persona engine
+    const personaRaw = personaResult.status === 'fulfilled' ? personaResult.value as any : null;
+    const personaAnalysis = personaRaw ? {
+      skepticFindings: personaRaw.skeptic?.findings ?? personaRaw.skeptic?.concerns ?? [],
+      advocateFindings: personaRaw.advocate?.findings ?? personaRaw.advocate?.opportunities ?? [],
+      regulatorFindings: personaRaw.regulator?.findings ?? personaRaw.regulator?.requirements ?? [],
+      accountantFindings: personaRaw.accountant?.findings ?? personaRaw.accountant?.costItems ?? [],
+    } : null;
+
+    // Derived indices (PRI / TCO / CRI)
+    const derivedTriple = derivedIndicesResult.status === 'fulfilled' ? derivedIndicesResult.value as any : null;
+    const derivedIndices = derivedTriple ? {
+      pri: Array.isArray(derivedTriple) ? derivedTriple[0] : derivedTriple?.pri ?? null,
+      tco: Array.isArray(derivedTriple) ? derivedTriple[1] : derivedTriple?.tco ?? null,
+      cri: Array.isArray(derivedTriple) ? derivedTriple[2] : derivedTriple?.cri ?? null,
+    } : null;
+
+    // OSINT results
+    const osintRaw = osintResult.status === 'fulfilled' ? osintResult.value as any[] | null : null;
+    const osintResults = Array.isArray(osintRaw)
+      ? osintRaw.slice(0, 5).map(r => ({ title: r.title || '', url: r.url || '', snippet: r.snippet || r.body || '' }))
+      : null;
+
+    // GlobalIntelligenceEngine — sync reference engagement matching
+    const referenceEngagements = (() => {
+      try {
+        const model = buildAdvisorInputFromParams(params as ReportParameters);
+        const engagements = findRelevantEngagements(model, 3);
+        return engagements.map(e => ({
+          id: e.id,
+          scenario: e.scenario,
+          summary: e.summary,
+          playbook: e.playbook ?? [],
+          outcomes: e.outcomes ?? [],
+        }));
+      } catch { return null; }
+    })();
 
     // Unpack new engines (indices 13–20 in the settled array)
     const _settledAll = [
@@ -835,6 +905,41 @@ export class BrainIntegrationService {
       if (unbiasedAnalysis.alternatives.length) promptParts.push(`**Alternatives:** ${unbiasedAnalysis.alternatives.slice(0, 2).join('; ')}`);
     }
 
+    // ── 4-Persona Panel (Skeptic / Advocate / Regulator / Accountant) ─────────
+    if (personaAnalysis) {
+      promptParts.push(`\n### ── 4-PERSONA INTELLIGENCE PANEL ──`);
+      if (personaAnalysis.skepticFindings.length) promptParts.push(`**Skeptic:** ${personaAnalysis.skepticFindings.slice(0, 2).join('; ')}`);
+      if (personaAnalysis.advocateFindings.length) promptParts.push(`**Advocate:** ${personaAnalysis.advocateFindings.slice(0, 2).join('; ')}`);
+      if (personaAnalysis.regulatorFindings.length) promptParts.push(`**Regulator:** ${personaAnalysis.regulatorFindings.slice(0, 2).join('; ')}`);
+      if (personaAnalysis.accountantFindings.length) promptParts.push(`**Accountant:** ${personaAnalysis.accountantFindings.slice(0, 2).join('; ')}`);
+    }
+
+    // ── Reference Engagements (200-year global case library) ──────────────────
+    if (referenceEngagements && referenceEngagements.length) {
+      promptParts.push(`\n### ── REFERENCE ENGAGEMENTS (CASE LIBRARY) ──`);
+      referenceEngagements.slice(0, 2).forEach(e => {
+        promptParts.push(`**${e.scenario}** — ${e.summary}`);
+        if (e.playbook.length) promptParts.push(`  Playbook: ${e.playbook.slice(0, 2).join(' / ')}`);
+        if (e.outcomes.length) promptParts.push(`  Outcomes: ${e.outcomes.slice(0, 2).join(' / ')}`);
+      });
+    }
+
+    // ── OSINT Live Intelligence ────────────────────────────────────────────────
+    if (osintResults && osintResults.length) {
+      promptParts.push(`\n### ── OSINT LIVE INTELLIGENCE ──`);
+      osintResults.slice(0, 3).forEach(r => {
+        promptParts.push(`**${r.title}** — ${r.snippet.substring(0, 150)}`);
+      });
+    }
+
+    // ── Derived Indices (PRI / TCO / CRI) ─────────────────────────────────────
+    if (derivedIndices && (derivedIndices.pri || derivedIndices.tco || derivedIndices.cri)) {
+      promptParts.push(`\n### ── DERIVED INDICES (PRI / TCO / CRI) ──`);
+      if (derivedIndices.pri) promptParts.push(`**PRI (Political Risk):** ${derivedIndices.pri.score ?? derivedIndices.pri.value ?? JSON.stringify(derivedIndices.pri).substring(0, 80)}`);
+      if (derivedIndices.tco) promptParts.push(`**TCO (Total Cost of Ownership):** ${derivedIndices.tco.score ?? derivedIndices.tco.value ?? JSON.stringify(derivedIndices.tco).substring(0, 80)}`);
+      if (derivedIndices.cri) promptParts.push(`**CRI (Country Risk):** ${derivedIndices.cri.score ?? derivedIndices.cri.value ?? JSON.stringify(derivedIndices.cri).substring(0, 80)}`);
+    }
+
     promptParts.push(`${'═'.repeat(70)}\n`);
 
     const result: BrainContext = {
@@ -865,10 +970,13 @@ export class BrainIntegrationService {
       domainAnalysis,
       historicalParallels,
       rankedPartners,
-      derivedIndices: null, // async path handled by Promise.allSettled above — populated on next enrich() call
+      derivedIndices: derivedIndices ?? null,
       situationAnalysis,
       selfLearningInsights,
       unbiasedAnalysis,
+      personaAnalysis,
+      referenceEngagements,
+      osintResults,
     };
 
     cache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });
