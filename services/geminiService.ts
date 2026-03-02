@@ -16,10 +16,11 @@
 import { CopilotInsight, ReportParameters, LiveOpportunityItem, DeepReasoningAnalysis, GeopoliticalAnalysisResult, GovernanceAuditResult } from '../types';
 import { config } from './config';
 import { invokeBedrockDirect, invokeBedrockDirectStream, extractFileViaBedrock, isDirectBedrockConfigured } from './awsBedrockService';
+import { callTogether, generateWithTogether, TOGETHER_SYSTEM_PROMPT } from './togetherAIService';
 
 const API_BASE = '/api';
 
-const SYSTEM_INSTRUCTION = `You are "BWGA AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System and senior strategic advisory partner. You are powered by the BW Global Advisory NSIL Agentic Runtime.`;
+const SYSTEM_INSTRUCTION = `You are "BWGA AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System and senior strategic advisory partner. You are powered by the BW Global Advisory NSIL Agentic Runtime. Be precise, evidence-based, structured, and professional. Always reason from the uploaded documents and case context when provided.`;
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 
@@ -36,9 +37,43 @@ async function apiPost(path: string, body: object): Promise<any> {
   return null;
 }
 
-/** Call Bedrock with a prompt; throw if not configured */
-async function bedrock(prompt: string, system = SYSTEM_INSTRUCTION): Promise<string> {
-  return invokeBedrockDirect(prompt, system);
+/** Check if Together.ai API key is available */
+function isTogetherConfigured(): boolean {
+  const key = (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_TOGETHER_API_KEY) || '';
+  return key.length > 0;
+}
+
+/**
+ * Primary AI call — Together.ai (Llama 3.1 70B).
+ * Falls back to Bedrock only if Together is not configured.
+ */
+async function ai(prompt: string, system = SYSTEM_INSTRUCTION): Promise<string> {
+  if (isTogetherConfigured()) {
+    return generateWithTogether(prompt, system);
+  }
+  if (isDirectBedrockConfigured()) {
+    return invokeBedrockDirect(prompt, system);
+  }
+  throw new Error('No AI provider configured. Add VITE_TOGETHER_API_KEY to .env.');
+}
+
+/**
+ * Streaming AI call — Together.ai (SSE). Falls back to non-streaming if needed.
+ */
+async function aiStream(prompt: string, system = SYSTEM_INSTRUCTION, onToken?: (t: string) => void): Promise<string> {
+  if (isTogetherConfigured()) {
+    return callTogether(
+      [{ role: 'system', content: system }, { role: 'user', content: prompt }],
+      {},
+      onToken
+    );
+  }
+  if (isDirectBedrockConfigured()) {
+    let acc = '';
+    await invokeBedrockDirectStream(prompt, system, (tok) => { acc += tok; onToken?.(acc); });
+    return acc;
+  }
+  throw new Error('No AI provider configured.');
 }
 
 // ─── Session tracking (kept for compat with BWConsultantOS chatSession.current) ──
@@ -57,14 +92,12 @@ export const getChatSession = (): {
       const data = await apiPost('/ai/chat', { message: msg.message, sessionId: _sessionId, systemInstruction: SYSTEM_INSTRUCTION });
       if (data?.text) { _sessionId = data.sessionId ?? _sessionId; return { text: data.text }; }
 
-      // 2. Bedrock direct
-      if (isDirectBedrockConfigured()) {
-        try {
-          const text = await bedrock(msg.message);
-          return { text };
-        } catch (bedrockErr) {
-          console.warn('[AI] Bedrock sendMessage failed:', bedrockErr);
-        }
+      // 2. Together.ai / Bedrock
+      try {
+        const text = await ai(msg.message);
+        return { text };
+      } catch (aiErr) {
+        console.warn('[AI] sendMessage failed:', aiErr);
       }
 
       return { text: '' };
@@ -97,10 +130,13 @@ export const getChatSession = (): {
         }
       } catch { /* fall through */ }
 
-      // 2. Bedrock direct (non-streaming, wrapped as async iterable)
-      if (isDirectBedrockConfigured()) {
+      // 2. Together.ai streaming (SSE), wrapped as async iterable
+      if (isTogetherConfigured() || isDirectBedrockConfigured()) {
         try {
-          const fullText = await bedrock(msg.message);
+          const chunks: string[] = [];
+          await aiStream(msg.message, SYSTEM_INSTRUCTION, (tok) => chunks.push(tok));
+          // Emit the full text in one chunk (Together delivers full delta accumulation)
+          const fullText = chunks[chunks.length - 1] || '';
           let yielded = false;
           return {
             [Symbol.asyncIterator]: () => ({
@@ -111,8 +147,8 @@ export const getChatSession = (): {
               }
             })
           };
-        } catch (bedrockErr) {
-          console.warn('[AI] Bedrock sendMessageStream failed:', bedrockErr);
+        } catch (aiErr) {
+          console.warn('[AI] sendMessageStream failed:', aiErr);
         }
       }
 
@@ -131,18 +167,15 @@ export const sendMessageStream = async (message: string) => {
 // ─── generateCopilotInsights ──────────────────────────────────────────────────
 
 export const generateCopilotInsights = async (params: ReportParameters): Promise<CopilotInsight[]> => {
-  if (config.useRealAI) {
-    const data = await apiPost('/ai/insights', {
-      organizationName: params.organizationName,
-      country: params.country,
-      strategicIntent: params.strategicIntent,
-      specificOpportunity: params.specificOpportunity,
-    });
-    if (data) return Array.isArray(data) ? data : (data.insights || []);
-  }
+  const data = await apiPost('/ai/insights', {
+    organizationName: params.organizationName,
+    country: params.country,
+    strategicIntent: params.strategicIntent,
+    specificOpportunity: params.specificOpportunity,
+  });
+  if (data) return Array.isArray(data) ? data : (data.insights || []);
 
-  if (isDirectBedrockConfigured()) {
-    const prompt = `${SYSTEM_INSTRUCTION}
+  const prompt = `${SYSTEM_INSTRUCTION}
 
 Generate 5 strategic intelligence insights for:
 - Organization: ${params.organizationName || 'Unknown'}
@@ -153,12 +186,11 @@ Generate 5 strategic intelligence insights for:
 Return a JSON array of objects with fields: id, type ("strategy"|"risk"|"opportunity"|"insight"), title, description, content, confidence (0-100).
 Only return the JSON array, no other text.`;
 
-    try {
-      const raw = await bedrock(prompt);
-      const match = raw.match(/\[[\s\S]*\]/);
-      if (match) return JSON.parse(match[0]) as CopilotInsight[];
-    } catch { /* fall through */ }
-  }
+  try {
+    const raw = await ai(prompt);
+    const match = raw.match(/\[[\s\S]*\]/);
+    if (match) return JSON.parse(match[0]) as CopilotInsight[];
+  } catch { /* fall through */ }
 
   return [];
 };
@@ -169,13 +201,13 @@ export const askCopilot = async (query: string, params: ReportParameters): Promi
   const data = await apiPost('/ai/chat', { message: query, context: { organizationName: params.organizationName, country: params.country } });
   if (data?.text) return { id: Date.now().toString(), type: 'strategy', title: 'Copilot Response', description: data.text, content: data.text, confidence: 85 };
 
-  if (isDirectBedrockConfigured()) {
-    const prompt = `${SYSTEM_INSTRUCTION}\n\nContext:\n- Organization: ${params.organizationName || 'Unknown'}\n- Country: ${params.country || 'Global'}\n- Opportunity: ${params.specificOpportunity || 'General advisory'}\n\nQuery: ${query}\n\nProvide a detailed, actionable response with specific data and next steps.`;
-    const text = await bedrock(prompt);
+  const prompt = `${SYSTEM_INSTRUCTION}\n\nContext:\n- Organization: ${params.organizationName || 'Unknown'}\n- Country: ${params.country || 'Global'}\n- Opportunity: ${params.specificOpportunity || 'General advisory'}\n\nQuery: ${query}\n\nProvide a detailed, actionable response with specific data and next steps.`;
+  try {
+    const text = await ai(prompt);
     return { id: Date.now().toString(), type: 'strategy', title: 'AI Copilot Response', description: text, content: text, confidence: 85 };
-  }
+  } catch { /* fall through */ }
 
-  return { id: Date.now().toString(), type: 'insight', title: 'System Status', description: 'Configure VITE_AWS_ACCESS_KEY_ID and VITE_AWS_SECRET_ACCESS_KEY to enable AI.', content: 'AWS Bedrock credentials required.', confidence: 0 };
+  return { id: Date.now().toString(), type: 'insight', title: 'System Status', description: 'Add VITE_TOGETHER_API_KEY to .env to enable AI.', content: 'Together.ai API key required.', confidence: 0 };
 };
 
 // ─── generateReportSectionStream ──────────────────────────────────────────────
@@ -209,18 +241,16 @@ export const generateReportSectionStream = async (
     } catch { /* fall through */ }
   }
 
-  // 2. Bedrock direct stream
-  if (isDirectBedrockConfigured()) {
-    const prompt = `Write the "${section}" section for a BW Global Advisory strategic report.\n\nCase context:\n- Organization: ${params.organizationName}\n- Country: ${params.country}\n- Opportunity: ${params.specificOpportunity}\n\nWrite in full, professional advisory prose. Be thorough and specific.`;
-    let accumulated = '';
-    await invokeBedrockDirectStream(prompt, SYSTEM_INSTRUCTION, (token) => {
-      accumulated += token;
-      onChunk(accumulated);
-    });
+  // 2. Together.ai / Bedrock stream
+  const prompt = `Write the "${section}" section for a BW Global Advisory strategic report.\n\nCase context:\n- Organization: ${params.organizationName}\n- Country: ${params.country}\n- Opportunity: ${params.specificOpportunity}\n\nWrite in full, professional advisory prose. Be thorough and specific.`;
+  try {
+    await aiStream(prompt, SYSTEM_INSTRUCTION, onChunk);
     return;
+  } catch (err) {
+    console.warn('generateReportSectionStream failed:', err);
   }
 
-  onChunk('AI not configured. Add VITE_AWS_ACCESS_KEY_ID and VITE_AWS_SECRET_ACCESS_KEY to .env');
+  onChunk('AI not configured. Add VITE_TOGETHER_API_KEY to .env and restart.');
 };
 
 // ─── generateAnalysisStream ───────────────────────────────────────────────────
@@ -229,7 +259,12 @@ export const generateAnalysisStream = async (item: LiveOpportunityItem, region: 
   const prompt = `${SYSTEM_INSTRUCTION}\n\nAnalyse this opportunity in ${region}:\n\nTitle: ${item.title}\nSector: ${item.sector}\nCountry: ${item.country}\nDescription: ${item.description}\n\nProvide a comprehensive strategic analysis including opportunity assessment, key risks, recommended entry approach, and BW Advisory value proposition.`;
 
   const data = await apiPost('/ai/chat', { message: prompt });
-  const text: string = data?.text || (isDirectBedrockConfigured() ? await bedrock(prompt) : 'AI not configured.');
+  let text: string;
+  if (data?.text) {
+    text = data.text;
+  } else {
+    try { text = await ai(prompt); } catch { text = 'AI not configured. Add VITE_TOGETHER_API_KEY to .env.'; }
+  }
 
   return new ReadableStream({
     start(controller) {
@@ -251,7 +286,12 @@ export const generateDeepReasoning = async (userOrg: string, targetEntity: strin
   const prompt = `${SYSTEM_INSTRUCTION}\n\nPerform a deep strategic reasoning analysis:\n- Our organization: ${userOrg}\n- Target entity: ${targetEntity}\n- Context: ${context}\n\nReturn valid JSON with this structure:\n{"executiveSummary":"...","keyFindings":["..."],"strategicRecommendations":["..."],"riskAssessment":{"overall":"...","factors":[{"risk":"...","likelihood":"...","impact":"...","mitigation":"..."}]},"opportunityScore":85,"confidenceLevel":"HIGH","nextSteps":["..."]}\n\nOnly return JSON.`;
 
   const data = await apiPost('/ai/chat', { message: prompt });
-  const raw = data?.text || (isDirectBedrockConfigured() ? await bedrock(prompt) : '{}');
+  let raw: string;
+  if (data?.text) {
+    raw = data.text;
+  } else {
+    try { raw = await ai(prompt); } catch { raw = '{}'; }
+  }
 
   try {
     const match = raw.match(/\{[\s\S]*\}/);
@@ -275,13 +315,13 @@ export const generateSearchGroundedContent = async (query: string): Promise<{ te
   const data = await apiPost('/ai/search', { query });
   if (data?.text) return { text: data.text, sources: data.sources || [] };
 
-  if (isDirectBedrockConfigured()) {
-    const prompt = `${SYSTEM_INSTRUCTION}\n\nResearch and answer the following query with depth and precision:\n\n${query}\n\nInclude specific facts, data, and cite any key sources or institutions.`;
-    const text = await bedrock(prompt);
+  const prompt = `${SYSTEM_INSTRUCTION}\n\nResearch and answer the following query with depth and precision:\n\n${query}\n\nInclude specific facts, data, and cite any key sources or institutions.`;
+  try {
+    const text = await ai(prompt);
     return { text, sources: [] };
-  }
+  } catch { /* fall through */ }
 
-  return { text: 'Search grounded content requires AWS Bedrock credentials or a running backend.', sources: [] };
+  return { text: 'AI not configured. Add VITE_TOGETHER_API_KEY to .env.', sources: [] };
 };
 
 // ─── runAI_Agent ─────────────────────────────────────────────────────────────
@@ -297,14 +337,16 @@ export const runAI_Agent = async (
   const data = await apiPost('/ai/agent', { task, context });
   if (data?.text) { onProgress?.('Complete.'); return data.text; }
 
-  if (isDirectBedrockConfigured()) {
-    onProgress?.('Routing to AWS Bedrock...');
-    const result = await bedrock(prompt);
+  try {
+    onProgress?.('Routing to Together.ai (Llama 3.1 70B)...');
+    const result = await ai(prompt);
     onProgress?.('Complete.');
     return result;
+  } catch (err) {
+    console.warn('runAI_Agent Together.ai failed:', err);
   }
 
-  return 'AI agent requires AWS Bedrock credentials.';
+  return 'AI agent requires VITE_TOGETHER_API_KEY in .env.';
 };
 
 // ─── runGeopoliticalAnalysis ──────────────────────────────────────────────────
@@ -315,10 +357,11 @@ export const runGeopoliticalAnalysis = async (params: ReportParameters): Promise
   const data = await apiPost('/ai/geopolitical', { params });
   if (data) return data as GeopoliticalAnalysisResult;
 
-  if (isDirectBedrockConfigured()) {
-    const raw = await bedrock(prompt);
-    try { const m = raw.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]) as GeopoliticalAnalysisResult; } catch { /* fall through */ }
-  }
+  try {
+    const raw = await ai(prompt);
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (m) return JSON.parse(m[0]) as GeopoliticalAnalysisResult;
+  } catch { /* fall through */ }
 
   return { politicalStability: { score: 0, trend: '', keyFactors: [] }, economicConditions: { gdpGrowth: 0, inflationRate: 0, businessClimate: '' }, regulatoryEnvironment: { ease: 0, keyRisks: [], opportunities: [] }, security: { riskLevel: 'Unknown', keyThreats: [] }, internationalRelations: { allies: [], tensions: [] }, recommendations: [], overallRisk: 'Unknown', confidenceScore: 0 } as unknown as GeopoliticalAnalysisResult;
 };
@@ -331,12 +374,13 @@ export const runGovernanceAudit = async (params: ReportParameters): Promise<Gove
   const data = await apiPost('/ai/governance-audit', { params });
   if (data) return data as GovernanceAuditResult;
 
-  if (isDirectBedrockConfigured()) {
-    const raw = await bedrock(prompt);
-    try { const m = raw.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]) as GovernanceAuditResult; } catch { /* fall through */ }
-  }
+  try {
+    const raw = await ai(prompt);
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (m) return JSON.parse(m[0]) as GovernanceAuditResult;
+  } catch { /* fall through */ }
 
-  return { overallScore: 0, auditSummary: 'Governance audit requires AWS Bedrock credentials or a running backend.' } as unknown as GovernanceAuditResult;
+  return { overallScore: 0, auditSummary: 'Governance audit requires VITE_TOGETHER_API_KEY in .env.' } as unknown as GovernanceAuditResult;
 };
 
 // ─── runCopilotAnalysis ───────────────────────────────────────────────────────
@@ -345,14 +389,15 @@ export const runCopilotAnalysis = async (query: string, context: string): Promis
   const data = await apiPost('/ai/copilot-analysis', { query, context });
   if (data?.summary) return data;
 
-  if (isDirectBedrockConfigured()) {
-    const prompt = `${SYSTEM_INSTRUCTION}\n\nContext: ${context}\n\nQuery: ${query}\n\nProvide a concise advisory analysis. Return JSON: {"summary":"...","options":[{"label":"...","description":"...","priority":"high|medium|low"}],"followUp":"..."}\n\nReturn only JSON.`;
-    const raw = await bedrock(prompt);
-    try { const m = raw.match(/\{[\s\S]*\}/); if (m) return JSON.parse(m[0]); } catch { /* fall through */ }
+  const prompt = `${SYSTEM_INSTRUCTION}\n\nContext: ${context}\n\nQuery: ${query}\n\nProvide a concise advisory analysis. Return JSON: {"summary":"...","options":[{"label":"...","description":"...","priority":"high|medium|low"}],"followUp":"..."}\n\nReturn only JSON.`;
+  try {
+    const raw = await ai(prompt);
+    const m = raw.match(/\{[\s\S]*\}/);
+    if (m) return JSON.parse(m[0]);
     return { summary: raw, options: [], followUp: '' };
-  }
+  } catch { /* fall through */ }
 
-  return { summary: 'Copilot analysis requires AWS Bedrock credentials.', options: [], followUp: '' };
+  return { summary: 'Copilot analysis requires VITE_TOGETHER_API_KEY in .env.', options: [], followUp: '' };
 };
 
 // ─── extractFileTextViaAI ─────────────────────────────────────────────────────
