@@ -3837,6 +3837,10 @@ ${thisTurnContext || 'Continuing from prior turns — see case study JSON above.
 
 Respond to the user's intent first, then advance the case with one follow-up if needed.`;
 
+        // Detect if this is a report-generation tier request (sent by onSelectTier)
+        const isReportGeneration = userContent.startsWith('GENERATE_REPORT_NOW::');
+        const reportTierLabel = isReportGeneration ? userContent.split('\n')[0].replace('GENERATE_REPORT_NOW::', '').trim() : '';
+
         const docUploadBlock = hadFileUpload
           ? `
 
@@ -3896,9 +3900,29 @@ RULES:
 - After this response, the ReportOptionsPanel will appear automatically with options to generate the full formal deliverable.`
           : '';
 
+        // For report generation requests, override system prompt entirely
+        const reportGenerationOverride = isReportGeneration ? `You are a BW Global Advisory senior analyst producing a formal deliverable.
+
+CRITICAL INSTRUCTION: Write the complete ${reportTierLabel} document NOW. Do NOT:
+- Ask intake questions
+- Repeat the consultant greeting
+- Say "Here's my read"
+- Produce bullet summaries instead of full sections
+
+You MUST write each section in full prose, formatted with ## headers, to the specified word count. Start writing the document immediately with no preamble.` : '';
+
+        const effectiveSystemPrompt = isReportGeneration
+          ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}`
+          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}`;
+
+        // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
+        const effectiveUserContent = isReportGeneration
+          ? userContent.replace(/^GENERATE_REPORT_NOW::[^\n]*\n/, '').trim()
+          : userContent;
+
         responseContent = await processWithAIStream(
-          userContent,
-          `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}`,
+          effectiveUserContent,
+          effectiveSystemPrompt,
           (streamText) => {
             setMessages(prev => prev.map((msg) => (
               msg.id === assistantMessageId ? { ...msg, content: streamText } : msg
@@ -4087,7 +4111,8 @@ RULES:
       setReactiveDraftHint(reactiveHintText);
 
       // Show report options AFTER AI has demonstrated it understood the document
-      if (hadFileUpload) {
+      // Do NOT re-show the panel when the user has already selected a tier and generation is underway
+      if (hadFileUpload && !isReportGeneration) {
         setShowReportOptions(true);
         // Auto-save the AI's document analysis into the Final Report workspace
         if (responseContent.length > 300) {
@@ -4108,6 +4133,27 @@ RULES:
             }];
           });
         }
+      }
+
+      // Auto-save the generated formal document to Final Report workspace
+      if (isReportGeneration && responseContent.length > 300) {
+        const docTitle = `${reportTierLabel}${reportOptionsDocTitle ? ` — ${reportOptionsDocTitle}` : ''}`;
+        setGeneratedDocuments(prev => {
+          if (prev.some(d => d.title === docTitle)) return prev;
+          return [...prev, {
+            id: `gen-report-${Date.now()}`,
+            title: docTitle,
+            content: responseContent,
+            category: 'report' as const,
+            htmlContent: responseContent
+              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+              .replace(/## (.+)/g, '<h2>$1</h2>')
+              .replace(/\n\n/g, '</p><p>')
+              .replace(/\n/g, '<br/>')
+              .replace(/^/, '<p>')
+              .replace(/$/, '</p>'),
+          }];
+        });
       }
 
       // Live Intel: fetch real data for detected country
@@ -6265,12 +6311,16 @@ Use concrete facts from the case. No template language. Write the complete repor
                     onSelectTier={(tierKey: ReportTierKey, includeAnnotation: boolean) => {
                       setShowReportOptions(false);
                       const tier = ReportLengthRouter.getTier(tierKey);
-                      const docContext = reportOptionsDocTitle
-                        ? `\n\nDocument reference: "${reportOptionsDocTitle}"`
-                        : '';
-                      const prompt = `Generate a full ${tier.label} (${tier.wordRange} words, ${tier.sectionCount} sections) for the uploaded document.${docContext}\n\nInclude ALL of these sections in full:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso prepare key source passage annotations for the annotated PDF export.' : ''}\n\nWrite the complete document now — do not summarise, abbreviate, or stop early. Each section must be fully written out.`;
+                      // Embed stored document content directly so the AI has context even if
+                      // this is the second send turn (hadFileUpload will be false)
+                      const storedDocContent = uploadedFileContentsRef[0] ?? '';
+                      const docBlock = storedDocContent && !storedDocContent.includes('extraction failed')
+                        ? `\n\n--- DOCUMENT CONTENT (for report generation) ---\n${storedDocContent.slice(0, 12000)}\n--- END DOCUMENT ---`
+                        : reportOptionsDocTitle
+                          ? `\n\nDocument reference: "${reportOptionsDocTitle}" (content unavailable — use case context from prior conversation)`
+                          : '';
+                      const prompt = `GENERATE_REPORT_NOW::${tier.label}\n\nWrite a complete, fully-developed ${tier.label}.\nTarget: ${tier.wordRange} words across ${tier.sectionCount} sections.${docBlock}\n\nInclude ALL sections in full — do not abbreviate or stop early:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso annotate 5–8 key source passages for the annotated PDF export.' : ''}\n\nWrite each section in full now.`;
                       setInputValue(prompt);
-                      // Auto-submit after React flushes the state update
                       setTimeout(() => {
                         const btn = document.querySelector('[data-send-btn]') as HTMLButtonElement;
                         btn?.click();

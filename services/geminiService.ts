@@ -1095,6 +1095,22 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     if (msg.includes('MIME') || msg.includes('unsupported') || msg.includes('invalid')) {
       return `[${file.name}] — Document format not supported for AI extraction. Please convert to PDF or paste the key text directly.`;
     }
+    // Gemini failed (expired key, quota, etc.) — try Bedrock then plain-text read
+    console.warn('Gemini extraction failed, trying Bedrock:', msg);
+    try {
+      const { extractFileViaBedrock } = await import('./awsBedrockService');
+      const extracted = await extractFileViaBedrock(file);
+      if (extracted) return `[${file.name}]\n${extracted}`;
+    } catch (bedrockErr) {
+      console.warn('Bedrock extraction also failed:', bedrockErr);
+    }
+    // Last resort: read as plain text (works for .txt, .csv, .md, some .docx XML wrappers)
+    try {
+      const raw = await file.text();
+      if (raw.trim().length > 50) {
+        return `[${file.name}] (plain text read)\n${raw.slice(0, 40000)}`;
+      }
+    } catch { /* ignore */ }
     console.error('extractFileTextViaAI error:', err);
     return `[${file.name}] — Document extraction failed: ${msg}. Please paste the key content directly in your message.`;
   }
