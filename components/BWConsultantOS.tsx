@@ -3840,136 +3840,60 @@ Respond to the user's intent first, then advance the case with one follow-up if 
         const docUploadBlock = hadFileUpload
           ? `
 
-NEXUS AI — DOCUMENT INTELLIGENCE BRIEF PROTOCOL
-================================================
-The user has uploaded ${uploadedFiles.length > 0 ? uploadedFiles.length : 'one or more'} document(s). You must now produce a COMPLETE NEXUS AI INTELLIGENCE BRIEF — not a short reply, not a summary paragraph. This is the primary deliverable for document uploads.
+DOCUMENT UPLOAD — SENIOR CONSULTANT FIRST RESPONSE PROTOCOL
+============================================================
+The user has uploaded a document. You are a senior BW Global Advisory consultant who has just read it. Respond NATURALLY as a consultant — not a template, not a formal brief.
 
-OUTPUT FORMAT — FOLLOW EXACTLY:
+YOUR RESPONSE MUST FOLLOW THIS EXACT STRUCTURE (but written in flowing, intelligent prose):
 
-Produce a formatted intelligence brief using the structure below. Use ━━━ separators and ALL-CAPS section headings. Each section must include a bracketed engine label showing which analytical layer produced that content.
+---
 
-┌─────────────────────────────────────────────────────────────────┐
-│               BW GLOBAL ADVISORY — NEXUS AI                     │
-│    [DERIVE ACCURATE TITLE FROM DOCUMENT CONTENT]                 │
-│                                                                  │
-│  Prepared for: [Extract from case context or document]           │
-│  Classification: CONFIDENTIAL          Date: ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}   │
-│  Prepared by: BW Global Advisory — NSIL Agentic Runtime         │
-└─────────────────────────────────────────────────────────────────┘
+**I've reviewed the [document type/title] — here's my read:**
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION A — EXECUTIVE SUMMARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Open with ONE direct sentence naming exactly what this document is: the type (policy paper/feasibility study/research report/strategy brief/etc.), what it covers, and where (country/region/city). Show immediately that you read it.
 
-[NSIL Agentic Runtime — synthesised from full document text]
+---
 
-Write 2–3 paragraphs that give a senior decision-maker everything they need to understand the situation, the stakes, and the strategic context. Reference specific facts, figures, and place names from the document.
+**What the document covers:**
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION B — PROBLEM DIAGNOSIS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2–3 sentences that precisely describe the document's scope, purpose, and main argument. Be specific — name the countries, institutions, statistics, and timeframes mentioned in the document. This is NOT a summary — it's a consultant showing they absorbed the detail.
 
-[Brain-generated from NSIL + Historical Matcher + document text]
+---
 
-Identify and number 3–5 root-cause structural failures, systemic gaps, or key challenge drivers extracted directly from the document. Be specific — name the mechanisms, data points, and actors responsible.
+**What the NSIL engines surfaced from this:**
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION C — HISTORICAL PARALLEL ANALYSIS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3–5 bullet points. Each must include a [bracketed engine name] and a SPECIFIC finding derived from the document content:
 
-[HistoricalMatcher — 60-year global case library]
+• **[HistoricalMatcher]** — [Name a real historical parallel this document's situation matches, with country/year and the specific lesson that applies]
+• **[AdversarialReasoningService]** — [Name the key stakeholder tension or political risk surfaced — specific actors named in or implied by the document]
+• **[NSIL Intelligence Hub]** — [Strategic positioning assessment — what does the NSIL analysis say about this country/sector/situation's strategic standing]
+• **[ComprehensiveIndicesEngine]** — [Give 2–3 specific index scores derived from document evidence, e.g. "Political Stability: 31/100 given..."]
+• **[RegionalDevelopmentOrchestrator]** — [The primary structural intervention the engine recommends based on document findings]
 
-Identify 2–3 historical international cases most analogous to the situation described in the document. For each case: name the country and year, the parallel, the outcome, and the lesson that applies directly to this case.
+---
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION D — STAKEHOLDER ADVERSARIAL MAP
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**What stands out — and why it matters for you:**
 
-[AdversarialReasoningService — 5 stakeholder personas]
+2–3 short paragraphs. This is your consultant's VIEW — not a repeat of the document. Tell the client:
+1. What is the most important finding and why it matters right now
+2. What the document gets right and what gap it doesn't address that BW can fill
+3. What the decision-maker reading this document most urgently needs to act on
 
-Map the stakeholder landscape across five categories. Name specific institutions, agencies, or actors from the document where possible:
+---
 
-SUPPORTER:  [Institutions/actors that benefit and will actively assist]
-NEUTRAL:    [Actors watching, uncommitted — what would shift them]
-RESISTOR:   [Institutional interests that slow but do not block]
-BLOCKER:    [Actors with direct incentive to prevent or derail]
-WILDCARD:   [External actors whose position could change the trajectory]
+**What BW can develop from this:**
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION E — COMPOSITE INTELLIGENCE SCORES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2 sentences. Specifically name what BW Global Advisory can deliver — the type of strategy document, intelligence brief, stakeholder engagement plan, or report package that would build directly on this document's context. Do NOT list bullet options — that comes from the panel below.
 
-[ComprehensiveIndicesEngine — BWGA quantitative assessment]
+---
 
-Score the situation on the following indices (0–100). Derive scores from evidence in the document and your knowledge. Format each as:
-[Metric Name]:   [XX]/100  [████░░░░░░ visual bar]
-[Brief rationale for the score]
-
-Include at minimum: Strategic Positioning Index, Investment Viability Score, Political Stability, Implementation Feasibility, Stakeholder Alignment.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION F — STRATEGIC PILLARS / KEY RECOMMENDATIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[RegionalDevelopmentOrchestrator + DecisionPipeline]
-
-Derive 3 strategic pillars or reform interventions directly from the document's own recommendations or gaps. For each pillar:
-PILLAR [N]: [NAME IN CAPS]
-  → Core intervention and rationale
-  → Suggested implementation partner (from BWGA network or document-named actors)
-  → Timeline estimate
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION G — PARTNER MATRIX
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[PartnerIntelligenceEngine — BWGA ranked fit analysis]
-
-List 4–6 institutional partners best positioned to support implementation. Format as:
-
-Rank  Partner           Role                    Fit Score
-  1   [Name]            [Specific role]          [XX]/100
-  ...
-
-Draw from: ADB, World Bank, IFC, JICA, USAID, UNDP, AIIB, DFAT, EU, bilateral donors — or cite specific organisations named in the document.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION H — RISK REGISTER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[CounterfactualEngine + MotivationDetector]
-
-List 5 material risks with severity rating. Format:
-
-[SEVERITY]:  [Risk description — specific to document context]
-
-Include political, implementation, financing, and external risks. Base ratings on document evidence.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SECTION I — RECOMMENDED IMMEDIATE ACTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[DecisionPipeline — structured 90-day action sequence]
-
-Provide a phased action roadmap:
-
-WEEK 1–2:   [Priority action for the client to take NOW]
-WEEK 3–4:   [Second action building on week 1]
-MONTH 2:    [Medium-term institutional or political action]
-MONTH 3:    [Implementation-phase trigger action]
-MONTH 4+:   [Structural or legislative / funding action]
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                    BW GLOBAL ADVISORY
-         Powered by NSIL Agentic Runtime • NEXUS AI
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-CRITICAL EXECUTION RULES:
-- DO NOT produce a short chat reply. Produce the FULL brief above — all 9 sections.
-- DO NOT use placeholder text like "[Insert analysis here]" — write real analytical content drawn from the uploaded document.
-- DO use specific names, figures, regions, and organisations from the document.
-- After completing the brief, DO NOT ask any follow-up questions — the ReportOptionsPanel will appear automatically for the user to choose next steps.
-- The brief IS the first deliverable. Treat it as a real consultant output, not a system message.`
+RULES:
+- Write as a senior partner, not a system. No em-dash checklists. No "I've captured...". No numbered intake questions.
+- Use specific names, data points, and institutions from the uploaded document.
+- Every engine label must produce a REAL insight — not a placeholder.
+- The response should feel like a senior consultant just walked out of a document review and sat down to brief the client.
+- Do NOT produce the full 9-section formal brief here — that is generated when the user selects a tier from the options panel.
+- After this response, the ReportOptionsPanel will appear automatically with options to generate the full formal deliverable.`
           : '';
 
         responseContent = await processWithAIStream(
@@ -4165,6 +4089,25 @@ CRITICAL EXECUTION RULES:
       // Show report options AFTER AI has demonstrated it understood the document
       if (hadFileUpload) {
         setShowReportOptions(true);
+        // Auto-save the AI's document analysis into the Final Report workspace
+        if (responseContent.length > 300) {
+          const docTitle = reportOptionsDocTitle || uploadedFiles[0]?.name.replace(/\.[^/.]+$/, '') || 'Document Analysis';
+          setGeneratedDocuments(prev => {
+            if (prev.some(d => d.title.includes(docTitle))) return prev;
+            return [...prev, {
+              id: `nexus-analysis-${Date.now()}`,
+              title: `NEXUS AI Analysis — ${docTitle}`,
+              content: responseContent,
+              category: 'report' as const,
+              htmlContent: responseContent
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br/>')
+                .replace(/^/, '<p>')
+                .replace(/$/, '</p>'),
+            }];
+          });
+        }
       }
 
       // Live Intel: fetch real data for detected country
@@ -7634,139 +7577,171 @@ Use concrete facts from the case. No template language. Write the complete repor
 
       {/* Final Report Modal */}
       {showFinalReport && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl max-h-[90vh] bg-white border border-stone-200 shadow-2xl flex flex-col overflow-hidden">
-            {/* Modal Header */}
-            <div
-              className="px-6 py-5 relative overflow-hidden"
-              style={{
-                backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 via-amber-800/85 to-amber-900/80" />
-              <div className="relative z-10 flex items-center justify-between">
-                <div>
-                  <p className="text-amber-200 uppercase tracking-wider text-[10px] font-semibold mb-1">BW Global Advisory</p>
-                  <h2 className="text-xl font-bold text-white">Final Report</h2>
-                  <p className="text-amber-200 text-xs mt-1">Export, print, or continue your advisory documents</p>
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden" style={{ background: '#0f1923', border: '1px solid #2a3a4a' }}>
+
+            {/* ── Header ── */}
+            <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#1e3248', background: 'linear-gradient(135deg, #0f1923 0%, #1a2d40 100%)' }}>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#b48228' }}>
+                    <FileText size={11} className="text-white" />
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#b48228' }}>BW Global Advisory</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 bg-red-600 text-white text-[9px] font-bold tracking-widest uppercase">CONFIDENTIAL</span>
-                  <button
-                    onClick={() => setShowFinalReport(false)}
-                    className="p-2 hover:bg-white/10 text-white border border-white/20 transition-all"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
+                <h2 className="text-xl font-bold text-white">NEXUS AI — Document Intelligence</h2>
+                <p className="text-xs mt-1" style={{ color: '#7a9ab8' }}>
+                  {generatedDocuments.length > 0
+                    ? `${generatedDocuments.length} document${generatedDocuments.length !== 1 ? 's' : ''} ready — analysis complete`
+                    : 'Awaiting document analysis or report generation'}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase" style={{ background: '#7c1d1d', color: '#fca5a5' }}>CONFIDENTIAL</span>
+                <button onClick={() => setShowFinalReport(false)} className="p-2 hover:bg-white/5 transition-all" style={{ border: '1px solid #2a3a4a', color: '#7a9ab8' }}>
+                  <X size={16} />
+                </button>
               </div>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {/* ── Body ── */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-5">
               {generatedDocuments.length > 0 ? (
-                <>
-                  <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">
-                    Ready to Export — {generatedDocuments.length} document{generatedDocuments.length !== 1 ? 's' : ''}
-                  </p>
-                  {generatedDocuments.map((doc) => (
-                    <div key={doc.id} className="border border-stone-200 bg-stone-50 p-4 space-y-3">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-bold text-slate-900">{doc.title}</p>
-                          <span className={`inline-block mt-1 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${doc.category === 'report' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}`}>
-                            {doc.category}
-                          </span>
-                        </div>
+                generatedDocuments.map((doc) => (
+                  <div key={doc.id} className="overflow-hidden" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+
+                    {/* Doc header strip */}
+                    <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#16263a', borderBottom: '1px solid #1e3248' }}>
+                      <div>
+                        <p className="text-sm font-bold text-white">{doc.title}</p>
+                        <p className="text-[10px] mt-0.5" style={{ color: '#7a9ab8' }}>
+                          {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} &nbsp;·&nbsp; {caseStudy.country || 'Global'} &nbsp;·&nbsp; BW Global Advisory
+                        </p>
                       </div>
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => {
-                            const win = window.open('', '_blank');
-                            if (win) {
-                              win.document.write(`<html><head><title>${doc.title}</title><style>body{font-family:Georgia,serif;padding:60px;max-width:800px;margin:auto;line-height:1.7}h1{font-size:1.5rem;margin-bottom:1rem}</style></head><body><h1>${doc.title}</h1>${doc.htmlContent || doc.content.replace(/\n/g, '<br/>')}</body></html>`);
-                              win.document.close();
-                              win.print();
-                            }
-                          }}
-                          className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-medium flex items-center gap-1.5 transition-all"
-                        >
-                          <Download size={12} />
-                          Print
-                        </button>
-                        <button
-                          onClick={() => downloadSingleDocAsDocx(doc)}
-                          className="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-xs font-medium flex items-center gap-1.5 transition-all"
-                        >
-                          <FileText size={12} />
-                          Download DOCX
-                        </button>
-                        <button
-                          onClick={() => {
-                            PDFAnnotationService.generate({
-                              documentTitle: doc.title,
-                              documentType: 'Advisory Report',
-                              jurisdiction: caseStudy.country || 'Global',
-                              preparedFor: caseStudy.organizationName || 'Government Member',
-                              reportId: `BWGA-${Date.now()}`,
-                              executiveSummary: doc.content.slice(0, 500),
-                              annotations: PDFAnnotationService.buildAnnotationsFromAnalysis({
-                                sourcePassages: doc.content.split(/\n\n+/).filter(p => p.trim().length > 80).slice(0, 8).map((p, i) => ({ label: `Passage ${i + 1}`, text: p.slice(0, 300) })),
-                                brainResponses: [],
-                              }),
-                            });
-                          }}
-                          className="px-3 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-xs font-medium flex items-center gap-1.5 transition-all"
-                        >
-                          <Download size={12} />
-                          Download PDF
-                        </button>
+                      <span className="text-[9px] font-bold px-2 py-0.5 uppercase tracking-wider" style={{ background: doc.category === 'report' ? '#1e3a5f' : '#1e3f25', color: doc.category === 'report' ? '#60a5fa' : '#86efac' }}>
+                        {doc.category}
+                      </span>
+                    </div>
+
+                    {/* Content preview */}
+                    <div className="px-5 py-4">
+                      <div className="text-xs leading-relaxed whitespace-pre-wrap font-mono" style={{ color: '#a8c0d6', maxHeight: '300px', overflowY: 'auto' }}>
+                        {doc.content.slice(0, 2000)}{doc.content.length > 2000 ? '\n\n[…continued in full export]' : ''}
                       </div>
                     </div>
-                  ))}
-                </>
+
+                    {/* Actions */}
+                    <div className="px-5 py-3 flex flex-wrap gap-2 border-t" style={{ borderColor: '#1e3248', background: '#0d1821' }}>
+                      <button
+                        onClick={() => {
+                          const win = window.open('', '_blank');
+                          if (win) {
+                            win.document.write(`<!DOCTYPE html><html><head><title>${doc.title}</title><style>
+                              body{font-family:Georgia,serif;padding:60px 80px;max-width:900px;margin:auto;line-height:1.75;color:#1a1a1a;background:#fff}
+                              h1{font-size:1.4rem;color:#0f1923;border-bottom:2px solid #b48228;padding-bottom:12px;margin-bottom:24px}
+                              .meta{font-size:0.75rem;color:#666;margin-bottom:30px}
+                              pre{white-space:pre-wrap;font-family:inherit;font-size:0.875rem}
+                              .bw-footer{margin-top:60px;padding-top:16px;border-top:1px solid #ccc;font-size:0.7rem;color:#999;text-align:center}
+                            </style></head><body>
+                            <h1>${doc.title}</h1>
+                            <div class="meta">BW Global Advisory &nbsp;|&nbsp; CONFIDENTIAL &nbsp;|&nbsp; ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                            <pre>${doc.content}</pre>
+                            <div class="bw-footer">Powered by NSIL Agentic Runtime • NEXUS AI &nbsp;|&nbsp; BW Global Advisory &nbsp;|&nbsp; Confidential</div>
+                            </body></html>`);
+                            win.document.close();
+                            win.print();
+                          }
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all hover:opacity-90"
+                        style={{ background: '#1e3248', color: '#a8c0d6', border: '1px solid #2a3a4a' }}
+                      >
+                        <Download size={11} />Print / PDF
+                      </button>
+                      <button
+                        onClick={() => downloadSingleDocAsDocx(doc)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all hover:opacity-90"
+                        style={{ background: '#1e3a5f', color: '#93c5fd', border: '1px solid #2a4a7a' }}
+                      >
+                        <FileText size={11} />Download DOCX
+                      </button>
+                      <button
+                        onClick={() => {
+                          PDFAnnotationService.generate({
+                            documentTitle: doc.title,
+                            documentType: 'Advisory Report',
+                            jurisdiction: caseStudy.country || 'Global',
+                            preparedFor: caseStudy.organizationName || 'Government Member',
+                            reportId: `BWGA-${Date.now()}`,
+                            executiveSummary: doc.content.slice(0, 500),
+                            annotations: PDFAnnotationService.buildAnnotationsFromAnalysis({
+                              sourcePassages: doc.content.split(/\n\n+/).filter(p => p.trim().length > 80).slice(0, 8).map((p, i) => ({ label: `Passage ${i + 1}`, text: p.slice(0, 300) })),
+                              brainResponses: [],
+                            }),
+                          });
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all hover:opacity-90"
+                        style={{ background: '#3d2a00', color: '#fbbf24', border: '1px solid #5a3f00' }}
+                      >
+                        <Download size={11} />Annotated PDF
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowFinalReport(false);
+                          setInputValue(`Based on the NEXUS AI analysis "${doc.title}", generate a full 9-section NEXUS AI Intelligence Brief with complete executive summary, problem diagnosis, historical parallels, stakeholder map, intelligence scores, strategic pillars, partner matrix, risk register, and 90-day action plan.`);
+                          setTimeout(() => {
+                            const btn = document.querySelector('[data-send-btn]') as HTMLButtonElement;
+                            btn?.click();
+                          }, 150);
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all hover:opacity-90 ml-auto"
+                        style={{ background: '#b48228', color: '#fff', border: 'none' }}
+                      >
+                        <Zap size={11} />Generate Full Intelligence Brief
+                      </button>
+                    </div>
+                  </div>
+                ))
               ) : (
                 <div className="space-y-4">
-                  <div className="border border-amber-200 bg-amber-50 p-4">
-                    <p className="text-sm font-semibold text-amber-900 mb-1">No report generated yet</p>
-                    <p className="text-xs text-amber-700 leading-relaxed">
-                      Have a consultation session with the OS and request a report, strategy document, or advisory brief. Once generated, your documents will appear here for export.
+                  {/* Empty state */}
+                  <div className="px-5 py-6 text-center" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                    <div className="w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: '#16263a' }}>
+                      <FileText size={20} style={{ color: '#7a9ab8' }} />
+                    </div>
+                    <p className="text-sm font-semibold text-white mb-1">No documents generated yet</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#7a9ab8' }}>
+                      Upload a document or have a consultation session with the OS. Once the NEXUS AI analyses your document, it will appear here ready for export.
                     </p>
                   </div>
                   {messages.filter(m => m.role !== 'system').length > 2 && (
-                    <div className="border border-stone-200 bg-stone-50 p-4">
-                      <p className="text-sm font-semibold text-slate-900 mb-2">Generate from current session</p>
-                      <p className="text-xs text-slate-600 mb-3 leading-relaxed">
-                        The OS will synthesise your current consultation into a structured advisory report.
+                    <div className="px-5 py-4" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                      <p className="text-sm font-semibold text-white mb-1">Generate from current session</p>
+                      <p className="text-xs mb-3" style={{ color: '#7a9ab8' }}>
+                        The NEXUS AI will synthesise your consultation into a structured advisory brief.
                       </p>
                       <button
                         onClick={() => {
                           setShowFinalReport(false);
-                          setInputValue('Generate a final advisory report summarising our full conversation, key findings, recommendations, and next steps.');
+                          setInputValue('Generate a full NEXUS AI Intelligence Brief summarising our consultation — include executive summary, key findings, strategic recommendations, partner matrix, risk register, and 90-day action plan.');
                         }}
-                        className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm font-medium transition-all"
+                        className="px-4 py-2 text-sm font-medium transition-all hover:opacity-90"
+                        style={{ background: '#b48228', color: '#fff' }}
                       >
-                        Generate Final Report
+                        Generate Intelligence Brief
                       </button>
                     </div>
-                  )}
-                  {messages.filter(m => m.role !== 'system').length <= 2 && (
-                    <p className="text-xs text-slate-400 text-center py-6">
-                      Begin a consultation, then return here to generate and export your final report.
-                    </p>
                   )}
                 </div>
               )}
             </div>
 
-            {/* Footer */}
-            <div className="px-6 py-3 border-t border-stone-200 bg-stone-50 flex items-center justify-between">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider">BW Global Advisory — Confidential</p>
+            {/* ── Footer ── */}
+            <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #1e3248', background: '#0d1821' }}>
+              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#3a5a7a' }}>BW Global Advisory — NEXUS AI Agentic Runtime — Confidential</p>
               <button
                 onClick={() => setShowFinalReport(false)}
-                className="px-4 py-1.5 bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-medium transition-all"
+                className="px-4 py-1.5 text-xs font-medium transition-all hover:opacity-90"
+                style={{ background: '#1e3248', color: '#a8c0d6', border: '1px solid #2a3a4a' }}
               >
                 Close
               </button>
