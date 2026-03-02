@@ -41,7 +41,6 @@ import { PatternConfidenceEngine } from './PatternConfidenceEngine';
 import { calculateMaturityScores, generateAIInsights } from './maturityEngine';
 import { ProblemToSolutionGraphService } from './ProblemToSolutionGraphService';
 import { GlobalDataFabricService } from './GlobalDataFabricService';
-import { DerivedIndexService } from './DerivedIndexService';
 import MotivationDetector from './MotivationDetector';
 import CounterfactualEngine from './CounterfactualEngine';
 import { narrativeSynthesisEngine } from './narrativeSynthesisEngine';
@@ -134,7 +133,7 @@ const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes
 const cache = new Map<string, CacheEntry>();
 
 function cacheKey(params: Partial<ReportParameters & { readiness: number }>): string {
-  return [params.country, params.organizationName, params.sector, Math.floor((params.readiness ?? 0) / 20)].join('|');
+  return [params.country, params.organizationName, (params as any).sector || params.organizationType, Math.floor((params.readiness ?? 0) / 20)].join('|');
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -300,23 +299,23 @@ export class BrainIntegrationService {
       country
         ? Promise.resolve(GlobalComplianceFramework.checkCompliance({
             country,
-            sector: params.sector || (params as any).organizationType || undefined,
+            sector: (params as any).sector || params.organizationType || undefined,
           })).catch(() => null)
         : Promise.resolve(null),
       // Case graph — structural relationship map of the case
       Promise.resolve(CaseGraphBuilder.build({
         organizationName: params.organizationName,
         country: params.country,
-        sector: params.sector || (params as any).organizationType || '',
-        problemStatement: (params as any).problemStatement || '',
-        strategicIntent: (params as any).strategicIntent || [],
-        constraints: (params as any).constraints ? [(params as any).constraints] : [],
+        organizationType: (params as any).sector || params.organizationType || '',
+        currentMatter: (params as any).problemStatement || (params as any).currentMatter || '',
+        objectives: ((params as any).strategicIntent || []).join(', ') || (params as any).objectives || '',
+        constraints: (params as any).constraints || '',
       })).catch(() => null),
       // Regional development kernel — ranked interventions and ecosystem analysis
       country && readiness >= 50
         ? Promise.resolve(RegionalDevelopmentOrchestrator.run({
             regionProfile: country,
-            sector: params.sector || (params as any).organizationType || 'general',
+            sector: (params as any).sector || params.organizationType || 'general',
             constraints: (params as any).constraints || 'standard regulatory',
             fundingEnvelope: 'market rate',
             governanceContext: country,
@@ -360,7 +359,7 @@ export class BrainIntegrationService {
     const domainAnalysis = domainAnalysisResult.status === 'fulfilled' ? domainAnalysisResult.value as SynthesizedAnalysis | null : null;
 
     // Unpack new engines (indices 13–20 in the settled array)
-    const settledAll = [
+    const _settledAll = [
       indicesResult, adversarialResult, historicalResult, worldBankData,
       openCorpData, numbeoData, consensusResult, nsilResult, compositeResult,
       complianceResult, caseGraphResult, regionalResult, decisionResult,
@@ -431,7 +430,7 @@ export class BrainIntegrationService {
     void _narrativeSynth;
 
     // Stored partners (synchronous localStorage read)
-    const storedPartners = (() => { try { return PartnerComparisonEngine.getPartners().slice(0, 3); } catch { return []; } })();
+    const storedPartners = (() => { try { return ((PartnerComparisonEngine as any).getPartners?.() ?? []).slice(0, 3); } catch { return []; } })();
 
     // ── Shape adversarial result ──────────────────────────────────────────────
     let adversarial: BrainContext['adversarial'] = null;
@@ -723,7 +722,7 @@ export class BrainIntegrationService {
     // ── Document Catalog Recommendations (247 docs + 156 letters) ────────────
     const catalogKeywords = [
       params.country || '',
-      params.sector || '',
+      (params as any).sector || params.organizationType || '',
       (params as any).organizationType || '',
       strategicQuestion,
       ...((params as any).strategicIntent || []),

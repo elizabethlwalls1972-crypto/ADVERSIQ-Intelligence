@@ -90,7 +90,7 @@ export class IntelligentDocumentGenerator {
       id: l.id,
       name: l.name,
       category: l.category,
-      description: l.description,
+      description: (l as any).description ?? l.name,
       type: 'letter',
       tone: l.tone,
       audience: l.audience,
@@ -167,7 +167,7 @@ export class IntelligentDocumentGenerator {
         id: d.id,
         name: d.name,
         category: d.category,
-        description: d.description,
+        description: (d as any).description ?? d.name,
         type,
         tone: d.tone,
         audience: d.audience,
@@ -284,7 +284,7 @@ export class IntelligentDocumentGenerator {
     const lines = [
       `Organization: ${params.organizationName || 'Not specified'}`,
       `Country / Jurisdiction: ${params.country || 'Not specified'}`,
-      `Sector: ${params.sector || (params as any).organizationType || 'Not specified'}`,
+      `Sector: ${(params as any).sector || params.organizationType || 'Not specified'}`,
       `Objective: ${params.objectives || (params.strategicIntent || []).join(', ') || 'Not specified'}`,
       `Current Matter: ${params.currentMatter || 'Not specified'}`,
       `Constraints: ${params.constraints || 'Standard commercial'}`,
@@ -292,7 +292,7 @@ export class IntelligentDocumentGenerator {
 
     if (params.additionalContext?.length) {
       lines.push(`Additional Context:`);
-      params.additionalContext.slice(0, 5).forEach(c => lines.push(`  - ${c}`));
+      (params.additionalContext as string[] | undefined)?.slice(0, 5).forEach(c => lines.push(`  - ${c}`));
     }
     if (params.uploadedDocuments?.length) {
       lines.push(`Supporting Documents Uploaded: ${params.uploadedDocuments.join(', ')}`);

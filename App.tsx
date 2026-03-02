@@ -686,7 +686,7 @@ const App: React.FC = () => {
                         pendingLocation={pendingLocationData}
                         onLocationLoaded={() => setPendingLocationData(null)}
                         onPushToConsultant={(data) => {
-                            setPendingConsultantContext(data as { city: string; country: string; summary: string; profile: Record<string, unknown>; research: object | null });
+                            setPendingConsultantContext(data as unknown as { city: string; country: string; summary: string; profile: Record<string, unknown>; research: object | null });
                             setViewMode('consultant-os');
                         }}
                     />

@@ -21,6 +21,8 @@ interface NSILWorkspaceProps {
   isAutonomousThinking?: boolean;
   initialConsultantQuery?: string;
   onInitialConsultantQueryHandled?: () => void;
+  initialContext?: { city: string; country: string; summary: string; profile: Record<string, unknown>; research: object | null } | null;
+  onInitialContextHandled?: () => void;
 }
 
 const NSILWorkspace: React.FC<NSILWorkspaceProps> = () => {

@@ -492,12 +492,13 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       let documentText: string | null = null;
       if (researchResult) {
         try {
+          // Cast researchResult through unknown to avoid explicit-any on the typed generator calls
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const _r = researchResult as any;
           const typed = documentType === 'report'
-            ? documentGenerator.generateCountryProfile(researchResult as any)
+            ? documentGenerator.generateCountryProfile(_r)
             : documentType === 'briefing'
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ? documentGenerator.generateInvestmentBrief(researchResult as any)
+            ? documentGenerator.generateInvestmentBrief(_r)
             : null;
           if (typed) {
             documentText = [
@@ -1103,7 +1104,7 @@ th { background: #f1f5f9; }
                           `Location: ${activeProfile.city}, ${activeProfile.country}`,
                           activeProfile.economics?.gdpLocal ? `GDP: ${activeProfile.economics.gdpLocal}` : '',
                           activeProfile.demographics?.population ? `Population: ${activeProfile.demographics.population.toLocaleString()}` : '',
-                          activeProfile.investmentPrograms?.length ? `Investment programs: ${activeProfile.investmentPrograms.slice(0, 2).map((p: any) => p.title || p).join(', ')}` : '',
+                          activeProfile.investmentPrograms?.length ? `Investment programs: ${activeProfile.investmentPrograms.slice(0, 2).map((p: { title?: string } | string) => (typeof p === 'string' ? p : p.title) || '').join(', ')}` : '',
                           researchResult?.summary ? `Research summary: ${String(researchResult.summary).substring(0, 300)}` : '',
                         ].filter(Boolean).join(' | ');
                         onPushToConsultant({

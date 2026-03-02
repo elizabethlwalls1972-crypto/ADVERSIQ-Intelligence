@@ -205,7 +205,7 @@ function drawAnnotationBlock(
   index: number,
   startY: number,
   pageNumber: number,
-  totalAnnotations: number,
+  _totalAnnotations: number,
 ): number {
   const W = doc.internal.pageSize.getWidth();
   const H = doc.internal.pageSize.getHeight();

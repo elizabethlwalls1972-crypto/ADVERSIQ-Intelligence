@@ -14,7 +14,7 @@ import {
   Bot, Send, Paperclip, Loader2, X,
   FileText, Mail, Briefcase, Shield, BarChart3, Users, Scale, 
   Globe, FileCheck, PenTool, Download, Copy, Check,
-  HelpCircle, ChevronRight, BookOpen,
+  HelpCircle, ChevronRight,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle,
   Mic, MicOff,
 } from 'lucide-react';
@@ -772,7 +772,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   const displayedMsgIds = useRef<Set<string>>(new Set());
   const spokenMsgIds = useRef<Set<string>>(new Set());
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<{ stop(): void } | null>(null);
   // Background brain context — updated on every enrichment pass
   const brainCtxRef = useRef<BrainContext | null>(null);
   // Persistent cross-session memory (survives page reload via localStorage)
@@ -834,8 +834,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   // ── Voice Input (Speech-to-Text) ──────────────────────────────────────────
   const toggleVoiceInput = useCallback(() => {
     if (typeof window === 'undefined') return;
-    const SR = (window as unknown as { SpeechRecognition?: typeof SpeechRecognition; webkitSpeechRecognition?: typeof SpeechRecognition }).SpeechRecognition
-      ?? (window as unknown as { SpeechRecognition?: typeof SpeechRecognition; webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SR = (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
     if (!SR) {
       alert('Voice input is not supported in this browser. Please use Chrome or Edge.');
       return;
@@ -859,7 +859,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
 
     rec.onstart = () => setIsListening(true);
 
-    rec.onresult = (event: SpeechRecognitionEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rec.onresult = (event: any) => {
       interimTranscript = '';
       let finalFragment = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -1518,7 +1519,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   }, []);
 
   // buildLowSignalReply kept as safety fallback — pipeline bypass removed; AI handles all inputs directly
-  const buildLowSignalReply = useCallback((_detectedName: string | null) => {
+  const _buildLowSignalReply = useCallback((_detectedName: string | null) => {
     return "What are you working on? I'm ready to help.";
   }, []);
 
@@ -2816,7 +2817,7 @@ When the user has specified a country or region, proactively reference:
 Respond naturally and helpfully. Keep responses focused and actionable.
 
 ${agentRegistry.current.toManifest()}`;
-  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, quickCountryFocus, quickBusinessTarget, activeIssuePack, quickCustomSector, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary, effectivePilotFocusText]);
+  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, quickCountryFocus, quickBusinessTarget, activeIssuePack, quickCustomSector, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary]);
 
   const buildNaturalFallbackReply = useCallback((userInput: string) => {
     const trimmed = userInput.trim();
@@ -3402,7 +3403,7 @@ ${agentRegistry.current.toManifest()}`;
     // Brain-recommended IDs rise to the top; the rest become 'available'
     const catalogEntries = IntelligentDocumentGenerator.recommendForCase({
       country: caseStudy.country || '',
-      sector: caseStudy.sector || caseStudy.situationType || '',
+      sector: caseStudy.organizationType || caseStudy.situationType || '',
       organizationName: caseStudy.organizationName || '',
       organizationType: caseStudy.targetAudience || '',
       strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
@@ -3740,7 +3741,7 @@ ${agentRegistry.current.toManifest()}`;
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
       const brainEnrichmentPromise = liveReadiness >= 15 && !isGreetingOnly && !shouldPromptForOutputClarification
         ? BrainIntegrationService.enrich(
-            { country: caseDraft.country, organizationName: caseDraft.organizationName, sector: caseDraft.organizationType || undefined },
+            { country: caseDraft.country, organizationName: caseDraft.organizationName, organizationType: caseDraft.organizationType || undefined },
             liveReadiness,
             trimmedUserContent
           ).catch((e) => { console.warn('[Brain] non-fatal:', e); return null; })
@@ -4200,7 +4201,6 @@ CRITICAL EXECUTION RULES:
     inputValue,
     uploadedFiles,
     classifyConsultantInput,
-    buildLowSignalReply,
     currentPhase,
     initializeExecutionTimeline,
     setExecutionTaskStatus,
@@ -4293,7 +4293,7 @@ CRITICAL EXECUTION RULES:
     // Run InputValidationEngine — catches adversarial content, numeric contradictions, fraud patterns
     let engineGaps: CriticalCaseGap[] = [];
     try {
-      const report = new InputValidationEngine().validate(caseStudy as Record<string, unknown>);
+      const report = new InputValidationEngine().validate(caseStudy as unknown as Record<string, unknown>);
       engineGaps = report.issues
         .filter((issue) => issue.severity === 'critical' || issue.severity === 'high')
         .map((issue) => ({
@@ -7624,7 +7624,7 @@ Use concrete facts from the case. No template language. Write the complete repor
           params={{
             organizationName: caseStudy.organizationName,
             country: caseStudy.country,
-            sector: caseStudy.situationType,
+            organizationType: caseStudy.situationType || caseStudy.organizationType,
             strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
           }}
           brainBlock={brainCtxRef.current?.promptBlock || ''}
@@ -7706,11 +7706,16 @@ Use concrete facts from the case. No template language. Write the complete repor
                         <button
                           onClick={() => {
                             PDFAnnotationService.generate({
-                              title: doc.title,
-                              subtitle: 'BW Global Advisory — Confidential Advisory',
-                              bodyText: doc.content,
-                              annotations: PDFAnnotationService.buildAnnotationsFromAnalysis(doc.content),
-                              confidential: true,
+                              documentTitle: doc.title,
+                              documentType: 'Advisory Report',
+                              jurisdiction: caseStudy.country || 'Global',
+                              preparedFor: caseStudy.organizationName || 'Government Member',
+                              reportId: `BWGA-${Date.now()}`,
+                              executiveSummary: doc.content.slice(0, 500),
+                              annotations: PDFAnnotationService.buildAnnotationsFromAnalysis({
+                                sourcePassages: doc.content.split(/\n\n+/).filter(p => p.trim().length > 80).slice(0, 8).map((p, i) => ({ label: `Passage ${i + 1}`, text: p.slice(0, 300) })),
+                                brainResponses: [],
+                              }),
                             });
                           }}
                           className="px-3 py-1.5 bg-amber-700 hover:bg-amber-600 text-white text-xs font-medium flex items-center gap-1.5 transition-all"

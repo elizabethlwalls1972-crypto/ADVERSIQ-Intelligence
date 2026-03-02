@@ -116,7 +116,7 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
     const q = search.toLowerCase();
     return allLetters.filter((l) => {
       const matchCat = selectedCategory === 'all' || l.category === selectedCategory;
-      const matchSearch = !q || l.name.toLowerCase().includes(q) || l.description.toLowerCase().includes(q) || l.category.toLowerCase().includes(q);
+      const matchSearch = !q || l.name.toLowerCase().includes(q) || ((l as any).description || '').toLowerCase().includes(q) || l.category.toLowerCase().includes(q);
       return matchCat && matchSearch;
     });
   }, [allLetters, selectedCategory, search]);
@@ -136,7 +136,7 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
     return [
       `Organization: ${params.organizationName || 'Not specified'}`,
       `Country / Jurisdiction: ${params.country || 'Not specified'}`,
-      `Sector: ${params.sector || 'Not specified'}`,
+      `Sector: ${params.organizationType || 'Not specified'}`,
       `Objective: ${(params.strategicIntent || []).join(', ') || 'Not specified'}`,
     ].join('\n');
   }, [params]);
@@ -222,7 +222,7 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
     if (!content) return;
     setDownloadingId(id);
     try {
-      await downloadAsDocx({
+      await downloadAsDocx(content, {
         title: name.toUpperCase(),
         subtitle: `${params?.organizationName || 'BW Global Advisory'} — ${params?.country || 'Global'}`,
         classification: 'CONFIDENTIAL',
@@ -230,8 +230,7 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
         preparedBy: 'BW Global Advisory — NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
         reportId: `BWGA-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
-        content,
-      } as any);
+      });
     } catch (err) {
       console.error('Download error:', err);
       const blob = new Blob([content], { type: 'text/plain' });
@@ -483,7 +482,7 @@ const LetterCard: React.FC<CardSharedProps & { item: LetterTypeConfig }> = ({ it
         <Mail size={12} className="text-stone-500 shrink-0" />
         <span className="text-xs font-semibold text-stone-900 truncate">{item.name}</span>
       </div>
-      <p className="text-[10px] text-stone-500 line-clamp-2">{item.description}</p>
+      <p className="text-[10px] text-stone-500 line-clamp-2">{(item as any).description || item.name}</p>
     </div>
     <div className="flex items-center gap-1.5 flex-wrap">
       <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-sm ${TONE_COLOR[item.tone] || 'bg-stone-100 text-stone-700'}`}>
