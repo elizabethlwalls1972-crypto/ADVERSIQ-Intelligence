@@ -1587,7 +1587,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
 
     const userName = normalized.match(/\b(?:i am|i'm|my name is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2})\b/i)?.[1] || inputSignal.inferredName;
-    const organizationName = normalized.match(/\b(?:organization|company|agency|institution|we are|i represent|from)\s*(?:is|:)?\s*([A-Z][A-Za-z0-9&.,\-\s]{2,80})\b/i)?.[1]?.trim() || null;
+    const organizationName = (
+      normalized.match(/\b(?:organization|company|agency|institution|we are|i represent|from)\s*(?:is|:)?\s*([A-Z][A-Za-z0-9&.,\-\s]{2,80})\b/i)?.[1]?.trim()
+      // Accept bare department/ministry/agency names (user answering a follow-up like "department of industry")
+      || normalized.match(/^\s*((?:department|ministry|agency|bureau|office|commission|authority|division|council)\s+(?:of|for)\s+[\w\s&\-']+)/i)?.[1]?.trim()
+      // Accept short bare org names when user is directly answering the "which organisation" question
+      || (normalized.trim().split(/\s+/).length <= 6 && /^[A-Z]/.test(normalized.trim()) ? normalized.trim() : null)
+      || null
+    );
     const organizationType = normalized.match(/\b(government agency|private company|ngo|non-profit|investor|bank|development bank|regional council|legal advisory|ministry|public sector|multilateral)\b/i)?.[1] || null;
     const contactRole = normalized.match(/\b(?:i am the|my role is|i serve as|i am)\s+([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
     const country = normalized.match(/\b(?:in|from|operating in|country)\s+([A-Z][A-Za-z\s]{2,40})\b/i)?.[1]?.trim() || null;
@@ -2792,7 +2799,7 @@ Consultant intelligence profile:
 ${consultantCaseBrief}
 
 Consultant gate status:
-${consultantGateReady ? 'READY' : `BLOCKED: ${consultantGateMissing.join('; ')}`}
+${consultantGateReady ? 'READY — all case fields populated' : `ENRICHING — some fields still being collected in background: ${consultantGateMissing.join('; ')}. Do NOT refuse to answer or loop on intake questions. Always respond to the user's actual request first.`}
 
 User's latest input: "${userInput}"
 Phase context: ${context}
@@ -2852,6 +2859,33 @@ ${agentRegistry.current.toManifest()}`;
       return 'Hello \u2014 I can help with strategy, risk, partnerships, market entry, compliance, or document drafting. Tell me what decision you are trying to make right now, and I\u2019ll give you a direct recommendation.';
     }
 
+    // ── DOCUMENT UPLOAD AWARENESS ──
+    // When the user has uploaded documents, provide document-aware analysis
+    // instead of looping on intake questions.
+    const hasUploadedDocs = caseStudy.uploadedDocuments.length > 0;
+    const hasDocContent = /\*\*Uploaded Documents:\*\*/.test(trimmed);
+    const docInsights = caseStudy.aiInsights.filter(i => i.length > 30);
+
+    if (hasDocContent || (hasUploadedDocs && docInsights.length > 0)) {
+      const cs = caseStudy;
+      const profileParts: string[] = [];
+      if (cs.country.trim()) profileParts.push(`**Country/Region:** ${cs.country}`);
+      if (cs.organizationType.trim()) profileParts.push(`**Sector:** ${cs.organizationType}`);
+      if (cs.currentMatter.trim()) profileParts.push(`**Subject:** ${cs.currentMatter}`);
+      if (cs.targetAudience.trim()) profileParts.push(`**Key Stakeholders:** ${cs.targetAudience}`);
+      if (cs.decisionDeadline.trim()) profileParts.push(`**Timeframe:** ${cs.decisionDeadline}`);
+
+      let reply = `**I\u2019ve reviewed the uploaded document${caseStudy.uploadedDocuments.length > 1 ? 's' : ''}.** Here\u2019s what the NSIL engines extracted:\n\n`;
+      if (profileParts.length > 0) {
+        reply += profileParts.join('\n') + '\n\n';
+      }
+      if (docInsights.length > 0) {
+        reply += `**Analysis Summary:**\n${docInsights.slice(0, 3).map(i => `\u2022 ${i.slice(0, 300)}`).join('\n')}\n\n`;
+      }
+      reply += `I can generate a full report, strategic recommendation, letter of intent, or executive brief based on this document. What would you like me to produce?`;
+      return reply;
+    }
+
     // Build context-aware fallback from current case knowledge
     const cs = caseStudy;
     const knownParts: string[] = [];
@@ -2862,14 +2896,13 @@ ${agentRegistry.current.toManifest()}`;
     if (cs.organizationType.trim()) knownParts.push(`**Type:** ${cs.organizationType}`);
     if (cs.targetAudience.trim()) knownParts.push(`**Audience:** ${cs.targetAudience}`);
 
-    const _keywords = trimmed.split(/\s+/).filter(w => w.length > 4).slice(0, 5);
-    void _keywords; // retained for future debug use
-
     // Context-aware fallback — no scripted intake phrases
     let reply = knownParts.length > 0
       ? `Here's my read based on what you've shared so far:\n\n${knownParts.join('\n')}`
-      : `Tell me more about what you're trying to achieve — I'll give you a direct read on it.`;
+      : `Tell me more about what you're trying to achieve \u2014 I'll give you a direct read on it.`;
 
+    // Ask at most ONE follow-up, but NEVER repeat a question that was already asked
+    // in the last 3 assistant messages (prevents looping)
     const nextQ = !cs.organizationName.trim()
       ? 'Which organisation is the decision owner for this matter?'
       : !cs.country.trim()
@@ -3603,6 +3636,19 @@ ${agentRegistry.current.toManifest()}`;
       }
     }
 
+    // ── Re-run signal extraction on COMBINED content (including uploaded doc text) ──
+    // The original extractConsultantSignals only ran on typed text. Now capture
+    // country, objectives, org names, etc. from the full message including docs.
+    if (uploadedFiles.length > 0 && userContent.length > inputValue.trim().length + 100) {
+      const docSignals = extractConsultantSignals(userContent);
+      if (docSignals.country && !extractedSignals.country) extractedSignals.country = docSignals.country;
+      if (docSignals.organizationName && !extractedSignals.organizationName) extractedSignals.organizationName = docSignals.organizationName;
+      if (docSignals.objectives && !extractedSignals.objectives) extractedSignals.objectives = docSignals.objectives;
+      if (docSignals.currentMatter && !extractedSignals.currentMatter) extractedSignals.currentMatter = docSignals.currentMatter;
+      if (docSignals.jurisdiction && !extractedSignals.jurisdiction) extractedSignals.jurisdiction = docSignals.jurisdiction;
+      if (docSignals.targetAudience && !extractedSignals.targetAudience) extractedSignals.targetAudience = docSignals.targetAudience;
+    }
+
     // Capture before files are cleared — used to defer showing ReportOptionsPanel until after AI responds
     const hadFileUpload = uploadedFiles.length > 0;
     const discoveredDocs: DocumentOption[] = [];
@@ -3623,11 +3669,20 @@ ${agentRegistry.current.toManifest()}`;
         try {
           const analysis = CaseStudyAnalyzer.analyze(file.name, fileContent);
           const summary = CaseStudyAnalyzer.toConsultantSummary(analysis);
-          setCaseStudy(prev => ({
-            ...prev,
-            aiInsights: [...prev.aiInsights, summary],
-            additionalContext: [...prev.additionalContext, `Uploaded analysis: ${analysis.title}`]
-          }));
+          setCaseStudy(prev => {
+            const next = {
+              ...prev,
+              aiInsights: [...prev.aiInsights, summary],
+              additionalContext: [...prev.additionalContext, `Uploaded analysis: ${analysis.title}`]
+            };
+            // ── Wire CaseStudyAnalyzer results into main case fields ──
+            if (analysis.country && !next.country.trim()) next.country = analysis.country;
+            if (analysis.sector && !next.organizationType.trim()) next.organizationType = analysis.sector;
+            if (analysis.title && next.currentMatter.trim().length < 60) next.currentMatter = analysis.title;
+            if (analysis.stakeholders?.length && !next.targetAudience.trim()) next.targetAudience = analysis.stakeholders.slice(0, 3).join(', ');
+            if (analysis.timeframe && !next.decisionDeadline.trim()) next.decisionDeadline = analysis.timeframe;
+            return next;
+          });
 
           analysis.suggestedDocuments.slice(0, 3).forEach((docName, suggestionIndex) => {
             discoveredDocs.push({
