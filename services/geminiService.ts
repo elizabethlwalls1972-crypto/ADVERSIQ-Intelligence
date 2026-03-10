@@ -471,7 +471,7 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     try {
       const raw = await file.text();
       if (raw.trim().length > 20) {
-        return `[${file.name}] (text read)\n${raw.slice(0, 40000)}`;
+        return `[${file.name}] (text read)\n${raw.slice(0, 32000)}`;
       }
     } catch { /* ignore */ }
   }

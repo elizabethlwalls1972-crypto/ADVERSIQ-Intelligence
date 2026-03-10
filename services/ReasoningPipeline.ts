@@ -98,7 +98,7 @@ function formatIntelligenceBlock(
 
   // Legacy fallback: raw string blob from BrainIntegrationService
   if (legacy) {
-    return `\n\n## INTELLIGENCE ENRICHMENT:\n${legacy.slice(0, 2000)}`;
+    return `\n\n## INTELLIGENCE ENRICHMENT:\n${legacy.slice(0, 4000)}`;
   }
 
   return '';

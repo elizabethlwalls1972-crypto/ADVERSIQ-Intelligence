@@ -2787,13 +2787,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     if (isText) {
       try {
         const text = await file.text();
-        return `[${file.name}]\n${text.slice(0, 8000)}${text.length > 8000 ? '\n...(truncated)' : ''}`;
+        return `[${file.name}]\n${text.slice(0, 32000)}${text.length > 32000 ? '\n...(truncated)' : ''}`;
       } catch {
         return `[${file.name}] — Unable to read file content`;
       }
     }
 
-    return `[${file.name}] — File type not supported. Please convert to PDF, DOCX, or plain text.`;
+    return `[${file.name}] — File type not supported. Please convert to PDF or plain text (.txt).`;
   }, []);
 
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
@@ -3044,8 +3044,11 @@ ${agentRegistry.current.toManifest()}`;
 
       // ── Fallback: ReasoningPipeline (non-streaming) ─────────────────────────────
       //  Run engines + full 4-step reasoning before returning answer.
+      //  Use only the typed query (before any document separator) for the engines.
+      const _docSep = userInput.indexOf('\n\n**Uploaded Documents:**');
+      const _focusedIssue = _docSep > -1 ? userInput.slice(0, _docSep).trim() : userInput;
       const intelligenceBlock = await runIssuePipeline({
-        issue: userInput,
+        issue: _focusedIssue || userInput.slice(0, 500),
         country: caseStudy.country || undefined,
         organizationName: caseStudy.organizationName || undefined,
         organizationType: caseStudy.organizationType || undefined,
@@ -3053,8 +3056,12 @@ ${agentRegistry.current.toManifest()}`;
         currentMatter: caseStudy.currentMatter || undefined,
       }).catch(() => undefined);
 
+      const _docMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i);
+      const _docCtx = _docMatch ? (_docMatch[1] ?? undefined) : undefined;
+
       const reasoningResult = await runReasoningPipeline({
-        userMessage: userInput,
+        userMessage: _focusedIssue || userInput,
+        documentContext: _docCtx,
         caseContext: {
           ...(caseStudy.organizationName ? { Organization: caseStudy.organizationName } : {}),
           ...(caseStudy.country ? { Country: caseStudy.country } : {}),
@@ -6765,7 +6772,7 @@ Use concrete facts from the case. No template language. Write the complete repor
                   onChange={handleFileSelect}
                   multiple
                   className="hidden"
-                  accept=".txt,.md,.csv,.json,.pdf,.doc,.docx"
+                  accept=".txt,.md,.csv,.json,.pdf"
                 />
                 {/* Voice input button */}
                 <button
