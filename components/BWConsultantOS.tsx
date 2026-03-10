@@ -63,6 +63,7 @@ import { EventBus } from '../services/EventBus';
 import { autonomousScheduler } from '../services/AutonomousScheduler';
 import { MultiAgentOrchestrator, type SynthesizedAnalysis } from '../services/MultiAgentOrchestrator';
 import { PartnerIntelligenceEngine, type PartnerCandidate } from '../services/PartnerIntelligenceEngine';
+import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
 import { selfLearningEngine } from '../services/selfLearningEngine';
 
 // ============================================================================
@@ -4533,9 +4534,48 @@ ${agentRegistry.current.toManifest()}`;
           caseDraft.contactRole ? `Contact role: ${caseDraft.contactRole}` : null,
         ].filter(Boolean).join('\n');
 
-        // Detect if the user is asking a factual/research question so the AI answers it rather than deflecting
+        // ── QUERY TYPE CLASSIFIER — determines engine routing + prompt framing ──
+        // Runs on every turn regardless of readiness to ensure correct engine mix
         const isInfoQueryTurn = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)/i.test(trimmedUserContent)
-          || /\b(who is|who was|what is|what are|tell me about|more about)\b.{3,}/i.test(trimmedUserContent);
+          || /\b(who is|who was|what is|what are|tell me about|more about)\b.{3,}/i.test(trimmedUserContent)
+          || /\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director|general|admiral|chief)\s+\w/i.test(trimmedUserContent);
+        const isPersonQuery = /\b(mayor|governor|minister|president|senator|secretary|ambassador|ceo|director|general|admiral|chief|mr\.|ms\.|dr\.|hon\.)\s+\w/i.test(trimmedUserContent);
+        const isLocationQuery = /\b(city|province|region|state|country|district|municipality|island|capital|town|village|prefecture|county|territory)\b/i.test(trimmedUserContent);
+        const isComplexAnalysis = /\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection)\b/i.test(trimmedUserContent);
+        const _isSimpleFollowUp = messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis;
+
+        // ── LIVE SEARCH for factual queries — retrieval-grounded answers ──────────
+        // Fires for info/person/location queries regardless of readiness so the AI
+        // never answers from memory alone on specific real-world facts.
+        let liveSearchBlock = '';
+        if (isInfoQueryTurn && !isGreetingOnly) {
+          try {
+            const searchQuery = trimmedUserContent.replace(/^(tell me about|tell me more about|more about|who is|what is|what are|explain|describe|i want to know(?:\s+more)?\s+about)\s+/i, '').trim() || trimmedUserContent;
+            const liveResults = await ReactiveIntelligenceEngine.liveSearch(searchQuery, {
+              category: isPersonQuery ? 'leadership' : isLocationQuery ? 'location' : 'general',
+              country: caseDraft.country || undefined,
+            });
+            if (liveResults.length > 0) {
+              liveSearchBlock = `\n\n## LIVE RETRIEVAL RESULTS (ReactiveIntelligenceEngine — real-time search)\n` +
+                liveResults.slice(0, 5).map(r =>
+                  `**${r.title}** (${r.source || new URL(r.url || 'https://bwga.ai').hostname})\n${r.snippet}`
+                ).join('\n\n') +
+                `\n\nINSTRUCTION: Use the above retrieved facts as your primary source for this response. Synthesise into expert prose — cite the sources naturally. Do not repeat search result formatting.`;
+            }
+          } catch { /* non-fatal — AI answers from training knowledge if search unavailable */ }
+        }
+
+        // ── WORLD-KNOWLEDGE BASE INSTRUCTION (applies every turn) ────────────────
+        const worldKnowledgeInstruction = `## WORLD-KNOWLEDGE OPERATING MODE
+You are a senior expert with encyclopaedic knowledge of the world — every country, city, government official, economic system, political structure, historical event, regulatory framework, and industry sector on earth. You think on your feet like a consultant who has worked in 80+ countries.
+
+When asked about ANY person, place, topic, or event:
+1. ANSWER FIRST with substantive factual knowledge — do not deflect, do not ask for context before answering
+2. ${isPersonQuery ? 'PERSON BRIEFING: Name, role/title, jurisdiction, time in office, known policy priorities, political alignment, notable decisions/achievements, international engagement record, key relationships, any controversies' : isLocationQuery ? 'LOCATION BRIEFING: Full geographic/political context, economic profile (GDP, key industries, employment, investment climate), infrastructure, demographics, governance structure, strategic advantages, known development projects, current political leadership' : 'TOPIC BRIEFING: What it is, current status, key stakeholders, historical context, strategic implications, relevant data points and statistics'}
+3. After delivering the substantive answer, connect ONE insight to the user's broader advisory context if relevant
+4. Ask at most ONE targeted follow-up
+
+You NEVER say "I need more context before answering" — you answer with what you know, then gather context.`;
 
         const openingInstruction = isOpeningTurn
           ? `You are BW Consultant — a world-class strategic advisory AI backed by the NSIL Agentic Runtime.
@@ -4547,29 +4587,20 @@ CRITICAL RULES — READ BEFORE RESPONDING:
 - Do NOT invent case context that wasn't in the user's message.
 - Do NOT ask for context before answering — ANSWER FIRST, then optionally ask ONE follow-up.
 
-${isInfoQueryTurn ? `## THIS IS A FACTUAL / RESEARCH QUESTION — ANSWER IT DIRECTLY
-The user is asking a specific factual question. You MUST provide substantive information on the topic FIRST.
-- For a person (mayor, official, executive): brief their role, known priorities, political/institutional standing, tenure, and any notable policy positions or actions
-- For a location (city, province, country): cover economic profile, key sectors, strategic advantages, infrastructure, investment climate, and political environment
-- For a topic/policy: explain what it is, current status, key stakeholders, and strategic implications
-After providing the briefing, ask ONE targeted follow-up about how this connects to the user's objective.` : thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:
-${thisTurnContext}
-
-Use this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET
-The user has provided minimal context. Briefly demonstrate one concrete insight relevant to their message, then ask ONE open question about their situation.`}
+${isInfoQueryTurn ? worldKnowledgeInstruction : thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:\n${thisTurnContext}\n\nUse this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET\nThe user has provided minimal context. Briefly demonstrate one concrete insight relevant to their message, then ask ONE open question about their situation.`}
 
 BEHAVIOUR:
 - Respond DIRECTLY to what the user actually said — show you understood it
-- Sound like a senior consultant starting to engage with a real problem
+- Sound like a senior consultant who has worked across 80+ countries
 - If sector/country/objective can be inferred, show intelligence about THAT topic specifically
 - Ask at most ONE follow-up — the single most valuable missing detail
 - Be concise, direct, and confident`
-          : `Autonomous mixed-initiative mode. BANNED phrases: "I've captured the key elements", numbered intake lists. Answer the user's actual question first.
+          : `You are BW Consultant — autonomous mixed-initiative advisory mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering.
 
-## CASE CONTEXT THIS TURN:
+${isInfoQueryTurn ? worldKnowledgeInstruction : `## CASE CONTEXT THIS TURN:
 ${thisTurnContext || 'Continuing from prior turns — see case study JSON above.'}
 
-Respond to the user's intent first, then advance the case with one follow-up if needed.`;
+Respond to the user's intent first, then advance the case with one follow-up if needed.`}`;
 
         const docUploadBlock = hadFileUpload
           ? `
@@ -4643,7 +4674,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
         const effectiveSystemPrompt = isReportGeneration
           ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}${advancedIntelligenceBlock}`
-          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}${advancedIntelligenceBlock}`;
+          : `${docUploadBlock}${openingInstruction}${memoryBlock}${brainBlock}${liveSearchBlock}${advancedIntelligenceBlock}`;
 
         // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
         const effectiveUserContent = isReportGeneration
@@ -4940,7 +4971,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     enableFullCaseTreeMatching,
     activeIssuePack.label,
     queueAction,
-    reportOptionsDocTitle
+    reportOptionsDocTitle,
+    messages.length
   ]);
 
   // Handle file selection
