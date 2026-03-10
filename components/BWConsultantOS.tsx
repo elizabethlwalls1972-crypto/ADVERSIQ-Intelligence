@@ -53,6 +53,11 @@ import { ttsService } from '../services/ttsService';
 import HistoricalParallelMatcher, { type ParallelMatchResult } from '../services/HistoricalParallelMatcher';
 import { UnbiasedAnalysisEngine, type FullUnbiasedAnalysis } from '../services/UnbiasedAnalysisEngine';
 import { CounterfactualEngine, type CounterfactualAnalysis } from '../services/CounterfactualEngine';
+import { SituationAnalysisEngine, type SituationAnalysisResult } from '../services/SituationAnalysisEngine';
+import NSILIntelligenceHub, { type QuickAssessment } from '../services/NSILIntelligenceHub';
+import MotivationDetector from '../services/MotivationDetector';
+import { UserSignalDecoder, type UserSignalReport, type UserInputSnapshot } from '../services/reflexive/UserSignalDecoder';
+import AdversarialReasoningService, { type AdversarialOutputs } from '../services/AdversarialReasoningService';
 
 // ============================================================================
 // TYPES
@@ -4059,7 +4064,7 @@ ${agentRegistry.current.toManifest()}`;
         // Engines not normally used in standard AI advisory — run synchronously
         // (all are pure computation, no async I/O) and inject as context blocks.
         let advancedIntelligenceBlock = '';
-        if (liveReadiness >= 35 && !isGreetingOnly && !shouldPromptForOutputClarification) {
+        if (!isGreetingOnly && !shouldPromptForOutputClarification) {
           try {
             const partialParams = {
               organizationName: caseDraft.organizationName || undefined,
@@ -4072,26 +4077,126 @@ ${agentRegistry.current.toManifest()}`;
               targetPartner: caseDraft.organizationName || undefined,
             };
 
-            // Run three engines in parallel (all pure sync wrapped in Promise.all)
+            // Build UserInputSnapshot for UserSignalDecoder
+            const userSnapshot: UserInputSnapshot = {
+              missionSummary: caseDraft.currentMatter || trimmedUserContent,
+              problemStatement: caseDraft.currentMatter || trimmedUserContent,
+              strategicIntent: caseDraft.objectives ? [caseDraft.objectives] : [],
+              additionalContext: '',
+              country: caseDraft.country || '',
+              region: caseDraft.jurisdiction || '',
+              sector: caseDraft.organizationType ? [caseDraft.organizationType] : [],
+              riskConcerns: '',
+              partnerProfile: caseDraft.organizationName || '',
+              collaborativeNotes: '',
+              politicalSensitivities: [],
+              priorityThemes: [],
+            };
+
+            // ── Tier 1: Run always (even with minimal context) ────────────────
+            const [situationResult, nsilResult, userSignalResult, motivationResult] = await Promise.all([
+              Promise.resolve<SituationAnalysisResult | null>(
+                SituationAnalysisEngine.analyse(partialParams)
+              ).catch(() => null),
+              Promise.resolve<QuickAssessment | null>(
+                NSILIntelligenceHub.quickAssess(partialParams)
+              ).catch(() => null),
+              Promise.resolve<UserSignalReport | null>(
+                UserSignalDecoder.decode(userSnapshot)
+              ).catch(() => null),
+              Promise.resolve(
+                MotivationDetector.analyze(partialParams as Parameters<typeof MotivationDetector.analyze>[0])
+              ).catch(() => null),
+            ]);
+
+            // ── Tier 2: Run when enough context exists (readiness >= 35) ──────
             const [historicalResult, unbiasedResult, counterfactualResult] = await Promise.all([
               Promise.resolve<ParallelMatchResult | null>(
-                caseDraft.country || caseDraft.organizationType
+                liveReadiness >= 35 && (caseDraft.country || caseDraft.organizationType)
                   ? HistoricalParallelMatcher.match(partialParams)
                   : null
               ).catch(() => null),
               Promise.resolve<FullUnbiasedAnalysis | null>(
-                caseDraft.objectives || caseDraft.currentMatter
+                liveReadiness >= 35 && (caseDraft.objectives || caseDraft.currentMatter)
                   ? UnbiasedAnalysisEngine.analyze(partialParams)
                   : null
               ).catch(() => null),
               Promise.resolve<CounterfactualAnalysis | null>(
-                caseDraft.currentMatter || caseDraft.objectives
+                liveReadiness >= 35 && (caseDraft.currentMatter || caseDraft.objectives)
                   ? CounterfactualEngine.analyze(partialParams)
                   : null
               ).catch(() => null),
             ]);
 
+            // ── Tier 3: Adversarial reasoning at high readiness (>= 60) ───────
+            const adversarialResult = await Promise.resolve<AdversarialOutputs | null>(
+              liveReadiness >= 60
+                ? AdversarialReasoningService.generate(partialParams as Parameters<typeof AdversarialReasoningService.generate>[0])
+                : null
+            ).catch(() => null);
+
             const blocks: string[] = [];
+
+            // ── TIER 1 ENGINE OUTPUTS ─────────────────────────────────────────
+
+            // NSIL Master Hub quick assessment
+            if (nsilResult) {
+              const statusLabel = { green: 'LOW RISK', yellow: 'MODERATE RISK', orange: 'ELEVATED RISK', red: 'HIGH RISK' }[nsilResult.status] ?? nsilResult.status.toUpperCase();
+              blocks.push(
+                `## NSIL MASTER HUB ASSESSMENT (NSILIntelligenceHub — 9-layer engine stack)\n` +
+                `Status: **${statusLabel}** | Trust Score: ${nsilResult.trustScore}/100 | Ethical pass: ${nsilResult.ethicalPass ? 'YES' : 'NEEDS REVIEW'}\n` +
+                `Headline: ${nsilResult.headline}\n` +
+                (nsilResult.topConcerns.length ? `Top concerns: ${nsilResult.topConcerns.slice(0, 3).join('; ')}` : '') +
+                (nsilResult.topOpportunities.length ? `\nTop opportunities: ${nsilResult.topOpportunities.slice(0, 3).join('; ')}` : '') +
+                `\nRecommended next step: ${nsilResult.nextStep}` +
+                (nsilResult.emotionalClimateNotes ? `\nEmotional climate: ${nsilResult.emotionalClimateNotes}` : '')
+              );
+            }
+
+            // Situation Analysis — 7 perspectives
+            if (situationResult) {
+              const sr = situationResult;
+              const unconsideredCritical = sr.unconsideredNeeds.filter(n => n.urgency === 'critical').slice(0, 2);
+              const unconsideredImportant = sr.unconsideredNeeds.filter(n => n.urgency === 'important').slice(0, 2);
+              blocks.push(
+                `## SITUATION ANALYSIS (SituationAnalysisEngine — 7-perspective diagnostic)\n` +
+                (sr.explicitNeeds.length ? `Explicit needs detected: ${sr.explicitNeeds.slice(0, 3).join('; ')}\n` : '') +
+                (sr.implicitNeeds.length ? `Implicit needs (unstated): ${sr.implicitNeeds.slice(0, 3).join('; ')}\n` : '') +
+                ([...unconsideredCritical, ...unconsideredImportant].length
+                  ? `Unconsidered needs (they haven't thought of): ${[...unconsideredCritical, ...unconsideredImportant].map(n => n.need).join('; ')}\n`
+                  : '') +
+                (sr.contrarian?.analysis ? `Contrarian view: ${sr.contrarian.analysis}\n` : '') +
+                (sr.blindSpots.length ? `Blind spots: ${sr.blindSpots.slice(0, 3).join('; ')}\n` : '') +
+                (sr.timeHorizonDivergence?.divergenceRisk ? `Time-horizon divergence risk: ${sr.timeHorizonDivergence.divergenceRisk}` : '')
+              );
+            }
+
+            // Motivation Detector — risk signals from user language
+            if (motivationResult && (motivationResult.redFlags?.length || motivationResult.triggers?.length)) {
+              const flags = (motivationResult.redFlags || []).slice(0, 3);
+              const triggers = (motivationResult.triggers || []).slice(0, 3);
+              blocks.push(
+                `## MOTIVATION ANALYSIS (MotivationDetector — behavioural signal scanner)\n` +
+                (flags.length ? `Red flags in user language: ${flags.map((f: { flag: string }) => f.flag).join('; ')}\n` : '') +
+                (triggers.length ? `Detected motivation signals: ${triggers.map((t: { category: string; implication: string }) => `${t.category} — ${t.implication}`).join('; ')}` : '')
+              );
+            }
+
+            // User Signal Decoder — hidden agenda, avoidance, repetition
+            if (userSignalResult && (userSignalResult.repetitionSignals.length || userSignalResult.avoidanceSignals.length || userSignalResult.proactiveQuestions.length)) {
+              const reps = userSignalResult.repetitionSignals.slice(0, 2);
+              const avoid = userSignalResult.avoidanceSignals.slice(0, 2);
+              const proQs = userSignalResult.proactiveQuestions.slice(0, 2);
+              blocks.push(
+                `## USER SIGNAL ANALYSIS (UserSignalDecoder — reflexive intelligence layer)\n` +
+                (reps.length ? `Repeated concerns (hidden priority): ${reps.map(r => `"${r.phrase}" — ${r.hiddenPriority}`).join('; ')}\n` : '') +
+                (avoid.length ? `Topics being avoided: ${avoid.map(a => `${a.missingTopic} — ${a.significance}`).join('; ')}\n` : '') +
+                (userSignalResult.inferredHiddenAgenda ? `Inferred hidden agenda: ${userSignalResult.inferredHiddenAgenda}\n` : '') +
+                (proQs.length ? `Questions the system should ask proactively: ${proQs.map(q => q.question).join(' | ')}` : '')
+              );
+            }
+
+            // ── TIER 2 ENGINE OUTPUTS (readiness >= 35) ──────────────────────
 
             if (historicalResult && historicalResult.matches.length > 0) {
               const topMatches = historicalResult.matches.slice(0, 3);
@@ -4143,11 +4248,29 @@ ${agentRegistry.current.toManifest()}`;
               );
             }
 
+            // ── TIER 3 ENGINE OUTPUTS (readiness >= 60) ──────────────────────
+
+            if (adversarialResult) {
+              const shield = adversarialResult.adversarialShield;
+              const motivation = adversarialResult.motivation;
+              const confidence = adversarialResult.adversarialConfidence;
+              blocks.push(
+                `## ADVERSARIAL REASONING (AdversarialReasoningService — multi-persona stress test)\n` +
+                (shield?.riskLevel ? `Input risk level: ${shield.riskLevel}\n` : '') +
+                (shield?.concerns?.length ? `Shield concerns: ${shield.concerns.slice(0, 2).join('; ')}\n` : '') +
+                (motivation?.primaryMotivation ? `Primary motivation detected: ${motivation.primaryMotivation}\n` : '') +
+                (motivation?.riskLevel ? `Motivation risk: ${motivation.riskLevel}\n` : '') +
+                (confidence?.overallConfidence !== undefined
+                  ? `Adversarial confidence score: ${confidence.overallConfidence}/100`
+                  : '')
+              );
+            }
+
             if (blocks.length > 0) {
               advancedIntelligenceBlock =
-                `\n\n## ── ADVANCED INTELLIGENCE LAYER (engines not in standard AI advisory) ──\n\n` +
+                `\n\n## ── ADVANCED INTELLIGENCE LAYER (7-engine NSIL stack — not in standard AI advisory) ──\n\n` +
                 blocks.join('\n\n') +
-                `\n\nApply all of the above in your response. Reference specific historical precedents, flag the key risk from the unbiased analysis, and note the probability range from Monte Carlo where relevant.`;
+                `\n\nAPPLY ALL OF THE ABOVE: Reference the NSIL hub status, surface unconsidered needs the user hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, flag the key unbiased risk, and use Monte Carlo probabilities where relevant. Do not just list these — weave them into expert advisory prose.`;
             }
           } catch (advErr) {
             console.warn('[Advanced Intelligence] non-fatal:', advErr);
