@@ -1613,7 +1613,33 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     );
     const organizationType = normalized.match(/\b(government agency|private company|ngo|non-profit|investor|bank|development bank|regional council|legal advisory|ministry|public sector|multilateral)\b/i)?.[1] || null;
     const contactRole = normalized.match(/\b(?:i am the|my role is|i serve as|i am)\s+([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
-    const country = normalized.match(/\b(?:in|from|operating in|country)\s+([A-Z][A-Za-z\s]{2,40})\b/i)?.[1]?.trim() || null;
+    // Country extraction: only match explicitly named countries, not regions/cities
+    // Uses an explicit allow-list to avoid matching sub-national regions like "Mindanao"
+    const _knownCountries = [
+      'Afghanistan','Albania','Algeria','Angola','Argentina','Armenia','Australia','Austria',
+      'Azerbaijan','Bangladesh','Belarus','Belgium','Belize','Benin','Bolivia','Bosnia','Botswana',
+      'Brazil','Bulgaria','Burkina Faso','Burundi','Cambodia','Cameroon','Canada','Chad','Chile',
+      'China','Colombia','Congo','Costa Rica','Croatia','Cuba','Cyprus','Czech Republic',
+      'Denmark','Dominican Republic','Ecuador','Egypt','El Salvador','Ethiopia','Fiji','Finland',
+      'France','Gabon','Gambia','Georgia','Germany','Ghana','Greece','Guatemala','Guinea',
+      'Honduras','Hungary','India','Indonesia','Iran','Iraq','Ireland','Israel','Italy',
+      'Jamaica','Japan','Jordan','Kazakhstan','Kenya','Kuwait','Kyrgyzstan','Laos','Latvia',
+      'Lebanon','Libya','Lithuania','Luxembourg','Madagascar','Malawi','Malaysia','Mali','Malta',
+      'Mauritania','Mauritius','Mexico','Moldova','Mongolia','Morocco','Mozambique','Myanmar',
+      'Namibia','Nepal','Netherlands','New Zealand','Nicaragua','Niger','Nigeria','North Korea',
+      'Norway','Oman','Pakistan','Palestine','Panama','Papua New Guinea','Paraguay','Peru',
+      'Philippines','Poland','Portugal','Qatar','Romania','Russia','Rwanda','Saudi Arabia',
+      'Senegal','Serbia','Sierra Leone','Singapore','Slovakia','Slovenia','Somalia','South Africa',
+      'South Korea','South Sudan','Spain','Sri Lanka','Sudan','Sweden','Switzerland','Syria',
+      'Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tunisia','Turkey',
+      'Turkmenistan','Uganda','Ukraine','United Arab Emirates','UAE','United Kingdom','UK',
+      'United States','USA','Uruguay','Uzbekistan','Venezuela','Vietnam','Yemen','Zambia','Zimbabwe',
+    ];
+    const _countryRegex = new RegExp(
+      `\\b(?:in|from|operating in|country[:\\s]+)\\s*(${_knownCountries.map(c => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+      'i'
+    );
+    const country = normalized.match(_countryRegex)?.[1]?.trim() || null;
     const jurisdiction = normalized.match(/\b(?:jurisdiction|regulatory regime|legal framework)\s*(?:is|:)?\s*([A-Za-z\s\-/]{3,60})\b/i)?.[1]?.trim() || null;
     const objectives = normalized.match(/\b(?:objective is|goal is|we aim to|we want to|wish to achieve)\s+([^\n.]{12,220})/i)?.[1]?.trim() || null;
     const currentMatter = inputSignal.isLowSignal ? null : (normalized.length >= 40 ? normalized : null);
@@ -2871,23 +2897,17 @@ ${agentRegistry.current.toManifest()}`;
 
   const buildNaturalFallbackReply = useCallback((userInput: string) => {
     const trimmed = userInput.trim();
-    const isGreetingOnly = /^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed);
 
-    if (isGreetingOnly) {
+    // ── GREETING ──────────────────────────────────────────────────────────────
+    if (/^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed)) {
       return 'Good to hear from you. Tell me what you\'re working on — a deal, a market, a partner, a pitch — and I\'ll help you build a clear path forward.';
     }
 
-    // ── DOCUMENT UPLOAD AWARENESS ──
-    // Read from the synchronous ref first (bypasses React async state lag),
-    // then fall back to the state-based aiInsights.
+    // ── DOCUMENT UPLOAD AWARENESS ──────────────────────────────────────────────
     const hasDocContent = /\*\*Uploaded Documents:\*\*/.test(trimmed);
     const refAnalysis = latestDocAnalysisRef.current;
-    const hasUploadedDocs = refAnalysis !== null || caseStudy.uploadedDocuments.length > 0;
 
-    if (hasDocContent || hasUploadedDocs) {
-      const cs = caseStudy;
-
-      // Build the response from ref analysis (synchronous, always fresh)
+    if (hasDocContent || refAnalysis !== null) {
       if (refAnalysis) {
         const lines: string[] = [];
         lines.push(`**Document reviewed:** ${refAnalysis.title || 'Uploaded document'}`);
@@ -2919,59 +2939,52 @@ ${agentRegistry.current.toManifest()}`;
           reply += '\n\n';
         }
 
-        reply += `To activate a full AI-powered deep analysis of this document, add your Together.ai API key to the .env file. That will run the complete 4-step ReasoningPipeline across all issues identified above and produce a board-ready advisory brief.\n\nAlternatively, tell me what specific aspect you want to focus on and I will build that analysis now.`;
+        reply += `Tell me what specific aspect you want to focus on and I will build that analysis now.`;
         return reply;
       }
 
-      // Fallback if ref is empty but state has something
-      const docInsights = cs.aiInsights.filter(i => i.length > 30);
-      const profileParts: string[] = [];
-      if (cs.country.trim()) profileParts.push(`**Country/Region:** ${cs.country}`);
-      if (cs.organizationType.trim()) profileParts.push(`**Sector:** ${cs.organizationType}`);
-      if (cs.currentMatter.trim()) profileParts.push(`**Subject:** ${cs.currentMatter}`);
-
-      let reply = `**Document received.** Here is what was extracted:\n\n`;
-      if (profileParts.length > 0) reply += profileParts.join('\n') + '\n\n';
-      if (docInsights.length > 0) reply += `**Analysis:**\n${docInsights.slice(0, 3).map(i => `\u2022 ${i.slice(0, 300)}`).join('\n')}\n\n`;
-      reply += `Tell me what aspect you want me to focus on and I will produce the analysis.`;
+      let reply = `**Document received.** Tell me what specific aspect you want to focus on and I will produce the analysis.`;
       return reply;
     }
 
-    // Build context-aware fallback from current case knowledge
-    const cs = caseStudy;
-    const knownParts: string[] = [];
-    if (cs.organizationName.trim()) knownParts.push(`**Organisation:** ${cs.organizationName}`);
-    if (cs.country.trim()) knownParts.push(`**Country:** ${cs.country}`);
-    if (cs.jurisdiction.trim()) knownParts.push(`**Jurisdiction:** ${cs.jurisdiction}`);
-    if (cs.objectives.trim()) knownParts.push(`**Objective:** ${cs.objectives}`);
-    if (cs.organizationType.trim()) knownParts.push(`**Type:** ${cs.organizationType}`);
-    if (cs.targetAudience.trim()) knownParts.push(`**Audience:** ${cs.targetAudience}`);
+    // ── INFORMATION / RESEARCH QUESTION ───────────────────────────────────────
+    // "tell me about X", "what is X", "explain X", "describe X", etc.
+    // These are questions, not intake answers — respond to what was actually asked.
+    const isInfoQuestion = /^(tell me about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|what do you know about|research|find out about)\b/i.test(trimmed);
 
-    // Context-aware fallback — no scripted intake phrases
-    let reply = knownParts.length > 0
-      ? `Here's my read based on what you've shared so far:\n\n${knownParts.join('\n')}`
-      : `Tell me more about what you're trying to achieve \u2014 I'll give you a direct read on it.`;
-
-    // Ask at most ONE follow-up, but NEVER repeat a question that was already asked
-    // in the last 3 assistant messages (prevents looping)
-    const nextQ = !cs.organizationName.trim()
-      ? 'Which organisation is the decision owner for this matter?'
-      : !cs.country.trim()
-      ? 'Which country and legal jurisdiction does this apply to?'
-      : cs.objectives.trim().length < 20
-      ? 'What exact outcome do you need, and how will success be measured?'
-      : cs.currentMatter.trim().length < 60
-      ? 'What is the full context of the current situation and what decision must be made?'
-      : null;
-
-    if (nextQ) {
-      reply += `\n\n**Next step to sharpen my analysis:** ${nextQ}`;
-    } else {
-      reply += `\n\nI have enough context to begin generating deliverables. Would you like a report, strategic recommendation, or document draft?`;
+    if (isInfoQuestion) {
+      // Extract the topic from the question for a direct acknowledgement
+      const topicMatch = trimmed.match(/^(?:tell me about|what is|what are|who is|explain|describe|give me info(?: on| about)?|can you tell me about|i want to know about|what do you know about|research|find out about)\s+(.+)/i);
+      const topic = topicMatch?.[1]?.trim() || trimmed;
+      return `I can look into **${topic}** — but to make this analysis work for you, I need to know what decision or opportunity it connects to.\n\nFor example: Are you evaluating it as a market to enter, looking at a partnership there, approaching government, or assessing an investment? Once I know the context, I can give you a targeted advisory take rather than a generic overview.\n\nWhat are you specifically trying to achieve?`;
     }
 
+    // ── GENERAL FALLBACK — only reference data extracted from THIS input ───────
+    // DO NOT dump stale case study fields from previous turns.
+    // Extract fresh signals from the current user input only.
+    const lc = trimmed.toLowerCase();
+
+    // Quick fresh-signal extraction from the current input
+    const freshCountryMap: Record<string, string[]> = {
+      'Philippines': ['philippines', 'manila', 'cebu', 'mindanao', 'pagadian', 'davao', 'zamboanga'],
+      'Vietnam': ['vietnam', 'hanoi', 'ho chi minh'], 'Indonesia': ['indonesia', 'jakarta'],
+      'Australia': ['australia', 'sydney', 'melbourne', 'brisbane'], 'India': ['india', 'mumbai', 'delhi'],
+      'Kenya': ['kenya', 'nairobi'], 'Nigeria': ['nigeria', 'lagos'],
+    };
+    let freshCountry = '';
+    for (const [c, kws] of Object.entries(freshCountryMap)) {
+      if (kws.some(k => lc.includes(k))) { freshCountry = c; break; }
+    }
+
+    const locationHint = freshCountry ? ` in **${freshCountry}**` : '';
+
+    // Build a response that directly addresses what the user said
+    const reply = trimmed.length >= 20
+      ? `I've taken note of what you've shared${locationHint}. To give you a useful advisory response, help me understand the decision at the centre of this.\n\nWhat outcome are you trying to achieve — and what's the biggest obstacle you're facing right now?`
+      : `Tell me more about what you're working on — I'll give you a direct read on it.`;
+
     return reply;
-  }, [caseStudy]);
+  }, []);
 
   type DeliverableIntent = 'background' | 'quick_answer' | 'report' | 'letter' | 'full_case' | 'unknown';
 
