@@ -256,4 +256,62 @@ function extractReadableText(html: string): string {
   return lines.join('. ').trim();
 }
 
+// ─── Regional Intelligence Brief ──────────────────────────────────────────────
+
+router.post('/regional-brief', async (req: Request, res: Response) => {
+  const apiKey = getKey();
+  if (!apiKey) {
+    return res.status(503).json({ error: 'AI proxy not configured — no API key.' });
+  }
+
+  const { query, country, sector } = req.body;
+  if (!query || typeof query !== 'string') {
+    return res.status(400).json({ error: 'Missing required field: query' });
+  }
+
+  try {
+    const systemPrompt = `You are a senior regional intelligence analyst. Produce a concise intelligence brief for the given query. Include: executive summary (2-3 paragraphs), key data points, risk assessment, opportunities, and 3-5 actionable recommendations. Use specific facts and data where available. Be direct and analytical.`;
+    const userPrompt = `Generate a regional intelligence brief:\n\nQuery: ${query}\n${country ? `Country/Region: ${country}` : ''}\n${sector ? `Sector focus: ${sector}` : ''}\n\nProvide a structured JSON response with: { "executiveSummary": "...", "keyDataPoints": [{"label": "...", "value": "..."}], "risks": [{"risk": "...", "severity": "high|medium|low"}], "opportunities": [{"opportunity": "...", "sector": "..."}], "recommendations": ["..."] }`;
+
+    const apiRes = await fetch(TOGETHER_API_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'meta-llama/Llama-3.1-70B-Instruct-Turbo',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        max_tokens: 2048,
+        temperature: 0.3,
+      }),
+    });
+
+    if (!apiRes.ok) {
+      const errText = await apiRes.text().catch(() => 'Unknown error');
+      return res.status(apiRes.status).json({ error: `Together.ai error: ${errText.slice(0, 200)}` });
+    }
+
+    const data = await apiRes.json() as Record<string, unknown>;
+    const text = ((data as { choices?: Array<{ message?: { content?: string } }> })?.choices?.[0]?.message?.content || '').trim();
+
+    // Try to parse JSON from the response
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      try {
+        const brief = JSON.parse(jsonMatch[0]);
+        return res.json({ success: true, brief });
+      } catch { /* fall through to text response */ }
+    }
+
+    return res.json({ success: true, brief: { executiveSummary: text, keyDataPoints: [], risks: [], opportunities: [], recommendations: [] } });
+  } catch (err) {
+    console.error('[Proxy] Regional brief error:', err);
+    return res.status(500).json({ error: 'Regional intelligence generation failed.' });
+  }
+});
+
 export default router;

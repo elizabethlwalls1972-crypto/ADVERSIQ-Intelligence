@@ -71,6 +71,7 @@ import { conversationStore } from '../services/ConversationStore';
 import { learnFromConversation } from '../services/SelfLearningLoop';
 import { webSearch, formatResultsForPrompt } from '../services/WebSearchGateway';
 import { runWithFunctionCalling } from '../services/NativeFunctionCalling';
+import { quickRegionalIntel } from '../services/RegionalIntelligenceAgent';
 
 // ============================================================================
 // TYPES
@@ -877,6 +878,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     // ── Start AutonomousScheduler (polls background tasks every tick) ────────────
     autonomousScheduler.start();
     selfImprovementEngine.analyzeAndImprove().catch(() => null); // self-tune on mount
+
+    // ── Initialize ConversationMemoryManager — restores cross-session context ────
+    conversationMemoryManager.startConversation().catch(() => {/* non-fatal */});
 
     // ── Subscribe to EventBus — capture intelligence from all background services ──
     const unsubscribeHandlers: Array<() => void> = [];
@@ -3320,7 +3324,7 @@ ${agentRegistry.current.toManifest()}`;
       // Enhance brainBlock with memory manager context (rolling summary + cross-session learnings)
       let enhancedContext = context || '';
       try {
-        const memoryContext = conversationMemoryManager.formatForPrompt();
+        const memoryContext = await conversationMemoryManager.formatForPrompt();
         if (memoryContext) {
           enhancedContext = (enhancedContext ? enhancedContext + '\n\n' : '') + memoryContext;
         }
@@ -4752,8 +4756,23 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       }
 
       // ── TOOL CALL EXECUTION LOOP ─────────────────────────────────────────────
-      // The AI may have emitted [[TOOL:name]]{...}[[/TOOL]] blocks.
-      // Detect them, execute, strip from visible text, then do a follow-up pass.
+      // Try native function calling first (structured JSON-schema tools via Together.ai),
+      // then fall back to text-parsed [[TOOL:name]] blocks.
+      let nativeFCToolResults: string[] = [];
+      try {
+        const fcResult = await runWithFunctionCalling(
+          [
+            { role: 'system', content: 'You are BW Nexus AI, a senior international development consultant. Use the available tools when the user\'s query would benefit from live data.' },
+            { role: 'user', content: trimmedUserContent }
+          ],
+          agentRegistry.current,
+          { maxTokens: 1200 }
+        );
+        if (fcResult.toolResults.length > 0) {
+          nativeFCToolResults = fcResult.toolResults.map(tr => `**${tr.name}**: ${typeof tr.result.data === 'string' ? tr.result.data : JSON.stringify(tr.result.data).slice(0, 600)}`);
+        }
+      } catch { /* native function calling is optional — text-parsed tools below */ }
+
       const toolCalls = AgentToolRegistry.parseToolCalls(responseContent);
       const autoToolCalls = enableFullCaseTreeMatching && !shouldPromptForOutputClarification && !inputSignal.isLowSignal
         ? [
@@ -4791,9 +4810,14 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
       const mergedToolCalls = [...toolCalls, ...autoToolCalls];
 
-      if (!shouldPromptForOutputClarification && mergedToolCalls.length > 0) {
+      // Fire regional intelligence agent when country is known (runs in parallel with tool execution)
+      const regionalIntelPromise = (caseDraft.country.trim() && !isGreetingOnly)
+        ? quickRegionalIntel(trimmedUserContent, caseDraft.country).catch(() => null)
+        : Promise.resolve(null);
+
+      if (!shouldPromptForOutputClarification && (mergedToolCalls.length > 0 || nativeFCToolResults.length > 0)) {
         responseContent = AgentToolRegistry.stripToolCalls(responseContent);
-        const toolResultLines: string[] = [];
+        const toolResultLines: string[] = [...nativeFCToolResults];
         for (const call of mergedToolCalls) {
           try {
             const result = await agentRegistry.current.execute(call.name, call.params);
@@ -4808,6 +4832,11 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           }
         }
         // Second AI pass: incorporate tool results into the response
+        // Merge regional intelligence if available
+        const regionalIntel = await regionalIntelPromise;
+        if (regionalIntel) {
+          toolResultLines.push(`**regional_intelligence** (${regionalIntel.sources} sources):\n${regionalIntel.summary}\nKey facts: ${regionalIntel.keyFacts.slice(0, 5).join('; ')}`);
+        }
         const toolContext = toolResultLines.join('\n\n');
         const augmented = await processWithAI(
           `${userContent}\n\n[Live intelligence retrieved]:\n${toolContext}`,
@@ -4973,7 +5002,20 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     } catch (error) {
       console.error('Send error:', error);
       setExecutionTaskStatus('response', 'failed', 'Response pipeline failed');
-      const fallbackContent = buildNaturalFallbackReply(inputValue);
+
+      // Detect API key / rate limit issues and surface them clearly
+      const errMsg = String(error instanceof Error ? error.message : error);
+      const isApiKeyIssue = errMsg.includes('API KEY REQUIRED') || errMsg.includes('API key') || errMsg.includes('401') || errMsg.includes('403');
+      const isRateLimited = errMsg.includes('429') || errMsg.includes('rate limit');
+
+      let fallbackContent: string;
+      if (isApiKeyIssue) {
+        fallbackContent = '⚠️ **AI Service Not Configured**\n\nThe Together.ai API key is missing or invalid. To enable full AI capabilities:\n\n1. Get a free key at [api.together.xyz](https://api.together.xyz)\n2. Add it to your `.env` file as `VITE_TOGETHER_API_KEY`\n3. Restart the dev server\n\nThe system is currently using heuristic-only mode with limited capabilities.';
+      } else if (isRateLimited) {
+        fallbackContent = '⏳ **Rate Limit Reached**\n\nThe AI service is temporarily rate-limited. Please wait a moment and try again. Your query has been preserved.';
+      } else {
+        fallbackContent = buildNaturalFallbackReply(inputValue);
+      }
       const errorMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
@@ -5000,6 +5042,9 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         const recentMsgs = messages.slice(-2);
         for (const m of recentMsgs) {
           if (m.role === 'user' || m.role === 'assistant') {
+            // Track in ConversationMemoryManager (rolling summary + recent turns)
+            conversationMemoryManager.addTurn(m.role as 'user' | 'assistant', m.content).catch(() => {});
+            // Persist to IndexedDB
             conversationStore.addMessage(
               'default',
               m.role as 'user' | 'assistant',
@@ -5007,8 +5052,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             ).catch(() => {/* non-fatal */});
           }
         }
-        // Every 10 messages, extract learnings for self-improvement
-        if (messages.length > 0 && messages.length % 10 === 0) {
+        // Every 6 messages, extract learnings for self-improvement
+        if (messages.length > 4 && messages.length % 6 === 0) {
           const allMsgs = messages
             .filter(m => m.role === 'user' || m.role === 'assistant')
             .map(m => ({ role: m.role, content: m.content }));

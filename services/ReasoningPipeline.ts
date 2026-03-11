@@ -19,6 +19,8 @@ import { SYSTEM_INSTRUCTION_SHORT } from './aiPolicy';
 import type { IntelligenceBlock } from './IssueSolutionPipeline';
 import { conversationMemoryManager } from './ConversationMemoryManager';
 import { formatLearningsForPrompt } from './SelfLearningLoop';
+import { webSearch, formatResultsForPrompt } from './WebSearchGateway';
+import { classifyIssue } from './AIEngineLayer';
 
 export interface ReasoningInput {
   /** Raw user message */
@@ -209,6 +211,27 @@ export async function runReasoningPipeline(
     learningBlock = await formatLearningsForPrompt(input.userMessage);
   } catch { /* learning retrieval is optional */ }
 
+  // ── AI-powered classification (enriches the think step) ────────────────────
+  let classificationContext = '';
+  try {
+    const classification = await classifyIssue(input.userMessage);
+    if (classification.category !== 'unknown') {
+      classificationContext = `\n## AI CLASSIFICATION: ${classification.category} (confidence: ${classification.confidence})\nRelated topics: ${classification.relatedTopics.join(', ')}\n`;
+    }
+  } catch { /* classification is optional */ }
+
+  // ── Live web search for queries needing current data ───────────────────────
+  let webSearchBlock = '';
+  const needsSearch = /\b(latest|current|recent|today|2024|2025|2026|news|what is happening|update|breaking)\b/i.test(input.userMessage);
+  if (needsSearch) {
+    try {
+      const results = await webSearch(input.userMessage, { maxResults: 3 });
+      if (results.length > 0) {
+        webSearchBlock = '\n' + formatResultsForPrompt(results, 1500);
+      }
+    } catch { /* web search is optional */ }
+  }
+
   // Track this turn in the conversation memory manager
   try {
     await conversationMemoryManager.addTurn('user', input.userMessage);
@@ -223,7 +246,7 @@ export async function runReasoningPipeline(
   } | null = null;
 
   try {
-    const thinkContent = THINK_PROMPT(input) + (learningBlock ? `\n${learningBlock}` : '');
+    const thinkContent = THINK_PROMPT(input) + classificationContext + webSearchBlock + (learningBlock ? `\n${learningBlock}` : '');
     const thinkRaw = await callTogether(
       [
         { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
@@ -255,7 +278,7 @@ export async function runReasoningPipeline(
   if (reasoning) {
     // Full pipeline: use the thought to ground the answer
     try {
-      const answerContent = ANSWER_PROMPT(input, reasoning) + (learningBlock ? `\n${learningBlock}` : '');
+      const answerContent = ANSWER_PROMPT(input, reasoning) + webSearchBlock + (learningBlock ? `\n${learningBlock}` : '');
       answer = await callTogether(
         [
           { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
@@ -321,6 +344,22 @@ export async function runReasoningPipelineStream(
     learningBlockStream = await formatLearningsForPrompt(input.userMessage);
   } catch { /* optional */ }
 
+  // ── AI classification + web search (parallel) ─────────────────────────────
+  let classificationCtxStream = '';
+  let webSearchBlockStream = '';
+  const needsSearchStream = /\b(latest|current|recent|today|2024|2025|2026|news|what is happening|update|breaking)\b/i.test(input.userMessage);
+
+  const [classResult, searchResult] = await Promise.all([
+    classifyIssue(input.userMessage).catch(() => null),
+    needsSearchStream ? webSearch(input.userMessage, { maxResults: 3 }).catch(() => []) : Promise.resolve([]),
+  ]);
+  if (classResult && classResult.category !== 'unknown') {
+    classificationCtxStream = `\n## AI CLASSIFICATION: ${classResult.category} (confidence: ${classResult.confidence})\nRelated topics: ${classResult.relatedTopics.join(', ')}\n`;
+  }
+  if (searchResult.length > 0) {
+    webSearchBlockStream = '\n' + formatResultsForPrompt(searchResult, 1500);
+  }
+
   // Track this turn in memory
   try {
     await conversationMemoryManager.addTurn('user', input.userMessage);
@@ -335,7 +374,7 @@ export async function runReasoningPipelineStream(
   } | null = null;
 
   try {
-    const thinkContent = THINK_PROMPT(input) + (learningBlockStream ? `\n${learningBlockStream}` : '');
+    const thinkContent = THINK_PROMPT(input) + classificationCtxStream + webSearchBlockStream + (learningBlockStream ? `\n${learningBlockStream}` : '');
     const thinkRaw = await callTogether(
       [
         { role: 'system', content: SYSTEM_INSTRUCTION_SHORT },
@@ -364,7 +403,7 @@ export async function runReasoningPipelineStream(
     step3_solution: 'Answer directly and professionally.',
     document_driven: Boolean(input.documentContext),
   });
-  const answerPrompt = answerPromptBase + (learningBlockStream ? `\n${learningBlockStream}` : '');
+  const answerPrompt = answerPromptBase + webSearchBlockStream + (learningBlockStream ? `\n${learningBlockStream}` : '');
 
   let accumulated = '';
   let streamFailed = false;
