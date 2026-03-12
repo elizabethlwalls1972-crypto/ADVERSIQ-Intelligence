@@ -804,6 +804,16 @@ interface BWConsultantOSProps {
 }
 
 const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled }) => {
+  // ─── Mobile Detection ───────────────────────────────────────────────
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const [showToolsMenu, setShowToolsMenu] = useState(false);
   // Core state
   const [messages, setMessages] = useState<Message[]>([]);
@@ -7067,20 +7077,20 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-blue-900/90 to-slate-900/95" />
 
           {/* Top Row: Brand + Utility Controls */}
-          <div className="relative z-10 px-6 pt-4 pb-2 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center border border-white/20">
-                <Bot size={20} className="text-white" />
+          <div className="relative z-10 px-4 md:px-6 pt-3 md:pt-4 pb-2 flex items-center justify-between">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0">
+              <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center border border-white/20 flex-shrink-0">
+                <Bot size={isMobile ? 16 : 20} className="text-white" />
               </div>
-              <div>
-                <h1 className="text-lg font-semibold text-white tracking-wide leading-tight">BW Consultant</h1>
-                <span className="text-blue-300/70 text-[10px] font-medium uppercase tracking-widest">NSIL Agentic Runtime &bull; Case Study Builder</span>
+              <div className="min-w-0">
+                <h1 className="text-base md:text-lg font-semibold text-white tracking-wide leading-tight truncate">BW Consultant</h1>
+                <span className="text-blue-300/70 text-[9px] md:text-[10px] font-medium uppercase tracking-widest hidden sm:inline">NSIL Agentic Runtime &bull; Case Study Builder</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 md:gap-2">
               {/* Language Selector */}
-              <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-white/10 border border-white/15 backdrop-blur">
+              <div className="flex items-center gap-1 px-2 py-1.5 md:px-2.5 rounded-md bg-white/10 border border-white/15 backdrop-blur">
                 <Languages size={13} className="text-blue-200/70" />
                 <select
                   value={locale}
@@ -7097,21 +7107,31 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
               {/* Live Research */}
               <button
                 onClick={() => setShowPilotWindow((prev) => !prev)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
               >
                 <Globe size={13} />
-                {showPilotWindow ? 'Close Research' : 'Live Research'}
+                <span className="hidden sm:inline">{showPilotWindow ? 'Close Research' : 'Live Research'}</span>
               </button>
+
+              {/* Mobile sidebar toggle */}
+              {isMobile && (
+                <button
+                  onClick={() => setShowMobileSidebar(prev => !prev)}
+                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                >
+                  <FileText size={13} />
+                </button>
+              )}
 
               {/* Tools dropdown */}
               {onNavigate && (
                 <div className="relative z-20">
                   <button
                     onClick={() => setShowToolsMenu(prev => !prev)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                    className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
                   >
                     <Briefcase size={13} />
-                    Tools
+                    <span className="hidden sm:inline">Tools</span>
                   </button>
                   {showToolsMenu && (
                     <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowToolsMenu(false)}>
@@ -7130,7 +7150,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                         <button
                           key={item.mode}
                           onClick={() => onNavigate(item.mode)}
-                          className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2.5 transition-colors"
+                          className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2.5 transition-colors"
                         >
                           {item.label}
                         </button>
@@ -7143,7 +7163,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           </div>
 
           {/* Bottom Row: Phase Steps + Final Report */}
-          <div className="relative z-10 px-6 pb-3 pt-1 flex items-center justify-between">
+          <div className="relative z-10 px-4 md:px-6 pb-3 pt-1 flex items-center justify-between">
             <div className="hidden md:flex items-center gap-0.5 bg-black/20 rounded-lg p-1 backdrop-blur">
               {Object.entries(phaseLabels).map(([phase, info], idx) => {
                 const isActive = currentPhase === phase;
@@ -7176,12 +7196,21 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
             <button
               onClick={() => setShowFinalReport(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-md bg-amber-500/90 hover:bg-amber-400 text-white text-xs font-semibold shadow-lg shadow-amber-900/20 border border-amber-400/50 transition-all"
+              className="flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-md bg-amber-500/90 hover:bg-amber-400 text-white text-xs font-semibold shadow-lg shadow-amber-900/20 border border-amber-400/50 transition-all"
               title="Generate or view Final Report"
             >
               <FileText size={13} />
-              Final Report
+              <span className="hidden sm:inline">Final Report</span>
+              <span className="sm:hidden">Report</span>
             </button>
+
+            {/* Mobile phase indicator */}
+            {isMobile && (
+              <div className="flex items-center gap-1 md:hidden">
+                <span className="text-[10px] text-blue-200 font-medium uppercase">{phaseLabels[currentPhase]?.label || currentPhase}</span>
+                <span className="text-[9px] text-blue-400/50">({Object.keys(phaseLabels).indexOf(currentPhase) + 1}/{Object.keys(phaseLabels).length})</span>
+              </div>
+            )}
           </div>
 
           {/* Subtle bottom border glow */}
@@ -7189,11 +7218,11 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex overflow-hidden relative">
           {/* Chat Panel */}
-          <div className="flex-1 flex flex-col bg-stone-50">
+          <div className="flex-1 flex flex-col bg-stone-50 min-w-0">
             {/* Messages */}
-            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 md:p-6 space-y-3 md:space-y-4">
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
                   <Bot size={40} className="text-blue-200 mb-4" />
@@ -7515,14 +7544,14 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                         ? "Select documents or describe what you need..."
                         : "Share more details or ask questions..."
                   }
-                  className="flex-1 resize-none border border-stone-300 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px] max-h-[150px] leading-relaxed"
+                  className="flex-1 resize-none border border-stone-300 px-3 md:px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[48px] max-h-[150px] leading-relaxed"
                   rows={1}
                 />
                 <button
                   data-send-btn
                   onClick={handleSend}
                   disabled={(!inputValue.trim() && uploadedFiles.length === 0) || isLoading}
-                  className={`px-6 py-3 text-sm font-medium transition-all flex items-center gap-2 ${
+                  className={`px-4 md:px-6 py-3 text-sm font-medium transition-all flex items-center gap-2 ${
                     (!inputValue.trim() && uploadedFiles.length === 0) || isLoading
                       ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                       : 'bg-blue-600 text-white hover:bg-blue-700'
@@ -7533,7 +7562,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                   ) : (
                     <>
                       <Send size={16} />
-                      Send
+                      {!isMobile && 'Send'}
                     </>
                   )}
                 </button>
@@ -7736,8 +7765,20 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             </div>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="w-96 border-l border-stone-200 bg-white flex flex-col">
+          {/* Right Sidebar - hidden on mobile, shown as slide-over */}
+          {isMobile && showMobileSidebar && (
+            <div className="fixed inset-0 z-30 bg-black/40" onClick={() => setShowMobileSidebar(false)} />
+          )}
+          <div className={`${
+            isMobile
+              ? `fixed top-0 right-0 z-30 h-full w-[85vw] max-w-[384px] shadow-2xl transition-transform duration-300 ${showMobileSidebar ? 'translate-x-0' : 'translate-x-full'}`
+              : 'w-96'
+          } border-l border-stone-200 bg-white flex flex-col`}>
+            {isMobile && (
+              <button onClick={() => setShowMobileSidebar(false)} className="absolute top-3 right-3 z-10 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600">
+                <X size={16} />
+              </button>
+            )}
             <div className="p-4 border-b border-stone-200 bg-slate-50">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <FileText size={16} className="text-blue-600" />
@@ -8446,7 +8487,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       </div>
 
         {showPilotWindow && (
-          <div className="fixed top-0 right-0 z-40 h-full w-[380px] border-l border-stone-200 bg-white shadow-2xl">
+          <div className={`fixed top-0 right-0 z-40 h-full ${isMobile ? 'w-full' : 'w-[380px]'} border-l border-stone-200 bg-white shadow-2xl`}>
             <div className="h-full flex flex-col">
               <div className="px-4 py-3 border-b border-stone-200 bg-slate-50">
                 <div className="flex items-center justify-between gap-2">
@@ -8716,8 +8757,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
       {/* Final Report Modal */}
       {showFinalReport && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden" style={{ background: '#0f1923', border: '1px solid #2a3a4a' }}>
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-0 md:p-4">
+          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-4xl max-h-[92vh]'} flex flex-col overflow-hidden`} style={{ background: '#0f1923', border: isMobile ? 'none' : '1px solid #2a3a4a' }}>
 
             {/* ── Header ── */}
             <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#1e3248', background: 'linear-gradient(135deg, #0f1923 0%, #1a2d40 100%)' }}>
@@ -8891,8 +8932,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
       {/* About BWGA Modal (retained for reference - button replaced with Final Report) */}
       {showAboutBWGA && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl max-h-[90vh] bg-white border border-stone-200 shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-0 md:p-4">
+          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-3xl max-h-[90vh]'} bg-white border border-stone-200 shadow-2xl flex flex-col overflow-hidden`}>
             {/* Modal Header */}
             <div
               className="px-6 py-5 relative overflow-hidden"
@@ -8962,8 +9003,8 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
       {/* Workspace Modal */}
       {showWorkspaceModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col border border-stone-200">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-0 md:p-4">
+          <div className={`bg-white shadow-2xl w-full ${isMobile ? 'h-full' : 'max-w-6xl h-[90vh]'} flex flex-col border border-stone-200`}>
             {/* Modal Header - Blue Banner */}
             <div 
               className="px-6 py-4 flex items-center justify-between relative overflow-hidden"
