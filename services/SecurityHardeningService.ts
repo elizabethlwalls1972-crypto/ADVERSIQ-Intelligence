@@ -1,18 +1,18 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — SECURITY HARDENING SERVICE
+ * BW NEXUS AI - SECURITY HARDENING SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Defense-in-depth security layer protecting the live OS from:
  *
- *   1. Prompt Injection       — Malicious instructions disguised as user input
- *   2. XSS / HTML Injection   — Script tags, event handlers, data URIs
- *   3. Request Flooding        — Client-side rate limiting per action type
- *   4. Data Exfiltration       — Blocks attempts to extract API keys / env vars
- *   5. Payload Size Abuse      — Rejects oversized messages before they hit AI
- *   6. Encoding Attacks        — Detects obfuscated payloads (base64, hex, unicode)
- *   7. Path Traversal          — Blocks ../ and filesystem path injection
- *   8. Command Injection       — Detects shell/system command patterns
+ *   1. Prompt Injection       - Malicious instructions disguised as user input
+ *   2. XSS / HTML Injection   - Script tags, event handlers, data URIs
+ *   3. Request Flooding        - Client-side rate limiting per action type
+ *   4. Data Exfiltration       - Blocks attempts to extract API keys / env vars
+ *   5. Payload Size Abuse      - Rejects oversized messages before they hit AI
+ *   6. Encoding Attacks        - Detects obfuscated payloads (base64, hex, unicode)
+ *   7. Path Traversal          - Blocks ../ and filesystem path injection
+ *   8. Command Injection       - Detects shell/system command patterns
  *
  * This service runs on EVERY user input BEFORE it reaches the AI pipeline.
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -512,9 +512,9 @@ class SecurityHardeningService {
       // Report critical threats to monitoring
       if (threat.severity === 'critical' || threat.severity === 'high') {
         if (threat.severity === 'critical') {
-          monitoringService.critical('security', `Security threat: ${threat.type} — ${threat.description}`);
+          monitoringService.critical('security', `Security threat: ${threat.type} - ${threat.description}`);
         } else {
-          monitoringService.warn('security', `Security threat: ${threat.type} — ${threat.description}`);
+          monitoringService.warn('security', `Security threat: ${threat.type} - ${threat.description}`);
         }
       }
     }

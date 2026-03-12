@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — CONVERSATION STORE (IndexedDB)
+ * BW NEXUS AI - CONVERSATION STORE (IndexedDB)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Persistent conversation storage using IndexedDB. Replaces localStorage-only

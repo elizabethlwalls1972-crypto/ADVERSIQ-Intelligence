@@ -1,4 +1,4 @@
-﻿// Self-Learning Intelligence System
+// Self-Learning Intelligence System
 // Tracks system performance, user feedback, and automatically improves
 
 import { ReportParameters } from '../types';
@@ -43,18 +43,18 @@ class SelfLearningEngine {
 
   /** Subscribe to EventBus for ecosystem-wide learning */
   private subscribeToEvents(): void {
-    // Listen for outcome recordings (flower â†’ bee feedback loop)
+    // Listen for outcome recordings (flower ' bee feedback loop)
     EventBus.subscribe('outcomeRecorded', (event) => {
       console.log('[SelfLearning] Outcome received:', event.reportId, event.outcome);
       this.recordOutcome(event.reportId, event.outcome);
     });
 
-    // Listen for insights to track quality (bee â†’ meadow visibility)
+    // Listen for insights to track quality (bee ' meadow visibility)
     EventBus.subscribe('insightsGenerated', (event) => {
       console.log('[SelfLearning] Insights received:', event.reportId, event.insights.length);
     });
 
-    // Listen for ecosystem pulse to adjust learning weights (meadow â†’ ecosystem adaptation)
+    // Listen for ecosystem pulse to adjust learning weights (meadow ' ecosystem adaptation)
     EventBus.subscribe('ecosystemPulse', (event) => {
       if (event.signals.alignment < 50) {
         console.log('[SelfLearning] Low alignment detected, adjusting weights');
@@ -114,7 +114,7 @@ class SelfLearningEngine {
     // Identify improvement areas based on patterns
     const improvementAreas: string[] = [];
     
-    if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' + (successRate * 100).toFixed(1) + '%)');
+if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' + (successRate * 100).toFixed(1) + '%)');
     if (avgGenerationTime > 30000) improvementAreas.push('Optimize generation time (currently ' + (avgGenerationTime / 1000).toFixed(1) + 's)');
     if (avgReportQuality < 0.7) improvementAreas.push('Enhance report quality (currently ' + (avgReportQuality * 100).toFixed(1) + '%)');
 
@@ -148,14 +148,14 @@ class SelfLearningEngine {
     console.log(`Avg Report Quality: ${(metrics.avgReportQuality * 100).toFixed(1)}%`);
     
     if (metrics.improvementAreas.length > 0) {
-      console.log('\nðŸŽ¯ Improvement Areas:');
+      console.log('\nImprovement Areas:');
       metrics.improvementAreas.forEach((area, i) => {
         console.log(`${i + 1}. ${area}`);
       });
     }
 
     if (Object.keys(metrics.commonErrors).length > 0) {
-      console.log('\nâš ï¸ Most Common Errors:');
+      console.log('\n Most Common Errors:');
       Object.entries(metrics.commonErrors)
         .sort(([, a], [, b]) => b - a)
         .slice(0, 5)

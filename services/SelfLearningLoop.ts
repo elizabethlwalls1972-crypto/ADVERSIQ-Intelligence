@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — SELF-LEARNING LOOP
+ * BW NEXUS AI - SELF-LEARNING LOOP
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Real AI-powered learning from conversation outcomes.
@@ -62,11 +62,11 @@ CONVERSATION:
 ${transcript.slice(0, 4000)}
 
 Look for:
-1. CORRECTIONS — user corrected the AI (wrong facts, wrong approach)
-2. PREFERENCES — user expressed preferences (style, format, topics)
-3. FACTS — specific facts about the user's context (country, org, role)
-4. STYLE — how the user wants responses (formal/casual, detail level)
-5. DOMAIN_KNOWLEDGE — domain-specific info the AI should remember
+1. CORRECTIONS - user corrected the AI (wrong facts, wrong approach)
+2. PREFERENCES - user expressed preferences (style, format, topics)
+3. FACTS - specific facts about the user's context (country, org, role)
+4. STYLE - how the user wants responses (formal/casual, detail level)
+5. DOMAIN_KNOWLEDGE - domain-specific info the AI should remember
 
 Return ONLY valid JSON array (empty [] if no learnings found):
 [{"type":"correction|preference|fact|style|domain_knowledge","content":"What was learned...","confidence":0.9,"source":"user_correction|conversation_pattern|explicit_feedback"}]`
@@ -80,7 +80,7 @@ Return ONLY valid JSON array (empty [] if no learnings found):
         l.type && l.content && l.content.length > 10 && l.confidence >= 0.5
       );
     }
-  } catch { /* extraction failed — not critical */ }
+  } catch { /* extraction failed - not critical */ }
 
   return [];
 }
@@ -188,7 +188,7 @@ export async function recordConversationOutcome(
   await conversationStore.addLearning(
     conversationId,
     'fact',
-    `Conversation outcome: ${outcome}${notes ? ` — ${notes}` : ''}`
+    `Conversation outcome: ${outcome}${notes ? ` - ${notes}` : ''}`
   );
 }
 

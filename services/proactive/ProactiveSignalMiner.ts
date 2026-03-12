@@ -599,7 +599,7 @@ export class ProactiveSignalMiner {
             historicalPrecedents: sectorCases.map(c => c.id),
             recommendedActions: recentSuccessRate > 0.5
               ? ['Current timing appears favorable based on sector cycle']
-              : ['Consider delaying entry — sector cycle suggests caution',
+              : ['Consider delaying entry - sector cycle suggests caution',
                  'Look for counter-cyclical indicators that might override pattern'],
           });
         }
@@ -698,7 +698,7 @@ export class ProactiveSignalMiner {
         confidence: 0.4,
         historicalPrecedents: surprises.map(s => s.id),
         recommendedActions: [
-          'Conduct pre-mortem analysis: Assume the investment failed — why?',
+          'Conduct pre-mortem analysis: Assume the investment failed - why?',
           'Identify the strongest devil\'s advocate argument against this investment',
           'Check for "social proof" bias in the decision-making process',
         ],

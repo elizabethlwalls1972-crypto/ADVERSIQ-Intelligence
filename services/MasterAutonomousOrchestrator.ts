@@ -1,4 +1,4 @@
-﻿import { ReportParameters, ReportPayload } from '../types';
+import { ReportParameters, ReportPayload } from '../types';
 import { ReportOrchestrator } from './ReportOrchestrator';
 import { deepThinkingEngine } from './algorithms/DeepThinkingEngine';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
@@ -65,7 +65,7 @@ export class MasterAutonomousOrchestrator {
    * without re-assembling the payload (avoids recursive loop).
    */
   async runEnhancements(params: ReportParameters, payload: ReportPayload): Promise<{ confidence: number }> {
-    console.log('ðŸŽ¯ Running autonomous enhancements on report...');
+    console.log('Running autonomous enhancements on report...');
     try {
       await this.initializeAutonomousAgents();
 
@@ -110,7 +110,7 @@ export class MasterAutonomousOrchestrator {
    * Main orchestration method - coordinates all agents for complete autonomous operation
    */
   async orchestrateCompleteAnalysis(params: ReportParameters): Promise<MasterOrchestrationResult> {
-    console.log('ðŸŽ¯ Starting Master Autonomous Orchestration for 100% Performance');
+    console.log('Starting Master Autonomous Orchestration for 100% Performance');
 
     const consultantGate = ConsultantGateService.evaluate(params);
     if (!consultantGate.isReady) {
@@ -201,11 +201,11 @@ export class MasterAutonomousOrchestrator {
         tags: ['100-percent-performance', 'full-autonomy']
       });
 
-      console.log('âœ… Master Autonomous Orchestration completed successfully');
+      console.log('Master Autonomous Orchestration completed successfully');
       return result;
 
     } catch (error) {
-      console.error('âŒ Master Autonomous Orchestration failed:', error);
+      console.error('Master Autonomous Orchestration failed:', error);
       auditTrail.push({
         step: 'error',
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -229,22 +229,22 @@ export class MasterAutonomousOrchestrator {
    * Initialize all autonomous agents
    */
   private async initializeAutonomousAgents(): Promise<void> {
-    console.log('ðŸ”§ Initializing autonomous agents...');
+    console.log('"§ Initializing autonomous agents...');
 
     // Start background processes for continuous operation
     this.startBackgroundProcesses();
 
-    // All autonomous agents initialize on construction/import â€” no explicit init needed.
+    // All autonomous agents initialize on construction/import " no explicit init needed.
     // Memory system is initialized on import
 
-    console.log('âœ… All autonomous agents initialized');
+    console.log('All autonomous agents initialized');
   }
 
   /**
    * Run deep thinking analysis
    */
   private async runDeepThinkingAnalysis(params: ReportParameters): Promise<Record<string, unknown>> {
-    console.log('ðŸ§  Running deep thinking analysis...');
+    console.log('Running deep thinking analysis...');
     // DeepThinkingEngine.think() requires ReportData and CopilotInsight[]
     // which are assembled later in the pipeline. Return planning context.
     const regionalKernel = RegionalDevelopmentOrchestrator.run({
@@ -285,7 +285,7 @@ export class MasterAutonomousOrchestrator {
    * Run autonomous research
    */
   private async runAutonomousResearch(params: ReportParameters): Promise<Record<string, unknown>> {
-    console.log('ðŸ” Running autonomous research...');
+    console.log('" Running autonomous research...');
 
     const researchQuery = this.buildResearchQuery(params);
     const session = autonomousResearchAgent.createSession(researchQuery);
@@ -378,7 +378,7 @@ export class MasterAutonomousOrchestrator {
    * Run self-improvement analysis
    */
   private async runSelfImprovement(_params: ReportParameters, _payload: ReportPayload): Promise<Record<string, unknown>> {
-    console.log('ðŸ”„ Running self-improvement analysis...');
+    console.log('"„ Running self-improvement analysis...');
 
     const improvements = await selfImprovementEngine.analyzeAndImprove();
 
@@ -398,7 +398,7 @@ export class MasterAutonomousOrchestrator {
    * Update persistent memory
    */
   private async updatePersistentMemory(params: ReportParameters, enhancements: Record<string, Record<string, unknown>>): Promise<void> {
-    console.log('ðŸ’¾ Updating persistent memory...');
+    console.log('Updating persistent memory...');
 
     const memoryEntry = {
       reportId: params.id,
@@ -482,7 +482,7 @@ export class MasterAutonomousOrchestrator {
   private startBackgroundProcesses(): void {
     if (this.isRunning) return;
 
-    console.log('ðŸš€ Starting background autonomous processes...');
+    console.log('Starting background autonomous processes...');
 
     this.isRunning = true;
 
@@ -517,14 +517,14 @@ export class MasterAutonomousOrchestrator {
     this.backgroundProcesses.set('improvement', improvementProcess);
     this.backgroundProcesses.set('memory', memoryProcess);
 
-    console.log('âœ… Background processes started');
+    console.log('Background processes started');
   }
 
   /**
    * Stop background processes
    */
   stopBackgroundProcesses(): void {
-    console.log('ðŸ›‘ Stopping background autonomous processes...');
+    console.log('Stopping background autonomous processes...');
 
     for (const [name, process] of this.backgroundProcesses) {
       clearInterval(process);
@@ -534,7 +534,7 @@ export class MasterAutonomousOrchestrator {
     this.backgroundProcesses.clear();
     this.isRunning = false;
 
-    console.log('âœ… Background processes stopped');
+    console.log('Background processes stopped');
   }
 
   // Helper methods

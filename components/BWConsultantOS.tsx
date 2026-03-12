@@ -1,4 +1,4 @@
-﻿/**
+/**
  * BW CONSULTANT OS - Case Study Builder
  * 
  * Flow:
@@ -484,7 +484,7 @@ const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
     focus: 'government-entry',
     title: 'Working with Government',
     description: 'Find out how to align with government priorities and what they need to see in a proposal.',
-    whyItMatters: 'Government decisions follow strict processes — knowing them early gives you an edge.',
+    whyItMatters: 'Government decisions follow strict processes - knowing them early gives you an edge.',
     recommendedMoves: [
       'Help me understand what this government department is looking for.',
       'Prepare a briefing and proposal outline that fits their requirements.'
@@ -494,7 +494,7 @@ const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
     id: 'partner-selection-risk',
     focus: 'partnerships',
     title: 'Finding the Right Partners',
-    description: 'Evaluate potential partners — their strengths, risks, and whether they can deliver what you need.',
+    description: 'Evaluate potential partners - their strengths, risks, and whether they can deliver what you need.',
     whyItMatters: 'The wrong partner costs more than no partner. Get this right early.',
     recommendedMoves: [
       'Help me evaluate potential partners with a clear checklist.',
@@ -516,7 +516,7 @@ const PILOT_GLOBAL_ISSUE_AREAS: PilotIssueArea[] = [
     id: 'capital-readiness',
     focus: 'new-markets',
     title: 'Funding & Capital Planning',
-    description: 'Plan your funding approach — how much, when, and what happens if things change.',
+    description: 'Plan your funding approach - how much, when, and what happens if things change.',
     whyItMatters: 'Running out of money mid-expansion is the most common reason projects fail.',
     recommendedMoves: [
       'Help me build a funding plan with best-case and worst-case scenarios.',
@@ -836,11 +836,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   }, [messages, isLoading, voiceEnabled]);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<{ stop(): void } | null>(null);
-  // Background brain context — updated on every enrichment pass
+  // Background brain context - updated on every enrichment pass
   const brainCtxRef = useRef<BrainContext | null>(null);
   // Persistent cross-session memory (survives page reload via localStorage)
   const memoryRef = useRef<PersistentMemorySystem>(new PersistentMemorySystem());
-  // Latest CaseStudyAnalyzer output — written synchronously in handleSend,
+  // Latest CaseStudyAnalyzer output - written synchronously in handleSend,
   // read by buildNaturalFallbackReply (bypasses React async state lag)
   const latestDocAnalysisRef = useRef<{
     title: string;
@@ -853,7 +853,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     scores: Record<string, number>;
   } | null>(null);
 
-  // Case study state — declared early so useEffects below can reference it without TDZ
+  // Case study state - declared early so useEffects below can reference it without TDZ
   const [caseStudy, setCaseStudy] = useState<CaseStudy>({
     userName: '',
     organizationName: '',
@@ -885,14 +885,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     autonomousScheduler.start();
     selfImprovementEngine.analyzeAndImprove().catch(() => null); // self-tune on mount
 
-    // ── Initialize ConversationMemoryManager — restores cross-session context ────
+    // ── Initialize ConversationMemoryManager - restores cross-session context ────
     conversationMemoryManager.startConversation().catch(() => {/* non-fatal */});
 
-    // ── Initialize PersistentVectorStore — loads persisted embeddings from IndexedDB ──
+    // ── Initialize PersistentVectorStore - loads persisted embeddings from IndexedDB ──
     persistentVectorStore.initialize().catch(() => {/* non-fatal */});
-    monitoringService.info('system', 'BWConsultantOS initialized — all safety & evaluation services active');
+    monitoringService.info('system', 'BWConsultantOS initialized - all safety & evaluation services active');
 
-    // ── Subscribe to EventBus — capture intelligence from all background services ──
+    // ── Subscribe to EventBus - capture intelligence from all background services ──
     const unsubscribeHandlers: Array<() => void> = [];
 
     const appendEventInsight = (label: string, content: string) => {
@@ -945,7 +945,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     onInitialConsultantQueryHandled?.();
   }, [initialConsultantQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── AutomaticSearchService — trigger on country / org change ───────────────
+  // ── AutomaticSearchService - trigger on country / org change ───────────────
   useEffect(() => {
     const country = caseStudy.country.trim();
     const org = caseStudy.organizationName.trim();
@@ -1086,7 +1086,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
   const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);
   const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
-  const [activeGlobalIssuePack] = useState<string>(''); // not pre-set — resolved from conversation
+  const [activeGlobalIssuePack] = useState<string>(''); // not pre-set - resolved from conversation
   const [quickCountryFocus, setQuickCountryFocus] = useState('');
   const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
   const [quickCustomSector] = useState('');
@@ -1110,7 +1110,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   
   // Document generation
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
-  // Report options panel — shown after document upload
+  // Report options panel - shown after document upload
   const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
   const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
   const [reportOptionsDocType, setReportOptionsDocType] = useState('');
@@ -1318,7 +1318,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   // ── AUTO-APPLY AUGMENTED REVIEW ────────────────────────────────────────────
   // Whenever a new augmented snapshot arrives, automatically accept it.
-  // The human-in-the-loop gate is informational only — the system automatically
+  // The human-in-the-loop gate is informational only - the system automatically
   // applies its augmented reasoning without requiring manual Accept/Modify/Reject.
   useEffect(() => {
     if (augmentedAISnapshot && augmentedReviewState === 'idle') {
@@ -1328,7 +1328,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   const executeAction = useCallback(async (action: PendingAction) => {
     setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'executing' } : a));
-    // Execute immediately — no artificial delay
+    // Execute immediately - no artificial delay
     setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'done' } : a));
     setApprovalGateAction(null);
   }, []);
@@ -1349,7 +1349,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         }));
       }
     } catch {
-      // silent — live data is enrichment, not critical
+      // silent - live data is enrichment, not critical
     }
   }, [liveDataCache]);
 
@@ -1384,10 +1384,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       complianceFlags.push('GDPR data handling obligations apply');
     }
     if (/switzerland|cayman|singapore|banking secrecy/i.test(jurisdiction)) {
-      complianceFlags.push('Banking secrecy jurisdiction — data-handling review required');
+      complianceFlags.push('Banking secrecy jurisdiction - data-handling review required');
     }
     if (/saudi|uae|qatar|mena/i.test(jurisdiction)) {
-      complianceFlags.push('MENA investment review controls — verify counterparty alignment');
+      complianceFlags.push('MENA investment review controls - verify counterparty alignment');
     }
     if (complianceFlags.length > 0) {
       setComplianceWarnings(complianceFlags);
@@ -1526,7 +1526,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const isCaseStudyComplete = liveDraftReadiness >= CASE_COMPLETION_THRESHOLD;
 
   const liveDraftStatus = useMemo(() => {
-    if (isCaseStudyComplete) return 'Case Complete — Evaluation Active';
+    if (isCaseStudyComplete) return 'Case Complete - Evaluation Active';
     if (liveDraftReadiness >= 75) return 'Final Inputs in Progress';
     if (liveDraftReadiness >= 45) return 'Case Build in Progress';
     return 'Building Initial Draft';
@@ -1608,7 +1608,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     const context = caseStudy.currentMatter.trim();
     const constraints = caseStudy.constraints.trim();
 
-    // Only show real data — no placeholder filler
+    // Only show real data - no placeholder filler
     const parts: string[] = [];
     if (organization) parts.push(`**${organization}** is being assessed for a strategic decision${location ? ` in ${location}` : ''}.`);
     if (objective) parts.push(`Objective: ${objective}.`);
@@ -1666,7 +1666,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     };
   }, []);
 
-  // buildLowSignalReply kept as safety fallback — pipeline bypass removed; AI handles all inputs directly
+  // buildLowSignalReply kept as safety fallback - pipeline bypass removed; AI handles all inputs directly
   const _buildLowSignalReply = useCallback((_detectedName: string | null) => {
     return "What are you working on? I'm ready to help.";
   }, []);
@@ -1847,7 +1847,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     if (quickCountryFocus.trim()) parts.push(quickCountryFocus.trim());
     if (quickBusinessTarget.trim()) parts.push(quickBusinessTarget.trim());
 
-    return parts.filter(Boolean).join(' — ');
+    return parts.filter(Boolean).join(' - ');
   }, [effectivePilotFocusText, quickCustomSector, activeIssuePack.label, quickCountryFocus, quickBusinessTarget]);
 
   const currentLiveInsightInputSignature = useMemo(() => {
@@ -1897,7 +1897,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
         const body = entry.replace(/^Pinned live source \([^)]+\):\s*/i, '');
         const [titleAndSource, linkRaw] = body.split(' | ');
-        const [titleRaw, sourceRaw] = titleAndSource.split(' — ');
+        const [titleRaw, sourceRaw] = titleAndSource.split(' - ');
 
         return {
           bucket,
@@ -2071,7 +2071,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
     if (regionalKernel.dataFabric.overallFreshnessHours > 14 || regionalKernel.governanceReadiness < 75) {
       lastKernelSignalRef.current = signalKey;
-      // Background signal only — silent kernel refresh, no chat injection
+      // Background signal only - silent kernel refresh, no chat injection
     }
   }, [regionalKernel, currentPhase]);
 
@@ -2431,7 +2431,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Research topic noted: "${option.label}" — this will be factored into your consultation.`,
+        content: `Research topic noted: "${option.label}" - this will be factored into your consultation.`,
         timestamp: new Date(),
         phase: 'discovery'
       }
@@ -2658,7 +2658,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       setCaseStudy((prev) => {
         const newLines = merged.slice(0, 6).map((item) => {
           const snippet = item.snippet?.trim();
-          return `Live search finding (${item.bucket}): ${item.title} — ${item.source}${snippet ? ` | ${snippet}` : ''} | ${item.link}`;
+          return `Live search finding (${item.bucket}): ${item.title} - ${item.source}${snippet ? ` | ${snippet}` : ''} | ${item.link}`;
         });
         const queryLine = `Live search query used: ${query}`;
         const providerLine = `Live search provider status: ${providerStatuses.length > 0 ? Array.from(new Set(providerStatuses)).join(' • ') : 'unknown'}`;
@@ -2741,7 +2741,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   ]);
 
   const handlePinLiveInsightToDraft = useCallback((item: LiveInsightResult) => {
-    const evidenceLine = `Pinned live source (${item.bucket}): ${item.title} — ${item.source} | ${item.link}`;
+    const evidenceLine = `Pinned live source (${item.bucket}): ${item.title} - ${item.source} | ${item.link}`;
 
     setCaseStudy((prev) => {
       if (prev.additionalContext.includes(evidenceLine)) {
@@ -2777,7 +2777,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       const nextContext = prev.additionalContext.filter((entry) => {
         if (!entry.startsWith('Pinned live source (')) return true;
         const hasSameLink = entry.includes(`| ${item.link}`);
-        const hasSameTitle = entry.includes(`: ${item.title} —`);
+        const hasSameTitle = entry.includes(`: ${item.title} -`);
         return !(hasSameLink || hasSameTitle);
       });
 
@@ -2890,11 +2890,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         id: crypto.randomUUID(),
         role: 'assistant',
         content: [
-          'Welcome — I\'m glad you\'re here.',
+          'Welcome - I\'m glad you\'re here.',
           '',
-          'I\'m your BW Consultant — think of me as a senior advisor in your corner. I help leaders like you navigate complex opportunities with clarity and confidence.',
+          'I\'m your BW Consultant - think of me as a senior advisor in your corner. I help leaders like you navigate complex opportunities with clarity and confidence.',
           '',
-          'Whether you\'re exploring a new market, evaluating a partnership, approaching government, or structuring an investment — you don\'t need to have everything figured out before we start.',
+          'Whether you\'re exploring a new market, evaluating a partnership, approaching government, or structuring an investment - you don\'t need to have everything figured out before we start.',
           '',
           'Just tell me what you\'re working on, and we\'ll build your case together.'
         ].join('\n'),
@@ -2906,7 +2906,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
-  // Read file content — uses Gemini multimodal for binary documents (PDF, DOCX, etc.)
+  // Read file content - uses Gemini multimodal for binary documents (PDF, DOCX, etc.)
   const readFileContent = useCallback(async (file: File): Promise<string> => {
     const lowerName = file.name.toLowerCase();
 
@@ -2919,7 +2919,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       return extractFileTextViaAI(file);
     }
 
-    // Plain-text formats — read directly and truncate
+    // Plain-text formats - read directly and truncate
     const isText = file.type.startsWith('text/') || 
       ['.txt', '.md', '.csv', '.json', '.html', '.xml', '.ts', '.tsx', '.js', '.jsx'].some(ext => lowerName.endsWith(ext));
 
@@ -2928,11 +2928,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         const text = await file.text();
         return `[${file.name}]\n${text.slice(0, 32000)}${text.length > 32000 ? '\n...(truncated)' : ''}`;
       } catch {
-        return `[${file.name}] — Unable to read file content`;
+        return `[${file.name}] - Unable to read file content`;
       }
     }
 
-    return `[${file.name}] — File type not supported. Please convert to PDF or plain text (.txt).`;
+    return `[${file.name}] - File type not supported. Please convert to PDF or plain text (.txt).`;
   }, []);
 
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
@@ -2950,7 +2950,7 @@ Consultant intelligence profile:
 ${consultantCaseBrief}
 
 Consultant gate status:
-${consultantGateReady ? 'READY — all case fields populated' : `ENRICHING — some fields still being collected in background: ${consultantGateMissing.join('; ')}. Do NOT refuse to answer or loop on intake questions. Always respond to the user's actual request first.`}
+${consultantGateReady ? 'READY - all case fields populated' : `ENRICHING - some fields still being collected in background: ${consultantGateMissing.join('; ')}. Do NOT refuse to answer or loop on intake questions. Always respond to the user's actual request first.`}
 
 User's latest input: "${userInput}"
 Phase context: ${context}
@@ -2984,7 +2984,7 @@ ${(quickCountryFocus || quickBusinessTarget || quickCustomSector || customResear
 ${quickCountryFocus ? `- Country/region of focus: ${quickCountryFocus}` : ''}
 ${quickBusinessTarget ? `- Business target: ${quickBusinessTarget}` : ''}
 ${quickCustomSector ? `- Custom sector: ${quickCustomSector}` : (activeIssuePack.id ? `- Issue pack selected: ${activeIssuePack.label}` : '')}
-${customResearchTopics.length > 0 ? `- Custom research topics: ${customResearchTopics.join(', ')}` : ''}` : '(Pilot panel not configured — operating from conversation context only)'}
+${customResearchTopics.length > 0 ? `- Custom research topics: ${customResearchTopics.join(', ')}` : ''}` : '(Pilot panel not configured - operating from conversation context only)'}
 
 Output intent and matching mode:
 - Preferred output mode: ${preferredOutputMode}
@@ -3007,7 +3007,7 @@ ${agentRegistry.current.toManifest()}`;
 
     // ── GREETING ──────────────────────────────────────────────────────────────
     if (/^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed)) {
-      return 'Good to hear from you. Tell me what you\'re working on — a deal, a market, a partner, a pitch — and I\'ll help you build a clear path forward.';
+      return 'Good to hear from you. Tell me what you\'re working on - a deal, a market, a partner, a pitch - and I\'ll help you build a clear path forward.';
     }
 
     // ── DOCUMENT UPLOAD AWARENESS ──────────────────────────────────────────────
@@ -3056,10 +3056,10 @@ ${agentRegistry.current.toManifest()}`;
 
     // ── INFORMATION / RESEARCH QUESTION ───────────────────────────────────────
     // "tell me about X", "what is X", "explain X", "describe X", etc.
-    // These are questions, not intake answers — respond to what was actually asked.
+    // These are questions, not intake answers - respond to what was actually asked.
     const isInfoQuestion = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about)\b/i.test(trimmed);
 
-    // ── BRAIN CONTEXT — inject any available intelligence from BrainIntegrationService ──
+    // ── BRAIN CONTEXT - inject any available intelligence from BrainIntegrationService ──
     const brainData = brainCtxRef.current;
     const brainSection = brainData?.promptBlock
       ? `\n\n---\n**Intelligence from NSIL engines:**\n${brainData.promptBlock.slice(0, 3000)}`
@@ -3070,12 +3070,12 @@ ${agentRegistry.current.toManifest()}`;
       const topicMatch = trimmed.match(/^(?:tell me(?:\s+more)?\s+about|more about|what is|what are|who is|explain|describe|give me info(?: on| about)?|can you tell me about|i want to know(?:\s+more)?\s+about|what do you know about|research|find out about|background (?:on|about))\s+(.+)/i);
       const topic = topicMatch?.[1]?.trim() || trimmed;
 
-      return `## ${topic}\n\nI'm analysing your query about **${topic}** now. The AI research pipeline is running — this includes web search for current data, root cause analysis, and multi-perspective strategic assessment.\n\n` +
+      return `## ${topic}\n\nI'm analysing your query about **${topic}** now. The AI research pipeline is running - this includes web search for current data, root cause analysis, and multi-perspective strategic assessment.\n\n` +
         `${brainSection ? brainSection + '\n\n' : ''}` +
-        `If you want me to focus on a specific angle — investment feasibility, political risk, regulatory landscape, or market entry — let me know.`;
+        `If you want me to focus on a specific angle - investment feasibility, political risk, regulatory landscape, or market entry - let me know.`;
     }
 
-    // ── GENERAL FALLBACK — ANSWER DIRECTLY, never deflect ─────────────────────
+    // ── GENERAL FALLBACK - ANSWER DIRECTLY, never deflect ─────────────────────
     const lc = trimmed.toLowerCase();
 
     // Quick fresh-signal extraction from the current input
@@ -3094,10 +3094,10 @@ ${agentRegistry.current.toManifest()}`;
       if (kws.some(k => lc.includes(k))) { freshCountry = c; break; }
     }
 
-    // Build a direct, substantive response — NEVER ask for motive or context first
+    // Build a direct, substantive response - NEVER ask for motive or context first
     const locationContext = freshCountry ? ` related to **${freshCountry}**` : '';
     const reply = trimmed.length >= 20
-      ? `I've noted your input${locationContext}. The AI analysis pipeline is processing your query now — running issue classification, root cause analysis, and web research for current data.\n\n` +
+      ? `I've noted your input${locationContext}. The AI analysis pipeline is processing your query now - running issue classification, root cause analysis, and web research for current data.\n\n` +
         `The full response will draw from AI reasoning, live World Bank economic data, and web intelligence.${brainSection}`
       : `Understood. What specific topic, country, or situation would you like me to analyse? I can provide intelligence briefings, risk assessments, market analysis, stakeholder mapping, and strategic advisory across any sector or geography worldwide.`;
 
@@ -3130,7 +3130,7 @@ ${agentRegistry.current.toManifest()}`;
     const knownIdentity = draft.organizationName || draft.userName || 'Not provided yet';
     const knownLocation = draft.country || draft.jurisdiction || 'Not provided yet';
 
-    return `I can format this a few ways—pick one and I’ll generate it now:\n\nA) Quick background insight (3–5 bullets)\nB) Concrete next-step recommendation\nC) Full report (board-ready)\nD) Letter/document draft\nE) Full case pack (report + letters)\nF) Not sure — recommend best format\n\nReply with A–F (or say "just answer normally").\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
+    return `I can format this a few ways-pick one and I'll generate it now:\n\nA) Quick background insight (3-5 bullets)\nB) Concrete next-step recommendation\nC) Full report (board-ready)\nD) Letter/document draft\nE) Full case pack (report + letters)\nF) Not sure - recommend best format\n\nReply with A-F (or say "just answer normally").\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
   }, []);
 
   const isLowSignalInsight = useCallback((title: string, content: string, confidence?: number): boolean => {
@@ -3249,16 +3249,16 @@ ${agentRegistry.current.toManifest()}`;
             return endpointText;
           }
         }
-      } catch { /* backend unavailable — use reasoning pipeline below */ }
+      } catch { /* backend unavailable - use reasoning pipeline below */ }
 
-      // ── Steps 2–4: THINK → REASON → SOLVE → ANSWER (ReasoningPipeline) ─────
+      // ── Steps 2-4: THINK → REASON → SOLVE → ANSWER (ReasoningPipeline) ─────
       //
-      //   Step 2 (Thought)   — AI classifies and reasons through the problem
-      //   Step 3 (Solution)  — AI determines best response approach
-      //   Step 4 (Answer)    — AI streams the grounded final answer
+      //   Step 2 (Thought)   - AI classifies and reasons through the problem
+      //   Step 3 (Solution)  - AI determines best response approach
+      //   Step 4 (Answer)    - AI streams the grounded final answer
       //
       // Extract document content from the user's message for Step 2 context.
-      // Use capture group [1] to get the raw document body — not the header prefix.
+      // Use capture group [1] to get the raw document body - not the header prefix.
       const docContentMatch = userInput.match(/\*\*Uploaded Documents:\*\*\n([\s\S]+)/i)
         || userInput.match(/\[([^\]]+\.pdf[^\]]*?)\]/i);
       const documentContext = docContentMatch ? (docContentMatch[1] ?? docContentMatch[0]) : undefined;
@@ -3274,7 +3274,7 @@ ${agentRegistry.current.toManifest()}`;
         ...(caseStudy.jurisdiction ? { Jurisdiction: caseStudy.jurisdiction } : {}),
       };
 
-      // ── IssueSolutionPipeline — run AI analysis engines in parallel ──────────
+      // ── IssueSolutionPipeline - run AI analysis engines in parallel ──────────
       //
       // Runs 5 AI-powered analyses in parallel:
       //  1. AI Issue Classification (category, confidence, reasoning)
@@ -3291,7 +3291,7 @@ ${agentRegistry.current.toManifest()}`;
       // Build a short issue description from ref analysis if available
       const docRef = latestDocAnalysisRef.current;
       const docIssueSummary = docRef
-        ? `Document analysis — ${docRef.title} (${docRef.country}, ${docRef.sector}).` +
+        ? `Document analysis - ${docRef.title} (${docRef.country}, ${docRef.sector}).` +
           ` Key issues: ${docRef.keyIssues.slice(0, 3).join('; ')}.`
         : documentContext?.slice(0, 500) ?? '';
       const issueForPipeline = typedQuery
@@ -3417,7 +3417,7 @@ ${agentRegistry.current.toManifest()}`;
         : detectedSignals.slice(0, 2).join(' • ');
 
       setReactiveDraftStatus(status);
-      setReactiveDraftHint(hint || 'Keep typing — the consultant will continue building your case context in the background.');
+      setReactiveDraftHint(hint || 'Keep typing - the consultant will continue building your case context in the background.');
     }, 450);
 
     return () => window.clearTimeout(timeout);
@@ -3898,7 +3898,7 @@ ${agentRegistry.current.toManifest()}`;
       if (docSignals.targetAudience && !extractedSignals.targetAudience) extractedSignals.targetAudience = docSignals.targetAudience;
     }
 
-    // Capture before files are cleared — used to defer showing ReportOptionsPanel until after AI responds
+    // Capture before files are cleared - used to defer showing ReportOptionsPanel until after AI responds
     const hadFileUpload = uploadedFiles.length > 0;
     const discoveredDocs: DocumentOption[] = [];
 
@@ -3910,7 +3910,7 @@ ${agentRegistry.current.toManifest()}`;
       for (let index = 0; index < uploadedFiles.length; index += 1) {
         const file = uploadedFiles[index];
         const fileContent = fileContents[index] || '';
-        // Skip only if too short — PDFs are now included if text was successfully extracted via AI
+        // Skip only if too short - PDFs are now included if text was successfully extracted via AI
         if (fileContent.length < 400) {
           continue;
         }
@@ -3920,11 +3920,11 @@ ${agentRegistry.current.toManifest()}`;
           const summary = CaseStudyAnalyzer.toConsultantSummary(analysis);
 
           // ── Store analysis in ref synchronously so buildNaturalFallbackReply
-          //    can read it immediately — React setCaseStudy is async and won't
+          //    can read it immediately - React setCaseStudy is async and won't
           //    be visible in the same render cycle ──────────────────────────────
           const keyIssues: string[] = [
             ...analysis.weaknesses.slice(0, 5).map(w => `${w.category}: ${w.description}`),
-            ...analysis.historicalParallels.slice(0, 2).map(h => `Historical parallel — ${h.name} (${h.country}): ${h.lesson}`),
+            ...analysis.historicalParallels.slice(0, 2).map(h => `Historical parallel - ${h.name} (${h.country}): ${h.lesson}`),
           ];
           latestDocAnalysisRef.current = {
             title: analysis.title,
@@ -4009,7 +4009,7 @@ ${agentRegistry.current.toManifest()}`;
         });
       }
 
-      // ── Report Options Menu — computed from uploaded document richness ──────
+      // ── Report Options Menu - computed from uploaded document richness ──────
       const combinedUploadText = fileContents.join('\n\n');
       const uploadWordCount = ReportLengthRouter.estimateWordCount(combinedUploadText);
       const textLower = combinedUploadText.toLowerCase();
@@ -4027,7 +4027,7 @@ ${agentRegistry.current.toManifest()}`;
       setReportOptionsDocTitle(uploadedFiles[0]?.name.replace(/\.[^/.]+$/, '') ?? 'Uploaded Document');
       setReportOptionsDocType('Uploaded Document');
       setReportOptionsMenu(uploadMenu);
-      // showReportOptions is deferred — shown AFTER the AI has responded with its document analysis
+      // showReportOptions is deferred - shown AFTER the AI has responded with its document analysis
     }
 
     const userMessagePhase = readinessScore < 55 ? 'discovery' : readinessScore < 80 ? 'analysis' : 'recommendations';
@@ -4079,7 +4079,7 @@ ${agentRegistry.current.toManifest()}`;
       }));
 
       // caseDraft: merge stale React state with THIS turn's extracted+inferred signals
-      // (React state won't have updated yet — we build a local merged copy for the AI call)
+      // (React state won't have updated yet - we build a local merged copy for the AI call)
       const caseDraft: CaseStudy = {
         ...caseStudy,
         userName: extractedSignals.userName && !caseStudy.userName.trim() ? extractedSignals.userName : caseStudy.userName,
@@ -4118,10 +4118,10 @@ ${agentRegistry.current.toManifest()}`;
         extractedSignals.targetAudience, extractedSignals.decisionDeadline
       ].filter(v => v && String(v).trim().length > 0).length;
       const ingestionDetail = extractedFieldCount > 0
-        ? `${extractedFieldCount} field${extractedFieldCount !== 1 ? 's' : ''} extracted — readiness ${liveReadiness}% (${inferredPhase})`
+        ? `${extractedFieldCount} field${extractedFieldCount !== 1 ? 's' : ''} extracted - readiness ${liveReadiness}% (${inferredPhase})`
         : liveReadiness < 15
-          ? `Conversation captured — profile enrichment continues in background (readiness ${liveReadiness}%)`
-          : `Readiness ${liveReadiness}% (${inferredPhase}) — background enrichment active`;
+          ? `Conversation captured - profile enrichment continues in background (readiness ${liveReadiness}%)`
+          : `Readiness ${liveReadiness}% (${inferredPhase}) - background enrichment active`;
       setExecutionTaskStatus('ingestion', 'completed', ingestionDetail);
       let responseProvenance = buildMessageProvenance(caseDraft, liveReadiness);
 
@@ -4140,7 +4140,7 @@ ${agentRegistry.current.toManifest()}`;
       const shouldPromptForOutputClarification = shouldAskOutputClarification(caseDraft, trimmedUserContent, deliverableIntent);
       const shouldRunInsights = liveReadiness >= 25 && !isGreetingOnly && !shouldPromptForOutputClarification;
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
-      // Fire brain on ANY substantive query — even with zero readiness on first turn.
+      // Fire brain on ANY substantive query - even with zero readiness on first turn.
       // The brain can still contribute country data, governance indices, sanctions checks, etc.
       const shouldFireBrain = !isGreetingOnly && !shouldPromptForOutputClarification && (liveReadiness >= 15 || trimmedUserContent.length > 20);
       const brainEnrichmentPromise = shouldFireBrain
@@ -4169,7 +4169,7 @@ ${agentRegistry.current.toManifest()}`;
                 ? 'Insight scan deferred until output type is clarified'
                 : liveReadiness < 25
                 ? `Background analysis deferred until more context is available`
-                : 'Greeting turn — intelligence scan deferred'
+                : 'Greeting turn - intelligence scan deferred'
             );
             return Promise.resolve([]);
           })();
@@ -4194,7 +4194,7 @@ ${agentRegistry.current.toManifest()}`;
         const brainBlock = brainCtxRef.current?.promptBlock ?? '';
 
         // ── ADVANCED DECISION INTELLIGENCE (parallel, readiness-gated) ─────────
-        // Engines not normally used in standard AI advisory — run synchronously
+        // Engines not normally used in standard AI advisory - run synchronously
         // (all are pure computation, no async I/O) and inject as context blocks.
         let advancedIntelligenceBlock = '';
         if (!isGreetingOnly && !shouldPromptForOutputClarification) {
@@ -4247,7 +4247,7 @@ ${agentRegistry.current.toManifest()}`;
                 const synthesis = result.synthesis;
                 const historical = result.historicalPatterns;
                 multiAgentContextRef.current = [
-                  `## MULTI-AGENT SYNTHESIS (6 specialist AI agents — historical, government, banking, corporate, market, risk)`,
+                  `## MULTI-AGENT SYNTHESIS (6 specialist AI agents - historical, government, banking, corporate, market, risk)`,
                   synthesis.primaryInsight ? `Primary insight: ${synthesis.primaryInsight}` : '',
                   synthesis.alternativeViewpoints.length ? `Alternative viewpoints: ${synthesis.alternativeViewpoints.slice(0, 2).join('; ')}` : '',
                   synthesis.recommendedNextSteps.length ? `Multi-agent recommended next steps: ${synthesis.recommendedNextSteps.slice(0, 3).join('; ')}` : '',
@@ -4269,7 +4269,7 @@ ${agentRegistry.current.toManifest()}`;
                   if (updatedSession.status === 'complete' && updatedSession.profile) {
                     const p = updatedSession.profile;
                     locationProfileContextRef.current = [
-                      `## LIVE LOCATION INTELLIGENCE (agenticLocationIntelligence — 7-category agentic research)`,
+                      `## LIVE LOCATION INTELLIGENCE (agenticLocationIntelligence - 7-category agentic research)`,
                       `Location researched: ${updatedSession.query.city ?? ''}${updatedSession.query.country ? ', ' + updatedSession.query.country : ''}`,
                       p.knownFor?.length ? `Known for: ${p.knownFor.slice(0, 4).join(', ')}` : '',
                       p.keySectors?.length ? `Key sectors: ${p.keySectors.slice(0, 4).join(', ')}` : '',
@@ -4343,7 +4343,7 @@ ${agentRegistry.current.toManifest()}`;
             if (nsilResult) {
               const statusLabel = { green: 'LOW RISK', yellow: 'MODERATE RISK', orange: 'ELEVATED RISK', red: 'HIGH RISK' }[nsilResult.status] ?? nsilResult.status.toUpperCase();
               blocks.push(
-                `## NSIL MASTER HUB ASSESSMENT (NSILIntelligenceHub — 9-layer engine stack)\n` +
+                `## NSIL MASTER HUB ASSESSMENT (NSILIntelligenceHub - 9-layer engine stack)\n` +
                 `Status: **${statusLabel}** | Trust Score: ${nsilResult.trustScore}/100 | Ethical pass: ${nsilResult.ethicalPass ? 'YES' : 'NEEDS REVIEW'}\n` +
                 `Headline: ${nsilResult.headline}\n` +
                 (nsilResult.topConcerns.length ? `Top concerns: ${nsilResult.topConcerns.slice(0, 3).join('; ')}` : '') +
@@ -4353,13 +4353,13 @@ ${agentRegistry.current.toManifest()}`;
               );
             }
 
-            // Situation Analysis — 7 perspectives
+            // Situation Analysis - 7 perspectives
             if (situationResult) {
               const sr = situationResult;
               const unconsideredCritical = sr.unconsideredNeeds.filter(n => n.urgency === 'critical').slice(0, 2);
               const unconsideredImportant = sr.unconsideredNeeds.filter(n => n.urgency === 'important').slice(0, 2);
               blocks.push(
-                `## SITUATION ANALYSIS (SituationAnalysisEngine — 7-perspective diagnostic)\n` +
+                `## SITUATION ANALYSIS (SituationAnalysisEngine - 7-perspective diagnostic)\n` +
                 (sr.explicitNeeds.length ? `Explicit needs detected: ${sr.explicitNeeds.slice(0, 3).join('; ')}\n` : '') +
                 (sr.implicitNeeds.length ? `Implicit needs (unstated): ${sr.implicitNeeds.slice(0, 3).join('; ')}\n` : '') +
                 ([...unconsideredCritical, ...unconsideredImportant].length
@@ -4371,26 +4371,26 @@ ${agentRegistry.current.toManifest()}`;
               );
             }
 
-            // Motivation Detector — risk signals from user language
+            // Motivation Detector - risk signals from user language
             if (motivationResult && (motivationResult.redFlags?.length || motivationResult.triggers?.length)) {
               const flags = (motivationResult.redFlags || []).slice(0, 3);
               const triggers = (motivationResult.triggers || []).slice(0, 3);
               blocks.push(
-                `## MOTIVATION ANALYSIS (MotivationDetector — behavioural signal scanner)\n` +
+                `## MOTIVATION ANALYSIS (MotivationDetector - behavioural signal scanner)\n` +
                 (flags.length ? `Red flags in user language: ${flags.map((f: { flag: string }) => f.flag).join('; ')}\n` : '') +
-                (triggers.length ? `Detected motivation signals: ${triggers.map((t: { category: string; implication: string }) => `${t.category} — ${t.implication}`).join('; ')}` : '')
+                (triggers.length ? `Detected motivation signals: ${triggers.map((t: { category: string; implication: string }) => `${t.category} - ${t.implication}`).join('; ')}` : '')
               );
             }
 
-            // User Signal Decoder — hidden agenda, avoidance, repetition
+            // User Signal Decoder - hidden agenda, avoidance, repetition
             if (userSignalResult && (userSignalResult.repetitionSignals.length || userSignalResult.avoidanceSignals.length || userSignalResult.proactiveQuestions.length)) {
               const reps = userSignalResult.repetitionSignals.slice(0, 2);
               const avoid = userSignalResult.avoidanceSignals.slice(0, 2);
               const proQs = userSignalResult.proactiveQuestions.slice(0, 2);
               blocks.push(
-                `## USER SIGNAL ANALYSIS (UserSignalDecoder — reflexive intelligence layer)\n` +
-                (reps.length ? `Repeated concerns (hidden priority): ${reps.map(r => `"${r.phrase}" — ${r.hiddenPriority}`).join('; ')}\n` : '') +
-                (avoid.length ? `Topics being avoided: ${avoid.map(a => `${a.missingTopic} — ${a.significance}`).join('; ')}\n` : '') +
+                `## USER SIGNAL ANALYSIS (UserSignalDecoder - reflexive intelligence layer)\n` +
+                (reps.length ? `Repeated concerns (hidden priority): ${reps.map(r => `"${r.phrase}" - ${r.hiddenPriority}`).join('; ')}\n` : '') +
+                (avoid.length ? `Topics being avoided: ${avoid.map(a => `${a.missingTopic} - ${a.significance}`).join('; ')}\n` : '') +
                 (userSignalResult.inferredHiddenAgenda ? `Inferred hidden agenda: ${userSignalResult.inferredHiddenAgenda}\n` : '') +
                 (proQs.length ? `Questions the system should ask proactively: ${proQs.map(q => q.question).join(' | ')}` : '')
               );
@@ -4401,11 +4401,11 @@ ${agentRegistry.current.toManifest()}`;
             if (historicalResult && historicalResult.matches.length > 0) {
               const topMatches = historicalResult.matches.slice(0, 3);
               blocks.push(
-                `## HISTORICAL PRECEDENTS (HistoricalParallelMatcher — 60-year case library)\n` +
+                `## HISTORICAL PRECEDENTS (HistoricalParallelMatcher - 60-year case library)\n` +
                 `Success rate across similar cases: ${historicalResult.successRate}%\n` +
                 topMatches.map(m =>
-                  `• **${m.title}** (${m.country}, ${m.year}) — ${m.outcome.replace('-', ' ')}. ` +
-                  `Key lesson: ${m.lessonsLearned[0] ?? m.keyFactors[0] ?? '—'}`
+                  `• **${m.title}** (${m.country}, ${m.year}) - ${m.outcome.replace('-', ' ')}. ` +
+                  `Key lesson: ${m.lessonsLearned[0] ?? m.keyFactors[0] ?? '-'}`
                 ).join('\n') +
                 (historicalResult.synthesisInsight ? `\nSynthesis: ${historicalResult.synthesisInsight}` : '') +
                 (historicalResult.commonSuccessFactors.length
@@ -4424,10 +4424,10 @@ ${agentRegistry.current.toManifest()}`;
               const rec = pc.overallAssessment.recommendation;
               const recLabel = { proceed: 'PROCEED', 'proceed-with-caution': 'PROCEED WITH CAUTION', reconsider: 'RECONSIDER', 'not-recommended': 'NOT RECOMMENDED' }[rec] ?? rec;
               blocks.push(
-                `## UNBIASED PRO/CON ANALYSIS (UnbiasedAnalysisEngine — balanced assessment)\n` +
+                `## UNBIASED PRO/CON ANALYSIS (UnbiasedAnalysisEngine - balanced assessment)\n` +
                 `Assessment: **${recLabel}** (confidence: ${pc.overallAssessment.confidence}%)\n` +
-                `Pros: ${topPros || '—'}\n` +
-                `Cons: ${topCons || '—'}\n` +
+                `Pros: ${topPros || '-'}\n` +
+                `Cons: ${topCons || '-'}\n` +
                 `Reasoning: ${pc.overallAssessment.reasoning}` +
                 (unbiasedResult.alternatives.length > 0
                   ? `\nAlternative options worth considering: ${unbiasedResult.alternatives.slice(0, 2).map(a => a.title).join(', ')}`
@@ -4438,17 +4438,17 @@ ${agentRegistry.current.toManifest()}`;
             if (counterfactualResult && counterfactualResult.scenarios.length > 0) {
               const mc = counterfactualResult.monteCarlo;
               blocks.push(
-                `## COUNTERFACTUAL SCENARIOS (CounterfactualEngine — Monte Carlo)\n` +
+                `## COUNTERFACTUAL SCENARIOS (CounterfactualEngine - Monte Carlo)\n` +
                 `Monte Carlo (${mc.iterations} iterations): Median outcome ${mc.distribution.p50.toFixed(0)}% | ` +
                 `Probability of loss: ${mc.probabilityOfLoss.toFixed(0)}% | ` +
                 `VaR (95%): ${mc.valueAtRisk95.toFixed(0)}%\n` +
                 counterfactualResult.scenarios.slice(0, 3).map(s =>
-                  `• **${s.name}** (${s.probability}% probability) — ${s.description}`
+                  `• **${s.name}** (${s.probability}% probability) - ${s.description}`
                 ).join('\n')
               );
             }
 
-            // ── TIER 2.5 ENGINE OUTPUTS (readiness >= 50) — 19-engine full analysis ──
+            // ── TIER 2.5 ENGINE OUTPUTS (readiness >= 50) - 19-engine full analysis ──
 
             if (nsilFullResult) {
               const fullRec = nsilFullResult.recommendation;
@@ -4460,7 +4460,7 @@ ${agentRegistry.current.toManifest()}`;
               const latentAdvs = reflexive?.latentAdvantages?.latentAdvantages ?? [];
               const actionLabel = { 'proceed': 'PROCEED', 'proceed-with-caution': 'PROCEED WITH CAUTION', 'revise-and-retry': 'REVISE & RETRY', 'do-not-proceed': 'DO NOT PROCEED' }[fullRec.action] ?? fullRec.action.toUpperCase();
               blocks.push(
-                `## NSIL FULL ANALYSIS — 19-ENGINE UNIFIED ASSESSMENT\n` +
+                `## NSIL FULL ANALYSIS - 19-ENGINE UNIFIED ASSESSMENT\n` +
                 `**Master recommendation: ${actionLabel}** (confidence: ${fullRec.confidence}%)\n` +
                 `Summary: ${fullRec.summary}\n` +
                 (fullRec.criticalActions.length ? `Critical actions: ${fullRec.criticalActions.slice(0, 3).join('; ')}\n` : '') +
@@ -4503,10 +4503,10 @@ ${agentRegistry.current.toManifest()}`;
                 });
                 if (ranked.length > 0) {
                   blocks.push(
-                    `## PARTNER INTELLIGENCE (PartnerIntelligenceEngine — 6-metric scoring)
+                    `## PARTNER INTELLIGENCE (PartnerIntelligenceEngine - 6-metric scoring)
 ` +
                     ranked.slice(0, 3).map(r =>
-                      `• **${r.partner.name}** (${r.partner.type}) — Total fit: ${r.score.total.toFixed(0)}/100 | ` +
+                      `• **${r.partner.name}** (${r.partner.type}) - Total fit: ${r.score.total.toFixed(0)}/100 | ` +
                       `Partner fit: ${r.score.partnerFit.toFixed(0)} | Policy alignment: ${r.score.policyAlignment.toFixed(0)} | ` +
                       `Delivery reliability: ${r.score.deliveryReliability.toFixed(0)}\n  Reasons: ${r.reasons.join(', ')}`
                     ).join('\n')
@@ -4523,7 +4523,7 @@ ${agentRegistry.current.toManifest()}`;
             // ── EVENTBUS LIVE INTELLIGENCE (from background services) ────────────
             if (eventBusInsightsRef.current.trim()) {
               blocks.push(
-                `## LIVE SYSTEM INTELLIGENCE (EventBus — autonomous background services)\n` +
+                `## LIVE SYSTEM INTELLIGENCE (EventBus - autonomous background services)\n` +
                 eventBusInsightsRef.current
               );
             }
@@ -4539,7 +4539,7 @@ ${agentRegistry.current.toManifest()}`;
                 ).length;
                 const successRate = Math.round((successCount / learningState.records.length) * 100);
                 blocks.push(
-                  `## ADAPTIVE SELF-LEARNING STATE (OutcomeLearningService — ${learningState.records.length} sessions logged)\n` +
+                  `## ADAPTIVE SELF-LEARNING STATE (OutcomeLearningService - ${learningState.records.length} sessions logged)\n` +
                   `Session success rate: ${successRate}% | ` +
                   `Adaptive governance threshold: ${learningState.suggestedGovernanceThreshold}% | ` +
                   `Ranking bias: ${learningState.suggestedRankingBias > 0 ? '+' : ''}${learningState.suggestedRankingBias.toFixed(1)}\n` +
@@ -4555,7 +4555,7 @@ ${agentRegistry.current.toManifest()}`;
               const motivation = adversarialResult.motivation;
               const confidence = adversarialResult.adversarialConfidence;
               blocks.push(
-                `## ADVERSARIAL REASONING (AdversarialReasoningService — multi-persona stress test)\n` +
+                `## ADVERSARIAL REASONING (AdversarialReasoningService - multi-persona stress test)\n` +
                 (shield?.riskLevel ? `Input risk level: ${shield.riskLevel}\n` : '') +
                 (shield?.concerns?.length ? `Shield concerns: ${shield.concerns.slice(0, 2).join('; ')}\n` : '') +
                 (motivation?.primaryMotivation ? `Primary motivation detected: ${motivation.primaryMotivation}\n` : '') +
@@ -4568,9 +4568,9 @@ ${agentRegistry.current.toManifest()}`;
 
             if (blocks.length > 0) {
               advancedIntelligenceBlock =
-                `\n\n## ── ADVANCED INTELLIGENCE LAYER (19-engine NSIL stack + agentic location intelligence — not in standard AI advisory) ──\n\n` +
+                `\n\n## ── ADVANCED INTELLIGENCE LAYER (19-engine NSIL stack + agentic location intelligence - not in standard AI advisory) ──\n\n` +
                 blocks.join('\n\n') +
-                `\n\nAPPLY ALL OF THE ABOVE: Reference the 19-engine NSIL master recommendation, surface unconsidered needs the client hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, surface latent (hidden) advantages the client is underselling, apply the multi-persona debate outcome, flag IFC compliance gaps, use Monte Carlo probabilities, and weave any live location intelligence into expert advisory prose. Do not bullet-list — synthesise into authoritative insight.`;
+                `\n\nAPPLY ALL OF THE ABOVE: Reference the 19-engine NSIL master recommendation, surface unconsidered needs the client hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, surface latent (hidden) advantages the client is underselling, apply the multi-persona debate outcome, flag IFC compliance gaps, use Monte Carlo probabilities, and weave any live location intelligence into expert advisory prose. Do not bullet-list - synthesise into authoritative insight.`;
             }
           } catch (advErr) {
             console.warn('[Advanced Intelligence] non-fatal:', advErr);
@@ -4598,7 +4598,7 @@ ${agentRegistry.current.toManifest()}`;
           caseDraft.contactRole ? `Contact role: ${caseDraft.contactRole}` : null,
         ].filter(Boolean).join('\n');
 
-        // ── QUERY TYPE CLASSIFIER — determines engine routing + prompt framing ──
+        // ── QUERY TYPE CLASSIFIER - determines engine routing + prompt framing ──
         // Runs on every turn regardless of readiness to ensure correct engine mix
         const isInfoQueryTurn = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)/i.test(trimmedUserContent)
           || /\b(who is|who was|what is|what are|tell me about|more about)\b.{3,}/i.test(trimmedUserContent)
@@ -4608,7 +4608,7 @@ ${agentRegistry.current.toManifest()}`;
         const isComplexAnalysis = /\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection)\b/i.test(trimmedUserContent);
         const _isSimpleFollowUp = messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis;
 
-        // ── LIVE SEARCH for factual queries — retrieval-grounded answers ──────────
+        // ── LIVE SEARCH for factual queries - retrieval-grounded answers ──────────
         // Fires for info/person/location queries AND any substantive non-greeting
         // query, so the AI is always grounded in retrieved facts.
         let liveSearchBlock = '';
@@ -4621,48 +4621,48 @@ ${agentRegistry.current.toManifest()}`;
               country: caseDraft.country || undefined,
             });
             if (liveResults.length > 0) {
-              liveSearchBlock = `\n\n## LIVE RETRIEVAL RESULTS (ReactiveIntelligenceEngine — real-time search)\n` +
+              liveSearchBlock = `\n\n## LIVE RETRIEVAL RESULTS (ReactiveIntelligenceEngine - real-time search)\n` +
                 liveResults.slice(0, 5).map(r =>
                   `**${r.title}** (${r.source || new URL(r.url || 'https://bwga.ai').hostname})\n${r.snippet}`
                 ).join('\n\n') +
-                `\n\nINSTRUCTION: Use the above retrieved facts as your primary source for this response. Synthesise into expert prose — cite the sources naturally. Do not repeat search result formatting.`;
+                `\n\nINSTRUCTION: Use the above retrieved facts as your primary source for this response. Synthesise into expert prose - cite the sources naturally. Do not repeat search result formatting.`;
             }
-          } catch { /* non-fatal — AI answers from training knowledge if search unavailable */ }
+          } catch { /* non-fatal - AI answers from training knowledge if search unavailable */ }
         }
 
         // ── WORLD-KNOWLEDGE BASE INSTRUCTION (applies every turn) ────────────────
         const worldKnowledgeInstruction = `## WORLD-KNOWLEDGE OPERATING MODE
-You are a senior expert with encyclopaedic knowledge of the world — every country, city, government official, economic system, political structure, historical event, regulatory framework, and industry sector on earth. You think on your feet like a consultant who has worked in 80+ countries.
+You are a senior expert with encyclopaedic knowledge of the world - every country, city, government official, economic system, political structure, historical event, regulatory framework, and industry sector on earth. You think on your feet like a consultant who has worked in 80+ countries.
 
 When asked about ANY person, place, topic, or event:
-1. ANSWER FIRST with substantive factual knowledge — do not deflect, do not ask for context before answering
+1. ANSWER FIRST with substantive factual knowledge - do not deflect, do not ask for context before answering
 2. ${isPersonQuery ? 'PERSON BRIEFING: Name, role/title, jurisdiction, time in office, known policy priorities, political alignment, notable decisions/achievements, international engagement record, key relationships, any controversies' : isLocationQuery ? 'LOCATION BRIEFING: Full geographic/political context, economic profile (GDP, key industries, employment, investment climate), infrastructure, demographics, governance structure, strategic advantages, known development projects, current political leadership' : 'TOPIC BRIEFING: What it is, current status, key stakeholders, historical context, strategic implications, relevant data points and statistics'}
 3. After delivering the substantive answer, connect ONE insight to the user's broader advisory context if relevant
 4. Ask at most ONE targeted follow-up
 
-You NEVER say "I need more context before answering" — you answer with what you know, then gather context.`;
+You NEVER say "I need more context before answering" - you answer with what you know, then gather context.`;
 
         const openingInstruction = isOpeningTurn
-          ? `You are BW Consultant — a world-class strategic advisory AI backed by the NSIL Agentic Runtime.
+          ? `You are BW Consultant - a world-class strategic advisory AI backed by the NSIL Agentic Runtime.
 
-CRITICAL RULES — READ BEFORE RESPONDING:
-- Do NOT say "I've captured the key elements of your input" — this phrase is BANNED.
+CRITICAL RULES - READ BEFORE RESPONDING:
+- Do NOT say "I've captured the key elements of your input" - this phrase is BANNED.
 - Do NOT mention "Energy Transition" or "Advance new markets" unless the user explicitly said those words.
-- Do NOT list numbered intake questions ("1) Name 2) Country 3) Decision") — that is scripted chatbot behaviour.
+- Do NOT list numbered intake questions ("1) Name 2) Country 3) Decision") - that is scripted chatbot behaviour.
 - Do NOT invent case context that wasn't in the user's message.
-- Do NOT ask for context before answering — ANSWER FIRST, then optionally ask ONE follow-up.
+- Do NOT ask for context before answering - ANSWER FIRST, then optionally ask ONE follow-up.
 
 ${worldKnowledgeInstruction}
 
 ${thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:\n${thisTurnContext}\n\nUse this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET\nThe user has provided minimal context. Answer their question directly with your world knowledge, then ask ONE open question about their situation.`}
 
 BEHAVIOUR:
-- Respond DIRECTLY to what the user actually said — show you understood it
+- Respond DIRECTLY to what the user actually said - show you understood it
 - Sound like a senior consultant who has worked across 80+ countries
 - If sector/country/objective can be inferred, show intelligence about THAT topic specifically
-- Ask at most ONE follow-up — the single most valuable missing detail
+- Ask at most ONE follow-up - the single most valuable missing detail
 - Be concise, direct, and confident`
-          : `You are BW Consultant — autonomous mixed-initiative advisory mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. ALWAYS answer the user's question directly and substantively FIRST.
+          : `You are BW Consultant - autonomous mixed-initiative advisory mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. ALWAYS answer the user's question directly and substantively FIRST.
 
 ${worldKnowledgeInstruction}
 
@@ -4671,15 +4671,15 @@ ${thisTurnContext ? `## CASE CONTEXT THIS TURN:\n${thisTurnContext}\n\nRespond t
         const docUploadBlock = hadFileUpload
           ? `
 
-DOCUMENT UPLOAD — SENIOR CONSULTANT FIRST RESPONSE PROTOCOL
+DOCUMENT UPLOAD - SENIOR CONSULTANT FIRST RESPONSE PROTOCOL
 ============================================================
-The user has uploaded a document. You are a senior BW Global Advisory consultant who has just read it. Respond NATURALLY as a consultant — not a template, not a formal brief.
+The user has uploaded a document. You are a senior BW Global Advisory consultant who has just read it. Respond NATURALLY as a consultant - not a template, not a formal brief.
 
 YOUR RESPONSE MUST FOLLOW THIS EXACT STRUCTURE (but written in flowing, intelligent prose):
 
 ---
 
-**I've reviewed the [document type/title] — here's my read:**
+**I've reviewed the [document type/title] - here's my read:**
 
 Open with ONE direct sentence naming exactly what this document is: the type (policy paper/feasibility study/research report/strategy brief/etc.), what it covers, and where (country/region/city). Show immediately that you read it.
 
@@ -4687,25 +4687,25 @@ Open with ONE direct sentence naming exactly what this document is: the type (po
 
 **What the document covers:**
 
-2–3 sentences that precisely describe the document's scope, purpose, and main argument. Be specific — name the countries, institutions, statistics, and timeframes mentioned in the document. This is NOT a summary — it's a consultant showing they absorbed the detail.
+2-3 sentences that precisely describe the document's scope, purpose, and main argument. Be specific - name the countries, institutions, statistics, and timeframes mentioned in the document. This is NOT a summary - it's a consultant showing they absorbed the detail.
 
 ---
 
 **What the NSIL engines surfaced from this:**
 
-3–5 bullet points. Each must include a [bracketed engine name] and a SPECIFIC finding derived from the document content:
+3-5 bullet points. Each must include a [bracketed engine name] and a SPECIFIC finding derived from the document content:
 
-• **[HistoricalMatcher]** — [Name a real historical parallel this document's situation matches, with country/year and the specific lesson that applies]
-• **[AdversarialReasoningService]** — [Name the key stakeholder tension or political risk surfaced — specific actors named in or implied by the document]
-• **[NSIL Intelligence Hub]** — [Strategic positioning assessment — what does the NSIL analysis say about this country/sector/situation's strategic standing]
-• **[ComprehensiveIndicesEngine]** — [Give 2–3 specific index scores derived from document evidence, e.g. "Political Stability: 31/100 given..."]
-• **[RegionalDevelopmentOrchestrator]** — [The primary structural intervention the engine recommends based on document findings]
+• **[HistoricalMatcher]** - [Name a real historical parallel this document's situation matches, with country/year and the specific lesson that applies]
+• **[AdversarialReasoningService]** - [Name the key stakeholder tension or political risk surfaced - specific actors named in or implied by the document]
+• **[NSIL Intelligence Hub]** - [Strategic positioning assessment - what does the NSIL analysis say about this country/sector/situation's strategic standing]
+• **[ComprehensiveIndicesEngine]** - [Give 2-3 specific index scores derived from document evidence, e.g. "Political Stability: 31/100 given..."]
+• **[RegionalDevelopmentOrchestrator]** - [The primary structural intervention the engine recommends based on document findings]
 
 ---
 
-**What stands out — and why it matters for you:**
+**What stands out - and why it matters for you:**
 
-2–3 short paragraphs. This is your consultant's VIEW — not a repeat of the document. Tell the client:
+2-3 short paragraphs. This is your consultant's VIEW - not a repeat of the document. Tell the client:
 1. What is the most important finding and why it matters right now
 2. What the document gets right and what gap it doesn't address that BW can fill
 3. What the decision-maker reading this document most urgently needs to act on
@@ -4714,16 +4714,16 @@ Open with ONE direct sentence naming exactly what this document is: the type (po
 
 **What BW can develop from this:**
 
-2 sentences. Specifically name what BW Global Advisory can deliver — the type of strategy document, intelligence brief, stakeholder engagement plan, or report package that would build directly on this document's context. Do NOT list bullet options — that comes from the panel below.
+2 sentences. Specifically name what BW Global Advisory can deliver - the type of strategy document, intelligence brief, stakeholder engagement plan, or report package that would build directly on this document's context. Do NOT list bullet options - that comes from the panel below.
 
 ---
 
 RULES:
 - Write as a senior partner, not a system. No em-dash checklists. No "I've captured...". No numbered intake questions.
 - Use specific names, data points, and institutions from the uploaded document.
-- Every engine label must produce a REAL insight — not a placeholder.
+- Every engine label must produce a REAL insight - not a placeholder.
 - The response should feel like a senior consultant just walked out of a document review and sat down to brief the client.
-- Do NOT produce the full 9-section formal brief here — that is generated when the user selects a tier from the options panel.
+- Do NOT produce the full 9-section formal brief here - that is generated when the user selects a tier from the options panel.
 - After this response, the ReportOptionsPanel will appear automatically with options to generate the full formal deliverable.`
           : '';
 
@@ -4784,7 +4784,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         if (fcResult.toolResults.length > 0) {
           nativeFCToolResults = fcResult.toolResults.map(tr => `**${tr.name}**: ${typeof tr.result.data === 'string' ? tr.result.data : JSON.stringify(tr.result.data).slice(0, 600)}`);
         }
-      } catch { /* native function calling is optional — text-parsed tools below */ }
+      } catch { /* native function calling is optional - text-parsed tools below */ }
 
       const toolCalls = AgentToolRegistry.parseToolCalls(responseContent);
       const autoToolCalls = enableFullCaseTreeMatching && !shouldPromptForOutputClarification && !inputSignal.isLowSignal
@@ -4841,7 +4841,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             agentMemory.current.storeToolResult(sessionId.current, call.name, summary);
             toolResultLines.push(`**${call.name}** (${result.latencyMs}ms):\n${summary}`);
           } catch (toolErr) {
-            toolResultLines.push(`**${call.name}**: execution failed — ${String(toolErr)}`);
+            toolResultLines.push(`**${call.name}**: execution failed - ${String(toolErr)}`);
           }
         }
         // Second AI pass: incorporate tool results into the response
@@ -4970,13 +4970,13 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       const reactiveSignalCount = [responseSignals.country, responseSignals.organizationName, responseSignals.objectives, responseSignals.targetAudience]
         .filter(Boolean).length + extractedFieldCount;
       const reactiveStatusText = reactiveSignalCount > 0
-        ? `Reactive: ${reactiveSignalCount} signal${reactiveSignalCount !== 1 ? 's' : ''} captured — case updated`
-        : `Reactive: monitoring — readiness ${liveReadiness}%`;
+        ? `Reactive: ${reactiveSignalCount} signal${reactiveSignalCount !== 1 ? 's' : ''} captured - case updated`
+        : `Reactive: monitoring - readiness ${liveReadiness}%`;
       const reactiveHintText = learnedFields.length > 0
         ? `Learned from this turn: ${learnedFields.join(', ')}. Keep adding detail to improve output quality.`
         : nextFollowUp
           ? `Suggest next: ${nextFollowUp}`
-          : 'Continue sharing details — the consultant is building your case in real time.';
+          : 'Continue sharing details - the consultant is building your case in real time.';
       setReactiveDraftStatus(reactiveStatusText);
       setReactiveDraftHint(reactiveHintText);
 
@@ -4991,7 +4991,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             if (prev.some(d => d.title.includes(docTitle))) return prev;
             return [...prev, {
               id: `nexus-analysis-${Date.now()}`,
-              title: `NEXUS AI Analysis — ${docTitle}`,
+              title: `NEXUS AI Analysis - ${docTitle}`,
               content: responseContent,
               category: 'report' as const,
               htmlContent: responseContent
@@ -5007,7 +5007,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
       // Auto-save the generated formal document to Final Report workspace
       if (isReportGeneration && responseContent.length > 300) {
-        const docTitle = `${reportTierLabel}${reportOptionsDocTitle ? ` — ${reportOptionsDocTitle}` : ''}`;
+        const docTitle = `${reportTierLabel}${reportOptionsDocTitle ? ` - ${reportOptionsDocTitle}` : ''}`;
         setGeneratedDocuments(prev => {
           if (prev.some(d => d.title === docTitle)) return prev;
           return [...prev, {
@@ -5036,7 +5036,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         queueAction({
           id: `gen-docs-${Date.now()}`,
           label: 'Generate Case Documents',
-          description: `Case readiness at ${liveReadiness}% — ready to generate institutional documents and letters.`,
+          description: `Case readiness at ${liveReadiness}% - ready to generate institutional documents and letters.`,
           category: 'document'
         });
       }
@@ -5199,7 +5199,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       .filter((item) => item.missing)
       .sort((a, b) => b.weight - a.weight);
 
-    // Run InputValidationEngine — catches adversarial content, numeric contradictions, fraud patterns
+    // Run InputValidationEngine - catches adversarial content, numeric contradictions, fraud patterns
     let engineGaps: CriticalCaseGap[] = [];
     try {
       const report = new InputValidationEngine().validate(caseStudy as unknown as Record<string, unknown>);
@@ -5212,7 +5212,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           severity: issue.severity as CriticalGapSeverity,
           weight: issue.severity === 'critical' ? 85 : 60,
         }));
-    } catch (_e) { /* validation engine unavailable — skip */ }
+    } catch (_e) { /* validation engine unavailable - skip */ }
 
     return [...hardcodedGaps, ...engineGaps];
   }, [caseStudy]);
@@ -5500,7 +5500,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     }
   }, [generatedContent]);
 
-  // Download as print-quality HTML — open in browser then File > Print > Save as PDF
+  // Download as print-quality HTML - open in browser then File > Print > Save as PDF
   const downloadContent = useCallback(() => {
     if (generatedDocuments.length > 0) {
       // Download each document as a standalone styled HTML file
@@ -5538,9 +5538,9 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
   const downloadSingleDocAsDocx = useCallback(async (doc: {title: string; content: string; category: 'report' | 'letter'}) => {
     const meta: DocxDocumentMeta = {
       title: doc.title,
-      subtitle: `${caseStudy.organizationName || 'Client'} — ${caseStudy.country || 'Global'}`,
+      subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
       preparedFor: caseStudy.organizationName || 'Client',
-      preparedBy: 'BW Global Advisory — NEXUS AI',
+      preparedBy: 'BW Global Advisory - NEXUS AI',
       date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
       reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
       classification: 'CONFIDENTIAL',
@@ -5584,17 +5584,17 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
       const sections = parseMarkdown(content);
       return {
         title: doc.title.toUpperCase(),
-        subtitle: `${caseStudy.organizationName || 'Client'} — ${caseStudy.country || 'Global'}`,
+        subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
         classification: 'CONFIDENTIAL',
         preparedFor: caseStudy.organizationName || 'Client',
-        preparedBy: 'BW Global Advisory — NEXUS AI',
+        preparedBy: 'BW Global Advisory - NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
         reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         version: '1.0',
         sections: sections.length > 0 ? sections : [{ title: doc.title, content, type: 'paragraph' }],
         footer: {
           company: 'BW Global Advisory',
-          disclaimer: `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential — do not distribute without prior written authorisation.`
+          disclaimer: `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential - do not distribute without prior written authorisation.`
         }
       };
     };
@@ -5720,7 +5720,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         const dpResult = await DecisionPipeline.run(orchestratorParams as unknown as Parameters<typeof DecisionPipeline.run>[0]);
         decisionPacket = dpResult.packet;
       } catch {
-        // Non-critical — governance gate may be unavailable in offline mode
+        // Non-critical - governance gate may be unavailable in offline mode
       }
 
       const payload = await ReportOrchestrator.assembleReportPayload(orchestratorParams);
@@ -5737,7 +5737,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         decisionPacket?.scores?.overall !== undefined ? `Decision score: ${decisionPacket.scores.overall}` : '',
       ].filter(Boolean).join('\n');
     } catch {
-      // Non-critical — orchestrator may block on gate; continue without it
+      // Non-critical - orchestrator may block on gate; continue without it
     }
 
     const allResults: Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}> = [];
@@ -5765,7 +5765,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         let content = '';
 
         if (isLetter) {
-          // Route letter — uses exact match or category-aware fallback
+          // Route letter - uses exact match or category-aware fallback
           const letterRoute = DocumentTypeRouter.routeLetterWithFallback(doc.id, doc.category || 'general', doc.title);
           const { promptInstruction } = letterRoute;
           const aiPrompt = [
@@ -5785,7 +5785,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           ].join('\n');
           content = await processWithAI(aiPrompt, `Generating letter ${i + 1}/${docsToGenerate.length}: ${doc.title}`);
         } else {
-          // Route document — uses exact match or category-aware fallback with sections
+          // Route document - uses exact match or category-aware fallback with sections
           const docRoute = DocumentTypeRouter.routeDocumentWithFallback(doc.id, doc.category || 'strategic', doc.title);
           const { sectionPrompts } = docRoute;
           const sectionContents: string[] = [];
@@ -5806,14 +5806,14 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
               ``,
               `### Constraints`,
               `- Maximum ${sp.maxWords} words for this section`,
-              `- Professional document prose — not bullet lists unless the instruction specifies it`,
+              `- Professional document prose - not bullet lists unless the instruction specifies it`,
               `- Ground all claims in the case context and intelligence data above`,
-              `- Begin directly with the content — no meta-commentary`,
+              `- Begin directly with the content - no meta-commentary`,
             ].join('\n');
 
             const sectionContent = await processWithAI(
               sectionPrompt,
-              `Generating section ${s + 1}/${sectionPrompts.length} — "${sp.title}" — for ${doc.title}`
+              `Generating section ${s + 1}/${sectionPrompts.length} - "${sp.title}" - for ${doc.title}`
             );
             sectionContents.push(`## ${sp.title}\n\n${sectionContent}`);
           }
@@ -5845,7 +5845,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         reportId: genReportId,
         outcome: {
           success: true,
-          notes: `${allResults.length} docs generated — ${caseStudy.country || 'unknown country'}, ${caseStudy.situationType || 'unknown sector'}`
+          notes: `${allResults.length} docs generated - ${caseStudy.country || 'unknown country'}, ${caseStudy.situationType || 'unknown sector'}`
         }
       });
     } catch (error) {
@@ -5863,7 +5863,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     }
   }, [selectedDocs, generationScope, readinessScore, allowAllDocumentAccess, recommendedDocs, processWithAI, caseStudy, getCriticalCaseGaps, consultantCaseBrief, consultantGateReady, consultantGateMissing, realLifeMatterPack, outputDepthSpec, regionalKernel, customResearchTopics]);
 
-  // ─── Autonomous Run — AgentOrchestrator (Together.ai + Llama 3.1 70B) ────────────────
+  // ─── Autonomous Run - AgentOrchestrator (Together.ai + Llama 3.1 70B) ────────────────
   const handleAutonomousRun = useCallback(async () => {
     if (isAutonomousRunning) return;
     setIsAutonomousRunning(true);
@@ -6196,7 +6196,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
   }, [consultantAuditTrends, evaluateConsultantReplayHealth]);
 
   const consultantThresholdTooltip = useMemo(() => (
-    `Thresholds — Healthy≥${Math.round(consultantHealthThresholds.healthyMinSuccess * 100)}%, Warning≥${Math.round(consultantHealthThresholds.warningMinSuccess * 100)}%, FallbackHigh>${Math.round(consultantHealthThresholds.fallbackHighRatio * 100)}%, ErrorHigh>${Math.round(consultantHealthThresholds.errorHighRatio * 100)}%, WarningMaxError≤${Math.round(consultantHealthThresholds.warningMaxErrorRatio * 100)}%`
+    `Thresholds - Healthy≥${Math.round(consultantHealthThresholds.healthyMinSuccess * 100)}%, Warning≥${Math.round(consultantHealthThresholds.warningMinSuccess * 100)}%, FallbackHigh>${Math.round(consultantHealthThresholds.fallbackHighRatio * 100)}%, ErrorHigh>${Math.round(consultantHealthThresholds.errorHighRatio * 100)}%, WarningMaxError≤${Math.round(consultantHealthThresholds.warningMaxErrorRatio * 100)}%`
   ), [consultantHealthThresholds]);
 
   const consultantProviderTrendSummary = useMemo(() => {
@@ -6546,7 +6546,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
     } else {
       missionAuditEvents.forEach((event, index) => {
         sections.push(
-          `${index + 1}. [${event.type.toUpperCase()}] ${event.timestamp} — ${event.summary}`
+          `${index + 1}. [${event.type.toUpperCase()}] ${event.timestamp} - ${event.summary}`
         );
       });
     }
@@ -7128,7 +7128,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             {showPilotWindow ? 'Close Live Research' : 'Live Research'}
           </button>
 
-          {/* Tools dropdown — unlocks all OS modules */}
+          {/* Tools dropdown - unlocks all OS modules */}
           {onNavigate && (
             <div className="relative z-20">
               <button
@@ -7141,16 +7141,16 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
               {showToolsMenu && (
                 <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-stone-200 shadow-xl z-50" onClick={() => setShowToolsMenu(false)}>
                   {[
-                    { mode: 'documents',           icon: '📄', label: 'Document Generation Suite' },
-                    { mode: 'advanced-report',      icon: '📊', label: 'Advanced Report Generator' },
-                    { mode: 'exec-summary',         icon: '📋', label: 'Executive Summary' },
-                    { mode: 'letters',              icon: '✉️', label: 'Letters & MOUs' },
-                    { mode: 'global-location-intel', icon: '🌍', label: 'Location Intelligence' },
-                    { mode: 'matchmaking',          icon: '🤝', label: 'Partner Matchmaking' },
-                    { mode: 'intake',               icon: '📝', label: 'Structured Intake Form' },
-                    { mode: 'admin',                icon: '⚙️', label: 'Admin Dashboard' },
-                    { mode: 'user-manual',          icon: '📖', label: 'User Manual' },
-                    { mode: 'command-center',       icon: '🏠', label: 'Back to Command Center' },
+                    { mode: 'documents',           icon: '', label: 'Document Generation Suite' },
+                    { mode: 'advanced-report',      icon: '', label: 'Advanced Report Generator' },
+                    { mode: 'exec-summary',         icon: '', label: 'Executive Summary' },
+                    { mode: 'letters',              icon: '', label: 'Letters & MOUs' },
+                    { mode: 'global-location-intel', icon: '', label: 'Location Intelligence' },
+                    { mode: 'matchmaking',          icon: '', label: 'Partner Matchmaking' },
+                    { mode: 'intake',               icon: '', label: 'Structured Intake Form' },
+                    { mode: 'admin',                icon: '', label: 'Admin Dashboard' },
+                    { mode: 'user-manual',          icon: '', label: 'User Manual' },
+                    { mode: 'command-center',       icon: '', label: 'Back to Command Center' },
                   ].map(item => (
                     <button
                       key={item.mode}
@@ -7307,7 +7307,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                   )}
                 </>
               )}
-              {/* Report Options Panel — inside scroll area, appears after AI document analysis */}
+              {/* Report Options Panel - inside scroll area, appears after AI document analysis */}
               {showReportOptions && reportOptionsMenu && (
                 <div className="px-2 pt-6 pb-4 max-w-3xl mx-auto w-full">
                   <ReportOptionsPanel
@@ -7323,9 +7323,9 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                       const docBlock = storedDocContent && !storedDocContent.includes('extraction failed')
                         ? `\n\n--- DOCUMENT CONTENT (for report generation) ---\n${storedDocContent.slice(0, 12000)}\n--- END DOCUMENT ---`
                         : reportOptionsDocTitle
-                          ? `\n\nDocument reference: "${reportOptionsDocTitle}" (content unavailable — use case context from prior conversation)`
+                          ? `\n\nDocument reference: "${reportOptionsDocTitle}" (content unavailable - use case context from prior conversation)`
                           : '';
-                      const prompt = `GENERATE_REPORT_NOW::${tier.label}\n\nWrite a complete, fully-developed ${tier.label}.\nTarget: ${tier.wordRange} words across ${tier.sectionCount} sections.${docBlock}\n\nInclude ALL sections in full — do not abbreviate or stop early:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso annotate 5–8 key source passages for the annotated PDF export.' : ''}\n\nWrite each section in full now.`;
+                      const prompt = `GENERATE_REPORT_NOW::${tier.label}\n\nWrite a complete, fully-developed ${tier.label}.\nTarget: ${tier.wordRange} words across ${tier.sectionCount} sections.${docBlock}\n\nInclude ALL sections in full - do not abbreviate or stop early:\n${tier.sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}${includeAnnotation ? '\n\nAlso annotate 5-8 key source passages for the annotated PDF export.' : ''}\n\nWrite each section in full now.`;
                       setInputValue(prompt);
                       setTimeout(() => {
                         const btn = document.querySelector('[data-send-btn]') as HTMLButtonElement;
@@ -7454,7 +7454,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                 {/* Voice output (TTS) toggle */}
                 <button
                   type="button"
-                  title={voiceEnabled ? 'Voice on — click to mute' : 'Voice off — click to enable'}
+                  title={voiceEnabled ? 'Voice on - click to mute' : 'Voice off - click to enable'}
                   onClick={() => {
                     const next = !voiceEnabled;
                     setVoiceEnabled(next);
@@ -7563,7 +7563,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                   </button>
                   <p className="text-[11px] font-semibold text-indigo-900 flex items-center gap-1 mb-2">
                     <CheckCircle2 size={12} className="text-indigo-600" />
-                    Quick Start — Try one of these:
+                    Quick Start - Try one of these:
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {[
@@ -7628,7 +7628,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                       <p className="text-[10px] font-semibold text-emerald-900">Recommended software tools</p>
                       <ul className="mt-0.5 space-y-0.5">
                         {augmentedRecommendedTools.slice(0, 4).map((tool) => (
-                          <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) — {tool.bwUseCase}</li>
+                          <li key={tool.id} className="text-[10px] text-slate-700">• {tool.name} ({tool.category}) - {tool.bwUseCase}</li>
                         ))}
                       </ul>
                     </div>
@@ -7707,7 +7707,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             {/* NSIL Footer */}
             <div className="px-4 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700 flex items-center justify-between">
               <span>
-                <strong>NSIL Agentic Runtime</strong> — Sovereign-grade intelligence • Real-time analysis • Locale: {locale.toUpperCase()}
+                <strong>NSIL Agentic Runtime</strong> - Sovereign-grade intelligence • Real-time analysis • Locale: {locale.toUpperCase()}
               </span>
               <span className="text-[10px] text-slate-400">
                 Learning: {OutcomeLearningService.getState().records.length} sessions logged
@@ -7720,7 +7720,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             <div className="p-4 border-b border-stone-200 bg-slate-50">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <FileText size={16} className="text-blue-600" />
-                BW Ai — Live Case Study Workspace
+                BW Ai - Live Case Study Workspace
               </h2>
               <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
                 <div className="flex flex-wrap items-center gap-2">
@@ -7751,7 +7751,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
               <div className="mt-3 border border-stone-200 bg-white p-3 min-h-[760px]">
                 {!hasLiveDraftSignals ? (
                   <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
-                    <p className="text-[11px] font-semibold text-slate-800">Case Study Report — Live Draft (Page 1)</p>
+                    <p className="text-[11px] font-semibold text-slate-800">Case Study Report - Live Draft (Page 1)</p>
                     <p className="mt-1 text-[10px] text-slate-500">Start with baseline details. The system will establish report sections only after enough context is provided.</p>
                     <div className="mt-3 border border-blue-200 bg-blue-50 px-2 py-2">
                       <p className="text-[10px] font-semibold text-blue-800">Baseline needed first:</p>
@@ -7771,7 +7771,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                   </div>
                 ) : (
                   <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
-                    <p className="text-[11px] font-semibold text-slate-800">Case Study Notes — Live Notepad (Page 1)</p>
+                    <p className="text-[11px] font-semibold text-slate-800">Case Study Notes - Live Notepad (Page 1)</p>
                     <p className="mt-1 text-[10px] text-slate-500">Blank workspace for tracking conversation inputs. Content appears only when you add it.</p>
                     <div className="mt-3 space-y-3">
                       {Array.from({ length: 20 }).map((_, index) => (
@@ -7899,7 +7899,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                     {missionSnapshot.activePlan.slice(0, 3).map((task) => (
                       <li key={task.taskId} className="text-[10px] text-slate-600 border border-stone-200 bg-white px-2 py-1">
                         <div>
-                          <span className="font-semibold text-slate-700">{task.type}</span> — {task.expectedOutcome}
+                          <span className="font-semibold text-slate-700">{task.type}</span> - {task.expectedOutcome}
                         </div>
                         <div className="mt-1 flex items-center gap-1.5">
                           <span className={`text-[10px] px-1 py-0.5 border ${
@@ -8262,9 +8262,9 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                       onClick={() => setShowFullCatalog(true)}
                       className="mt-2 w-full py-2 text-xs font-semibold border border-stone-300 text-stone-700 hover:bg-stone-100 flex items-center justify-center gap-2 transition-colors"
                     >
-                      📖 Browse Full Catalog — {IntelligentDocumentGenerator.getCatalogSummary().totalDocumentTypes} Documents &middot; {IntelligentDocumentGenerator.getCatalogSummary().totalLetterTypes} Letters
+                      📖 Browse Full Catalog - {IntelligentDocumentGenerator.getCatalogSummary().totalDocumentTypes} Documents &middot; {IntelligentDocumentGenerator.getCatalogSummary().totalLetterTypes} Letters
                     </button>
-                    {/* Autonomous Run — Together.ai Agent */}
+                    {/* Autonomous Run - Together.ai Agent */}
                     <button
                       onClick={handleAutonomousRun}
                       disabled={isAutonomousRunning || isLoading}
@@ -8278,11 +8278,11 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                       {isAutonomousRunning ? (
                         <>
                           <Loader2 size={14} className="animate-spin" />
-                          {autonomousProgress ? `${autonomousProgress.phaseName} — ${autonomousProgress.overallPercent}%` : 'Agent running...'}
+                          {autonomousProgress ? `${autonomousProgress.phaseName} - ${autonomousProgress.overallPercent}%` : 'Agent running...'}
                         </>
                       ) : (
                         <>
-                          ⚡ Autonomous Run — Llama 3.1 70B
+                          ⚡ Autonomous Run - Llama 3.1 70B
                         </>
                       )}
                     </button>
@@ -8643,7 +8643,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
           <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
             <div className="w-full max-w-2xl bg-white border border-stone-200 shadow-2xl">
               <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
-                <h3 className="text-sm font-bold text-slate-900">Live Research — Guide</h3>
+                <h3 className="text-sm font-bold text-slate-900">Live Research - Guide</h3>
                 <button
                   type="button"
                   onClick={() => setShowPilotHowTo(false)}
@@ -8659,7 +8659,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
                   <p className="text-[11px] font-semibold text-slate-800">2) Review findings & considerations</p>
-                  <p className="mt-1 text-[10px] text-slate-600">We surface external intelligence — market conditions, funding programs, regulatory factors, risks, and strategic considerations — tailored to your inputs.</p>
+                  <p className="mt-1 text-[10px] text-slate-600">We surface external intelligence - market conditions, funding programs, regulatory factors, risks, and strategic considerations - tailored to your inputs.</p>
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
                   <p className="text-[11px] font-semibold text-slate-800">3) Ask about something specific</p>
@@ -8667,7 +8667,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                 </div>
                 <div className="border border-stone-200 bg-white p-3">
                   <p className="text-[11px] font-semibold text-slate-800">4) Everything feeds into your consultation</p>
-                  <p className="mt-1 text-[10px] text-slate-600">All findings and your inputs are woven into your BW Consultant conversation and any documents generated — giving you a more informed, relevant result.</p>
+                  <p className="mt-1 text-[10px] text-slate-600">All findings and your inputs are woven into your BW Consultant conversation and any documents generated - giving you a more informed, relevant result.</p>
                 </div>
                 <div className="border border-stone-200 bg-slate-50 p-3">
                   <p className="text-[10px] text-slate-700">Live Research works alongside BW Consultant to surface external findings that help you make better-informed decisions.</p>
@@ -8707,10 +8707,10 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                   </div>
                   <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#b48228' }}>BW Global Advisory</span>
                 </div>
-                <h2 className="text-xl font-bold text-white">NEXUS AI — Document Intelligence</h2>
+                <h2 className="text-xl font-bold text-white">NEXUS AI - Document Intelligence</h2>
                 <p className="text-xs mt-1" style={{ color: '#7a9ab8' }}>
                   {generatedDocuments.length > 0
-                    ? `${generatedDocuments.length} document${generatedDocuments.length !== 1 ? 's' : ''} ready — analysis complete`
+                    ? `${generatedDocuments.length} document${generatedDocuments.length !== 1 ? 's' : ''} ready - analysis complete`
                     : 'Awaiting document analysis or report generation'}
                 </p>
               </div>
@@ -8840,7 +8840,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                       <button
                         onClick={() => {
                           setShowFinalReport(false);
-                          setInputValue('Generate a full NEXUS AI Intelligence Brief summarising our consultation — include executive summary, key findings, strategic recommendations, partner matrix, risk register, and 90-day action plan.');
+                          setInputValue('Generate a full NEXUS AI Intelligence Brief summarising our consultation - include executive summary, key findings, strategic recommendations, partner matrix, risk register, and 90-day action plan.');
                         }}
                         className="px-4 py-2 text-sm font-medium transition-all hover:opacity-90"
                         style={{ background: '#b48228', color: '#fff' }}
@@ -8855,7 +8855,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
 
             {/* ── Footer ── */}
             <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #1e3248', background: '#0d1821' }}>
-              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#3a5a7a' }}>BW Global Advisory — NEXUS AI Agentic Runtime — Confidential</p>
+              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#3a5a7a' }}>BW Global Advisory - NEXUS AI Agentic Runtime - Confidential</p>
               <button
                 onClick={() => setShowFinalReport(false)}
                 className="px-4 py-1.5 text-xs font-medium transition-all hover:opacity-90"
@@ -8868,7 +8868,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
         </div>
       )}
 
-      {/* About BWGA Modal (retained for reference — button replaced with Final Report) */}
+      {/* About BWGA Modal (retained for reference - button replaced with Final Report) */}
       {showAboutBWGA && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-3xl max-h-[90vh] bg-white border border-stone-200 shadow-2xl flex flex-col overflow-hidden">
@@ -8901,15 +8901,15 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
 
               <p className="text-sm text-slate-700 leading-relaxed">
-                BWGA wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear. We watched regional leaders — mayors, entrepreneurs, councils — work tirelessly to attract investment. They had the vision, the drive, the raw assets. But they didn't have the structured methodology, the global benchmarking data, or the institutional language that opens doors at the World Bank, AIIB, or a sovereign wealth fund boardroom.
+                BWGA wasn't founded in a glass skyscraper in New York or London. It was born on the edge of the developing world, in a small coastal city where the gap between potential and opportunity is painfully clear. We watched regional leaders - mayors, entrepreneurs, councils - work tirelessly to attract investment. They had the vision, the drive, the raw assets. But they didn't have the structured methodology, the global benchmarking data, or the institutional language that opens doors at the World Bank, AIIB, or a sovereign wealth fund boardroom.
               </p>
 
               <p className="text-sm text-slate-700 leading-relaxed">
-                The practice exists because of a simple observation: every "new idea" is old somewhere. The 1963 Philippine Integrated Socioeconomic Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations — they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. From that came the question: what if you could build a system that internalised 60+ years of documented practice across 150 countries and made it available to anyone, anywhere, instantly?
+                The practice exists because of a simple observation: every "new idea" is old somewhere. The 1963 Philippine Integrated Socioeconomic Plan, Special Economic Zones across 80+ countries, PPP frameworks across 150+ nations - they all follow the same methodology. Growth poles. Investment incentives. Sectoral planning. Infrastructure corridors. The names update. The practice persists. From that came the question: what if you could build a system that internalised 60+ years of documented practice across 150 countries and made it available to anyone, anywhere, instantly?
               </p>
 
               <p className="text-sm text-slate-700 leading-relaxed">
-                BWGA Ai is the answer. Not a chatbot. Not a search engine. A complete digital boardroom that reasons through investment, trade, and development problems with the depth that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars. It takes what already worked — in Shenzhen's special economic zones, Penang's electronics corridor, Medellín's urban reinvention, Rwanda's governance transformation, Estonia's digital-first state — and extracts the transferable principles: the sequencing, the stakeholder architecture, the policy triggers, the conditions that let a place transform. The knowledge always existed. It just sat locked inside decades of reports, across continents, in frameworks most practitioners never see. This system makes it accessible, synthesised, and actionable.
+                BWGA Ai is the answer. Not a chatbot. Not a search engine. A complete digital boardroom that reasons through investment, trade, and development problems with the depth that previously required a team of senior consultants, weeks of research, and hundreds of thousands of dollars. It takes what already worked - in Shenzhen's special economic zones, Penang's electronics corridor, Medellín's urban reinvention, Rwanda's governance transformation, Estonia's digital-first state - and extracts the transferable principles: the sequencing, the stakeholder architecture, the policy triggers, the conditions that let a place transform. The knowledge always existed. It just sat locked inside decades of reports, across continents, in frameworks most practitioners never see. This system makes it accessible, synthesised, and actionable.
               </p>
 
               {/* Quote */}
@@ -8917,20 +8917,20 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                 <p className="text-sm text-slate-800 leading-relaxed font-medium italic">
                   "Every 'new idea' is old somewhere. The child learns what the parent already knows. The past isn't historical interest. The past is the solution library."
                 </p>
-                <p className="text-xs text-slate-500 mt-2">— Brayden Walls, Founder &amp; Sole Developer</p>
+                <p className="text-xs text-slate-500 mt-2">- Brayden Walls, Founder &amp; Sole Developer</p>
               </div>
 
               {/* The Founder */}
               <div className="border border-stone-200 bg-stone-50 p-4">
                 <h3 className="text-sm font-bold text-slate-900 mb-2">The Founder</h3>
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  I'm Brayden Walls — the founder and sole developer behind BWGA Ai. For more than 16 months I've been living, researching, and building in the Philippines — on the ground, in communities where economic potential is enormous but the tools to unlock it simply don't exist. I watched the same pattern repeat everywhere: ambitious businesses with incomplete information, regional governments unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific — they all wanted the same thing: to be seen, to be understood, to have a fair shot. So I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into a complete reasoning system — one that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone.
+                  I'm Brayden Walls - the founder and sole developer behind BWGA Ai. For more than 16 months I've been living, researching, and building in the Philippines - on the ground, in communities where economic potential is enormous but the tools to unlock it simply don't exist. I watched the same pattern repeat everywhere: ambitious businesses with incomplete information, regional governments unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific - they all wanted the same thing: to be seen, to be understood, to have a fair shot. So I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into a complete reasoning system - one that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone.
                 </p>
               </div>
 
               <div className="border-t border-stone-200 pt-4">
                 <p className="text-xs text-slate-500 text-center">
-                  BW Global Advisory — Built from the edge of the developing world, for the whole world.
+                  BW Global Advisory - Built from the edge of the developing world, for the whole world.
                 </p>
               </div>
 
@@ -9393,7 +9393,7 @@ You MUST write each section in full prose, formatted with ## headers, to the spe
                     )}
                     {consultantRetrySource !== 'none' && (
                       <p className="text-[10px] text-blue-800 mt-0.5">
-                        Last Retry Path: {consultantRetrySource === 'backend-replay' ? 'Backend Replay' : 'Local Fallback'}{consultantRetryReason ? ` — ${consultantRetryReason}` : ''}
+                        Last Retry Path: {consultantRetrySource === 'backend-replay' ? 'Backend Replay' : 'Local Fallback'}{consultantRetryReason ? ` - ${consultantRetryReason}` : ''}
                       </p>
                     )}
                     <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-1">

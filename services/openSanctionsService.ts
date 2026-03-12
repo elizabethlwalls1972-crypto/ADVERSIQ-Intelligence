@@ -1,8 +1,8 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * OpenSanctions — Global Sanctions & Politically Exposed Persons
+ * OpenSanctions - Global Sanctions & Politically Exposed Persons
  * ═══════════════════════════════════════════════════════════════════
- * Free API — no key required for basic entity lookup.
+ * Free API - no key required for basic entity lookup.
  * https://api.opensanctions.org
  *
  * Covers: OFAC SDN, EU Consolidated, UN Security Council, UK HMT,

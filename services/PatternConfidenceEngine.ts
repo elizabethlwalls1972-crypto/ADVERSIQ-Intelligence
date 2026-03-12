@@ -1,7 +1,7 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * PATTERN CONFIDENCE ENGINE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  *
  * The layer that sits above formula computation. Before any formula runs,
  * this engine checks whether the input parameters match a known historical
@@ -12,11 +12,11 @@
  *   "The past isn't historical interest. The past is the solution library."
  *
  * Design rules:
- *   1. Known methodology â†’ high confidence, authoritative language
- *   2. Partial match       â†’ standard confidence, note which elements are novel
- *   3. No match            â†’ standard computation, flag as genuinely uncertain
+ *   1. Known methodology ' high confidence, authoritative language
+ *   2. Partial match       ' standard confidence, note which elements are novel
+ *   3. No match            ' standard computation, flag as genuinely uncertain
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import type { ReportParameters } from '../types';
@@ -78,7 +78,7 @@ export interface PatternAssessment {
 }
 
 // ============================================================================
-// PATTERN LIBRARY â€” embedded methodology knowledge
+// PATTERN LIBRARY " embedded methodology knowledge
 // ============================================================================
 
 const PATTERN_LIBRARY: Omit<PatternMatch, 'matchStrength' | 'confidenceBoost'>[] = [
@@ -385,7 +385,7 @@ const PATTERN_LIBRARY: Omit<PatternMatch, 'matchStrength' | 'confidenceBoost'>[]
       { document: 'UNCTAD World Investment Report', year: 2023, country: 'International', relevance: 'Global benchmark' },
     ],
   },
-  // â”€â”€ NEW PATTERNS â€” Africa, Latin America, Middle East, Central Asia â”€â”€
+  // â"€â"€ NEW PATTERNS " Africa, Latin America, Middle East, Central Asia â"€â"€
   {
     patternId: 'CLF-001',
     name: 'Climate Finance and Green Bond Structuring',
@@ -471,7 +471,7 @@ const PATTERN_LIBRARY: Omit<PatternMatch, 'matchStrength' | 'confidenceBoost'>[]
     historicalDepth: 10,
     geographicBreadth: 54,
     knownOutcomes: [
-      'AfCFTA represents 1.3B person single market â€” largest by member count',
+      'AfCFTA represents 1.3B person single market - largest by member count',
       'Intra-African trade increases from 15% to projected 25% by 2030',
       'Rules of origin complexity remains the primary implementation challenge',
       'Infrastructure deficit limits actual trade facilitation despite tariff reduction',
@@ -683,22 +683,22 @@ export class PatternConfidenceEngine {
         m.sources.some(s => s.country === params.country || s.country === 'International' || s.country === 'ASEAN')
       );
       if (countryMatches.length > 0) {
-        knownElements.push(`Country context (${params.country}) â€” ${countryMatches.length} matching patterns with documented history`);
+        knownElements.push(`Country context (${params.country}) " ${countryMatches.length} matching patterns with documented history`);
       } else {
-        novelElements.push(`Country context (${params.country}) â€” limited pattern history in library`);
+        novelElements.push(`Country context (${params.country}) " limited pattern history in library`);
       }
     }
 
     if (params.industry && params.industry.length > 0) {
-      knownElements.push(`Sector selection â€” standard sectoral analysis methodology applies`);
+      knownElements.push(`Sector selection " standard sectoral analysis methodology applies`);
     }
 
     if (params.expansionTimeline) {
-      knownElements.push(`Timeline planning â€” phased implementation is universal practice`);
+      knownElements.push(`Timeline planning " phased implementation is universal practice`);
     }
 
     if (params.organizationType) {
-      knownElements.push(`Organisation type (${params.organizationType}) â€” known stakeholder dynamics`);
+      knownElements.push(`Organisation type (${params.organizationType}) " known stakeholder dynamics`);
     }
 
     if (params.problemStatement) {
@@ -732,7 +732,7 @@ export class PatternConfidenceEngine {
 
     return {
       timestamp: new Date().toISOString(),
-      inputSummary: `${params.organizationName || 'Unknown'} â€” ${params.country || 'No country'} â€” ${(params.industry || []).join(', ') || 'No sector'}`,
+      inputSummary: `${params.organizationName || 'Unknown'} " ${params.country || 'No country'} " ${(params.industry || []).join(', ') || 'No sector'}`,
       matchedPatterns: matches,
       overallConfidenceBoost: Math.min(0.3, totalBoost / Math.max(matches.length, 1)),
       knownElements,
@@ -823,7 +823,7 @@ export class PatternConfidenceEngine {
     assessment: PatternAssessment
   ): { confidenceAdjustment: number; annotation: string } {
     if (assessment.matchedPatterns.length === 0) {
-      return { confidenceAdjustment: 0, annotation: 'No historical pattern match â€” standard confidence applies.' };
+      return { confidenceAdjustment: 0, annotation: 'No historical pattern match - standard confidence applies.' };
     }
 
     const topMatch = assessment.matchedPatterns[0];
@@ -859,7 +859,7 @@ export class PatternConfidenceEngine {
     const lines: string[] = [
       `**Pattern Intelligence Briefing**`,
       ``,
-      `Reasoning stance: **${assessment.reasoningStance.toUpperCase()}** â€” ${assessment.stanceRationale}`,
+      `Reasoning stance: **${assessment.reasoningStance.toUpperCase()}** " ${assessment.stanceRationale}`,
       ``,
     ];
 

@@ -1,4 +1,4 @@
-﻿import { ApprovalRecord, MandateRecord, ProvenanceEntry, ApprovalStage, ApprovalDecision, ApproverRole } from '../types';
+import { ApprovalRecord, MandateRecord, ProvenanceEntry, ApprovalStage, ApprovalDecision, ApproverRole } from '../types';
 import { EventBus } from './EventBus';
 
 const stageRank: Record<ApprovalStage, number> = {
@@ -23,7 +23,7 @@ const resolveUrl = (relative: string) => {
   if (apiOrigin) {
     return `${apiOrigin}${relative}`;
   }
-  // Node context without configured API origin â€” return relative path (callers should guard)
+  // Node context without configured API origin " return relative path (callers should guard)
   return relative;
 };
 

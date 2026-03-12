@@ -1,11 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — REPORT LENGTH ROUTER
+ * BW NEXUS AI - REPORT LENGTH ROUTER
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Determines the appropriate report length tier based on:
  *   - Source document richness (word count / estimated page count)
- *   - Case readiness score (0–100)
+ *   - Case readiness score (0-100)
  *   - Number of brain engines that produced output
  *   - Sector + jurisdiction complexity
  *
@@ -57,7 +57,7 @@ export interface UnconventionalIdea {
   title: string;
   concept: string;
   precedent?: string;
-  boldnesScore: number; // 1–10, where 10 = completely unprecedented
+  boldnesScore: number; // 1-10, where 10 = completely unprecedented
   risk: 'low' | 'medium' | 'high';
   potentialImpact: 'moderate' | 'significant' | 'transformational';
   whyNotConsidered: string;
@@ -102,7 +102,7 @@ const ALL_TIERS: ReportTier[] = [
     key: 'quick-note',
     label: '1-Page Executive Briefing Note',
     pageRange: '1',
-    wordRange: '300–500',
+    wordRange: '300-500',
     sectionCount: 3,
     maxWords: 500,
     description:
@@ -118,16 +118,16 @@ const ALL_TIERS: ReportTier[] = [
   },
   {
     key: 'situation-brief',
-    label: '2–4 Page Situation Brief',
-    pageRange: '2–4',
-    wordRange: '800–1,500',
+    label: '2-4 Page Situation Brief',
+    pageRange: '2-4',
+    wordRange: '800-1,500',
     sectionCount: 5,
     maxWords: 1500,
     description:
       'A concise advisory brief covering the core problem, key evidence, stakeholder landscape, ' +
       'and priority recommendations. Suitable for senior decision-makers.',
     bestFor: 'Ministerial briefings, board papers, donor introductions, quick stakeholder alignment.',
-    turnaround: '2–5 minutes to generate',
+    turnaround: '2-5 minutes to generate',
     sections: [
       'Executive Summary',
       'Problem Statement & Evidence',
@@ -138,16 +138,16 @@ const ALL_TIERS: ReportTier[] = [
   },
   {
     key: 'advisory-report',
-    label: '5–12 Page Advisory Report',
-    pageRange: '5–12',
-    wordRange: '2,500–4,500',
+    label: '5-12 Page Advisory Report',
+    pageRange: '5-12',
+    wordRange: '2,500-4,500',
     sectionCount: 8,
     maxWords: 4500,
     description:
       'A structured advisory report with full problem diagnosis, historical precedent analysis, ' +
       'stakeholder mapping, risk register, and a multi-pillar recommendation set with implementation steps.',
     bestFor: 'NEDA submissions, donor presentations, interagency working groups, cabinet papers.',
-    turnaround: '5–10 minutes to generate',
+    turnaround: '5-10 minutes to generate',
     sections: [
       'Executive Summary',
       'Problem Diagnosis',
@@ -161,16 +161,16 @@ const ALL_TIERS: ReportTier[] = [
   },
   {
     key: 'strategy-document',
-    label: '15–25 Page Strategy Document',
-    pageRange: '15–25',
-    wordRange: '5,000–8,000',
+    label: '15-25 Page Strategy Document',
+    pageRange: '15-25',
+    wordRange: '5,000-8,000',
     sectionCount: 12,
     maxWords: 8000,
     description:
       'A comprehensive strategy document with full research synthesis, regional comparative analysis, ' +
       'fiscal modelling, partner matrix, implementation roadmap, M&E framework, and appendices.',
     bestFor: 'Government strategy papers, multilateral funding proposals, academic policy submissions.',
-    turnaround: '15–25 minutes to generate',
+    turnaround: '15-25 minutes to generate',
     sections: [
       'Executive Summary',
       'Introduction & Mandate',
@@ -188,9 +188,9 @@ const ALL_TIERS: ReportTier[] = [
   },
   {
     key: 'full-case-study',
-    label: '30–50 Page Full Case Study',
-    pageRange: '30–50',
-    wordRange: '10,000–15,000',
+    label: '30-50 Page Full Case Study',
+    pageRange: '30-50',
+    wordRange: '10,000-15,000',
     sectionCount: 18,
     maxWords: 15000,
     description:
@@ -198,7 +198,7 @@ const ALL_TIERS: ReportTier[] = [
       'Source document annotations, counterfactual modelling, sector deep-dives, regional scorecards, ' +
       'partner investment profiles, full legal/regulatory analysis, and multi-scenario planning.',
     bestFor: 'ADB/World Bank funding applications, presidential policy proposals, academic publications, comprehensive reform agendas.',
-    turnaround: '30–45 minutes to generate',
+    turnaround: '30-45 minutes to generate',
     sections: [
       'Cover & Classification',
       'Executive Summary',
@@ -272,7 +272,7 @@ function buildAdditionalReports(params: {
     title: 'Regional Fiscal Due Diligence Report',
     description: `Deep-dive analysis of IRA allocation mechanics, LGU revenue-expenditure gaps by region, and fiscal transfer reform options for ${params.jurisdiction}.`,
     rationale: 'The source document identifies growing vertical fiscal imbalance as a structural blocker. A dedicated fiscal analysis provides the numbers needed for reform proposals.',
-    pages: '8–14 pages',
+    pages: '8-14 pages',
     category: 'finance',
   });
 
@@ -281,16 +281,16 @@ function buildAdditionalReports(params: {
     title: 'Partner Investment & Engagement Matrix',
     description: `Ranked institutional partners (ADB, World Bank, JICA, AIIB, DFC, USAID, Temasek) mapped against all three reform pillars with entry points, modalities, and funding envelopes.`,
     rationale: 'PartnerIntelligenceEngine has already scored 12 candidates. A standalone partner document accelerates donor engagement and co-financing discussions.',
-    pages: '6–10 pages',
+    pages: '6-10 pages',
     category: 'strategy',
   });
 
   reports.push({
     id: 'add-stakeholder-engagement',
     title: 'Stakeholder Engagement & Political Economy Analysis',
-    description: `Full adversarial mapping of supporters, resistors, and blockers across 5 stakeholder groups — central agencies, LGU mayors, donor community, Mindanao leadership, OFW diaspora.`,
+    description: `Full adversarial mapping of supporters, resistors, and blockers across 5 stakeholder groups - central agencies, LGU mayors, donor community, Mindanao leadership, OFW diaspora.`,
     rationale: 'AdversarialReasoningService produced a 5-persona map. This expands it into a full engagement strategy with messaging, sequencing, and red-flag early-warning indicators.',
-    pages: '8–12 pages',
+    pages: '8-12 pages',
     category: 'communication',
   });
 
@@ -299,8 +299,8 @@ function buildAdditionalReports(params: {
       id: 'add-conflict-development',
       title: 'Mindanao Conflict-Development Integration Brief',
       description: `Dedicated analysis of the Mindanao/ARMM situation: governance capture, ARMM worsening indicators, peace process history (Jakarta Accord, MILF/MNLF), and integrated compact framework.`,
-      rationale: 'The source document identifies conflict as the single largest barrier to southern Philippine development. This cannot be treated as a sub-section — it requires its own document with Presidential-level recommendations.',
-      pages: '10–16 pages',
+      rationale: 'The source document identifies conflict as the single largest barrier to southern Philippine development. This cannot be treated as a sub-section - it requires its own document with Presidential-level recommendations.',
+      pages: '10-16 pages',
       category: 'analysis',
     });
   }
@@ -308,9 +308,9 @@ function buildAdditionalReports(params: {
   reports.push({
     id: 'add-infra-corridor',
     title: 'Domestic Corridor Infrastructure Business Case',
-    description: `Investment-grade business case for the Cebu–Davao–Cagayan de Oro domestic corridor: traffic modelling, financing structure, JICA/AIIB co-financing pathway, procurement approach, and 36-month delivery schedule.`,
+    description: `Investment-grade business case for the Cebu-Davao-Cagayan de Oro domestic corridor: traffic modelling, financing structure, JICA/AIIB co-financing pathway, procurement approach, and 36-month delivery schedule.`,
     rationale: 'NSIL and RegionalOrchestrator both rank domestic corridor investment as the highest-leverage single intervention. This document turns strategy into a bankable project.',
-    pages: '12–20 pages',
+    pages: '12-20 pages',
     category: 'finance',
   });
 
@@ -320,7 +320,7 @@ function buildAdditionalReports(params: {
       title: 'Risk Assessment & Mitigation Register',
       description: `Full risk register across political, fiscal, conflict, donor fragmentation, and OFW-remittance-reinforcement dimensions. Includes CounterfactualEngine what-if scenarios.`,
       rationale: 'Any submission to ADB, World Bank, or Congress requires a standalone risk register at this level of reform ambition.',
-      pages: '5–8 pages',
+      pages: '5-8 pages',
       category: 'compliance',
     });
   }
@@ -344,7 +344,7 @@ function buildUnconventionalIdeas(params: {
       'Issue sub-sovereign bonds targeted exclusively at OFW workers tied directly to development projects in their home regions. ' +
       'Remittances (~$8.5B/yr) currently reinforce Manila and globally connected regions. ' +
       'Diaspora bonds redirect a fraction into lagging regions while giving OFWs a direct stake in their origin communities.',
-    precedent: 'India Millennium Deposits (1998) raised $4.2B. Israel Diaspora Bonds — $50B+ raised over 70 years.',
+    precedent: 'India Millennium Deposits (1998) raised $4.2B. Israel Diaspora Bonds - $50B+ raised over 70 years.',
     boldnesScore: 7,
     risk: 'medium',
     potentialImpact: 'significant',
@@ -399,7 +399,7 @@ function buildUnconventionalIdeas(params: {
       potentialImpact: 'transformational',
       whyNotConsidered:
         'Seen domestically as ceding sovereignty. MNLF and MILF would have competing views. Philippine central government would resist the implied criticism of its governance capacity. ' +
-        'Politically radioactive — but the ARMM governance failure is documented and worsening.',
+        'Politically radioactive - but the ARMM governance failure is documented and worsening.',
     });
   }
 
@@ -410,7 +410,7 @@ function buildUnconventionalIdeas(params: {
       'Mindanao contains the largest remaining forest cover in the Philippines. ' +
       'Structure a sovereign carbon credit program monetising this asset through voluntary carbon markets (VCM) or Article 6 Paris Agreement bilateral deals, ' +
       'with 100% of proceeds ring-fenced for Mindanao regional development. ' +
-      'Bypass IRA allocation politics entirely — Mindanao funds itself through its natural assets.',
+      'Bypass IRA allocation politics entirely - Mindanao funds itself through its natural assets.',
     precedent: 'Indonesia-Norway REDD+ agreement ($1B). Ecuador Yasuní ITT (partial). Peru Amazon carbon credit framework.',
     boldnesScore: 7,
     risk: 'medium',
@@ -418,18 +418,18 @@ function buildUnconventionalIdeas(params: {
     whyNotConsidered:
       'Philippines has no active Article 6 bilateral deal framework. Mindanao forest land tenure is disputed in conflict zones. ' +
       'Carbon market expertise absent from DENR regional offices. ' +
-      'Seen as "selling nature" — political optics are complex despite the development finance logic.',
+      'Seen as "selling nature" - political optics are complex despite the development finance logic.',
   });
 
   ideas.push({
     id: 'unc-natural-economic-zones',
-    title: 'Cross-Border Natural Economic Zones (Philippines–Indonesia–Malaysia)',
+    title: 'Cross-Border Natural Economic Zones (Philippines-Indonesia-Malaysia)',
     concept:
       'The Sulu-Sulawesi maritime corridor already functions as an informal cross-border economic zone ' +
       '(the Brunei-Indonesia-Malaysia-Philippines East ASEAN Growth Area exists on paper but is inactive). ' +
-      'Formally recognise and invest in this cross-border zone as a growth pole — treating it as a natural economic zone not constrained by national borders. ' +
-      'Cebu–Davao–Manado–Tawau as one integrated regional economy.',
-    precedent: 'Mekong subregion (GMS). Singapore–Johor–Riau growth triangle. Tumen River Area Development Programme.',
+      'Formally recognise and invest in this cross-border zone as a growth pole - treating it as a natural economic zone not constrained by national borders. ' +
+      'Cebu-Davao-Manado-Tawau as one integrated regional economy.',
+    precedent: 'Mekong subregion (GMS). Singapore-Johor-Riau growth triangle. Tumen River Area Development Programme.',
     boldnesScore: 6,
     risk: 'medium',
     potentialImpact: 'transformational',
@@ -456,52 +456,52 @@ function buildLetterOptions(params: {
     addressedTo: 'National Economic and Development Authority (NEDA)',
     purpose: 'Present the three-pillar reform framework for inclusion in the Philippine Development Plan. Requests formal feasibility study commission.',
     recommended: true,
-    pages: '3–5 pages',
+    pages: '3-5 pages',
   });
 
   letters.push({
     id: 'letter-adb-engagement',
     title: 'ADB Partnership Engagement Letter',
-    addressedTo: 'Asian Development Bank — Sustainable Development and Climate Change Department',
+    addressedTo: 'Asian Development Bank - Sustainable Development and Climate Change Department',
     purpose: 'Formalise government engagement with ADB on IRA reform technical assistance and corridor infrastructure co-financing. References existing ADB Philippines country partnership strategy.',
     recommended: true,
-    pages: '2–3 pages',
+    pages: '2-3 pages',
   });
 
   letters.push({
     id: 'letter-jica-infra',
     title: 'JICA Infrastructure Co-Financing Proposal',
-    addressedTo: 'Japan International Cooperation Agency — Philippines Office',
+    addressedTo: 'Japan International Cooperation Agency - Philippines Office',
     purpose: 'Propose a government-to-government infrastructure corridor program. JICA has existing ODA pipeline for Philippines transport. This letter initiates the project identification process.',
     recommended: true,
-    pages: '2–4 pages',
+    pages: '2-4 pages',
   });
 
   letters.push({
     id: 'letter-president-mindanao',
-    title: 'Presidential Briefing — Mindanao Development Compact',
+    title: 'Presidential Briefing - Mindanao Development Compact',
     addressedTo: 'Office of the President of the Philippines',
     purpose: 'Elevate the conflict-development nexus above bureaucratic level. Requests Presidential statement of commitment to integrated compact and designation of a Presidential envoy.',
     recommended: params.hasConflict,
-    pages: '1–2 pages',
+    pages: '1-2 pages',
   });
 
   letters.push({
     id: 'letter-congress-lgc',
-    title: 'Congressional Briefing — LGC Amendment Package',
+    title: 'Congressional Briefing - LGC Amendment Package',
     addressedTo: 'House Committee on Local Government / Senate Committee on Local Government',
     purpose: 'Table an LGC amendment package addressing fiscal vertical imbalance, property tax mandate, IRA equity reform, and intergovernmental coordination mechanisms.',
     recommended: params.caseReadiness >= 60,
-    pages: '2–3 pages',
+    pages: '2-3 pages',
   });
 
   letters.push({
     id: 'letter-armm-governor',
-    title: 'Engagement Letter — ARMM Governor',
+    title: 'Engagement Letter - ARMM Governor',
     addressedTo: 'BARMM / ARMM Regional Governor',
     purpose: 'Initiate formal dialogue on ARMM governance reform, conflict-development compact, and Mindanao carbon credit framework. Requests joint task force formation.',
     recommended: params.hasConflict,
-    pages: '1–2 pages',
+    pages: '1-2 pages',
   });
 
   letters.push({
@@ -510,7 +510,7 @@ function buildLetterOptions(params: {
     addressedTo: 'World Bank Philippines Country Office',
     purpose: 'Request technical assistance for property tax reform design, LGU fiscal capacity building, and IRA allocation formula redesign. References World Bank existing Philippines engagement.',
     recommended: params.caseReadiness >= 40,
-    pages: '2–3 pages',
+    pages: '2-3 pages',
   });
 
   return letters;

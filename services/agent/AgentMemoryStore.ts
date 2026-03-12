@@ -76,7 +76,7 @@ export class AgentMemoryStore {
   // ── Read ─────────────────────────────────────────────────────────────────
 
   /**
-   * Keyword-based retrieval — returns entries whose content or tags overlap
+   * Keyword-based retrieval - returns entries whose content or tags overlap
    * with the query. Priority: tool_results > case_facts > insights.
    * Replace this with a cosine-similarity search once embeddings are available.
    */
@@ -97,7 +97,7 @@ export class AgentMemoryStore {
   }
 
   /**
-   * Neural embedding retrieval — uses real AI embeddings to find
+   * Neural embedding retrieval - uses real AI embeddings to find
    * semantically similar memories. Falls back to keyword search.
    */
   async retrieveWithAI(query: string, limit = 8): Promise<MemoryEntry[]> {
@@ -163,7 +163,7 @@ export class AgentMemoryStore {
       const trimmed = this.entries.slice(-MAX_STORED);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
     } catch {
-      // Storage quota exceeded — rotate oldest half
+      // Storage quota exceeded - rotate oldest half
       this.entries = this.entries.slice(-Math.floor(MAX_STORED / 2));
     }
   }

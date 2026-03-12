@@ -1,8 +1,8 @@
-﻿/**
+/**
  * ADAPTIVE SKILL-LEVEL SYSTEM
  * 
  * Same data, different interfaces based on user sophistication
- * Beginner â†’ Intermediate â†’ Advanced â†’ Expert
+ * Beginner ' Intermediate ' Advanced ' Expert
  * 
  * No user gets lost. Everyone can add custom data. Everyone gets guidance.
  */

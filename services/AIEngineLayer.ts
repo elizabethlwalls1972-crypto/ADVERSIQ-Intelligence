@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — AI ENGINE LAYER
+ * BW NEXUS AI - AI ENGINE LAYER
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Wraps the existing heuristic engines with real LLM calls.
@@ -208,7 +208,7 @@ export interface AIResearchResult {
 
 /**
  * Research a topic: web search → extract key data → AI synthesis.
- * This is the "brain + Google" combo — the ability to research anything.
+ * This is the "brain + Google" combo - the ability to research anything.
  */
 export async function researchTopic(query: string): Promise<AIResearchResult> {
   // 1. Web search
@@ -278,7 +278,7 @@ SCORES:
 ${scoreLines}
 ${context ? `\nCONTEXT: ${context}` : ''}
 
-Write a direct analytical narrative — no preamble, no bullet points.`
+Write a direct analytical narrative - no preamble, no bullet points.`
     );
   } catch {
     return `${country} scores: ${scoreLines}`;

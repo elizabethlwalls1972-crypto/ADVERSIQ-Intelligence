@@ -1,4 +1,4 @@
-﻿import { EventBus } from './EventBus';
+import { EventBus } from './EventBus';
 import { persistentMemory } from './PersistentMemorySystem';
 import { automaticSearchService, type SearchResult } from './AutomaticSearchService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
@@ -43,14 +43,14 @@ export class BWConsultantAgenticAI {
   // Main consultant interface
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async consult(params: any, context: string = 'general'): Promise<ConsultantInsight[]> {
-    console.log('ðŸ¤– BW Consultant: Starting consultation for', context);
+    console.log('- BW Consultant: Starting consultation for', context);
 
     // Update focus
     this.state.currentFocus = context;
 
     // Only trigger proactive searches for primary consultations
-    // NEVER re-trigger searches from search_result_integration context â€” this causes infinite recursion:
-    // consult â†’ proactiveSearchForReport â†’ triggerSearch â†’ emit(searchResultReady) â†’ App handler â†’ consult â†’ ...
+    // NEVER re-trigger searches from search_result_integration context " this causes infinite recursion:
+    // consult ' proactiveSearchForReport ' triggerSearch ' emit(searchResultReady) ' App handler ' consult ' ...
     if (context !== 'search_result_integration') {
       await automaticSearchService.proactiveSearchForReport(params);
     }

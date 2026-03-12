@@ -1,11 +1,11 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * HISTORICAL PARALLEL MATCHER
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  *
  * Surfaces past cases, historical precedents, and documented outcomes that
  * match the user's current situation. This is the "institutional memory" 
- * of 60 years of partnership methodology â€” made accessible.
+ * of 60 years of partnership methodology " made accessible.
  *
  * When a user enters a scenario, this engine answers:
  *   "What happened before when someone tried something similar?"
@@ -15,7 +15,7 @@
  *   2. MethodologyKnowledgeBase documented patterns
  *   3. PatternConfidenceEngine pattern library
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import { ReportParameters } from '../types';
@@ -120,7 +120,7 @@ const HISTORICAL_CASES: Omit<HistoricalCase, 'relevanceScore'>[] = [
     lessonsLearned: ['Cannot replicate Silicon Valley through government edict', 'Organic ecosystem growth matters more than top-down planning', 'Adaptation strategy when initial vision proves overambitious'],
     whatWorked: ['MSC status companies received meaningful tax incentives', 'Good physical infrastructure', 'Attracted some global firms'],
     whatFailed: ['Overambitious branding created expectation gap', 'Brain drain to Singapore', 'Bureaucratic processes despite one-stop shop intention'],
-    timeToOutcome: 'Ongoing â€” pivoted strategy in 2010s'
+    timeToOutcome: 'Ongoing - pivoted strategy in 2010s'
   },
   {
     caseId: 'HC-005',
@@ -200,7 +200,7 @@ const HISTORICAL_CASES: Omit<HistoricalCase, 'relevanceScore'>[] = [
     lessonsLearned: ['Government-to-government commitments don\'t guarantee implementation speed', 'Land acquisition is the #1 bottleneck in India', 'Patient capital is essential for infrastructure corridors'],
     whatWorked: ['High-level political commitment', 'Concessional Japanese financing terms', 'Focused corridor approach'],
     whatFailed: ['Land acquisition delays (predictable but underestimated)', 'Bureaucratic coordination between states', 'Timeline slippage on almost every project'],
-    timeToOutcome: 'Ongoing â€” originally planned 10 years, now 15+'
+    timeToOutcome: 'Ongoing - originally planned 10 years, now 15+'
   },
   {
     caseId: 'HC-010',
@@ -250,7 +250,7 @@ const HISTORICAL_CASES: Omit<HistoricalCase, 'relevanceScore'>[] = [
     whatFailed: ['IP disputes in some partnerships', 'Misaligned expectations on technology depth', 'Government intervention in partnership terms'],
     timeToOutcome: '5-10 years for partnership maturity'
   },
-  // â”€â”€ NEW HISTORICAL CASES â€” Expanded global coverage â”€â”€
+  // â"€â"€ NEW HISTORICAL CASES " Expanded global coverage â"€â"€
   {
     caseId: 'HC-013',
     title: 'Kenya M-Pesa Mobile Money Revolution',
@@ -406,8 +406,8 @@ const HISTORICAL_CASES: Omit<HistoricalCase, 'relevanceScore'>[] = [
     outcome: 'success',
     description: 'Mexican automobile sector evolved from assembly-only maquiladoras to advanced manufacturing with R&D centres for BMW, Audi, Toyota. Now 7th largest vehicle producer globally.',
     keyFactors: ['USMCA trade agreement', 'Skilled workforce development', 'Proximity to US market', 'Competitive costs vs US/Canada'],
-    lessonsLearned: ['Manufacturing upgrading requires parallel workforce skills development', 'Trade agreements are necessary but not sufficient for upgrading â€” cluster ecosystem matters', 'Nearshoring momentum can accelerate planned upgrade trajectories'],
-    whatWorked: ['Dual education system (German model) for technical training', 'Automotive cluster in BajÃ­o region', 'USMCA rules of origin incentivised domestic production', 'Competitive logistics to US ports'],
+    lessonsLearned: ['Manufacturing upgrading requires parallel workforce skills development', 'Trade agreements are necessary but not sufficient for upgrading - cluster ecosystem matters', 'Nearshoring momentum can accelerate planned upgrade trajectories'],
+    whatWorked: ['Dual education system (German model) for technical training', 'Automotive cluster in Bajo region', 'USMCA rules of origin incentivised domestic production', 'Competitive logistics to US ports'],
     whatFailed: ['Security challenges in some manufacturing regions', 'Wage growth lagging productivity growth', 'Supply chain depth still below Korea/Japan levels', 'Brain drain to US for top talent'],
     timeToOutcome: '10-15 years from assembly to advanced manufacturing'
   },
@@ -425,7 +425,7 @@ const HISTORICAL_CASES: Omit<HistoricalCase, 'relevanceScore'>[] = [
     lessonsLearned: ['Financial centre development requires legal infrastructure before financial products', 'English common law provides international investor confidence', 'Location between China, Russia, and Europe is strategic for trade finance'],
     whatWorked: ['AIFC Court with international judges', 'Clear regulatory framework modelled on Abu Dhabi', 'Fintech regulatory sandbox', 'Green finance initiatives'],
     whatFailed: ['Limited regional demand for financial services', 'Competition from Dubai and Singapore', 'Geopolitical risk perception (Russia proximity)', 'Talent attraction challenges'],
-    timeToOutcome: 'Ongoing â€” 10-15 year horizon for credibility'
+    timeToOutcome: 'Ongoing - 10-15 year horizon for credibility'
   },
   {
     caseId: 'HC-024',
@@ -497,11 +497,11 @@ export class HistoricalParallelMatcher {
       // Organisation type alignment
       if (orgType.toLowerCase().includes('government') && c.initiative.includes('public')) score += 5;
 
-      // Risk alignment â€” if user has low risk tolerance, prioritise successful cases
+      // Risk alignment " if user has low risk tolerance, prioritise successful cases
       if (riskTolerance === 'low' && c.outcome === 'success') score += 5;
       if (riskTolerance === 'high' && c.outcome === 'failed') score += 5; // learn from failures
 
-      // Recency bonus â€” more recent cases slightly more relevant
+      // Recency bonus " more recent cases slightly more relevant
       const yearsAgo = new Date().getFullYear() - c.year;
       if (yearsAgo < 10) score += 5;
       else if (yearsAgo < 20) score += 3;
@@ -530,7 +530,7 @@ export class HistoricalParallelMatcher {
     // Synthesis insight
     let synthesisInsight = '';
     if (matches.length === 0) {
-      synthesisInsight = 'No close historical parallels found in the case library. This initiative appears novel â€” exercise additional caution and consider pilot-scale testing.';
+      synthesisInsight = 'No close historical parallels found in the case library. This initiative appears novel - exercise additional caution and consider pilot-scale testing.';
     } else if (successRate >= 70) {
       synthesisInsight = `Historical parallels suggest a ${successRate}% success rate for similar initiatives. Key success factors include: ${commonSuccessFactors.slice(0, 3).join(', ')}. However, even successful cases took ${matches[0]?.timeToOutcome || '5-10 years'} to materialise.`;
     } else if (successRate >= 30) {
@@ -544,7 +544,7 @@ export class HistoricalParallelMatcher {
 
     return {
       timestamp: new Date().toISOString(),
-      userSituation: `${(p.organizationName as string) || 'Organisation'} â€” ${intent || 'partnership'} in ${country || 'target market'} / ${sector || 'sector'}`,
+      userSituation: `${(p.organizationName as string) || 'Organisation'} " ${intent || 'partnership'} in ${country || 'target market'} / ${sector || 'sector'}`,
       matches,
       synthesisInsight,
       successRate,
@@ -555,7 +555,7 @@ export class HistoricalParallelMatcher {
   }
 
   /**
-   * Quick match â€” returns the single most relevant case for inline display
+   * Quick match " returns the single most relevant case for inline display
    */
   static quickMatch(params: Partial<ReportParameters>): {
     found: boolean;
@@ -578,7 +578,7 @@ export class HistoricalParallelMatcher {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static extractCommonFactors(items: string[]): string[] {
     // Deduplicate and count, return most common

@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — CONVERSATION MEMORY MANAGER
+ * BW NEXUS AI - CONVERSATION MEMORY MANAGER
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Hierarchical context window management that prevents the AI from

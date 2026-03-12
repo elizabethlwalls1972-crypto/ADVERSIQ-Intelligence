@@ -288,10 +288,10 @@ export class IntelligentDocumentGenerator {
     const hceActive = insights.some(i => i.id?.includes('cognition'));
 
     const recommendation = spi >= 70 && scf >= 60
-      ? 'PROCEED — High strategic confidence backed by multi-formula consensus'
+      ? 'PROCEED - High strategic confidence backed by multi-formula consensus'
       : spi >= 50
-        ? 'PROCEED WITH CAUTION — Moderate confidence; strengthen weak signals before committing'
-        : 'PAUSE — Insufficient evidence to proceed; resolve critical gaps first';
+        ? 'PROCEED WITH CAUTION - Moderate confidence; strengthen weak signals before committing'
+        : 'PAUSE - Insufficient evidence to proceed; resolve critical gaps first';
 
     return `## Executive Summary
 
@@ -312,7 +312,7 @@ export class IntelligentDocumentGenerator {
 **${recommendation}**
 
 ### Autonomous AI Insight
-${topInsight ? `> "${topInsight.description}" — Confidence: ${topInsight.confidence || 'N/A'}%` : 'AI analysis in progress...'}
+${topInsight ? `> "${topInsight.description}" - Confidence: ${topInsight.confidence || 'N/A'}%` : 'AI analysis in progress...'}
 
 ### Data Provenance
 - Composite scores derived from: World Bank GDP/FDI data, Exchange Rate API, REST Countries demographic data, regional baselines
@@ -850,7 +850,7 @@ ${reportData.risks?.content || 'Risk analysis pending data completion.'}
     return `## Findings
 
 ### Key Findings
-${keyFindings || 'No autonomous insights generated — input data may be insufficient.'}
+${keyFindings || 'No autonomous insights generated - input data may be insufficient.'}
 
 ### Evidence Basis
 | Metric | Score | Source |
@@ -869,10 +869,10 @@ ${keyFindings || 'No autonomous insights generated — input data may be insuffi
     
     return `## Conclusion
 
-### Summary Assessment — ${verdict}
+### Summary Assessment - ${verdict}
 Based on NSIL v3.2 analysis (21 formulas, 5-agent Bayesian debate, HCE cognitive validation), ${params.organizationName || 'the organization'}'s pursuit of ${params.strategicIntent?.[0] || 'strategic objectives'} in ${params.country || 'the target market'} scores an overall confidence of **${confidence}%**.
 
-${topInsight ? `**Lead Insight:** ${topInsight.title} — ${topInsight.description}` : ''}
+${topInsight ? `**Lead Insight:** ${topInsight.title} - ${topInsight.description}` : ''}
 
 ### Recommendation Basis
 | Factor | Weight | Outcome |
@@ -940,23 +940,23 @@ ${JSON.stringify(scores, null, 2)}
 ### NSIL v3.2 Analytical Framework
 This analysis employs a 7-phase pipeline powered by the Nexus Strategic Intelligence Layer (NSIL):
 
-1. **Input Validation** — SAT constraint solver checks for logical contradictions in user inputs
-2. **Memory Retrieval** — Vector similarity index retrieves prior cases with gradient-boosted ranking
-3. **Multi-Agent Debate** — 5 Bayesian personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate with early-stopping consensus
-4. **DAG Formula Execution** — 21 proprietary formulas executed in parallel via directed-acyclic-graph scheduler using live World Bank, FDI, and exchange rate data
-5. **Synthesis** — Decision tree template selection with gradient ranking
-6. **Frontier Intelligence** — Negotiation strategy, synthetic foresight, and competitive positioning
-7. **Human Cognition Engine** — 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, attention allocation, emotional processing, consciousness modeling, working memory) that adjust consensus strength, amplify risk signals, and surface cognitive blind spots
+1. **Input Validation** - SAT constraint solver checks for logical contradictions in user inputs
+2. **Memory Retrieval** - Vector similarity index retrieves prior cases with gradient-boosted ranking
+3. **Multi-Agent Debate** - 5 Bayesian personas (Skeptic, Advocate, Regulator, Accountant, Operator) debate with early-stopping consensus
+4. **DAG Formula Execution** - 21 proprietary formulas executed in parallel via directed-acyclic-graph scheduler using live World Bank, FDI, and exchange rate data
+5. **Synthesis** - Decision tree template selection with gradient ranking
+6. **Frontier Intelligence** - Negotiation strategy, synthetic foresight, and competitive positioning
+7. **Human Cognition Engine** - 7 neuroscience models (Wilson-Cowan neural fields, Rao & Ballard predictive coding, Friston free energy, attention allocation, emotional processing, consciousness modeling, working memory) that adjust consensus strength, amplify risk signals, and surface cognitive blind spots
 
 ### Data Sources (Live)
-- **World Bank API** — GDP, GDP growth, FDI inflows, trade balance, population
-- **Exchange Rate API** — Real-time currency conversion data
-- **REST Countries API** — Demographics, region classification, languages
-- **Regional Baselines** — Curated infrastructure, digital, stability, and innovation baselines per continent
-- **Case Memory** — Persistent localStorage-based prior case retrieval
+- **World Bank API** - GDP, GDP growth, FDI inflows, trade balance, population
+- **Exchange Rate API** - Real-time currency conversion data
+- **REST Countries API** - Demographics, region classification, languages
+- **Regional Baselines** - Curated infrastructure, digital, stability, and innovation baselines per continent
+- **Case Memory** - Persistent localStorage-based prior case retrieval
 
 ### Quality Assurance
-- All 21 DAG formulas are deterministic (no random generation) — reproducible on identical inputs
+- All 21 DAG formulas are deterministic (no random generation) - reproducible on identical inputs
 - SAT solver validates input consistency before analysis begins
 - Ethics Engine checks compliance against sanctions, AML, ESG, and anti-corruption rules
 - Self-Improvement Engine monitors accuracy drift and auto-recalibrates scoring weights
@@ -1043,13 +1043,13 @@ ${JSON.stringify(reportData.confidenceScores || {}, null, 2)}
 | 21 | IDV | Investment Decision Validator |
 
 ### D. Glossary
-- **NSIL** — Nexus Strategic Intelligence Layer (v3.2)
-- **HCE** — Human Cognition Engine (7 neuroscience models)
-- **DAG** — Directed Acyclic Graph (parallel formula execution)
-- **SPI™** — Strategic Partnership Index
-- **RROI™** — Risk-Adjusted Return on Investment
-- **SCF™** — Supply Chain Flexibility
-- **SAT** — Boolean satisfiability constraint solver
+- **NSIL** - Nexus Strategic Intelligence Layer (v3.2)
+- **HCE** - Human Cognition Engine (7 neuroscience models)
+- **DAG** - Directed Acyclic Graph (parallel formula execution)
+- **SPI™** - Strategic Partnership Index
+- **RROI™** - Risk-Adjusted Return on Investment
+- **SCF™** - Supply Chain Flexibility
+- **SAT** - Boolean satisfiability constraint solver
 
 ### E. Data Provenance
 All live data retrieved via HTTPS from:

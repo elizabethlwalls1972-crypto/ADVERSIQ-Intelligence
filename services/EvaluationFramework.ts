@@ -1,23 +1,23 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — EVALUATION FRAMEWORK
+ * BW NEXUS AI - EVALUATION FRAMEWORK
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Automated quality evaluation for AI responses. Measures response quality
  * across multiple dimensions using both heuristic checks and LLM-as-judge.
  *
  * Evaluation Dimensions:
- *  1. Relevance  — Does the response address the user's actual question?
- *  2. Factuality — Are claims verifiable and not fabricated?
- *  3. Depth      — Is the analysis substantive vs. generic?
- *  4. Actionability — Does it provide concrete next steps?
- *  5. Coherence  — Is the response well-structured and logical?
- *  6. Safety     — Free from harmful/biased content?
+ *  1. Relevance  - Does the response address the user's actual question?
+ *  2. Factuality - Are claims verifiable and not fabricated?
+ *  3. Depth      - Is the analysis substantive vs. generic?
+ *  4. Actionability - Does it provide concrete next steps?
+ *  5. Coherence  - Is the response well-structured and logical?
+ *  6. Safety     - Free from harmful/biased content?
  *
  * Modes:
- *  • 'heuristic'  — Fast, no API call, pattern-based scoring
- *  • 'llm_judge'  — Uses AI to evaluate (higher quality, costs tokens)
- *  • 'full'       — Both heuristic + LLM judge
+ *  • 'heuristic'  - Fast, no API call, pattern-based scoring
+ *  • 'llm_judge'  - Uses AI to evaluate (higher quality, costs tokens)
+ *  • 'full'       - Both heuristic + LLM judge
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 

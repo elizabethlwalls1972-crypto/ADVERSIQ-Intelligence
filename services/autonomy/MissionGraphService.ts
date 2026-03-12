@@ -124,7 +124,7 @@ export class MissionGraphService {
     window.localStorage.removeItem(STORAGE_KEY);
   }
 
-  static upsertFromCaseInput(input: MissionCaseInput, options: MissionUpsertOptions = {}): MissionSnapshot {
+  static async upsertFromCaseInput(input: MissionCaseInput, options: MissionUpsertOptions = {}): Promise<MissionSnapshot> {
     const existing = this.getSnapshot();
     const nowIso = new Date().toISOString();
     const autonomyPaused = existing?.autonomyPaused ?? false;
@@ -154,7 +154,7 @@ export class MissionGraphService {
     const plannedTasks = AutonomousPlanner.generateActionPlan(goals, input);
     const governanceDecisions = AutonomyGovernanceGate.evaluatePlan(plannedTasks, input);
     const executionBatch = shouldExecuteCycle
-      ? ActionExecutionEngine.executeApprovedTasks(plannedTasks, governanceDecisions, input)
+      ? await ActionExecutionEngine.executeApprovedTasks(plannedTasks, governanceDecisions, input)
       : {
           tasks: plannedTasks,
           executionRecords: [] as ExecutionRecord[],

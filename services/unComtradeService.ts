@@ -1,8 +1,8 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * UN Comtrade — Global Bilateral Trade Statistics
+ * UN Comtrade - Global Bilateral Trade Statistics
  * ═══════════════════════════════════════════════════════════════════
- * Free API — no key required for limited queries (v1 endpoint).
+ * Free API - no key required for limited queries (v1 endpoint).
  * https://comtrade.un.org/data/doc/api
  *
  * Provides: annual import/export totals by country, top trading
@@ -72,7 +72,7 @@ export async function fetchComtradeData(
   if (!m49) return null;
 
   try {
-    // v1 endpoint — free, no key, rate limited to 1 req/sec
+    // v1 endpoint - free, no key, rate limited to 1 req/sec
     const url =
       `https://comtrade.un.org/api/get` +
       `?max=20&type=C&freq=A&px=HS&ps=${year}&r=${m49}&p=0&rg=all&cc=TOTAL&fmt=json`;

@@ -1,13 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — ISSUE → SOLUTION PIPELINE
+ * BW NEXUS AI - ISSUE → SOLUTION PIPELINE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * This is the missing connector between the user's issue and the AI answer.
  *
  * It runs all analysis engines IN PARALLEL the moment a user states an issue,
  * packages their output into a structured intelligence block, and injects it
- * into the ReasoningPipeline so the AI answers from real analysis — not guesswork.
+ * into the ReasoningPipeline so the AI answers from real analysis - not guesswork.
  *
  * PIPELINE:
  *
@@ -71,7 +71,7 @@ export interface IntelligenceBlock {
   historicalParallels: string[];
   /** Hidden risks / motivations detected */
   hiddenRisks: string[];
-  /** NSIL strategic score (0–100) */
+  /** NSIL strategic score (0-100) */
   strategicScore: number;
   /** NSIL assessment summary */
   nsилSummary: string;
@@ -101,7 +101,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
     ? `${input.issue}\n\nContext: ${input.currentMatter}`
     : input.issue;
 
-  // ─── Run ALL AI engines in parallel — every one calls real LLM ────────────
+  // ─── Run ALL AI engines in parallel - every one calls real LLM ────────────
 
   const [
     classificationResult,
@@ -132,7 +132,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
         : `${input.issue} regional development policy`
     ),
 
-    // 5. AI Debate — balanced arguments for/against (replaces PersonaEngine field validation)
+    // 5. AI Debate - balanced arguments for/against (replaces PersonaEngine field validation)
     generateDebate(
       input.objectives || input.issue,
       contextStr
@@ -145,7 +145,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
     })(),
   ]);
 
-  // ─── Unpack results (all optional — any failures are non-blocking) ──────────
+  // ─── Unpack results (all optional - any failures are non-blocking) ──────────
 
   const classification = classificationResult.status === 'fulfilled' ? classificationResult.value : null;
   const rootCause = rootCauseResult.status === 'fulfilled' ? rootCauseResult.value : null;
@@ -162,7 +162,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
       : 'General advisory';
 
   const rootCauses: string[] =
-    rootCause?.rootCauses?.slice(0, 4).map(rc => `${rc.cause} [${rc.severity}] — ${rc.evidence}`) || [];
+    rootCause?.rootCauses?.slice(0, 4).map(rc => `${rc.cause} [${rc.severity}] - ${rc.evidence}`) || [];
 
   const leveragePoints: string[] =
     rootCause?.interventionPoints?.slice(0, 4).map(ip => `${ip.point} → Expected: ${ip.expectedImpact} (${ip.difficulty})`) || [];
@@ -178,7 +178,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
 
   // Debate "against" arguments serve as risk detection (replaces MotivationDetector)
   const hiddenRisks: string[] =
-    debate?.againstArguments?.slice(0, 4).map(a => `[Risk] ${a.point} — ${a.evidence}`) || [];
+    debate?.againstArguments?.slice(0, 4).map(a => `[Risk] ${a.point} - ${a.evidence}`) || [];
 
   // Research confidence as strategic score
   const strategicScore: number = research
@@ -245,7 +245,7 @@ export async function runIssuePipeline(input: IssuePipelineInput): Promise<Intel
   }
 
   if (debate?.forArguments?.length) {
-    sections.push(`\n**Supporting arguments:**\n${debate.forArguments.slice(0, 3).map(a => `• ${a.point} — ${a.evidence}`).join('\n')}`);
+    sections.push(`\n**Supporting arguments:**\n${debate.forArguments.slice(0, 3).map(a => `• ${a.point} - ${a.evidence}`).join('\n')}`);
   }
 
   if (nsилSummary) {

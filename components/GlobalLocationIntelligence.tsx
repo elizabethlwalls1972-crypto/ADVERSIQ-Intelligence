@@ -225,7 +225,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
     
     try {
-      // Check locationResearchCache first — prevents redundant API calls
+      // Check locationResearchCache first - prevents redundant API calls
       try {
         await locationResearchCache.initialize();
         const cached = await locationResearchCache.getFullResult(trimmedQuery);
@@ -236,7 +236,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
           setIsResearching(false);
           return;
         }
-      } catch (_ce) { /* cache unavailable — proceed with live research */ }
+      } catch (_ce) { /* cache unavailable - proceed with live research */ }
 
       // Use automatic search service for enhanced results
       await automaticSearchService.triggerSearch(trimmedQuery, 'user_search', 'high');
@@ -262,7 +262,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         }
       }
 
-      // v1 multiSourceResearch fallback — additional source before live search
+      // v1 multiSourceResearch fallback - additional source before live search
       if (!result) {
         try {
           setResearchProgress({ stage: 'Multi-Source V1', progress: 20, message: `Trying multi-source research for ${trimmedQuery}...` });
@@ -277,7 +277,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         } catch (_v1e) { /* v1 unavailable */ }
       }
 
-      // comprehensiveLiveSearch fallback — if Gemini returned nothing
+      // comprehensiveLiveSearch fallback - if Gemini returned nothing
       if (!result) {
         try {
           setResearchProgress({ stage: 'Live Search', progress: 25, message: `Trying live data sources for ${trimmedQuery}...` });
@@ -313,13 +313,13 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
           await locationResearchCache.saveFullResult(trimmedQuery, multiResult as any);
         } catch (_e) { /* cache save failed */ }
 
-        // OSINT enrichment — government, statistics, business sources
+        // OSINT enrichment - government, statistics, business sources
         try {
           const osint = await osintSearch(`${trimmedQuery} government economy investment trade`, ['government', 'statistics', 'business'], 6);
           setOsintResults(osint);
         } catch (_e) { /* osint unavailable */ }
 
-        // Autonomous gap analysis — data completeness scoring
+        // Autonomous gap analysis - data completeness scoring
         try {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const gaps = autonomousResearchAgent.analyzeDataGaps(multiResult as any, result.profile);
@@ -516,7 +516,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
               typed.recommendations.map((r: string) => `- ${r}`).join('\n'),
             ].join('\n');
           }
-        } catch (_dge) { /* typed generator unavailable — fall back to AI */ }
+        } catch (_dge) { /* typed generator unavailable - fall back to AI */ }
       }
 
       if (!documentText) {
@@ -1124,7 +1124,7 @@ th { background: #f1f5f9; }
               </div>
             </div>
 
-            {/* Data Intelligence Panel — completeness score + OSINT sources */}
+            {/* Data Intelligence Panel - completeness score + OSINT sources */}
             {(dataCompletenessScore !== null || osintResults.length > 0) && (
               <div className="flex flex-wrap items-center gap-4 px-3 py-2 bg-slate-800/60 border border-slate-700 rounded-lg text-xs">
                 {dataCompletenessScore !== null && (

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — NATIVE FUNCTION CALLING
+ * BW NEXUS AI - NATIVE FUNCTION CALLING
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Replaces the brittle [[TOOL:name]]...[[/TOOL]] text-parsing approach with
@@ -115,7 +115,7 @@ export async function runWithFunctionCalling(
 
   const apiKey = getApiKey();
   if (!apiKey) {
-    // No API key — fall back to regular call with text-based tool parsing
+    // No API key - fall back to regular call with text-based tool parsing
     return fallbackTextParsing(messages, registry, options, onToken);
   }
 
@@ -193,11 +193,11 @@ export async function runWithFunctionCalling(
         });
       }
 
-      // Continue loop — model will see tool results and may call more tools or give final answer
+      // Continue loop - model will see tool results and may call more tools or give final answer
       continue;
     }
 
-    // No tool calls — this is the final answer
+    // No tool calls - this is the final answer
     const finalText = assistantMessage.content || '';
 
     // If streaming was requested, emit the final text token by token
@@ -212,7 +212,7 @@ export async function runWithFunctionCalling(
     return { finalText, toolResults, totalTokensUsed: totalTokens };
   }
 
-  // Max rounds exceeded — return whatever we have
+  // Max rounds exceeded - return whatever we have
   return {
     finalText: 'I gathered the information above. Let me summarize what I found.',
     toolResults,

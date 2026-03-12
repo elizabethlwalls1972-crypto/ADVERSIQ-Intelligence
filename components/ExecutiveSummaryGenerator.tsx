@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Zap, Download, Mail, Share2, Clock, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface ExecutiveSummary {
@@ -63,7 +63,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
     setStep('generating');
     const startTime = Date.now();
 
-    // Build analysis from actual user inputs — no hardcoded filler
+    // Build analysis from actual user inputs - no hardcoded filler
     const entityName = inputs.entityName || 'Your Organization';
     const entityCountry = inputs.entityCountry || 'Not specified';
     const entityIndustry = inputs.entityIndustry || 'Not specified';
@@ -102,7 +102,7 @@ const ExecutiveSummaryGenerator: React.FC<ExecutiveSummaryGeneratorProps> = ({
     if (sectorPremium > 0) topOpportunities.push(`High-growth sector: ${targetSector}`);
     else topThreats.push(`Moderate growth trajectory for ${targetSector}`);
     if (investNum > 0) topOpportunities.push(`Defined investment thesis (${inputs.investmentAmount})`);
-    else topThreats.push('Investment scope undefined — increases planning risk');
+    else topThreats.push('Investment scope undefined - increases planning risk');
     if (entityCountry !== 'Not specified' && entityCountry.toLowerCase() !== targetLower) {
       topThreats.push(`Cross-border entry: ${entityCountry} → ${targetCountry}`);
       topOpportunities.push(`Diversification from ${entityCountry} base`);

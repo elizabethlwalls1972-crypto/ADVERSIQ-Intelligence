@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — REAL NEURAL EMBEDDING SERVICE
+ * BW NEXUS AI - REAL NEURAL EMBEDDING SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Generates real 768-dimensional vector embeddings via Together.ai's

@@ -145,14 +145,14 @@ const FORMULA_GRAPH: Record<FormulaId, { dependencies: FormulaId[]; priority: nu
   'IDV': { dependencies: ['SCF', 'RROI'], priority: 60 },
 
   // Level 4 - Autonomous Intelligence (depends on Level 3 aggregates)
-  'CRE': { dependencies: ['SCF', 'SEAM'], priority: 90 },    // Creative Synthesis — combines strategy scores to discover novel angles
-  'CDT': { dependencies: ['SCF', 'ESI'], priority: 88 },     // Cross-Domain Transfer — maps biological/physical analogies to economics
-  'AGL': { dependencies: ['SPI', 'RROI', 'SCF'], priority: 85 }, // Autonomous Goal — detects emergent goals from top-level indices
-  'ETH': { dependencies: ['SCF', 'ESI', 'ISI'], priority: 95 },  // Ethical Reasoning — hard gate before every recommendation
-  'EVO': { dependencies: ['SPI', 'RROI', 'CRI'], priority: 80 }, // Self-Evolving Algorithm — tunes formula weights via gradient descent
-  'ADA': { dependencies: ['SCF', 'ATI'], priority: 78 },     // Adaptive Learning — Bayesian belief updates from outcomes
-  'EMO': { dependencies: ['SCF', 'ISI', 'OSI'], priority: 82 },  // Emotional Intelligence — Prospect Theory & Russell Circumplex
-  'SIM': { dependencies: ['SCF', 'SRA', 'PRI'], priority: 92 }   // Scenario Simulation — Monte Carlo with 5000 runs & causal loops
+  'CRE': { dependencies: ['SCF', 'SEAM'], priority: 90 },    // Creative Synthesis - combines strategy scores to discover novel angles
+  'CDT': { dependencies: ['SCF', 'ESI'], priority: 88 },     // Cross-Domain Transfer - maps biological/physical analogies to economics
+  'AGL': { dependencies: ['SPI', 'RROI', 'SCF'], priority: 85 }, // Autonomous Goal - detects emergent goals from top-level indices
+  'ETH': { dependencies: ['SCF', 'ESI', 'ISI'], priority: 95 },  // Ethical Reasoning - hard gate before every recommendation
+  'EVO': { dependencies: ['SPI', 'RROI', 'CRI'], priority: 80 }, // Self-Evolving Algorithm - tunes formula weights via gradient descent
+  'ADA': { dependencies: ['SCF', 'ATI'], priority: 78 },     // Adaptive Learning - Bayesian belief updates from outcomes
+  'EMO': { dependencies: ['SCF', 'ISI', 'OSI'], priority: 82 },  // Emotional Intelligence - Prospect Theory & Russell Circumplex
+  'SIM': { dependencies: ['SCF', 'SRA', 'PRI'], priority: 92 }   // Scenario Simulation - Monte Carlo with 5000 runs & causal loops
 };
 
 // ============================================================================
@@ -608,10 +608,10 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
     };
   },
 
-  // ─────────────── Level 4 Executors — Autonomous Intelligence ───────────────
+  // ─────────────── Level 4 Executors - Autonomous Intelligence ───────────────
 
   'CRE': async (params, cache) => {
-    // Creative Synthesis Index — Bisociation Theory (Koestler 1964)
+    // Creative Synthesis Index - Bisociation Theory (Koestler 1964)
     // Measures the system's ability to combine unrelated knowledge frames
     // Uses Jaccard similarity, cosine distance, and Shannon entropy
     const start = Date.now();
@@ -634,7 +634,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'CDT': async (params, cache) => {
-    // Cross-Domain Transfer Index — Structure Mapping Theory (Gentner 1983)
+    // Cross-Domain Transfer Index - Structure Mapping Theory (Gentner 1983)
     // Maps biological/physical/military analogies onto economic data
     // 8 source domains × 50+ entity mappings
     const start = Date.now();
@@ -657,7 +657,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'AGL': async (params, cache) => {
-    // Autonomous Goal Index — Goal Programming + HTN Decomposition
+    // Autonomous Goal Index - Goal Programming + HTN Decomposition
     // Detects emergent goals from top-level indices, ranks via MCDA
     // Composite: 0.30×impact + 0.25×urgency + 0.20×feasibility + 0.25×EVOI
     const start = Date.now();
@@ -681,7 +681,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'ETH': async (params, cache) => {
-    // Ethical Reasoning Index — 7-Dimension Assessment
+    // Ethical Reasoning Index - 7-Dimension Assessment
     // Utilitarian, Rawlsian, Environmental, Intergenerational (Stern discount 1.4%),
     // Transparency, Proportionality, Cultural Sensitivity
     // Hard gate: score < 30 blocks recommendation
@@ -709,7 +709,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'EVO': async (params, cache) => {
-    // Self-Evolving Algorithm Index — Online Gradient Descent + Thompson Sampling
+    // Self-Evolving Algorithm Index - Online Gradient Descent + Thompson Sampling
     // Measures weight adaptation quality across 21+ formula parameters
     // η_t = 0.05 / (1 + 0.001 × t), ε-greedy with decay
     const start = Date.now();
@@ -733,7 +733,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'ADA': async (params, cache) => {
-    // Adaptive Learning Index — Bayesian Conjugate Normal-Normal Updates
+    // Adaptive Learning Index - Bayesian Conjugate Normal-Normal Updates
     // 15 prior beliefs, EWMA α=0.1, Ebbinghaus R = e^(-t/S) with S = 24 × √n
     const start = Date.now();
     const scf = cache.get('SCF')?.score || 50;
@@ -757,7 +757,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'EMO': async (params, cache) => {
-    // Emotional Intelligence Index — Russell Circumplex + Prospect Theory
+    // Emotional Intelligence Index - Russell Circumplex + Prospect Theory
     // 12 emotion coordinates (valence/arousal), V(x) = x^0.88 for gains,
     // -λ(-x)^0.88 for losses (λ≈2.25), π(p) with γ=0.61
     const start = Date.now();
@@ -784,7 +784,7 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
   },
 
   'SIM': async (params, cache) => {
-    // Scenario Simulation Index — Monte Carlo (5000 runs) + Causal Loops
+    // Scenario Simulation Index - Monte Carlo (5000 runs) + Causal Loops
     // 12 variables, 14 causal links, 4 feedback loops
     // Box-Muller normal sampling, triangular & lognormal distributions
     const start = Date.now();

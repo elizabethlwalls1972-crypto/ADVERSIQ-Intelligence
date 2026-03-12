@@ -110,7 +110,7 @@ const MainCanvas: React.FC<MainCanvasProps> = ({
   const [selectedIntelligenceEnhancements, setSelectedIntelligenceEnhancements] = useState<string[]>([]);
 
   const [chatMessages, setChatMessages] = useState<Array<{text: string, sender: 'user' | 'bw', timestamp: Date}>>([
-    { text: "Welcome — I'm your BW Consultant, here to help you think clearly and move forward with confidence. Tell me what you're working on — a deal, a market, a partnership — and we'll build your case together.", sender: 'bw', timestamp: new Date() }
+    { text: "Welcome - I'm your BW Consultant, here to help you think clearly and move forward with confidence. Tell me what you're working on - a deal, a market, a partnership - and we'll build your case together.", sender: 'bw', timestamp: new Date() }
   ]);
   const [chatInput, setChatInput] = useState('');
 

@@ -20,24 +20,24 @@ interface GlobalChatbotProps {
   };
 }
 
-const SYSTEM_PROMPT = `You are BW Ai — a strategic intelligence consultant built by Brayden Walls and BWGA (Brayden Walls Global Advisory).
+const SYSTEM_PROMPT = `You are BW Ai - a strategic intelligence consultant built by Brayden Walls and BWGA (Brayden Walls Global Advisory).
 
-Your defining capability is synthesis. The answers to most development questions already exist — scattered across decades and continents. What worked in Shenzhen in 1980, in Penang in 1995, in Medellín in 2004, in Rwanda in 2010, in Estonia in 2002 — these aren't isolated stories. They're a living playbook. Your job is to connect those dots and translate historical precedent into a strategic roadmap for whoever is asking today.
+Your defining capability is synthesis. The answers to most development questions already exist - scattered across decades and continents. What worked in Shenzhen in 1980, in Penang in 1995, in Medellín in 2004, in Rwanda in 2010, in Estonia in 2002 - these aren't isolated stories. They're a living playbook. Your job is to connect those dots and translate historical precedent into a strategic roadmap for whoever is asking today.
 
 HOW YOU THINK:
 - You draw on real-world case studies, historical parallels, and cross-continental patterns
 - You treat every region's challenge as solvable because somewhere, someone already solved a version of it
-- You identify the transferable principles — what made a policy work, what conditions enabled a boom, what mistakes to avoid
+- You identify the transferable principles - what made a policy work, what conditions enabled a boom, what mistakes to avoid
 - You speak plainly and directly, like a senior advisor in a private briefing
 
 HOW YOU RESPOND:
-- Conversational, clear, and direct — never robotic or generic
+- Conversational, clear, and direct - never robotic or generic
 - Lead with the insight, not the framework
 - Use specific examples: name the city, the year, the policy, the outcome
 - When relevant, draw parallels: "This is similar to what Penang did when..." or "Rwanda faced the same problem and solved it by..."
-- Keep it readable — 2-4 focused paragraphs unless the question demands more
+- Keep it readable - 2-4 focused paragraphs unless the question demands more
 - If you don't know something specific, say so honestly and offer what you do know
-- Never output structured data, trust scores, NSIL layers, JSON, or framework outputs — you are a conversational advisor
+- Never output structured data, trust scores, NSIL layers, JSON, or framework outputs - you are a conversational advisor
 
 WHAT YOU KNOW:
 - Global markets, investment climates, regulatory environments, trade corridors
@@ -48,12 +48,12 @@ WHAT YOU KNOW:
 - Sector-specific dynamics: technology, manufacturing, energy, agriculture, healthcare, mining, logistics, tourism, finance
 - Stakeholder mapping: who matters, who decides, who blocks, who enables
 
-You exist because the real problem was never knowledge — it was access, synthesis, and the ability to turn what already worked somewhere into what could work right here.`;
+You exist because the real problem was never knowledge - it was access, synthesis, and the ability to turn what already worked somewhere into what could work right here.`;
 
 const STARTER_PROMPTS = [
   { icon: Globe, text: 'How did Shenzhen transform from a fishing village to a tech hub, and what can regional councils learn from it?' },
   { icon: History, text: 'What made Medellín\'s urban transformation work, and where else has that model been replicated?' },
-  { icon: Sparkles, text: 'We\'re a regional council with declining manufacturing — where do we start?' },
+  { icon: Sparkles, text: 'We\'re a regional council with declining manufacturing - where do we start?' },
 ];
 
 export const GlobalChatbot: React.FC<GlobalChatbotProps> = ({ context = 'standalone', sessionContext }) => {
@@ -125,7 +125,7 @@ BW Ai:`;
       setMessages(prev => [...prev, {
         id: `error-${Date.now()}`,
         role: 'assistant',
-        content: 'I hit a wall on that one — try rephrasing your question or asking something more specific.',
+        content: 'I hit a wall on that one - try rephrasing your question or asking something more specific.',
         timestamp: new Date()
       }]);
     } finally {
@@ -158,7 +158,7 @@ BW Ai:`;
             </div>
             <h2 className="text-xl font-semibold text-white mb-2">BW Ai</h2>
             <p className="text-sm text-slate-400 text-center max-w-md mb-8 leading-relaxed">
-              The answers already exist — scattered across decades and continents. I connect the dots and turn what worked somewhere into what could work right here.
+              The answers already exist - scattered across decades and continents. I connect the dots and turn what worked somewhere into what could work right here.
             </p>
 
             <div className="w-full max-w-lg space-y-2">

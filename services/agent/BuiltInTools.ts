@@ -28,7 +28,7 @@ export function registerBuiltInTools(registry: AgentToolRegistry): void {
       const econ = data.economics;
       const profile = data.profile;
       const lines: string[] = [
-        `Country Intelligence — ${country}`,
+        `Country Intelligence - ${country}`,
         `Data Quality: ${data.dataQuality.hasRealData ? '✅ Live data' : '⚠️ Limited data'} | Sources: ${data.dataQuality.sources.join(', ')}`,
       ];
 
@@ -141,7 +141,7 @@ export function registerBuiltInTools(registry: AgentToolRegistry): void {
       } catch { /* AI reasoning optional */ }
 
       const summary = ranked
-        .map(r => `${r.partner.name}: ${r.score.total}/100 — ${r.reasons.join(', ')}`)
+        .map(r => `${r.partner.name}: ${r.score.total}/100 - ${r.reasons.join(', ')}`)
         .join('\n');
 
       return {
@@ -219,7 +219,7 @@ export function registerBuiltInTools(registry: AgentToolRegistry): void {
           notes: rootCause?.systemicPatterns || []
         },
         latencyMs: 0,
-        summary: summaryParts.join('\n') || 'Analysis completed — no specific findings for this region/sector.'
+        summary: summaryParts.join('\n') || 'Analysis completed - no specific findings for this region/sector.'
       };
     }
   });
@@ -278,7 +278,7 @@ export function registerBuiltInTools(registry: AgentToolRegistry): void {
     }
   });
 
-  // ── RESEARCH TOPIC (New — AI-powered web research) ───────────────────────
+  // ── RESEARCH TOPIC (New - AI-powered web research) ───────────────────────
   registry.register({
     name: 'research_topic',
     description: 'Research any topic using live web search + AI synthesis. Returns factual findings, data points, and an analytical summary. Use for current data, policy analysis, market intelligence.',
@@ -312,7 +312,7 @@ export function registerBuiltInTools(registry: AgentToolRegistry): void {
     }
   });
 
-  // ── ANALYSE SITUATION (New — AI 7-perspective analysis) ──────────────────
+  // ── ANALYSE SITUATION (New - AI 7-perspective analysis) ──────────────────
   registry.register({
     name: 'analyse_situation',
     description: 'Run a deep AI-powered situation analysis from 7 strategic perspectives: Explicit Needs, Implicit Needs, Unconsidered Needs, Contrarian View, Historical Parallel, Stakeholder View, Time-Horizon Divergence.',

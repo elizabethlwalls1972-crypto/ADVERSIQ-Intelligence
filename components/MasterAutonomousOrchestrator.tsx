@@ -192,7 +192,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                         value === 'active' ? 'text-green-600' :
                         value === 'idle' ? 'text-yellow-600' : 'text-red-600'
                       }`}>
-                        {value === 'active' ? 'a - ' : value === 'idle' ? 'a - ' : '✗'}
+                        {value === 'active' ? 'a - - : value === 'idle' ? 'a - - : '✗'}
                       </div>
                     </div>
                   );

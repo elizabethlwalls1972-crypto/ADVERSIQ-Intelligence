@@ -6,19 +6,19 @@
  * Premium Text-to-Speech for BW Consultant OS.
  *
  * Strategy (in priority order):
- *   1. OpenAI TTS-HD via server route (/api/ai/tts) — consistent, warm, human
+ *   1. OpenAI TTS-HD via server route (/api/ai/tts) - consistent, warm, human
  *      voice (nova) regardless of client OS or browser.
- *   2. Browser Web Speech API — falls back if server is unavailable or returns
+ *   2. Browser Web Speech API - falls back if server is unavailable or returns
  *      an error. Picks the best available English voice.
  *
  * Voice preference persists to localStorage ('bw_voice': 'on'|'off').
  * Volume-normalised output (audio element + Web Speech both at full volume).
  *
  * Usage:
- *   ttsService.speak(text)      — speak a string (strips markdown)
- *   ttsService.stop()           — cancel any playing audio
- *   ttsService.setEnabled(bool) — toggle on/off (persisted)
- *   ttsService.isEnabled()      — check current state
+ *   ttsService.speak(text)      - speak a string (strips markdown)
+ *   ttsService.stop()           - cancel any playing audio
+ *   ttsService.setEnabled(bool) - toggle on/off (persisted)
+ *   ttsService.isEnabled()      - check current state
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -95,7 +95,7 @@ class TTSService {
         await this._speakPremium(clean);
         return;
       } catch (err) {
-        // Server unavailable — fall back to browser for this session
+        // Server unavailable - fall back to browser for this session
         console.warn('[TTS] Premium unavailable, switching to browser Speech API', err);
         this._usePremium = false;
       }

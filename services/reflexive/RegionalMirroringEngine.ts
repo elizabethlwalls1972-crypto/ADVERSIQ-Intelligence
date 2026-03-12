@@ -1,13 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * REGIONAL MIRRORING ENGINE — Reflexive Intelligence Layer (Layer 9)
+ * REGIONAL MIRRORING ENGINE - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Structural Similarity Analysis + Analogical Reasoning
  *         (Gentner, 1983: Structure-Mapping Theory)
  *
  * This engine answers the question: "What other region is structurally
- * identical to this one — and what did they do that worked?"
+ * identical to this one - and what did they do that worked?"
  *
  * This is NOT cross-domain transfer (biology → economics). That's CDT.
  * This is REGION → REGION: "Cebu 2010 ≈ Da Nang 2020"
@@ -544,8 +544,8 @@ export class RegionalMirroringEngine {
       gapDimensions: benchmarkInfo.gap,
       realisticTimeline: `Closing the gap with ${aspirational} requires 15-25 years of sustained, deliberate policy and investment`,
       bridgeStrategies: [
-        `Learn from structural twin (${structuralTwin}) for immediate strategies — they face the same constraints you do`,
-        `Study ${aspirational}'s journey at YOUR current stage — not where they are today, but where they were 20 years ago`,
+        `Learn from structural twin (${structuralTwin}) for immediate strategies - they face the same constraints you do`,
+        `Study ${aspirational}'s journey at YOUR current stage - not where they are today, but where they were 20 years ago`,
         `Focus on closing one gap dimension at a time: ${benchmarkInfo.gap[0]} is likely the highest-leverage starting point`,
         `Build narrative around authentic strengths rather than mimicking ${aspirational}'s model`
       ]
@@ -560,7 +560,7 @@ export class RegionalMirroringEngine {
     const insights: string[] = [];
 
     if (mirrors.length === 0) {
-      insights.push('No strong structural mirrors found — this region may have a unique profile that requires custom strategy rather than pattern replication');
+      insights.push('No strong structural mirrors found - this region may have a unique profile that requires custom strategy rather than pattern replication');
       return insights;
     }
 
@@ -571,7 +571,7 @@ export class RegionalMirroringEngine {
     const dims = Object.entries(topMirror.dimensionScores);
     dims.sort((a, b) => b[1] - a[1]);
     insights.push(`Strongest structural overlap: ${dims[0][0]} (${Math.round(dims[0][1] * 100)}%)`);
-    insights.push(`Weakest structural overlap: ${dims[dims.length - 1][0]} (${Math.round(dims[dims.length - 1][1] * 100)}%) — this is where divergent strategy may be needed`);
+    insights.push(`Weakest structural overlap: ${dims[dims.length - 1][0]} (${Math.round(dims[dims.length - 1][1] * 100)}%) - this is where divergent strategy may be needed`);
 
     // Cross-mirror pattern detection
     if (mirrors.length >= 3) {
@@ -581,7 +581,7 @@ export class RegionalMirroringEngine {
         ))
       );
       if (commonStrategies.length > 0) {
-        insights.push(`Common strategy across mirrors: ${commonStrategies[0]} — multiple structurally similar regions succeeded with this approach`);
+        insights.push(`Common strategy across mirrors: ${commonStrategies[0]} - multiple structurally similar regions succeeded with this approach`);
       }
     }
 
@@ -601,8 +601,8 @@ export class RegionalMirroringEngine {
       recs.push(`Alternative model from ${mirrors[1].mirrorRegion}: ${mirrors[1].transferableStrategies[0]}`);
     }
 
-    recs.push('Engage with mirror regions directly — site visits, IPA-to-IPA knowledge exchange, and strategy benchmarking');
-    recs.push('Focus on transferable strategies, not aspirational imitation — what worked for your structural twin is more likely to work for you');
+    recs.push('Engage with mirror regions directly - site visits, IPA-to-IPA knowledge exchange, and strategy benchmarking');
+    recs.push('Focus on transferable strategies, not aspirational imitation - what worked for your structural twin is more likely to work for you');
 
     return recs;
   }

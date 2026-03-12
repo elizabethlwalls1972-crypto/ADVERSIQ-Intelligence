@@ -14,7 +14,7 @@
  *   - Russell's Circumplex Model: emotions mapped on 2D space
  *     (valence: negative↔positive, arousal: low↔high)
  *   - Prospect Theory (Kahneman & Tversky 1979): loss aversion coefficient
- *     λ ≈ 2.25 — losses hurt 2.25× more than equivalent gains
+ *     λ ≈ 2.25 - losses hurt 2.25× more than equivalent gains
  *   - Emotional Contagion Model: sentiment spreads through stakeholder
  *     networks proportional to influence × proximity
  *   - Emotional Decay Function: emotional intensity decays exponentially
@@ -42,10 +42,10 @@ export interface EmotionalState {
   arousal: number;     // 0 (calm) to 1 (agitated)
   dominantEmotion: EmotionLabel;
   lossAversion: number; // λ coefficient, typically ≈ 2.25
-  timelinePressure: number; // 0–1
-  reputationalExposure: number; // 0–1
+  timelinePressure: number; // 0-1
+  reputationalExposure: number; // 0-1
   priorExperience: 'positive' | 'neutral' | 'negative' | 'none';
-  influenceWeight: number; // 0–1, how much this person's emotions affect the deal
+  influenceWeight: number; // 0-1, how much this person's emotions affect the deal
   emotionalTrajectory: 'improving' | 'stable' | 'deteriorating';
 }
 
@@ -63,7 +63,7 @@ export interface EmotionalDynamic {
   fromStakeholder: string;
   toStakeholder: string;
   contagionType: 'positive' | 'negative' | 'anxious';
-  strength: number; // 0–1
+  strength: number; // 0-1
   mechanism: string;
 }
 
@@ -83,8 +83,8 @@ export interface EmotionalIntelligenceResult {
     overallValence: number;
     overallArousal: number;
     dominantGroupEmotion: EmotionLabel;
-    stability: number; // 0–1
-    riskOfEmotionalDerailment: number; // 0–1
+    stability: number; // 0-1
+    riskOfEmotionalDerailment: number; // 0-1
   };
   recommendations: EmotionalRecommendation[];
   processingTimeMs: number;
@@ -381,9 +381,9 @@ export class EmotionalIntelligenceEngine {
     if (negativeChains.length > 2) {
       recommendations.push({
         target: 'All Stakeholders',
-        action: 'Convene group session to address concerns collectively — negative sentiment is spreading',
+        action: 'Convene group session to address concerns collectively - negative sentiment is spreading',
         reasoning: `${negativeChains.length} negative emotional contagion pathways detected. ` +
-          `Individual conversations won't solve systemic anxiety — collective reassurance needed.`,
+          `Individual conversations won't solve systemic anxiety - collective reassurance needed.`,
         priority: 'critical',
         expectedEffect: 'Break negative contagion cycle and reset group emotional baseline'
       });
@@ -450,7 +450,7 @@ export class EmotionalIntelligenceEngine {
   }
 
   /**
-   * Quick emotional check — is the emotional climate conducive to deal-making?
+   * Quick emotional check - is the emotional climate conducive to deal-making?
    */
   static quickCheck(ctx: EmotionalContext): { conducive: boolean; risk: number; topConcern: string } {
     const result = this.analyse(ctx);

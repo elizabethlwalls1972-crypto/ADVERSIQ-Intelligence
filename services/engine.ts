@@ -869,7 +869,7 @@ export const runEthicalSafeguards = async (params: ReportParameters): Promise<Et
 
     // Rule 1: Sanctions Check - Real OFAC/UN sanctioned jurisdictions
     const sanctionedJurisdictions = [
-      'North Korea', 'DPRK', 'Iran', 'Syria', 'Cuba', 'Crimea', 
+      'North Korea', 'DPRK', 'Iran', 'Syria', 'Cuba', 'Crimea',
       'Donetsk', 'Luhansk', 'Belarus', 'Russia', 'Myanmar', 'Venezuela'
     ];
     const isSanctioned = sanctionedJurisdictions.some(e => 

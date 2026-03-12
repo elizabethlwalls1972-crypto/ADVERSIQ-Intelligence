@@ -5,7 +5,7 @@
  *
  * Autonomously modifies its own formula weights, detection thresholds, and
  * scoring parameters based on outcome feedback. This is not conventional
- * hyperparameter tuning — this is a closed-loop self-modification system
+ * hyperparameter tuning - this is a closed-loop self-modification system
  * that tracks WHY it changes, WHAT it changed, and WHETHER the change improved
  * outcomes.
  *
@@ -16,7 +16,7 @@
  *     for threshold selection
  *   - Exponential Moving Average with Decay: smooths parameter evolution
  *     to prevent oscillation
- *   - Mutation-Selection: inspired by evolutionary computation — small
+ *   - Mutation-Selection: inspired by evolutionary computation - small
  *     random perturbations + fitness selection
  *
  * Why this is unprecedented:
@@ -65,7 +65,7 @@ export interface EvolutionState {
   totalMutations: number;
   successfulMutations: number;
   rolledBackMutations: number;
-  currentFitness: number; // 0–100
+  currentFitness: number; // 0-100
   fitnessHistory: Array<{ generation: number; fitness: number }>;
   activeWeights: Map<string, FormulaWeight>;
   learningRate: number;
@@ -99,7 +99,7 @@ export interface EvolutionReport {
 }
 
 // ============================================================================
-// DEFAULT FORMULA WEIGHTS — initial values, will evolve
+// DEFAULT FORMULA WEIGHTS - initial values, will evolve
 // ============================================================================
 
 const DEFAULT_WEIGHTS: Array<Omit<FormulaWeight, 'previousValue' | 'lastModified' | 'modificationCount' | 'confidenceBand'>> = [
@@ -235,7 +235,7 @@ export class SelfEvolvingAlgorithmEngine {
   }
 
   /**
-   * Thompson Sampling — explore random mutations to discover better parameters.
+   * Thompson Sampling - explore random mutations to discover better parameters.
    * With probability ε, apply a random perturbation to a random weight.
    * This prevents local optima trapping.
    */
@@ -283,7 +283,7 @@ export class SelfEvolvingAlgorithmEngine {
   }
 
   /**
-   * Validate a mutation — compare performance before and after.
+   * Validate a mutation - compare performance before and after.
    * If performance degraded, roll back.
    */
   validateMutation(recordId: string, actualImprovement: number): boolean {
@@ -294,7 +294,7 @@ export class SelfEvolvingAlgorithmEngine {
     record.validated = true;
 
     if (actualImprovement < -2) {
-      // Roll back — performance degraded
+      // Roll back - performance degraded
       const key = `${record.formulaId}::${record.parameterName}`;
       const weight = this.state.activeWeights.get(key);
       if (weight) {
@@ -331,7 +331,7 @@ export class SelfEvolvingAlgorithmEngine {
   }
 
   /**
-   * Get evolution report — full transparency.
+   * Get evolution report - full transparency.
    */
   getReport(): EvolutionReport {
     const recentRecords = this.state.auditTrail.slice(-20);

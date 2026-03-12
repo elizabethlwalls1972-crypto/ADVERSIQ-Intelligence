@@ -1,7 +1,7 @@
 ﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * LOCATION INTELLIGENCE DOCUMENT GENERATOR
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * Transforms research results into institutional-grade documents:
  * - Country Profile Reports
@@ -225,9 +225,9 @@ class LocationIntelligenceDocumentGenerator {
     return baseDoc;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // SECTION BUILDERS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private createExecutiveOverviewSection(profile: CityProfile): DocumentSection {
     return {
@@ -245,12 +245,12 @@ class LocationIntelligenceDocumentGenerator {
     return {
       title: 'Geographic Context & Location',
       level: 1,
-      content: narratives.geography.paragraphs[0]?.text || `Located at ${profile.latitude}Â°N, ${profile.longitude}Â°E...`,
+      content: narratives.geography.paragraphs[0]?.text || `Located at ${profile.latitude}°N, ${profile.longitude}°E...`,
       subsections: [
         {
           title: 'Coordinates & Timezone',
           level: 2,
-          content: `Latitude: ${profile.latitude}Â° | Longitude: ${profile.longitude}Â° | Timezone: ${profile.timezone}`
+          content: `Latitude: ${profile.latitude}° | Longitude: ${profile.longitude}° | Timezone: ${profile.timezone}`
         },
         {
           title: 'Regional Position',
@@ -268,8 +268,8 @@ class LocationIntelligenceDocumentGenerator {
       dataTable: {
         headers: ['Metric', 'Value', 'Source'],
         rows: [
-          ['Latitude', `${profile.latitude}Â°`, 'Geocoding Data'],
-          ['Longitude', `${profile.longitude}Â°`, 'Geocoding Data'],
+          ['Latitude', `${profile.latitude}°`, 'Geocoding Data'],
+          ['Longitude', `${profile.longitude}°`, 'Geocoding Data'],
           ['Timezone', profile.timezone, 'Country Data'],
           ['Area Size', profile.areaSize, 'Geographic Surveys'],
           ['Climate', profile.climate, 'Environmental Data']
@@ -841,12 +841,12 @@ class LocationIntelligenceDocumentGenerator {
         {
           title: 'Structural Advantages',
           level: 2,
-          content: `â€¢ ${profile.globalMarketAccess}\nâ€¢ Location in {{region}} economic zone\nâ€¢ {{area size}} geographic footprint`
+          content: `${profile.globalMarketAccess}\nLocation in {{region}} economic zone\n{{area size}} geographic footprint`
         },
         {
           title: 'Strategic Advantages',
           level: 2,
-          content: profile.strategicAdvantages?.map(a => `â€¢ ${a}`).join('\n') || 'See analysis'
+          content: profile.strategicAdvantages?.map(a => `${a}`).join('\n') || 'See analysis'
         }
       ]
     };
@@ -1001,9 +1001,9 @@ class LocationIntelligenceDocumentGenerator {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // HELPER FUNCTIONS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private createBaseDocument(profile: CityProfile, docType: string): GeneratedDocument {
     return {

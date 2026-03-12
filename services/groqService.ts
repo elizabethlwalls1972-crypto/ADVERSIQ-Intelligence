@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — GROQ SERVICE (Free Secondary AI Provider)
+ * BW NEXUS AI - GROQ SERVICE (Free Secondary AI Provider)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Ultra-fast LLM inference via Groq's LPU hardware.
- * Model: llama-3.3-70b-versatile (default — full reasoning + answering)
+ * Model: llama-3.3-70b-versatile (default - full reasoning + answering)
  * Fast:  llama-3.1-8b-instant
  *
  * Free tier: ~30 req/min, 14,400 req/day
@@ -59,7 +59,7 @@ export function isGroqAvailable(): boolean {
 
 /**
  * Call Groq chat completions API.
- * OpenAI-compatible format — same message structure as Together.ai.
+ * OpenAI-compatible format - same message structure as Together.ai.
  *
  * - `onToken` triggers streaming mode via SSE.
  * - Without `onToken`, returns the full completion.
@@ -80,7 +80,7 @@ export async function callGroq(
     lower.includes('key-here') ||
     lower.includes('placeholder')
   ) {
-    throw new Error('GROQ_API_KEY not configured — get a free key at https://console.groq.com');
+    throw new Error('GROQ_API_KEY not configured - get a free key at https://console.groq.com');
   }
 
   const modelUsed = options.model ?? GROQ_DEFAULT_MODEL;

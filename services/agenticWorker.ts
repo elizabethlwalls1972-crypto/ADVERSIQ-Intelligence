@@ -1,4 +1,4 @@
-﻿import type { ReportParameters, ReportPayload, CopilotInsight } from '../types';
+import type { ReportParameters, ReportPayload, CopilotInsight } from '../types';
 import { ReportOrchestrator } from './ReportOrchestrator';
 import { 
   optimizedAgenticBrain, 
@@ -226,22 +226,22 @@ export async function runOptimizedAgenticWorker(
     {
       id: `${runId}-speedup`,
       type: 'opportunity',
-      title: `âš¡ ${brainResult.performance.speedupFactor.toFixed(1)}x Speed Boost`,
+      title: `${brainResult.performance.speedupFactor.toFixed(1)}x Speed Boost`,
       description: `Completed in ${brainResult.performance.totalTimeMs}ms using optimized algorithms`,
       content: [
         `**Performance Breakdown:**`,
-        `â€¢ Input validation: ${brainResult.performance.inputValidationMs}ms`,
-        `â€¢ Memory retrieval: ${brainResult.performance.memoryRetrievalMs}ms`,
-        `â€¢ Parallel reasoning: ${brainResult.performance.reasoningMs}ms`,
-        `â€¢ Synthesis: ${brainResult.performance.synthesisMs}ms`,
+        `Input validation: ${brainResult.performance.inputValidationMs}ms`,
+        `Memory retrieval: ${brainResult.performance.memoryRetrievalMs}ms`,
+        `Parallel reasoning: ${brainResult.performance.reasoningMs}ms`,
+        `Synthesis: ${brainResult.performance.synthesisMs}ms`,
         ``,
         `**Optimizations Applied:**`,
-        `â€¢ VectorMemoryIndex (ANN-based similarity)`,
-        `â€¢ SATContradictionSolver (input validation)`,
-        `â€¢ BayesianDebateEngine (early stopping)`,
-        `â€¢ DAGScheduler (parallel formula execution)`,
-        `â€¢ LazyEvalEngine (on-demand derivatives)`,
-        `â€¢ GradientRankingEngine (learning-to-rank)`
+        `VectorMemoryIndex (ANN-based similarity)`,
+        `SATContradictionSolver (input validation)`,
+        `BayesianDebateEngine (early stopping)`,
+        `DAGScheduler (parallel formula execution)`,
+        `LazyEvalEngine (on-demand derivatives)`,
+        `GradientRankingEngine (learning-to-rank)`
       ].join('\n'),
       confidence: 100,
       isAutonomous: true
@@ -251,7 +251,7 @@ export async function runOptimizedAgenticWorker(
   const completedAt = new Date().toISOString();
   const totalTimeMs = Date.now() - startTime;
 
-  // --- Publish events to EventBus (bee â†’ meadow) ---
+  // --- Publish events to EventBus (bee ' meadow) ---
   EventBus.publish({
     type: 'executiveBriefReady',
     reportId: params.id ?? runId,
@@ -342,7 +342,7 @@ export async function runAgenticWorker(params: ReportParameters, opts?: { maxSim
       description: similarCases[0] ? `Closest match: ${similarCases[0].organizationName || similarCases[0].id}` : 'No close matches found.',
       content: similarCases.length
         ? similarCases
-            .map(c => `â€¢ ${c.organizationName || c.id} (${(c.score * 100).toFixed(0)}%) â€” ${c.why.join(', ')}`)
+            .map(c => `${c.organizationName || c.id} (${(c.score * 100).toFixed(0)}%) " ${c.why.join(', ')}`)
             .join('\n')
         : 'No prior cases in server memory matched strongly.',
       confidence: 75,
@@ -591,7 +591,7 @@ export async function runFullyAutonomousAgenticWorker(
               // Record accuracy if we have confidence scores
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               const overallConf = (baseResult?.payload as any)?.meta?.confidence || 0.75;
-              selfImprovementEngine.recordAccuracy(overallConf, overallConf); // Baseline â€” actual tracked over time
+              selfImprovementEngine.recordAccuracy(overallConf, overallConf); // Baseline " actual tracked over time
               action.result = `Recorded: ${elapsed}ms runtime, ${Math.round(overallConf * 100)}% confidence`;
               break;
             }

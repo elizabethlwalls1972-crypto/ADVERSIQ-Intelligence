@@ -15,7 +15,7 @@ export interface WorkflowStep<TContext extends WorkflowContext = WorkflowContext
   name: string;
   /** Step IDs that must complete before this step starts */
   dependencies: string[];
-  /** Optional guard — step is skipped if this returns false */
+  /** Optional guard - step is skipped if this returns false */
   condition?: (context: TContext) => boolean;
   execute: (context: TContext) => Promise<unknown>;
 }

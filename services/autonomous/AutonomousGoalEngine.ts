@@ -24,7 +24,7 @@
  * Why no other platform does this:
  *   Existing AI tools wait for instructions. This engine independently
  *   identifies what needs to happen next in a regional development context,
- *   decomposes it into actionable steps, and tracks progress — the way a
+ *   decomposes it into actionable steps, and tracks progress - the way a
  *   senior consultant's brain works between meetings.
  *
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -47,16 +47,16 @@ export interface AutonomousGoal {
   status: GoalStatus;
   createdAt: string;
   updatedAt: string;
-  expectedImpact: number; // 0–100
-  urgency: number; // 0–100
-  feasibility: number; // 0–100
+  expectedImpact: number; // 0-100
+  urgency: number; // 0-100
+  feasibility: number; // 0-100
   compositeScore: number; // weighted combination
   decomposition: SubTask[];
   dependencies: string[]; // goal IDs this depends on
   triggerCondition: string; // what observation triggered this goal
   successCriteria: string[];
   progressPercentage: number;
-  evoi: number; // Expected Value of Information — how much this goal reduces uncertainty
+  evoi: number; // Expected Value of Information - how much this goal reduces uncertainty
   reasoning: string; // why the system created this goal
 }
 
@@ -87,14 +87,14 @@ export interface GoalPlan {
   goals: AutonomousGoal[];
   totalGoals: number;
   criticalCount: number;
-  estimatedValueAdd: number; // 0–100
+  estimatedValueAdd: number; // 0-100
   autonomousActions: string[];
   nextReviewAt: string;
   goalDependencyGraph: Record<string, string[]>;
 }
 
 // ============================================================================
-// GOAL DETECTION RULES — encoded expert knowledge
+// GOAL DETECTION RULES - encoded expert knowledge
 // ============================================================================
 
 interface GoalDetectionRule {
@@ -224,7 +224,7 @@ const GOAL_DETECTION_RULES: GoalDetectionRule[] = [
         { id: 'ST-TL-3', title: 'Propose phased implementation if timeline insufficient', status: 'pending', estimatedEffort: 'moderate', output: 'Phased rollout plan' }
       ],
       dependencies: [],
-      triggerCondition: `${ctx.timelineWeeks} weeks for $${ctx.investmentSizeM}M — below ${Math.ceil(ctx.investmentSizeM * 4)}-week benchmark`,
+      triggerCondition: `${ctx.timelineWeeks} weeks for $${ctx.investmentSizeM}M - below ${Math.ceil(ctx.investmentSizeM * 4)}-week benchmark`,
       successCriteria: ['Timeline validated or revised', 'Phasing plan in place', 'Risk of delays quantified'],
       progressPercentage: 0,
       evoi: 0.7,
@@ -271,7 +271,7 @@ const GOAL_DETECTION_RULES: GoalDetectionRule[] = [
     generateGoal: (ctx) => ({
       title: `Address ${ctx.riskFlags.length} Active Risk Flags`,
       description: `Multiple concurrent risk flags: ${ctx.riskFlags.slice(0, 3).join(', ')}. ` +
-        `Compound risk is non-linear — 3 risks are worse than 3× one risk.`,
+        `Compound risk is non-linear - 3 risks are worse than 3× one risk.`,
       category: 'risk-mitigation',
       priority: ctx.riskFlags.length >= 5 ? 'critical' : 'high',
       status: 'identified',
@@ -365,7 +365,7 @@ export class AutonomousGoalEngine {
   private activeGoals: AutonomousGoal[] = [];
 
   /**
-   * Goal Programming — minimise weighted deviation from ideal state.
+   * Goal Programming - minimise weighted deviation from ideal state.
    * composite = w_impact × impact + w_urgency × urgency + w_feasibility × feasibility + w_evoi × evoi
    */
   private static calculateCompositeScore(goal: Omit<AutonomousGoal, 'id' | 'createdAt' | 'updatedAt' | 'compositeScore'>): number {

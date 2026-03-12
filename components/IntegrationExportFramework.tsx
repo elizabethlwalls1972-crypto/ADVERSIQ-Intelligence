@@ -346,11 +346,11 @@ P003,Poland Services,Poland,91
 
               <div className="space-y-3">
                 {[
-                  { name: 'Salesforce CRM', icon: '🔗', desc: 'Sync partnership data to Salesforce accounts' },
-                  { name: 'HubSpot', icon: '📊', desc: 'Import records as HubSpot companies and deals' },
-                  { name: 'SAP ERP', icon: '⚙', desc: 'Push data to SAP vendor master and contract modules' },
-                  { name: 'Local Storage', icon: '💾', desc: 'Download to your local machine' },
-                  { name: 'Cloud Storage', icon: '☁', desc: 'Upload to Google Drive, OneDrive, or Dropbox' }
+                  { name: 'Salesforce CRM', icon: '', desc: 'Sync partnership data to Salesforce accounts' },
+                  { name: 'HubSpot', icon: '', desc: 'Import records as HubSpot companies and deals' },
+                  { name: 'SAP ERP', icon: '', desc: 'Push data to SAP vendor master and contract modules' },
+                  { name: 'Local Storage', icon: '', desc: 'Download to your local machine' },
+                  { name: 'Cloud Storage', icon: '', desc: 'Upload to Google Drive, OneDrive, or Dropbox' }
                 ].map((dest, idx) => (
                   <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
                     <div className="flex items-center gap-3">

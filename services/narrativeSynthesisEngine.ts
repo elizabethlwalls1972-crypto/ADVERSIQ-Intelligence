@@ -1,7 +1,7 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * ADVANCED NARRATIVE SYNTHESIS SERVICE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * Transforms raw research data into rich, detailed, well-structured narratives
  * with supporting evidence, context, and actionable intelligence.
@@ -110,7 +110,7 @@ class NarrativeSynthesisEngine {
       introduction: `${profile.city} is located in ${profile.region}, ${profile.country}, with specific geographic characteristics that influence business operations and development.`,
       paragraphs,
       keyFacts: [
-        `Latitude/Longitude: ${profile.latitude}Â°, ${profile.longitude}Â°`,
+        `Latitude/Longitude: ${profile.latitude}°, ${profile.longitude}°`,
         `Timezone: ${profile.timezone}`,
         `Area: ${profile.areaSize}`,
         `Climate: ${profile.climate}`,
@@ -378,9 +378,9 @@ class NarrativeSynthesisEngine {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // PARAGRAPH GENERATION HELPERS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private generateOverviewParagraph(profile: CityProfile, sources: SourceCitation[]): string {
     return `${profile.city} is a ${profile.region ? `strategic center in ${profile.region}` : 'major urban center'} within ${profile.country}. ` +
@@ -389,7 +389,7 @@ class NarrativeSynthesisEngine {
   }
 
   private generateContextParagraph(profile: CityProfile, result: MultiSourceResult): string {
-    return `Located at ${profile.latitude}Â°N, ${profile.longitude}Â°E in the ${profile.timezone} timezone, ` +
+    return `Located at ${profile.latitude}°N, ${profile.longitude}°E in the ${profile.timezone} timezone, ` +
       `${profile.city} occupies a geographic position that provides access to ${profile.globalMarketAccess}. ` +
       `The city's climate (${profile.climate}) and area of ${profile.areaSize} create specific operational contexts ` +
       `that are documented across ${result.sources.length} research sources spanning government, international organizations, and news outlets.`;
@@ -405,7 +405,7 @@ class NarrativeSynthesisEngine {
 
   private generateGeographyParagraph(profile: CityProfile): string {
     return `${profile.city} is positioned within ${profile.region}, benefiting from geographic characteristics that have historically shaped its economic role. ` +
-      `The city's location at ${profile.latitude}Â°N, ${profile.longitude}Â°E places it in the ${profile.timezone} timezone and provides access to ` +
+      `The city's location at ${profile.latitude}°N, ${profile.longitude}°E places it in the ${profile.timezone} timezone and provides access to ` +
       `${profile.globalMarketAccess}. Physical proximity to regional trade corridors and international markets influences business operations and supply chain dynamics.`;
   }
 
@@ -539,7 +539,7 @@ class NarrativeSynthesisEngine {
   }
 
   private generateMarketEntryPathwayParagraph(profile: CityProfile): string {
-    return `Market entry pathways for ${profile.city} vary by business modelâ€”direct investment, joint ventures with local partners, or franchise relationships. ` +
+    return `Market entry pathways for ${profile.city} vary by business model"direct investment, joint ventures with local partners, or franchise relationships. ` +
       `Legal frameworks governing company registration, capital requirements, and operating licenses are codified in {{country}} law. ` +
       `Professional service providers including legal firms, accounting firms, and business consultants offer market entry facilitation services. ` +
       `Documented regulatory procedures and typical timelines inform project planning and resource allocation.`;
@@ -589,9 +589,9 @@ class NarrativeSynthesisEngine {
       `Documented case studies of successful partnerships provide practical models for structuring new collaborations.`;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // FACT EXTRACTION HELPERS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private extractKeyFacts(profile: CityProfile): string[] {
     return [

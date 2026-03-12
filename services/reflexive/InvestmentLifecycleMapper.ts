@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * INVESTMENT LIFECYCLE MAPPER — Reflexive Intelligence Layer (Layer 9)
+ * INVESTMENT LIFECYCLE MAPPER - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Product Lifecycle Theory (Vernon, 1966) + Kondratieff Long Waves +
@@ -10,7 +10,7 @@
  *   Emergence → Boom → Peak → Decline → Dormancy → Reactivation
  *
  * The critical insight: what worked during the BOOM phase can be RECYCLED
- * during the reactivation phase — but only if someone maps what those
+ * during the reactivation phase - but only if someone maps what those
  * success factors were. Governments forget. Institutional memory decays.
  * This engine preserves it.
  *
@@ -218,14 +218,14 @@ const RECYCLABLE_CATEGORIES: Array<{
   precedentRegion: string;
   strategy: string;
 }> = [
-  { assetType: 'industrial site', recyclableAs: 'technology park / mixed-use development', condition: 'Requires remediation but land is already zoned industrial', precedentRegion: 'Ruhr Valley, Germany', strategy: 'Heritage industrial conversion — retain architectural identity while repurposing interior' },
-  { assetType: 'port infrastructure', recyclableAs: 'logistics hub / export gateway', condition: 'Physical infrastructure persists regardless of cargo volume decline', precedentRegion: 'Newcastle, Australia', strategy: 'Connect to new supply chains — ports built for coal can serve renewable energy component import' },
+  { assetType: 'industrial site', recyclableAs: 'technology park / mixed-use development', condition: 'Requires remediation but land is already zoned industrial', precedentRegion: 'Ruhr Valley, Germany', strategy: 'Heritage industrial conversion - retain architectural identity while repurposing interior' },
+  { assetType: 'port infrastructure', recyclableAs: 'logistics hub / export gateway', condition: 'Physical infrastructure persists regardless of cargo volume decline', precedentRegion: 'Newcastle, Australia', strategy: 'Connect to new supply chains - ports built for coal can serve renewable energy component import' },
   { assetType: 'rail network', recyclableAs: 'freight corridor / commuter transport', condition: 'Rail bed persists even when service declines', precedentRegion: 'Multiple US cities', strategy: 'Rail-to-trail for tourism or reactivation for freight as manufacturing returns' },
-  { assetType: 'workforce skills', recyclableAs: 'adjacent sector capabilities', condition: 'Skills transfer across technology generations with retraining', precedentRegion: 'Detroit → EV manufacturing', strategy: 'Identify skill adjacencies — welding → advanced manufacturing, mining → tunnelling → infrastructure' },
-  { assetType: 'university/research', recyclableAs: 'innovation anchor + talent pipeline', condition: 'Universities persist through economic cycles', precedentRegion: 'Pittsburgh → CMU/UPMC', strategy: 'University as reactivation anchor — partner with institution to create industry clusters' },
+  { assetType: 'workforce skills', recyclableAs: 'adjacent sector capabilities', condition: 'Skills transfer across technology generations with retraining', precedentRegion: 'Detroit → EV manufacturing', strategy: 'Identify skill adjacencies - welding → advanced manufacturing, mining → tunnelling → infrastructure' },
+  { assetType: 'university/research', recyclableAs: 'innovation anchor + talent pipeline', condition: 'Universities persist through economic cycles', precedentRegion: 'Pittsburgh → CMU/UPMC', strategy: 'University as reactivation anchor - partner with institution to create industry clusters' },
   { assetType: 'government relationships', recyclableAs: 'policy advocacy + incentive negotiation', condition: 'Institutional relationships persist even when investment declines', precedentRegion: 'Multiple regions globally', strategy: 'Reactivate dormant government relationships with fresh narrative and data-backed proposals' },
-  { assetType: 'cultural identity', recyclableAs: 'brand narrative + tourism asset', condition: 'Cultural identity cannot be replicated — it is permanently unique', precedentRegion: 'Bilbao, Spain', strategy: 'Build investment narrative on authentic cultural identity rather than generic "business-friendly" positioning' },
-  { assetType: 'diaspora network', recyclableAs: 'inbound investment channel + knowledge transfer', condition: 'Diaspora maintains connection to origin region across generations', precedentRegion: 'Ireland, Israel, India', strategy: 'Diaspora engagement programme — investment incentives for returning capital, knowledge transfer mechanisms' }
+  { assetType: 'cultural identity', recyclableAs: 'brand narrative + tourism asset', condition: 'Cultural identity cannot be replicated - it is permanently unique', precedentRegion: 'Bilbao, Spain', strategy: 'Build investment narrative on authentic cultural identity rather than generic "business-friendly" positioning' },
+  { assetType: 'diaspora network', recyclableAs: 'inbound investment channel + knowledge transfer', condition: 'Diaspora maintains connection to origin region across generations', precedentRegion: 'Ireland, Israel, India', strategy: 'Diaspora engagement programme - investment incentives for returning capital, knowledge transfer mechanisms' }
 ];
 
 // ============================================================================
@@ -382,7 +382,7 @@ export class InvestmentLifecycleMapper {
       assets.push({
         asset: 'institutional memory',
         originalContext: 'Knowledge of what attracted previous investment',
-        currentState: 'Likely fading — needs documentation and preservation',
+        currentState: 'Likely fading - needs documentation and preservation',
         reactivationPotential: 0.8,
         recyclingStrategy: 'Interview previous-era stakeholders, document success factors, and map which conditions remain',
         historicalPrecedent: 'Every successfully reactivated region started by understanding what worked before'
@@ -493,11 +493,11 @@ export class InvestmentLifecycleMapper {
     // Phase-specific strategies
     switch (phase) {
       case 'dormancy':
-        playbook.push('1. AUDIT: Document all remaining assets from previous investment era — infrastructure, skills, relationships, geographic advantages');
-        playbook.push('2. NARRATIVE: Build new investment narrative that acknowledges history but frames the future — "built on proven foundations"');
-        playbook.push('3. ANCHOR: Identify one catalytic investment that can trigger attention — the "Guggenheim effect"');
+        playbook.push('1. AUDIT: Document all remaining assets from previous investment era - infrastructure, skills, relationships, geographic advantages');
+        playbook.push('2. NARRATIVE: Build new investment narrative that acknowledges history but frames the future - "built on proven foundations"');
+        playbook.push('3. ANCHOR: Identify one catalytic investment that can trigger attention - the "Guggenheim effect"');
         playbook.push('4. RECYCLE: Map specific assets to new sector opportunities using the recyclable asset analysis below');
-        playbook.push('5. CONNECT: Engage diaspora network and former investors — they know the region and may reinvest under new conditions');
+        playbook.push('5. CONNECT: Engage diaspora network and former investors - they know the region and may reinvest under new conditions');
         break;
       case 'decline':
         playbook.push('1. STABILISE: Identify and protect remaining anchor employers/institutions');
@@ -510,13 +510,13 @@ export class InvestmentLifecycleMapper {
         playbook.push('1. REINVENT: Identify next-generation sectors that can use existing infrastructure');
         playbook.push('2. UPGRADE: Invest in infrastructure modernisation before decay begins');
         playbook.push('3. ATTRACT: Target investors in adjacent sectors that value existing supply chain');
-        playbook.push('4. BRAND: Refresh regional narrative — move from "established" to "innovative"');
+        playbook.push('4. BRAND: Refresh regional narrative - move from "established" to "innovative"');
         playbook.push('5. PARTNER: Seek strategic partnerships with regions in growth/boom phase');
         break;
       case 'reactivation':
-        playbook.push('1. AMPLIFY: Scale the reactivation catalyst — more investment in what\'s working');
+        playbook.push('1. AMPLIFY: Scale the reactivation catalyst - more investment in what\'s working');
         playbook.push('2. CONNECT: Link reactivation sector to existing regional assets and supply chains');
-        playbook.push('3. TELL: Broadcast the transformation story — media, conferences, investor roadshows');
+        playbook.push('3. TELL: Broadcast the transformation story - media, conferences, investor roadshows');
         playbook.push('4. SUSTAIN: Ensure government commitment extends beyond political cycle');
         playbook.push('5. MEASURE: Track and publish progress metrics to maintain momentum');
         break;

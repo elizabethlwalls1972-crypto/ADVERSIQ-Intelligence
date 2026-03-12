@@ -1,11 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * INTERNAL ECHO DETECTOR — Reflexive Intelligence Layer (Layer 9)
+ * INTERNAL ECHO DETECTOR - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Information Cross-Referencing + Latent Semantic Analysis (Deerwester, 1990)
  *
- * Users often hold the answer to their own question — but it's scattered across
+ * Users often hold the answer to their own question - but it's scattered across
  * different input fields. Someone describes a problem in their mission statement
  * whose solution is embedded in their region's profile. They mention an asset
  * in their context that directly addresses a risk they flag elsewhere.
@@ -68,7 +68,7 @@ export interface EchoReport {
 }
 
 // ============================================================================
-// CROSS-REFERENCE RULES — What should connect to what
+// CROSS-REFERENCE RULES - What should connect to what
 // ============================================================================
 
 interface CrossRefPattern {
@@ -96,7 +96,7 @@ const CROSS_REF_PATTERNS: CrossRefPattern[] = [
   {
     problemDimension: 'infrastructure gap',
     solutionSignals: ['government plan', 'development plan', 'budget allocation', 'PPP', 'World Bank', 'ADB', 'infrastructure program'],
-    connectionDescription: 'Infrastructure development is already planned or funded — the user may not need to build from scratch'
+    connectionDescription: 'Infrastructure development is already planned or funded - the user may not need to build from scratch'
   },
   {
     problemDimension: 'regulatory barrier',
@@ -161,49 +161,49 @@ const SYSTEM_KNOWLEDGE_ANCHORS: Array<{
     trigger: ['philippines', 'peza', 'ecozone'],
     pattern: 'SEZ development in Philippines has documented 40+ year track record',
     source: 'PatternConfidenceEngine: SEZ-001',
-    insight: 'The system has authoritative knowledge on Philippine economic zone methodology — confidence intervals can be tightened'
+    insight: 'The system has authoritative knowledge on Philippine economic zone methodology - confidence intervals can be tightened'
   },
   {
     trigger: ['regional development', 'regional plan', 'growth pole'],
     pattern: 'Regional development planning methodology stable for 63 years across 150+ countries',
     source: 'PatternConfidenceEngine: RDP-001',
-    insight: 'This question falls into the most well-documented pattern category — the system can respond with high authority'
+    insight: 'This question falls into the most well-documented pattern category - the system can respond with high authority'
   },
   {
     trigger: ['investment incentive', 'tax holiday', 'tax incentive'],
     pattern: 'Investment incentive structures follow predictable patterns globally',
     source: 'PatternConfidenceEngine: INV-001',
-    insight: 'The incentive structure being described matches a 50-year global pattern — the system knows what works and what doesn\'t'
+    insight: 'The incentive structure being described matches a 50-year global pattern - the system knows what works and what doesn\'t'
   },
   {
     trigger: ['renewable energy', 'solar', 'wind', 'green energy'],
     pattern: 'Energy transition investment follows documented acceleration patterns post-2015',
     source: 'MethodologyKnowledgeBase: Energy sector',
-    insight: 'Renewable energy investment patterns are well-documented — the system can provide benchmark data and timeline expectations'
+    insight: 'Renewable energy investment patterns are well-documented - the system can provide benchmark data and timeline expectations'
   },
   {
     trigger: ['agriculture', 'agribusiness', 'food processing'],
     pattern: 'Agricultural modernisation follows documented reform cycles since 1950s',
     source: 'PatternConfidenceEngine: AGR-001',
-    insight: 'Agricultural development methodology is one of the oldest documented patterns — the system has deep knowledge'
+    insight: 'Agricultural development methodology is one of the oldest documented patterns - the system has deep knowledge'
   },
   {
     trigger: ['PPP', 'public private partnership', 'concession'],
     pattern: 'PPP frameworks standardised across 100+ countries since 1992',
     source: 'PatternConfidenceEngine: PPP-001',
-    insight: 'PPP methodology is globally standardised — the system can apply 30+ years of documented practice'
+    insight: 'PPP methodology is globally standardised - the system can apply 30+ years of documented practice'
   },
   {
     trigger: ['vietnam', 'manufacturing', 'china plus one'],
     pattern: 'Vietnam manufacturing FDI surge follows documented China+1 supply chain restructuring',
     source: 'MethodologyKnowledgeBase: Vietnam profile',
-    insight: 'This context matches the strongest current FDI pattern globally — system confidence is high'
+    insight: 'This context matches the strongest current FDI pattern globally - system confidence is high'
   },
   {
     trigger: ['export', 'market entry', 'international trade'],
     pattern: 'Market entry strategies follow documented ladder: indirect → direct → licensing → JV → subsidiary',
     source: 'MethodologyKnowledgeBase: Export methodology',
-    insight: 'Export/market entry methodology is well-documented — the system can identify which stage is appropriate and fast-track the analysis'
+    insight: 'Export/market entry methodology is well-documented - the system can identify which stage is appropriate and fast-track the analysis'
   }
 ];
 
@@ -292,7 +292,7 @@ export class InternalEchoDetector {
               connectionType: 'answer-to-problem',
               strength: 0.7 + Math.random() * 0.2,
               insight: pattern.connectionDescription,
-              actionableAdvice: `Connect your ${signal} (mentioned in ${field}) to your ${pattern.problemDimension} strategy — this asset may directly address the gap you've identified.`
+              actionableAdvice: `Connect your ${signal} (mentioned in ${field}) to your ${pattern.problemDimension} strategy - this asset may directly address the gap you've identified.`
             });
           }
         }

@@ -957,11 +957,11 @@ Cash Flow Profile:
 SECTION 4: RISKS & MITIGATION
 
 Top 5 Risks:
-1. Regulatory changes (40% probability) — Mitigation: Policy monitoring team
-2. Market adoption slower than expected (35%) — Pilot program with locked-in contracts
-3. Operational integration challenges (45%) — Integration management office
-4. Currency volatility (60%) — 12-month forward hedge
-5. Partnership dynamics (20%) — Clear governance structure
+1. Regulatory changes (40% probability) - Mitigation: Policy monitoring team
+2. Market adoption slower than expected (35%) - Pilot program with locked-in contracts
+3. Operational integration challenges (45%) - Integration management office
+4. Currency volatility (60%) - 12-month forward hedge
+5. Partnership dynamics (20%) - Clear governance structure
 
 Overall Risk Rating: MEDIUM (manageable with proper frameworks)
 
@@ -1814,9 +1814,9 @@ CULTURAL & NEGOTIATION NOTES:
 * 90 Days: Office ready, pilots live, compliance audit checklist complete
 
 RISKS & MITIGATIONS:
-* Regulatory Delays — Parallel filings, GR follow-ups, buffer timelines
-* Talent Shortages — Early sourcing, competitive offers, training plans
-* Vendor Reliability — Multi-sourcing, performance clauses, weekly tracking
+* Regulatory Delays - Parallel filings, GR follow-ups, buffer timelines
+* Talent Shortages - Early sourcing, competitive offers, training plans
+* Vendor Reliability - Multi-sourcing, performance clauses, weekly tracking
 
 RECOMMENDATION:
 Proceed with Phase 1 setup and pilots. Decision checkpoint by ${decisionDeadline}.

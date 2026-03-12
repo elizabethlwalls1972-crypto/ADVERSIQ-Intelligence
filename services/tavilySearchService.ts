@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * Tavily Search API — Deep Web Research with Cited Answers
+ * Tavily Search API - Deep Web Research with Cited Answers
  * ═══════════════════════════════════════════════════════════════════
  * Requires VITE_TAVILY_API_KEY (free tier: 1,000 credits/month).
  * Sign up at: https://tavily.com

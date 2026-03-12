@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Agentic Location Intelligence Service
  * 
  * This service provides an AI-powered system for dynamically researching
@@ -205,6 +205,8 @@ import { searchCityLeadership, getWikipediaInfo, getCountryInfo } from './liveLo
 import { fetchWorldBankCountryIndicators } from './externalDataIntegrations';
 import { fetchACLEDEvents } from './acledService';
 import { screenEntitySanctions } from './openSanctionsService';
+import { gatewaySynthesize } from './UnifiedAIGateway';
+import { startAgenticWorkflow, recordWorkflowStep, completeAgenticWorkflow } from './WellArchitectedAuditEngine';
 
 function toIso2(country: string): string {
   const m: Record<string, string> = {
@@ -239,7 +241,7 @@ async function runCategoryResearch(
         for (const ldr of leaders.slice(0, 3)) {
           results.push({
             source: ldr.sourceUrl || 'Wikidata',
-            title: `${ldr.name} — ${ldr.role}`,
+            title: `${ldr.name} - ${ldr.role}`,
             snippet: [ldr.description, ldr.party ? `Party: ${ldr.party}` : '', ldr.tenure ? `Tenure: ${ldr.tenure}` : ''].filter(Boolean).join('. ') || `${ldr.role} of ${cityName}.`,
             url: ldr.sourceUrl,
             confidence: 0.9,
@@ -251,14 +253,14 @@ async function runCategoryResearch(
         if (wiki) {
           results.push({
             source: 'Wikipedia',
-            title: `${cityName} — Wikipedia`,
+            title: `${cityName} - Wikipedia`,
             snippet: wiki.extract.substring(0, 400),
             url: wiki.fullUrl,
             confidence: 0.75,
             timestamp,
           });
         }
-        // OpenSanctions — screen top leader names for PEP / sanctions flags
+        // OpenSanctions - screen top leader names for PEP / sanctions flags
         const leaderNames = results
           .filter(r => r.extractedData?.leaderName)
           .map(r => (r.extractedData as { leaderName: string }).leaderName);
@@ -288,7 +290,7 @@ async function runCategoryResearch(
               : null;
             results.push({
               source: 'World Bank',
-              title: `${country} Economic Indicators — World Bank ${wb.gdpYear || ''}`,
+              title: `${country} Economic Indicators - World Bank ${wb.gdpYear || ''}`,
               snippet: [
                 gdpFmt ? `GDP: ${gdpFmt}` : null,
                 wb.gdpGrowth != null ? `Growth: ${wb.gdpGrowth.toFixed(1)}%` : null,
@@ -380,13 +382,13 @@ async function runCategoryResearch(
               });
             }
           }
-        } catch { /* GDELT timeout — fall through */ }
-        // ACLED — conflict & political violence events (complements GDELT news)
+        } catch { /* GDELT timeout - fall through */ }
+        // ACLED - conflict & political violence events (complements GDELT news)
         const acledEvents = await fetchACLEDEvents(country, 4).catch(() => []);
         for (const ev of acledEvents) {
           results.push({
             source: `ACLED`,
-            title: `[${ev.type}] ${ev.actor} — ${ev.location}`,
+            title: `[${ev.type}] ${ev.actor} - ${ev.location}`,
             snippet: `${ev.date}: ${ev.notes} ${ev.fatalities > 0 ? `(${ev.fatalities} fatalities)` : ''}`.trim(),
             url: 'https://acleddata.com',
             confidence: 0.9,
@@ -419,7 +421,7 @@ async function runCategoryResearch(
   if (results.length === 0) {
     results.push({
       source: getCategorySource(category),
-      title: `${cityName} — ${category} data`,
+      title: `${cityName} - ${category} data`,
       snippet: `Research ongoing for ${cityName} ${category} profile.`,
       confidence: 0.4,
       timestamp,
@@ -458,10 +460,10 @@ function extractResearchData(tasks: ResearchTask[], category: string, _type: str
   return extracted.length > 0 ? extracted : null;
 }
 
-function synthesizeProfile(
+async function synthesizeProfile(
   geocoding: GeocodingResult,
   tasks: ResearchTask[]
-): Partial<CityProfile> {
+): Promise<Partial<CityProfile>> {
   const profile: Partial<CityProfile> = {
     id: `dynamic-${Date.now()}`,
     city: geocoding.city,
@@ -472,7 +474,7 @@ function synthesizeProfile(
     timezone: getTimezoneFromCoordinates(geocoding.latitude, geocoding.longitude),
     established: 'Research in progress',
     
-    // Default scores — updated from research when available
+    // Default scores - updated from research when available
     engagementScore: 50,
     overlookedScore: 50,
     infrastructureScore: 50,
@@ -545,7 +547,7 @@ function synthesizeProfile(
     const ed = wbResult.extractedData as { gdp?: number; gdpGrowth?: number; gdpYear?: string; internetPct?: number };
     if (ed.gdp) {
       const f = ed.gdp >= 1e12 ? `$${(ed.gdp / 1e12).toFixed(2)} trillion` : `$${(ed.gdp / 1e9).toFixed(1)} billion`;
-      profile.economics!.gdpLocal = `${f} (${ed.gdpYear || 'latest'}) — World Bank`;
+      profile.economics!.gdpLocal = `${f} (${ed.gdpYear || 'latest'}) - World Bank`;
     }
     if (ed.gdpGrowth != null) profile.economics!.gdpGrowthRate = `${ed.gdpGrowth.toFixed(1)}%`;
   }
@@ -578,7 +580,7 @@ function synthesizeProfile(
         name: d.leaderName,
         role: d.leaderRole || 'Political Leader',
         tenure: d.leaderTenure || 'Current',
-        achievements: [`${d.leaderRole || 'Leader'} of ${geocoding.city}${d.leaderParty ? ` — ${d.leaderParty}` : ''}`],
+        achievements: [`${d.leaderRole || 'Leader'} of ${geocoding.city}${d.leaderParty ? ` - ${d.leaderParty}` : ''}`],
         rating: 70,
         internationalEngagementFocus: false,
       };
@@ -600,6 +602,39 @@ function synthesizeProfile(
     `${geocoding.city}, ${geocoding.region ? geocoding.region + ', ' : ''}${geocoding.country}`,
     ...tasks.filter(t => t.status === 'complete' && t.results.length > 0).map(t => `${t.results[0]?.title?.substring(0, 60) || t.category}`),
   ].filter(Boolean).slice(0, 5);
+
+  // ── AI-Powered Synthesis - enrich scores via multi-brain gateway ─────────
+  try {
+    const researchSummary = tasks
+      .filter(t => t.status === 'complete' && t.results.length > 0)
+      .map(t => `## ${t.category.toUpperCase()}\n${t.results.map(r => `- ${r.title}: ${r.snippet}`).join('\n')}`)
+      .join('\n\n');
+
+    if (researchSummary.length > 50) {
+      const aiScores = await gatewaySynthesize(
+        `Based on the live research data below for ${geocoding.city}, ${geocoding.country}, score the following on a 0-100 scale. Return ONLY valid JSON.\n\n${researchSummary}\n\nReturn: {"engagementScore":N,"overlookedScore":N,"infrastructureScore":N,"regulatoryFriction":N,"politicalStability":N,"laborPool":N,"costOfDoing":N,"investmentMomentum":N,"strategicAdvantages":["adv1","adv2","adv3"],"keySectors":["sector1","sector2"]}`,
+        researchSummary,
+        'agenticLocationIntelligence'
+      );
+      const cleaned = aiScores.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
+      const match = cleaned.match(/\{[\s\S]*\}/);
+      if (match) {
+        const parsed = JSON.parse(match[0]);
+        if (typeof parsed.engagementScore === 'number') profile.engagementScore = parsed.engagementScore;
+        if (typeof parsed.overlookedScore === 'number') profile.overlookedScore = parsed.overlookedScore;
+        if (typeof parsed.infrastructureScore === 'number') profile.infrastructureScore = parsed.infrastructureScore;
+        if (typeof parsed.regulatoryFriction === 'number') profile.regulatoryFriction = parsed.regulatoryFriction;
+        if (typeof parsed.politicalStability === 'number') profile.politicalStability = parsed.politicalStability;
+        if (typeof parsed.laborPool === 'number') profile.laborPool = parsed.laborPool;
+        if (typeof parsed.costOfDoing === 'number') profile.costOfDoing = parsed.costOfDoing;
+        if (typeof parsed.investmentMomentum === 'number') profile.investmentMomentum = parsed.investmentMomentum;
+        if (Array.isArray(parsed.strategicAdvantages)) profile.strategicAdvantages = parsed.strategicAdvantages;
+        if (Array.isArray(parsed.keySectors)) profile.keySectors = parsed.keySectors;
+      }
+    }
+  } catch (err) {
+    console.warn('[AgenticLocationIntelligence] AI score synthesis failed, using defaults:', err);
+  }
 
   return profile;
 }
@@ -637,6 +672,12 @@ class LocationResearchManager {
   private async runResearch(sessionId: string): Promise<void> {
     const session = this.sessions.get(sessionId);
     if (!session) return;
+
+    // WA-Guardrail: start a tracked agentic workflow
+    const _workflowTrace = startAgenticWorkflow(sessionId, {
+      maxDurationMs: 120_000,
+      maxSteps: 25,
+    });
 
     try {
       // Step 1: Geocoding
@@ -686,6 +727,15 @@ class LocationResearchManager {
       let completedTasks = 0;
 
       for (const task of tasks) {
+        // WA-Guardrail: check timeout/iteration/permission before each research step
+        const guardrailCheck = recordWorkflowStep(
+          sessionId, 'web_search', task.category, '', 'multi', 0
+        );
+        if (!guardrailCheck.allowed) {
+          this.addLog(sessionId, 'warning', `Guardrail stopped research: ${guardrailCheck.reason}`);
+          break;
+        }
+
         task.status = 'searching';
         this.addLog(sessionId, 'info', `Researching ${task.category}...`);
         this.notifyListeners(sessionId);
@@ -711,7 +761,7 @@ class LocationResearchManager {
       this.updateSession(sessionId, { status: 'synthesizing', progress: 90 });
       this.addLog(sessionId, 'info', 'Synthesizing location profile...');
       
-      const profile = synthesizeProfile(geocoding, session.tasks);
+      const profile = await synthesizeProfile(geocoding, session.tasks);
       
       // Step 5: Complete
       this.updateSession(sessionId, {
@@ -720,11 +770,13 @@ class LocationResearchManager {
         profile,
       });
       this.addLog(sessionId, 'success', `Research complete for ${geocoding.city}, ${geocoding.country}`);
+      completeAgenticWorkflow(sessionId);
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       this.updateSession(sessionId, { status: 'error', progress: 0 });
       this.addLog(sessionId, 'error', `Research failed: ${errorMessage}`);
+      completeAgenticWorkflow(sessionId);
     }
   }
 

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * EXTREME STRESS TEST FRAMEWORK
  * 
  * This pushes the system to its absolute limits to find breaking points.
@@ -45,7 +45,7 @@ export class ExtremeStressTestFramework {
         results: StressTestResult[];
         summary: string;
     }> {
-        console.log('\nðŸ”¥ STARTING EXTREME STRESS TEST ðŸ”¥');
+        console.log('\nSTARTING EXTREME STRESS TEST');
         console.log('Goal: Break the system and find every weakness\n');
 
         this.results = [];
@@ -97,7 +97,7 @@ export class ExtremeStressTestFramework {
      * What happens with absurd values?
      */
     private async testInputExtremes(): Promise<void> {
-        console.log('\nðŸ“Š TEST CATEGORY 1: INPUT EXTREMES');
+        console.log('\nTEST CATEGORY 1: INPUT EXTREMES');
 
         // Test 1.1: Infinite Growth Rate
         const _test1 = await this.runTest({
@@ -185,7 +185,7 @@ export class ExtremeStressTestFramework {
      * Logically impossible combinations
      */
     private async testContradictions(): Promise<void> {
-        console.log('\nâš ï¸  TEST CATEGORY 2: CONTRADICTORY DATA');
+        console.log('\n  TEST CATEGORY 2: CONTRADICTORY DATA');
 
         // Test 2.1: Profitable Loss-Maker
         await this.runTest({
@@ -253,7 +253,7 @@ export class ExtremeStressTestFramework {
      * Boundary conditions and special values
      */
     private async testEdgeCases(): Promise<void> {
-        console.log('\nðŸ” TEST CATEGORY 3: EDGE CASES');
+        console.log('\nTEST CATEGORY 3: EDGE CASES');
 
         // Test 3.1: All Zeros
         await this.runTest({
@@ -299,9 +299,9 @@ export class ExtremeStressTestFramework {
             testName: 'Unicode Attack (Zalgo Text)',
             category: 'Edge Cases',
             input: {
-                companyName: 'TÌ´Ì¡Ì¢ÍÌ»Ì™Ì—ÌŸÌ£Ì¼ÍˆÌÌ©ÍšÍ”Í‰Ì¿ÌŒÌ¿ÍŒÌ“ÍÈ©ÌµÌ§Ì›Ì™ÌÍ™Ì¹Ì¹Í•Í‰ÌÍšÌ—Ì ÍÌ€ÌƒÌ†ÌŠÌÌ‡ÌšÍœÍ sÌ¶Ì¨Ì¡Ì¢Ì¨Ì›Ì¯Í‰Ì¹Ì¤Ì˜Ì¤Ì—ÍšÌ¯Ì°Ì®Í–Ì–Ì«ÌŽÌ€ÌƒÌŠÌŽÌ“Ì‹Ì“ÌŒÌŽÌ•ÍtÌ´Ì¨Ì¢Ì Í‡Ì¥ÍˆÌ®Ì™ÍÌœÌ¼ÌƒÌ‰Ì€Ì†Ì‚ÌˆÌÌ¾ÌˆÌÌ†Í˜Í ',
-                region: 'ä¸­å›½ðŸ‡¨ðŸ‡³',
-                description: 'ðŸ’°ðŸ“ˆðŸš€'
+                companyName: 'Test-Zalgo-Company',
+                region: 'Test-Region',
+                description: 'Test zalgo description'
             },
             expectedBehavior: 'System should sanitize or handle unicode gracefully',
             testFunction: (_input) => {
@@ -319,7 +319,7 @@ export class ExtremeStressTestFramework {
      * Find which formulas produce garbage outputs
      */
     private async testFormulaBreaking(): Promise<void> {
-        console.log('\nðŸ’¥ TEST CATEGORY 4: FORMULA BREAKING');
+        console.log('\nTEST CATEGORY 4: FORMULA BREAKING');
 
         // Test 4.1: RROI with Extreme Inputs
         await this.runTest({
@@ -395,7 +395,7 @@ export class ExtremeStressTestFramework {
      * Try to game the system like a malicious user
      */
     private async testAdversarialAttacks(): Promise<void> {
-        console.log('\nðŸŽ¯ TEST CATEGORY 5: ADVERSARIAL ATTACKS');
+        console.log('\nTEST CATEGORY 5: ADVERSARIAL ATTACKS');
 
         // Test 5.1: Debt Masking Attack
         await this.runTest({
@@ -469,7 +469,7 @@ export class ExtremeStressTestFramework {
      * How many concurrent requests before crash?
      */
     private async testLoadLimits(): Promise<void> {
-        console.log('\nâš¡ TEST CATEGORY 6: LOAD & PERFORMANCE LIMITS');
+        console.log('\nTEST CATEGORY 6: LOAD & PERFORMANCE LIMITS');
 
         // Test 6.1: Memory Exhaustion
         await this.runTest({
@@ -516,7 +516,7 @@ export class ExtremeStressTestFramework {
      * Real-world cases where similar systems failed
      */
     private async testKnownFailurePatterns(): Promise<void> {
-        console.log('\nðŸ“‹ TEST CATEGORY 7: KNOWN FAILURE PATTERNS');
+        console.log('\n" TEST CATEGORY 7: KNOWN FAILURE PATTERNS');
 
         // Test 7.1: Theranos Pattern (Fraud Detection)
         await this.runTest({
@@ -608,7 +608,7 @@ export class ExtremeStressTestFramework {
             };
 
             this.results.push(testResult);
-            console.log(`    ${passed ? 'âœ“ PASS' : 'âœ— FAIL'} - ${severity.toUpperCase()}`);
+            console.log(`    ${passed ? '" PASS' : '- FAIL'} - ${severity.toUpperCase()}`);
             
             return testResult;
         } catch (error) {
@@ -628,7 +628,7 @@ export class ExtremeStressTestFramework {
             };
 
             this.results.push(testResult);
-            console.log(`    âœ— CRASH - CRITICAL`);
+            console.log(`    - CRASH - CRITICAL`);
             return testResult;
         }
     }

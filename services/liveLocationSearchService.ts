@@ -1,7 +1,7 @@
 ﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * LIVE LOCATION SEARCH SERVICE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * Real-time location intelligence that fetches LIVE data from:
  * 1. Google Search (via Serper API)
@@ -12,7 +12,7 @@
  * 6. News aggregation
  * 
  * NO MOCK DATA - ALL LIVE SEARCHES
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
@@ -460,7 +460,7 @@ export async function searchEconomicInfo(cityName: string, country: string): Pro
 
   // Extract industries from snippets
   const industryKeywords = ['manufacturing', 'technology', 'agriculture', 'tourism', 'services', 
-    'finance', 'logistics', 'automotive', 'electronics', 'textiles', 'pharmaceuticals', 
+    'finance', 'logistics', 'automotive', 'electronics', 'textiles', 'pharmaceuticals',
     'mining', 'energy', 'construction', 'retail', 'healthcare', 'education', 'IT', 'BPO'];
   
   for (const r of industriesSearch) {

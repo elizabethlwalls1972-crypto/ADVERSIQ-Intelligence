@@ -1,14 +1,14 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — REGIONAL INTELLIGENCE AGENT
+ * BW NEXUS AI - REGIONAL INTELLIGENCE AGENT
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * A self-thinking, autonomous research agent that can:
  *
- *  1. PLAN — Break a complex regional question into sub-tasks
- *  2. RESEARCH — Gather real-time data via web search + live APIs
- *  3. ANALYSE — Run AI-powered multi-perspective analysis
- *  4. SYNTHESIZE — Produce a comprehensive intelligence brief
+ *  1. PLAN - Break a complex regional question into sub-tasks
+ *  2. RESEARCH - Gather real-time data via web search + live APIs
+ *  3. ANALYSE - Run AI-powered multi-perspective analysis
+ *  4. SYNTHESIZE - Produce a comprehensive intelligence brief
  *
  * This is the "give me a full brief on Region X" capability.
  *
@@ -322,7 +322,7 @@ function extractRegionFromQuery(query: string): string {
 }
 
 /**
- * Quick regional intel — less depth, faster results.
+ * Quick regional intel - less depth, faster results.
  */
 export async function quickRegionalIntel(
   query: string,

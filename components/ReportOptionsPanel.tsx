@@ -424,7 +424,7 @@ const ReportOptionsPanel: React.FC<ReportOptionsPanelProps> = ({
       {/* Header */}
       <div className="bg-stone-900 px-4 py-3 flex items-center justify-between">
         <div>
-          <div className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-0.5">NEXUS AI — DOCUMENT RESPONSE OPTIONS</div>
+          <div className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-0.5">NEXUS AI - DOCUMENT RESPONSE OPTIONS</div>
           <div className="text-white text-sm font-semibold truncate max-w-xs">{documentTitle}</div>
         </div>
         <button

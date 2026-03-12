@@ -42,13 +42,13 @@ export class AgentToolRegistry {
   /** Returns a concise tool manifest suitable for injection into a system prompt */
   toManifest(): string {
     if (this.tools.size === 0) return '';
-    const lines = ['AVAILABLE TOOLS — you may invoke any tool by emitting:', '[[TOOL:tool_name]]', '{"param": "value"}', '[[/TOOL]]', ''];
+    const lines = ['AVAILABLE TOOLS - you may invoke any tool by emitting:', '[[TOOL:tool_name]]', '{"param": "value"}', '[[/TOOL]]', ''];
     for (const tool of this.tools.values()) {
       const required = Object.entries(tool.parameters)
         .filter(([, p]) => p.required)
         .map(([k]) => k)
         .join(', ');
-      lines.push(`• ${tool.name} — ${tool.description}${required ? ` (required: ${required})` : ''}`);
+      lines.push(`• ${tool.name} - ${tool.description}${required ? ` (required: ${required})` : ''}`);
     }
     return lines.join('\n');
   }
@@ -81,7 +81,7 @@ export class AgentToolRegistry {
       try {
         params = JSON.parse(match[2].trim());
       } catch {
-        // params block is not valid JSON — use empty
+        // params block is not valid JSON - use empty
       }
       calls.push({ name, params });
     }

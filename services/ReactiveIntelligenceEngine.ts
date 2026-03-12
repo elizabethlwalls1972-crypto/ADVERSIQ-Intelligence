@@ -19,7 +19,7 @@
 import { ReportParameters, CopilotInsight } from '../types';
 import { HistoricalLearningEngine } from './MultiAgentBrainSystem';
 import CompositeScoreService from './CompositeScoreService';
-import { invokeAI } from './awsBedrockService';
+import { callAIGateway } from './UnifiedAIGateway';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES & INTERFACES
@@ -242,7 +242,7 @@ Return ONLY a valid JSON array with exactly 5 results. Each must have:
 
 Example: [{"title":"Vietnam GDP Growth Reaches 6.5%","url":"https://worldbank.org/vietnam-economy","snippet":"Vietnam's economy grew 6.5% in 2024...","source":"World Bank","relevanceScore":0.92}]`;
 
-      const response = await invokeAI(prompt);
+      const response = await callAIGateway(prompt, undefined, { taskType: 'fast', caller: 'ReactiveIntelligence/search' });
       const cleaned = response.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
       const parsed = JSON.parse(cleaned);
 
@@ -474,9 +474,9 @@ Create a synthesized response that:
         console.warn('Backend synthesis failed, trying direct Gemini');
       }
 
-      // Direct Gemini fallback
+      // Direct multi-brain synthesis
       try {
-        const aiResult = await invokeAI(synthesisPrompt);
+        const aiResult = await callAIGateway(synthesisPrompt, undefined, { taskType: 'synthesize', caller: 'ReactiveIntelligence/synthesize' });
         return aiResult.text || responses[0].response;
       } catch (error) {
         console.warn('Direct Gemini synthesis failed, using primary response');
@@ -575,13 +575,13 @@ Return JSON array of opportunities with: type, title, description, urgency, conf
         console.warn('Backend opportunity extraction failed, trying direct Gemini');
       }
 
-      // Direct Gemini fallback
+      // Multi-brain opportunity extraction
       const prompt = `Extract business opportunities from these search results for a ${params.organizationType} in ${params.country} pursuing ${params.strategicIntent?.join(', ')}:
 
 ${results.map(r => `- ${r.title}: ${r.snippet}`).join('\n')}
 
 Return ONLY a valid JSON array of opportunities with: type, title, description, urgency, confidence (0-1), actionRequired`;
-      const aiResult = await invokeAI(prompt);
+      const aiResult = await callAIGateway(prompt, undefined, { taskType: 'fast', caller: 'ReactiveIntelligence/opportunities' });
       const cleaned = aiResult.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
       const parsed = JSON.parse(cleaned.match(/\[[\s\S]*\]/)?.[0] || '[]');
       return parsed.map((opp: any, idx: number) => ({
@@ -707,13 +707,13 @@ Return JSON array of risks with: type, title, description, severity (critical/hi
         console.warn('Backend risk extraction failed, trying direct Gemini');
       }
 
-      // Direct Gemini fallback
+      // Multi-brain risk extraction
       const prompt = `Extract business risks from these search results for a ${params.organizationType} in ${params.country}:
 
 ${results.map(r => `- ${r.title}: ${r.snippet}`).join('\n')}
 
 Return ONLY a valid JSON array of risks with: type, title, description, severity (critical/high/medium/low), confidence (0-1), mitigation`;
-      const aiResult = await invokeAI(prompt);
+      const aiResult = await callAIGateway(prompt, undefined, { taskType: 'fast', caller: 'ReactiveIntelligence/risks' });
       const cleaned = aiResult.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
       const parsed = JSON.parse(cleaned.match(/\[[\s\S]*\]/)?.[0] || '[]');
       return parsed.map((risk: any, idx: number) => ({

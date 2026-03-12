@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * UNIVERSAL TRANSLATION LAYER — Reflexive Intelligence Layer (Layer 9)
+ * UNIVERSAL TRANSLATION LAYER - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Audience-Adaptive Communication + Rhetorical Theory (Aristotle) +
@@ -16,18 +16,18 @@
  *   Takes the system's analytical output and translates it into
  *   audience-specific formats:
  *
- *   1. INVESTOR — ROI-focused, risk-quantified, decision-ready
- *   2. GOVERNMENT — Policy-aligned, precedent-cited, mandate-supportive
- *   3. COMMUNITY — Impact-centred, plain language, inclusion-focused
- *   4. PARTNER/IPA — Technical, benchmarked, actionable
- *   5. EXECUTIVE — Summary-first, strategic, board-ready
+ *   1. INVESTOR - ROI-focused, risk-quantified, decision-ready
+ *   2. GOVERNMENT - Policy-aligned, precedent-cited, mandate-supportive
+ *   3. COMMUNITY - Impact-centred, plain language, inclusion-focused
+ *   4. PARTNER/IPA - Technical, benchmarked, actionable
+ *   5. EXECUTIVE - Summary-first, strategic, board-ready
  *
  * The key insight: The same data point has different meanings for
  * different audiences. "Young population" to an investor = "labour supply";
  * to a government = "employment challenge"; to a community = "our children's
  * future"; to an IPA = "demographic dividend window."
  *
- * This engine doesn't change the truth — it changes the FRAMING to match
+ * This engine doesn't change the truth - it changes the FRAMING to match
  * how each audience processes information and makes decisions.
  *
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -100,7 +100,7 @@ export interface DoorOpenerDoc {
 }
 
 // ============================================================================
-// AUDIENCE PROFILES — How Each Audience Thinks
+// AUDIENCE PROFILES - How Each Audience Thinks
 // ============================================================================
 
 interface AudienceProfile {
@@ -128,11 +128,11 @@ const AUDIENCE_PROFILES: AudienceProfile[] = [
     emphasiseTopics: ['IRR/ROI projections', 'market size', 'competitive cost position', 'risk mitigation mechanisms', 'exit options', 'comparable deals'],
     documentPreference: 'Investment memo: 2-page summary + detailed financial appendix',
     framingRules: [
-      'Lead with the number — "12% projected IRR" not "an exciting opportunity"',
-      'Quantify every claim — "3,200 engineering graduates/year" not "skilled workforce"',
-      'Address risk upfront — investors respect honesty more than optimism',
-      'Include comparables — "similar to X deal in Y region that returned Z%"',
-      'Specify the ask — how much, for what, under what terms'
+      'Lead with the number - "12% projected IRR" not "an exciting opportunity"',
+      'Quantify every claim - "3,200 engineering graduates/year" not "skilled workforce"',
+      'Address risk upfront - investors respect honesty more than optimism',
+      'Include comparables - "similar to X deal in Y region that returned Z%"',
+      'Specify the ask - how much, for what, under what terms'
     ]
   },
   {
@@ -146,29 +146,29 @@ const AUDIENCE_PROFILES: AudienceProfile[] = [
     emphasiseTopics: ['job creation numbers', 'alignment with national development plan', 'international precedent', 'regional equity', 'skill development', 'tax revenue impact'],
     documentPreference: 'Policy brief: 1-page executive summary with recommendations',
     framingRules: [
-      'Reference the government\'s own priorities — "aligned with the National Development Plan"',
-      'Lead with jobs — "X,000 direct jobs + Y,000 indirect"',
-      'Cite international precedent — "Rwanda/Estonia/Ireland achieved similar with..."',
-      'Frame as supporting the mandate — not creating new obligations',
-      'Include implementation pathway — government needs to know "how", not just "what"'
+      'Reference the government\'s own priorities - "aligned with the National Development Plan"',
+      'Lead with jobs - "X,000 direct jobs + Y,000 indirect"',
+      'Cite international precedent - "Rwanda/Estonia/Ireland achieved similar with..."',
+      'Frame as supporting the mandate - not creating new obligations',
+      'Include implementation pathway - government needs to know "how", not just "what"'
     ]
   },
   {
     type: 'community',
-    primaryConcern: 'Local impact — employment, environment, community benefit',
+    primaryConcern: 'Local impact - employment, environment, community benefit',
     decisionDriver: 'Will this help my community? Will it harm what I value?',
     languagePreference: 'Plain, accessible, honest. No jargon. Specific local impact.',
-    attentionSpan: 'Variable — deep interest if directly affected, otherwise low engagement',
+    attentionSpan: 'Variable - deep interest if directly affected, otherwise low engagement',
     rhetoricalLead: 'pathos',
     avoidTopics: ['financial returns', 'macroeconomic statistics', 'technical analysis', 'abstract policy', 'acronyms'],
     emphasiseTopics: ['local jobs', 'community facilities', 'environmental protection', 'youth opportunities', 'cultural respect', 'infrastructure improvements'],
     documentPreference: 'Community impact summary: visual, plain language, 1 page',
     framingRules: [
-      'Start with impact — "This means X jobs for local people"',
-      'Use local context — reference specific places, schools, roads that will benefit',
-      'Be honest about trade-offs — communities detect spin instantly',
-      'Show respect for existing identity — development should enhance, not replace',
-      'Include community voice — show how local input will shape the project'
+      'Start with impact - "This means X jobs for local people"',
+      'Use local context - reference specific places, schools, roads that will benefit',
+      'Be honest about trade-offs - communities detect spin instantly',
+      'Show respect for existing identity - development should enhance, not replace',
+      'Include community voice - show how local input will shape the project'
     ]
   },
   {
@@ -176,16 +176,16 @@ const AUDIENCE_PROFILES: AudienceProfile[] = [
     primaryConcern: 'Technical capability, operational readiness, and collaboration potential',
     decisionDriver: 'Can we work with this region? Do they have what we need operationally?',
     languagePreference: 'Technical, specific, data-rich. IPA-to-IPA professional language.',
-    attentionSpan: '30 minutes for detailed briefing — they want depth',
+    attentionSpan: '30 minutes for detailed briefing - they want depth',
     rhetoricalLead: 'logos',
     avoidTopics: ['oversimplification', 'political framing', 'generic claims', 'unverifiable data'],
     emphasiseTopics: ['specific infrastructure specs', 'talent pipeline data', 'regulatory details', 'land availability', 'utility costs', 'benchmark comparisons'],
     documentPreference: 'Technical brief: comprehensive data package with comparisons',
     framingRules: [
-      'Lead with data — partners want specifics, not narrative',
-      'Include source citations — IPA professionals verify claims',
-      'Provide benchmark comparisons — "vs Penang, vs Clark, vs Da Nang"',
-      'Detail the operational environment — utilities, logistics, labour market',
+      'Lead with data - partners want specifics, not narrative',
+      'Include source citations - IPA professionals verify claims',
+      'Provide benchmark comparisons - "vs Penang, vs Clark, vs Da Nang"',
+      'Detail the operational environment - utilities, logistics, labour market',
       'Include contact/coordination mechanisms for follow-up'
     ]
   },
@@ -200,17 +200,17 @@ const AUDIENCE_PROFILES: AudienceProfile[] = [
     emphasiseTopics: ['strategic alignment', 'market access', 'competitive positioning', 'execution team quality', 'timeline and milestones', 'success metrics'],
     documentPreference: 'Executive summary: 1 page, 3 key points, clear recommendation',
     framingRules: [
-      'Summary first — the recommendation goes on line 1, not page 10',
-      'Three key points — executives process in threes',
-      'Strategic framing — "This positions us as..." not "This saves us..."',
-      'Include the "So what?" — every data point must connect to a strategic implication',
-      'Provide a clear decision framework — what to decide, by when, based on what'
+      'Summary first - the recommendation goes on line 1, not page 10',
+      'Three key points - executives process in threes',
+      'Strategic framing - "This positions us as..." not "This saves us..."',
+      'Include the "So what?" - every data point must connect to a strategic implication',
+      'Provide a clear decision framework - what to decide, by when, based on what'
     ]
   }
 ];
 
 // ============================================================================
-// VOCABULARY TRANSLATION — Same Fact, Different Words
+// VOCABULARY TRANSLATION - Same Fact, Different Words
 // ============================================================================
 
 interface VocabTranslation {
@@ -223,14 +223,14 @@ interface VocabTranslation {
 }
 
 const VOCABULARY: VocabTranslation[] = [
-  { concept: 'young population', investor: 'scalable labour supply with 20-year growth runway', government: 'demographic dividend opportunity requiring employment pipeline', community: 'opportunities for our young people to build careers at home', partner: 'workforce-age population growing at X%/year, median age Y', executive: 'workforce scalability advantage — demographic dividend through 20XX' },
-  { concept: 'port access', investor: 'direct export logistics reducing per-unit shipping costs by X%', government: 'trade infrastructure asset supporting export-led growth strategy', community: 'jobs in shipping, logistics, and port services for local families', partner: 'X TEU capacity port with Y shipping lines, Z-day transit to major markets', executive: 'permanent logistical advantage — port access non-replicable by competitors' },
+  { concept: 'young population', investor: 'scalable labour supply with 20-year growth runway', government: 'demographic dividend opportunity requiring employment pipeline', community: 'opportunities for our young people to build careers at home', partner: 'workforce-age population growing at X%/year, median age Y', executive: 'workforce scalability advantage - demographic dividend through 20XX' },
+  { concept: 'port access', investor: 'direct export logistics reducing per-unit shipping costs by X%', government: 'trade infrastructure asset supporting export-led growth strategy', community: 'jobs in shipping, logistics, and port services for local families', partner: 'X TEU capacity port with Y shipping lines, Z-day transit to major markets', executive: 'permanent logistical advantage - port access non-replicable by competitors' },
   { concept: 'low costs', investor: 'cost-competitive location with X% savings vs Y on fully-loaded basis', government: 'competitive cost position attracting employment-generating investment', community: 'companies can afford to set up here, creating jobs with good wages', partner: 'operating cost comparison: labour X, utilities Y, rent Z vs benchmark', executive: 'cost position creates 3-5 year window before peer regions match' },
   { concept: 'risk exists', investor: 'identified risk factors with proposed mitigation mechanisms', government: 'challenges requiring policy attention to protect development gains', community: 'we need to be aware of these challenges and plan together', partner: 'risk-adjusted assessment with detailed mitigation recommendations', executive: 'manageable downside with clear mitigation pathway' },
   { concept: 'university present', investor: 'talent pipeline institution producing X graduates/year in relevant disciplines', government: 'educational anchor supporting knowledge economy transition', community: 'our university giving young people skills for the jobs of the future', partner: 'tertiary institution with X enrolment, Y research output, Z industry partnerships', executive: 'institutional anchor providing sustainable talent supply' },
   { concept: 'economic zone', investor: 'designated zone with X tax rate, Y year holiday, Z% foreign ownership allowed', government: 'special economic zone aligned with UNCTAD best practice guidelines', community: 'designated area where new companies will build and create jobs', partner: 'PEZA/SEZ/FTZ with detailed incentive package and operational requirements', executive: 'pre-packaged regulatory environment eliminating setup friction' },
   { concept: 'infrastructure gap', investor: 'infrastructure development opportunity with government co-investment potential', government: 'infrastructure investment need with quantified economic multiplier effect', community: 'roads, power, and services that need improving for everyone\'s benefit', partner: 'infrastructure deficit requiring X investment, timeline Y, responsible agency Z', executive: 'infrastructure constraint with defined upgrade pathway and timeline' },
-  { concept: 'diaspora network', investor: 'established international business networks providing market access and deal flow', government: 'diaspora engagement strategy supporting inward investment and knowledge transfer', community: 'our people overseas who can bring skills and connections back home', partner: 'diaspora-linked investment channel with quantified capital and expertise potential', executive: 'pre-existing international network — lower market entry cost' }
+  { concept: 'diaspora network', investor: 'established international business networks providing market access and deal flow', government: 'diaspora engagement strategy supporting inward investment and knowledge transfer', community: 'our people overseas who can bring skills and connections back home', partner: 'diaspora-linked investment channel with quantified capital and expertise potential', executive: 'pre-existing international network - lower market entry cost' }
 ];
 
 // ============================================================================
@@ -321,7 +321,7 @@ export class UniversalTranslationLayer {
     switch (profile.type) {
       case 'investor':
         switch (category) {
-          case 'opportunity': return `Investment Opportunity: ${region} — ${finding.sector}`;
+          case 'opportunity': return `Investment Opportunity: ${region} - ${finding.sector}`;
           case 'risk': return `Risk Alert: ${finding.finding.slice(0, 60)}`;
           case 'competitive-advantage': return `Competitive Edge: ${region} vs. Benchmark`;
           case 'hidden-asset': return `Undervalued Asset Identified: ${region}`;
@@ -332,17 +332,17 @@ export class UniversalTranslationLayer {
           case 'opportunity': return `Policy Opportunity: ${finding.sector} Investment Potential in ${region}`;
           case 'risk': return `Policy Attention Required: ${finding.finding.slice(0, 60)}`;
           case 'recommendation': return `Strategic Recommendation for ${region}`;
-          default: return `${region}: Policy Brief — ${finding.category}`;
+          default: return `${region}: Policy Brief - ${finding.category}`;
         }
       case 'community':
         switch (category) {
           case 'opportunity': return `New Opportunities Coming to ${region}`;
-          case 'risk': return `Challenges Ahead — What It Means for ${region}`;
+          case 'risk': return `Challenges Ahead - What It Means for ${region}`;
           case 'hidden-asset': return `${region}'s Hidden Strengths`;
           default: return `What's Happening in ${region}`;
         }
       case 'partner':
-        return `${region} Assessment: ${finding.category.replace(/-/g, ' ').toUpperCase()} — ${finding.sector}`;
+        return `${region} Assessment: ${finding.category.replace(/-/g, ' ').toUpperCase()} - ${finding.sector}`;
       case 'executive':
         return `${region}: ${finding.category === 'opportunity' ? 'Strategic Opportunity' : finding.category === 'risk' ? 'Risk Factor' : 'Key Finding'}`;
     }
@@ -496,7 +496,7 @@ export class UniversalTranslationLayer {
       investor: {
         audience: 'investor',
         title: `Investment Opportunity Brief: ${region}`,
-        purpose: 'Open the door for direct investor engagement — get the first meeting',
+        purpose: 'Open the door for direct investor engagement - get the first meeting',
         structure: ['1. Market Opportunity (2 sentences)', '2. Competitive Position (3 data points)', '3. Risk-Adjusted Return Thesis', '4. Comparable Transactions', '5. Next Steps + Contact'],
         keyMessage: `${region} presents a data-backed investment opportunity in ${findings[0]?.sector || 'key sectors'} with quantified advantages over competitor locations`,
         length: '1 page (front), financial summary (back)'
@@ -514,12 +514,12 @@ export class UniversalTranslationLayer {
         title: `What This Means for ${region}`,
         purpose: 'Build community support and social licence for development',
         structure: ['1. What is happening (plain language)', '2. What it means for jobs', '3. What it means for services', '4. How your voice matters', '5. What happens next'],
-        keyMessage: `Real opportunities are available for ${region} that can create jobs and improve services — and the community's input matters`,
+        keyMessage: `Real opportunities are available for ${region} that can create jobs and improve services - and the community's input matters`,
         length: '1 page, visual, plain language'
       },
       partner: {
         audience: 'partner',
-        title: `Technical Assessment: ${region} — ${findings[0]?.sector || 'Multi-Sector'}`,
+        title: `Technical Assessment: ${region} - ${findings[0]?.sector || 'Multi-Sector'}`,
         purpose: 'Enable IPA-to-IPA or consultant-to-consultant technical collaboration',
         structure: ['1. Regional Profile & Data', '2. Competitive Benchmarking', '3. Infrastructure Assessment', '4. Talent Pipeline Analysis', '5. Regulatory Framework', '6. Engagement Protocol'],
         keyMessage: `Comprehensive, data-validated assessment of ${region} with benchmarks against comparable locations`,
@@ -549,15 +549,15 @@ export class UniversalTranslationLayer {
     const risks = findings.filter(f => f.category === 'risk' || f.category === 'warning');
 
     if (opportunities.length > 0 && risks.length > 0) {
-      insights.push('IMPORTANT: Investors and executives need to hear about both opportunities AND risks — filtering out risks destroys credibility');
+      insights.push('IMPORTANT: Investors and executives need to hear about both opportunities AND risks - filtering out risks destroys credibility');
     }
 
     if (findings.length > 5) {
-      insights.push('With multiple findings, each audience package should be selective — present the 3-5 most relevant findings per audience, not all');
+      insights.push('With multiple findings, each audience package should be selective - present the 3-5 most relevant findings per audience, not all');
     }
 
-    insights.push('Ensure consistent data across all audience packages — the facts don\'t change, only the framing');
-    insights.push('The community audience package should be created BEFORE investor engagement — social licence prevents project delays');
+    insights.push('Ensure consistent data across all audience packages - the facts don\'t change, only the framing');
+    insights.push('The community audience package should be created BEFORE investor engagement - social licence prevents project delays');
 
     return insights;
   }
@@ -592,7 +592,7 @@ export class UniversalTranslationLayer {
       case 'partner':
         return `Technical assessment of ${region} across ${findings.length} dimensions with competitive benchmarking.`;
       case 'executive':
-        return `${findings.length} key findings on ${region} — recommendation and decision framework follow.`;
+        return `${findings.length} key findings on ${region} - recommendation and decision framework follow.`;
     }
   }
 

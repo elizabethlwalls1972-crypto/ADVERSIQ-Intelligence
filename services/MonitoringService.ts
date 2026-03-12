@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — STRUCTURED LOGGING & MONITORING SERVICE
+ * BW NEXUS AI - STRUCTURED LOGGING & MONITORING SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Replaces ad-hoc console.log calls with structured, queryable logs.
@@ -167,7 +167,7 @@ class MonitoringService {
     this.log(
       metric.success ? 'info' : 'error',
       'ai_call',
-      `${metric.provider}/${metric.model} — ${metric.latencyMs}ms ${metric.success ? '✓' : '✗'}`,
+      `${metric.provider}/${metric.model} - ${metric.latencyMs}ms ${metric.success ? '✓' : '✗'}`,
       { provider: metric.provider, model: metric.model, latencyMs: metric.latencyMs, taskType: metric.taskType },
       metric.latencyMs,
       metric.error
@@ -184,7 +184,7 @@ class MonitoringService {
     this.log(
       success ? 'info' : 'warn',
       'tool_execution',
-      `Tool ${name} — ${latencyMs}ms ${success ? '✓' : '✗'}`,
+      `Tool ${name} - ${latencyMs}ms ${success ? '✓' : '✗'}`,
       { tool: name, latencyMs, success },
       latencyMs,
       error

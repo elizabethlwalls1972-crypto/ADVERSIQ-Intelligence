@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — PERSISTENT VECTOR STORE (IndexedDB-backed RAG)
+ * BW NEXUS AI - PERSISTENT VECTOR STORE (IndexedDB-backed RAG)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Wraps the in-memory VectorMemoryIndex with IndexedDB persistence so that
@@ -14,9 +14,9 @@
  *  └──────────────────────────────────────────────────────────────┘
  *
  * Stores:
- *  • vectors  — embeddings with metadata (id, vector, metadata, text)
- *  • chunks   — document chunks from DocumentChunkingService
- *  • knowledge — extracted facts/learnings for long-term memory
+ *  • vectors  - embeddings with metadata (id, vector, metadata, text)
+ *  • chunks   - document chunks from DocumentChunkingService
+ *  • knowledge - extracted facts/learnings for long-term memory
  *
  * Retrieval:
  *  • Semantic search via cosine similarity on neural embeddings
@@ -112,7 +112,7 @@ class PersistentVectorStore {
           // Load existing vectors into memory
           await this.loadFromDB();
           this.initialized = true;
-          console.log(`[PersistentVectorStore] Initialized — ${this.memoryIndex.size} vectors, ${this.knowledgeIndex.size} knowledge entries`);
+          console.log(`[PersistentVectorStore] Initialized - ${this.memoryIndex.size} vectors, ${this.knowledgeIndex.size} knowledge entries`);
           resolve();
         };
       } catch {

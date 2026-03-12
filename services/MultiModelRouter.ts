@@ -1,13 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — MULTI-MODEL ROUTER
+ * BW NEXUS AI - MULTI-MODEL ROUTER
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Routes AI tasks to the optimal model based on task type:
  *
- *  FAST  (3B)  — classification, extraction, summarization, yes/no
- *  MAIN  (70B) — reasoning, analysis, complex answers
- *  VISION(11B) — image/document understanding
+ *  FAST  (3B)  - classification, extraction, summarization, yes/no
+ *  MAIN  (70B) - reasoning, analysis, complex answers
+ *  VISION(11B) - image/document understanding
  *
  * Also provides:
  *  • Automatic fallback: if preferred model fails, try next tier
@@ -183,7 +183,7 @@ export async function routeAITask(
 // ── Convenience wrappers ──────────────────────────────────────────────────
 
 /**
- * Fast classification — returns a short label or category.
+ * Fast classification - returns a short label or category.
  */
 export async function classifyWithAI(prompt: string, systemPrompt?: string): Promise<string> {
   return routeAITask('classify', [
@@ -193,7 +193,7 @@ export async function classifyWithAI(prompt: string, systemPrompt?: string): Pro
 }
 
 /**
- * Fast extraction — returns structured data from text.
+ * Fast extraction - returns structured data from text.
  */
 export async function extractWithAI(text: string, schema: string): Promise<string> {
   return routeAITask('extract', [

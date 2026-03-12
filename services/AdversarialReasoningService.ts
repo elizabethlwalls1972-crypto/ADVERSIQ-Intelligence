@@ -1,4 +1,4 @@
-﻿import {
+import {
   ReportParameters,
   AdversarialShieldResult,
   AdversarialInputCheck,
@@ -229,7 +229,7 @@ class AdversarialReasoningService {
 
     const degradationFlags: string[] = [];
     if (shield.overallTrust < 60) {
-      degradationFlags.push('Input shield trust below 60% â€“ upstream data needs remediation.');
+      degradationFlags.push('Input shield trust below 60% - upstream data needs remediation.');
     }
     if (persona.synthesis.disagreements.length > 2) {
       degradationFlags.push('Persona debate unresolved on multiple topics.');

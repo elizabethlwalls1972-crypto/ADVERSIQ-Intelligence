@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * REGIONAL IDENTITY DECODER — Reflexive Intelligence Layer (Layer 9)
+ * REGIONAL IDENTITY DECODER - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Baudrillard's Simulacra + Regional Competitiveness Theory
@@ -10,7 +10,7 @@
  *   Regions lose their identity by copying what they think investors want
  *   to hear. Every city becomes "a hub for innovation with a skilled
  *   workforce and strategic location." The language becomes interchangeable.
- *   The identity becomes a copy of a copy of a copy — a simulacrum.
+ *   The identity becomes a copy of a copy of a copy - a simulacrum.
  *
  * This engine detects when a region has lost its authentic competitive
  * identity and is presenting a generic, interchangeable narrative that
@@ -78,7 +78,7 @@ export interface IdentityReport {
 }
 
 // ============================================================================
-// GENERIC PHRASE DETECTOR — The Copy-Paste Investment Narratives
+// GENERIC PHRASE DETECTOR - The Copy-Paste Investment Narratives
 // ============================================================================
 
 interface GenericPhrase {
@@ -117,7 +117,7 @@ const GENERIC_PHRASES: GenericPhrase[] = [
     pattern: /world.?class\s*(infrastructure|facilities|education)/i,
     genericScore: 0.9,
     alternatives: ['Rank infrastructure against specific competitors', 'Cite reliability metrics: "99.7% power uptime"', 'Reference international certifications or rankings'],
-    usedBy: 'Diluted term — investors have heard it from every location'
+    usedBy: 'Diluted term - investors have heard it from every location'
   },
   {
     pattern: /gateway\s*(to|for)\s*(asia|europe|africa|markets)/i,
@@ -152,7 +152,7 @@ const GENERIC_PHRASES: GenericPhrase[] = [
 ];
 
 // ============================================================================
-// HIDDEN ASSET PATTERNS — Things Regions Don't Know They Have
+// HIDDEN ASSET PATTERNS - Things Regions Don't Know They Have
 // ============================================================================
 
 interface HiddenAssetPattern {
@@ -166,13 +166,13 @@ interface HiddenAssetPattern {
 
 const HIDDEN_ASSET_PATTERNS: HiddenAssetPattern[] = [
   { trigger: /universit(y|ies)/i, asset: 'University research ecosystem', category: 'institutional', strategicValue: 'University anchor provides talent pipeline, R&D capacity, and institutional stability that persists through economic cycles', comparable: 'Pittsburgh used CMU + UPMC as post-steel anchors; Penang uses USM for industry collaboration', surfacing: 'Map university research strengths to investor sector needs; create industry-university partnership programme' },
-  { trigger: /diaspora|overseas\s*(community|workers|population)/i, asset: 'Diaspora investment channel', category: 'human', strategicValue: 'Diaspora networks provide capital, knowledge transfer, market access, and credibility that no IPA can manufacture', comparable: 'Ireland, Israel, India (3I model) — all leveraged diaspora for inward investment', surfacing: 'Create diaspora engagement programme; investment incentives for returning capital; knowledge transfer fellowships' },
-  { trigger: /port|harbor|harbour|shipping|maritime/i, asset: 'Port infrastructure — permanent competitive advantage', category: 'infrastructure', strategicValue: 'Ports cannot be replicated by competitors. A functioning port is a permanent geographic advantage regardless of current utilisation rate', comparable: 'Newcastle (Australia) coal port pivoting to renewable energy component import; Rotterdam reinventing as circular economy hub', surfacing: 'Quantify port capacity vs current utilisation; identify emerging cargo opportunities; map port to new supply chains' },
+  { trigger: /diaspora|overseas\s*(community|workers|population)/i, asset: 'Diaspora investment channel', category: 'human', strategicValue: 'Diaspora networks provide capital, knowledge transfer, market access, and credibility that no IPA can manufacture', comparable: 'Ireland, Israel, India (3I model) - all leveraged diaspora for inward investment', surfacing: 'Create diaspora engagement programme; investment incentives for returning capital; knowledge transfer fellowships' },
+  { trigger: /port|harbor|harbour|shipping|maritime/i, asset: 'Port infrastructure - permanent competitive advantage', category: 'infrastructure', strategicValue: 'Ports cannot be replicated by competitors. A functioning port is a permanent geographic advantage regardless of current utilisation rate', comparable: 'Newcastle (Australia) coal port pivoting to renewable energy component import; Rotterdam reinventing as circular economy hub', surfacing: 'Quantify port capacity vs current utilisation; identify emerging cargo opportunities; map port to new supply chains' },
   { trigger: /cultural|heritage|tradition|indigenous|ethnic/i, asset: 'Cultural identity as differentiation', category: 'cultural', strategicValue: 'Authentic cultural identity cannot be copied. It creates differentiation that generic SEZ development can never achieve', comparable: 'Bilbao used cultural investment (Guggenheim) to transform industrial city narrative; Nashville used music heritage for economic development', surfacing: 'Identify cultural assets with tourism/creative economy potential; develop heritage-based investment narrative; protect authentic identity in development planning' },
   { trigger: /military|base|defense|defence/i, asset: 'Military/defence infrastructure', category: 'infrastructure', strategicValue: 'Military infrastructure represents massive government investment in transport, communications, and utilities that can be converted to civilian economic use', comparable: 'Clark/Subic (Philippines) converted US military bases to PEZA zones; Bangalore defense establishments seeded aerospace cluster', surfacing: 'Audit military infrastructure for civilian conversion potential; map security clearance workforce to defence manufacturing opportunities' },
   { trigger: /agricultural|farming|agri|rural|fertile/i, asset: 'Agricultural land and food security', category: 'geographic', strategicValue: 'With global food security concerns rising, productive agricultural land and agritech potential are undervalued strategic assets', comparable: 'New Zealand built premium food brand globally; Netherlands became world\'s #2 food exporter through agritech innovation', surfacing: 'Map agricultural output to global supply chain gaps; identify agritech opportunities; develop food security value proposition for sovereign wealth investors' },
   { trigger: /renewable|solar|wind|geothermal|hydro/i, asset: 'Renewable energy generation potential', category: 'geographic', strategicValue: 'Clean energy generation capacity is increasingly a prerequisite for data centre, manufacturing, and tech investment attraction', comparable: 'Morocco used solar potential to attract manufacturing; Iceland leveraged geothermal for aluminium smelting and data centres', surfacing: 'Quantify renewable energy generation potential; map to energy-intensive industry requirements; develop green energy zone concept' },
-  { trigger: /young\s*(population|people|workforce|demographic)/i, asset: 'Demographic dividend window', category: 'human', strategicValue: 'Young population creates 20-30 year window of high workforce growth and domestic consumption expansion — but the window closes', comparable: 'India, Philippines, Vietnam currently benefiting; Japan, Korea illustrate costs of missing the window', surfacing: 'Quantify demographic dividend timeline; project workforce availability by skill level; develop youth employment and training strategy' }
+  { trigger: /young\s*(population|people|workforce|demographic)/i, asset: 'Demographic dividend window', category: 'human', strategicValue: 'Young population creates 20-30 year window of high workforce growth and domestic consumption expansion - but the window closes', comparable: 'India, Philippines, Vietnam currently benefiting; Japan, Korea illustrate costs of missing the window', surfacing: 'Quantify demographic dividend timeline; project workforce availability by skill level; develop youth employment and training strategy' }
 ];
 
 // ============================================================================
@@ -182,7 +182,7 @@ const HIDDEN_ASSET_PATTERNS: HiddenAssetPattern[] = [
 export class RegionalIdentityDecoder {
 
   /**
-   * Decode a region's competitive identity — what's authentic, what's simulacrum.
+   * Decode a region's competitive identity - what's authentic, what's simulacrum.
    */
   static decode(input: UserInputSnapshot): IdentityReport {
     const allText = Object.values(input).join(' ');
@@ -245,7 +245,7 @@ export class RegionalIdentityDecoder {
           signal: `Aspirational mimicry: comparing self to ${name}`,
           genericPhrase: `"The next ${name}" or similar`,
           frequency: 85,
-          antidote: `Instead of claiming to be "the next ${name}", identify what makes you uniquely valuable. ${name}'s success was specific to their context — yours will be too.`
+          antidote: `Instead of claiming to be "the next ${name}", identify what makes you uniquely valuable. ${name}'s success was specific to their context - yours will be too.`
         });
       }
     }
@@ -303,7 +303,7 @@ export class RegionalIdentityDecoder {
       revealedIdentity: economicSimulacra.length > 0 ? 'Generic economic claims that could apply to any developing region' : 'Economic positioning appears grounded in specifics',
       alignment: economicSimulacra.length > 1 ? 'simulacrum' : economicSimulacra.length === 1 ? 'oversold' : hasEconomicClaims ? 'authentic' : 'undersold',
       confidence: 0.7,
-      explanation: economicSimulacra.length > 0 ? 'Economic claims use interchangeable language — replace with sector-specific, data-backed positioning' : 'Economic identity appears specific enough to differentiate'
+      explanation: economicSimulacra.length > 0 ? 'Economic claims use interchangeable language - replace with sector-specific, data-backed positioning' : 'Economic identity appears specific enough to differentiate'
     });
 
     // Workforce identity
@@ -420,7 +420,7 @@ export class RegionalIdentityDecoder {
     hiddenAssets: HiddenAsset[],
     elements: IdentityElement[]
   ): number {
-    let score = 70; // Base — assume reasonable authenticity
+    let score = 70; // Base - assume reasonable authenticity
 
     // Deduct for simulacrum signals
     score -= simulacra.length * 8;
@@ -496,7 +496,7 @@ export class RegionalIdentityDecoder {
           (hiddenAssets.length > 0 ? `Underutilised assets: ${hiddenAssets.map(a => a.asset).join(', ')}.` : '');
 
       case 'moderate':
-        return `${region} has a mixed identity — some authentic positioning alongside generic language. ` +
+        return `${region} has a mixed identity - some authentic positioning alongside generic language. ` +
           `RECOMMENDATION: Strengthen the authentic elements (${authenticDifferentiators.length} identified) and replace remaining generic phrases with specific evidence. ` +
           `The goal: every claim in your investment narrative should be uniquely true of ${region} and no other location.`;
 

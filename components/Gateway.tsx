@@ -342,8 +342,8 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
 
     const detailedSubTypes: Record<string, string[]> = {
         'Private': [
-            'Sole Proprietorship', 'Partnership', 'Limited Liability Company (LLC)', 
-            'S-Corporation', 'C-Corporation', 'B-Corporation', 'Venture-Backed Startup', 
+            'Sole Proprietorship', 'Partnership', 'Limited Liability Company (LLC)',
+            'S-Corporation', 'C-Corporation', 'B-Corporation', 'Venture-Backed Startup',
             'Family Office', 'Private Equity Firm', 'Venture Capital Firm'
         ],
         'Government': [

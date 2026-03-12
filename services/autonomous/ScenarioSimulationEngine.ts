@@ -8,7 +8,7 @@
  * chains, feedback loops, and non-linear dynamics.
  *
  * This is a discrete-event simulation with Monte Carlo uncertainty propagation
- * through causal graphs — not just sensitivity analysis.
+ * through causal graphs - not just sensitivity analysis.
  *
  * Mathematical Foundation:
  *   - System Dynamics (Forrester 1961): stocks, flows, and feedback loops
@@ -21,7 +21,7 @@
  *
  * What sets this apart:
  *   The existing CounterfactualEngine asks "what if?" about the PAST.
- *   This engine simulates the FUTURE — with cascading effects, feedback
+ *   This engine simulates the FUTURE - with cascading effects, feedback
  *   loops, and probability-weighted outcomes across multiple timelines.
  *
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -51,7 +51,7 @@ export interface CausalLink {
   from: string; // variable ID
   to: string;   // variable ID
   type: 'positive' | 'negative'; // positive = same direction, negative = inverse
-  strength: number; // 0–1
+  strength: number; // 0-1
   delay: number; // quarters of delay
   nonLinearity: 'linear' | 'quadratic' | 'threshold' | 'saturation';
   thresholdValue?: number; // for threshold non-linearity
@@ -62,7 +62,7 @@ export interface FeedbackLoop {
   name: string;
   variables: string[]; // ordered variable IDs in the loop
   type: 'reinforcing' | 'balancing';
-  dominance: number; // 0–1, how strongly this loop dominates system behaviour
+  dominance: number; // 0-1, how strongly this loop dominates system behaviour
   description: string;
 }
 
@@ -157,7 +157,7 @@ const FEEDBACK_LOOPS: FeedbackLoop[] = [
     variables: ['V-FDI-FLOW', 'V-GDP-GROWTH', 'V-FDI-FLOW'],
     type: 'reinforcing',
     dominance: 0.7,
-    description: 'FDI drives GDP growth, which attracts more FDI — a virtuous cycle when active, but can reverse'
+    description: 'FDI drives GDP growth, which attracts more FDI - a virtuous cycle when active, but can reverse'
   },
   {
     id: 'FL-INFRA',
@@ -165,7 +165,7 @@ const FEEDBACK_LOOPS: FeedbackLoop[] = [
     variables: ['V-FDI-FLOW', 'V-INFRASTRUCTURE', 'V-FDI-FLOW'],
     type: 'reinforcing',
     dominance: 0.5,
-    description: 'Investment improves infrastructure, which attracts more investment — but with 4-quarter delay'
+    description: 'Investment improves infrastructure, which attracts more investment - but with 4-quarter delay'
   },
   {
     id: 'FL-TALENT',
@@ -173,7 +173,7 @@ const FEEDBACK_LOOPS: FeedbackLoop[] = [
     variables: ['V-FDI-FLOW', 'V-TALENT-AVAILABILITY', 'V-FDI-FLOW'],
     type: 'reinforcing',
     dominance: 0.4,
-    description: 'Investment creates demand for skills, eventually developing local talent pool — longest delay'
+    description: 'Investment creates demand for skills, eventually developing local talent pool - longest delay'
   },
   {
     id: 'FL-INFLATION',
@@ -181,7 +181,7 @@ const FEEDBACK_LOOPS: FeedbackLoop[] = [
     variables: ['V-GDP-GROWTH', 'V-INFLATION', 'V-EXCHANGE-RATE', 'V-FDI-FLOW', 'V-GDP-GROWTH'],
     type: 'balancing',
     dominance: 0.3,
-    description: 'Rapid growth causes inflation, weakening currency and reducing FDI — natural growth limiter'
+    description: 'Rapid growth causes inflation, weakening currency and reducing FDI - natural growth limiter'
   }
 ];
 
@@ -345,7 +345,7 @@ export class ScenarioSimulationEngine {
   }
 
   /**
-   * Calculate variable sensitivity — how much does SPI change per unit change in variable.
+   * Calculate variable sensitivity - how much does SPI change per unit change in variable.
    */
   private static calculateSensitivity(ctx: SimulationContext): Array<{ variable: string; sensitivity: number; direction: string }> {
     const sensitivities: Array<{ variable: string; sensitivity: number; direction: string }> = [];
@@ -473,7 +473,7 @@ export class ScenarioSimulationEngine {
   }
 
   /**
-   * Quick simulation — 1000 runs, returns probability of success.
+   * Quick simulation - 1000 runs, returns probability of success.
    */
   static quickSimulate(ctx: SimulationContext): { probabilityOfSuccess: number; medianSPI: number; riskLevel: string } {
     const result = this.simulate(ctx, 1000);

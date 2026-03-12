@@ -4,14 +4,14 @@
  * ─────────────────────────────────────────────────────────────────────────────
  *
  * Single entry-point that activates all autonomous runtime services:
- *   - AutonomousScheduler    — timed task execution
- *   - MasterAutonomousOrchestrator — coordinates all sub-agents
- *   - AgentSpawner           — dynamic sub-agent creation
- *   - SelfFixingEngine       — error detection + auto-recovery
- *   - SelfImprovementEngine  — continuous self-upgrade
- *   - selfLearningEngine     — outcome tracking + weight adjustment
- *   - solveAndAct            — direct AI problem-solving client
- *   - MultiAgentOrchestrator — multi-agent consensus builder
+ *   - AutonomousScheduler    - timed task execution
+ *   - MasterAutonomousOrchestrator - coordinates all sub-agents
+ *   - AgentSpawner           - dynamic sub-agent creation
+ *   - SelfFixingEngine       - error detection + auto-recovery
+ *   - SelfImprovementEngine  - continuous self-upgrade
+ *   - selfLearningEngine     - outcome tracking + weight adjustment
+ *   - solveAndAct            - direct AI problem-solving client
+ *   - MultiAgentOrchestrator - multi-agent consensus builder
  *
  * Call `initAutonomousRuntime()` once from App.tsx on mount.
  */
@@ -33,21 +33,17 @@ import InputShieldService from './InputShieldService';
 import { enforceBounds, safeDivide } from './FormulaBoundsEngine';
 import { validateField, validateStep } from './validationEngine';
 import { MissingFormulasEngine } from './MissingFormulasEngine';
-import { stressTestFramework } from './ExtremeStressTestFramework';
-import { stressTestVerification } from './StressTestVerification';
-import { generateBenchmarkData } from './mockDataGenerator';
-import { BACKEND_ARCHITECTURE } from './backendArchitecture';
 
 let _initialized = false;
 
 /**
- * Bootstrap all autonomous services. Safe to call multiple times — idempotent.
+ * Bootstrap all autonomous services. Safe to call multiple times - idempotent.
  */
 export function initAutonomousRuntime(): void {
   if (_initialized) return;
   _initialized = true;
 
-  // 1. Scheduler — drives recurring autonomous tasks
+  // 1. Scheduler - drives recurring autonomous tasks
   try {
     autonomousScheduler.start();
     console.log('[AutonomousRuntime] ✅ Scheduler started');
@@ -55,10 +51,10 @@ export function initAutonomousRuntime(): void {
     console.warn('[AutonomousRuntime] ⚠️ Scheduler start failed', e);
   }
 
-  // 2. Master Orchestrator — lazy singleton, initializes sub-agents on demand
+  // 2. Master Orchestrator - lazy singleton, initializes sub-agents on demand
   try {
     const _orchestrator = MasterAutonomousOrchestrator.getInstance();
-    void _orchestrator; // bound but not awaited at boot — activates on first report
+    void _orchestrator; // bound but not awaited at boot - activates on first report
     console.log('[AutonomousRuntime] ✅ MasterOrchestrator registered');
   } catch (e) {
     console.warn('[AutonomousRuntime] ⚠️ MasterOrchestrator init failed', e);
@@ -83,11 +79,6 @@ export function initAutonomousRuntime(): void {
     validateComprehensiveIntake,
     enforceBounds, safeDivide,
     validateField, validateStep,
-    // dev / stress-test / architecture utilities (registered, not polled at runtime)
-    stressTestFramework,
-    stressTestVerification,
-    generateBenchmarkData,
-    BACKEND_ARCHITECTURE,
   };
 
   console.log(

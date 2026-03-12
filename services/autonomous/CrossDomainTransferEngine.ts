@@ -5,7 +5,7 @@
  * 
  * Applies structural analogies from unrelated fields to regional development.
  * This is NOT machine learning transfer learning (fine-tuning pretrained models).
- * This is STRUCTURAL transfer — identifying isomorphic patterns between domains
+ * This is STRUCTURAL transfer - identifying isomorphic patterns between domains
  * that humans would never think to compare.
  *
  * Mathematical Foundation:
@@ -40,7 +40,7 @@ export interface StructuralAnalogy {
   sourceDomain: string;
   sourceRelations: RelationalStructure[];
   targetMapping: Map<string, string>; // source concept → target concept
-  structuralAlignmentScore: number; // 0–1
+  structuralAlignmentScore: number; // 0-1
   systematicityScore: number; // number of higher-order shared relations
   transferInsights: TransferInsight[];
   transferDistance: number; // semantic distance (higher = more novel)
@@ -56,8 +56,8 @@ export interface RelationalStructure {
 export interface TransferInsight {
   sourceObservation: string;
   targetPrediction: string;
-  confidence: number; // 0–1
-  actionability: number; // 0–1
+  confidence: number; // 0-1
+  actionability: number; // 0-1
   evidenceStrength: 'strong' | 'moderate' | 'suggestive';
 }
 
@@ -97,7 +97,7 @@ export interface TransferContext {
 }
 
 // ============================================================================
-// DOMAIN MODEL LIBRARY — Real structural models from diverse fields
+// DOMAIN MODEL LIBRARY - Real structural models from diverse fields
 // ============================================================================
 
 const DOMAIN_MODELS: DomainModel[] = [
@@ -117,7 +117,7 @@ const DOMAIN_MODELS: DomainModel[] = [
     keyPrinciples: [
       'Remove the keystone and the entire ecosystem collapses',
       'Recovery requires connected corridors, not isolated patches',
-      'Diversity equals resilience — monocultures are fragile',
+      'Diversity equals resilience - monocultures are fragile',
       'Symbiotic relationships create value neither partner could alone'
     ],
     quantitativeRules: [
@@ -141,12 +141,12 @@ const DOMAIN_MODELS: DomainModel[] = [
     keyPrinciples: [
       'Past exposure creates memory that accelerates future response',
       'Overreaction (autoimmunity) is as dangerous as underreaction',
-      'Tolerance distinguishes self from threat — without it, the system attacks itself',
+      'Tolerance distinguishes self from threat - without it, the system attacks itself',
       'Vaccination = controlled exposure that builds resilience without damage'
     ],
     quantitativeRules: [
       { name: 'Primary vs Secondary Response', formula: 'T_secondary = T_primary / 4, Magnitude_secondary = Magnitude_primary × 10', description: 'Memory cells enable 4x faster, 10x stronger response', applicability: 'Institutional memory reduces crisis response time by 75%' },
-      { name: 'Dose-Response', formula: 'Response = Rmax × [Dose^n / (EC50^n + Dose^n)]', description: 'Hill equation — sigmoid dose-response curve', applicability: 'Policy intervention follows diminishing returns' }
+      { name: 'Dose-Response', formula: 'Response = Rmax × [Dose^n / (EC50^n + Dose^n)]', description: 'Hill equation - sigmoid dose-response curve', applicability: 'Policy intervention follows diminishing returns' }
     ]
   },
   {
@@ -164,9 +164,9 @@ const DOMAIN_MODELS: DomainModel[] = [
     ],
     keyPrinciples: [
       'Amateurs talk tactics; professionals talk logistics',
-      'Concentrate force at the decisive point — never spread thin everywhere',
+      'Concentrate force at the decisive point - never spread thin everywhere',
       'Intelligence (information) is the ultimate force multiplier',
-      'Maintain reserves — the ability to respond to the unexpected wins wars'
+      'Maintain reserves - the ability to respond to the unexpected wins wars'
     ],
     quantitativeRules: [
       { name: 'Lanchester Square Law', formula: 'Combat_power = n² × σ (n=units, σ=quality)', description: 'Effective combat power scales with square of force size', applicability: 'Market power scales non-linearly with cluster size' },
@@ -187,10 +187,10 @@ const DOMAIN_MODELS: DomainModel[] = [
       { relation: 'prevents(increases)', subject: 'structure', object: 'entropy decrease locally', isHigherOrder: true }
     ],
     keyPrinciples: [
-      'You cannot create something from nothing — every output requires input',
+      'You cannot create something from nothing - every output requires input',
       'Systems tend toward disorder unless energy is continuously applied',
-      'Phase transitions happen suddenly when thresholds are crossed — not gradually',
-      'Maximum theoretical efficiency has hard limits — no system is 100% efficient'
+      'Phase transitions happen suddenly when thresholds are crossed - not gradually',
+      'Maximum theoretical efficiency has hard limits - no system is 100% efficient'
     ],
     quantitativeRules: [
       { name: 'Carnot Efficiency', formula: 'η_max = 1 - T_cold/T_hot', description: 'Maximum efficiency determined by temperature differential', applicability: 'Maximum ROI determined by capability differential between regions' },
@@ -214,7 +214,7 @@ const DOMAIN_MODELS: DomainModel[] = [
       'Networks learn by adjusting connection strengths based on feedback',
       'Deeper networks CAN learn more complex patterns but need skip connections to avoid degradation',
       'Dropout (random disconnection) prevents over-reliance and builds robustness',
-      'Learning rate matters — too fast overshoots, too slow stagnates'
+      'Learning rate matters - too fast overshoots, too slow stagnates'
     ],
     quantitativeRules: [
       { name: 'Universal Approximation', formula: 'f(x) ≈ Σᵢ wᵢσ(aᵢx + bᵢ)', description: 'Any continuous function can be approximated by sufficient neurons', applicability: 'Sufficient policy instruments can approximate any economic outcome' },
@@ -235,9 +235,9 @@ const DOMAIN_MODELS: DomainModel[] = [
       { relation: 'stabilises(controls)', subject: 'diversity of predators', object: 'oscillation dampening', isHigherOrder: true }
     ],
     keyPrinciples: [
-      'Predator-prey relationships naturally oscillate — stability is the exception',
+      'Predator-prey relationships naturally oscillate - stability is the exception',
       'Removing a predator causes prey explosion then collapse from overconsumption',
-      'Extinction thresholds exist — below a critical mass, recovery is impossible',
+      'Extinction thresholds exist - below a critical mass, recovery is impossible',
       'Diversity of actors dampens oscillations and creates stability'
     ],
     quantitativeRules: [
@@ -259,13 +259,13 @@ const DOMAIN_MODELS: DomainModel[] = [
       { relation: 'scales(enables)', subject: 'population size', object: 'superlinear innovation', isHigherOrder: true }
     ],
     keyPrinciples: [
-      'Cities scale superlinearly — doubling population increases output by 115%, not 100%',
-      'Infrastructure scales sublinearly — doubling population needs only 85% more infrastructure',
+      'Cities scale superlinearly - doubling population increases output by 115%, not 100%',
+      'Infrastructure scales sublinearly - doubling population needs only 85% more infrastructure',
       'Sprawl destroys the agglomeration benefits that make cities work',
-      'Resource inflow must balance outflow — otherwise cities consume themselves'
+      'Resource inflow must balance outflow - otherwise cities consume themselves'
     ],
     quantitativeRules: [
-      { name: 'Kleiber Scaling', formula: 'Y = Y₀ × N^β (β = 1.15 for innovation, 0.85 for infrastructure)', description: 'Power law scaling of urban metrics with population', applicability: 'Regional cluster scaling — innovation output vs infrastructure investment' },
+      { name: 'Kleiber Scaling', formula: 'Y = Y₀ × N^β (β = 1.15 for innovation, 0.85 for infrastructure)', description: 'Power law scaling of urban metrics with population', applicability: 'Regional cluster scaling - innovation output vs infrastructure investment' },
       { name: 'Marchetti Constant', formula: 'T_commute ≈ 30 min (one-way, invariant across cities)', description: 'Average commute time is remarkably constant regardless of city size', applicability: 'Effective economic radius of a regional centre' }
     ]
   },
@@ -285,7 +285,7 @@ const DOMAIN_MODELS: DomainModel[] = [
     keyPrinciples: [
       'Rational actors in one-shot games often reach suboptimal equilibria (Prisoner\'s Dilemma)',
       'Repeated interaction enables cooperation to emerge naturally',
-      'Mechanism design can change the game — redesign incentives to get desired outcome',
+      'Mechanism design can change the game - redesign incentives to get desired outcome',
       'Reputation is the cheapest enforcement mechanism'
     ],
     quantitativeRules: [
@@ -296,7 +296,7 @@ const DOMAIN_MODELS: DomainModel[] = [
 ];
 
 // ============================================================================
-// ECONOMIC DEVELOPMENT TARGET MODEL — what analogies map TO
+// ECONOMIC DEVELOPMENT TARGET MODEL - what analogies map TO
 // ============================================================================
 
 const ECONOMIC_DEVELOPMENT_MAPPING: Record<string, string> = {
@@ -474,7 +474,7 @@ export class CrossDomainTransferEngine {
     // Apply quantitative rules
     for (const rule of model.quantitativeRules) {
       insights.push({
-        sourceObservation: `${model.name} — ${rule.name}: ${rule.formula}`,
+        sourceObservation: `${model.name} - ${rule.name}: ${rule.formula}`,
         targetPrediction: `${rule.applicability}. For ${context.sector} in ${context.region}: ${rule.description}`,
         confidence: 0.7,
         actionability: 0.6,
@@ -579,7 +579,7 @@ export class CrossDomainTransferEngine {
   }
 
   /**
-   * Quick analogy — returns the single most relevant cross-domain insight.
+   * Quick analogy - returns the single most relevant cross-domain insight.
    */
   static quickAnalogy(context: TransferContext): string {
     const result = this.analyse(context);

@@ -8,7 +8,7 @@
  * This engine implements the "Global Baseline + Local Search" model:
  *
  *   1. UNIVERSAL SKELETON (Global Standard)
- *      - IFC Performance Standards (PS1-PS8) — World Bank gold standard
+ *      - IFC Performance Standards (PS1-PS8) - World Bank gold standard
  *      - UN Sustainable Development Goals (17 SDGs)
  *      - Equator Principles alignment
  *      → User meets 90%+ global compliance before knowing local law

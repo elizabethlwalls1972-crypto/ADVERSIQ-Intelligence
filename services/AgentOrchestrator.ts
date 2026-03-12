@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — AGENT ORCHESTRATOR
+ * BW NEXUS AI - AGENT ORCHESTRATOR
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Autonomous multi-agent document generation system.
@@ -58,7 +58,7 @@ export interface OrchestratorConfig {
   maxDocuments?: number;
   /** Maximum letters to generate (default 3) */
   maxLetters?: number;
-  /** Pre-computed brain context (optional — will be fetched autonomously if absent) */
+  /** Pre-computed brain context (optional - will be fetched autonomously if absent) */
   brainContext?: any;
   /** Progress callback */
   onProgress?: (progress: OrchestratorProgress) => void;
@@ -154,7 +154,7 @@ export class AgentOrchestrator {
           category: 'Strategic',
           classification: 'CONFIDENTIAL',
           preparedFor: organizationName,
-          preparedBy: 'BW NEXUS AI — Bedrock Agent Supervisor',
+          preparedBy: 'BW NEXUS AI - Bedrock Agent Supervisor',
           date: new Date().toLocaleDateString('en-AU', { year: 'numeric', month: 'long', day: 'numeric' }),
           reportId: `BWN-${Date.now()}`,
           fullMarkdown: bedrockOutput,
@@ -205,7 +205,7 @@ export class AgentOrchestrator {
           );
           emit('research', 'Research Agent', 25, 'Brain context ready', `ResearchAgent: enriched ${Object.keys(brainContext || {}).length} dimensions`);
         } catch (e) {
-          emit('research', 'Research Agent', 25, 'Brain context unavailable — continuing', `ResearchAgent: enrich failed: ${e instanceof Error ? e.message : e}`);
+          emit('research', 'Research Agent', 25, 'Brain context unavailable - continuing', `ResearchAgent: enrich failed: ${e instanceof Error ? e.message : e}`);
         }
       } else {
         emit('research', 'Research Agent', 25, 'Using supplied brain context', 'ResearchAgent: pre-computed context accepted');
@@ -284,7 +284,7 @@ export class AgentOrchestrator {
                 emit(
                   'writing', 'Writing Agent',
                   Math.min(sectionPercent, 89),
-                  `  ↳ Section ${Math.round(progress * 100)}% — ${entry.name}`,
+                  `  ↳ Section ${Math.round(progress * 100)}% - ${entry.name}`,
                 );
               },
             });
@@ -301,7 +301,7 @@ export class AgentOrchestrator {
 
           if (doc) {
             documents.push(doc);
-            emit('writing', 'Writing Agent', basePercent, `  ✓ Complete: ${entry.name}`, `WritingAgent: "${entry.name}" done — ${doc.sections.reduce((s, sec) => s + sec.wordCount, doc.fullMarkdown.length > 0 ? 0 : 0)}w`);
+            emit('writing', 'Writing Agent', basePercent, `  ✓ Complete: ${entry.name}`, `WritingAgent: "${entry.name}" done - ${doc.sections.reduce((s, sec) => s + sec.wordCount, doc.fullMarkdown.length > 0 ? 0 : 0)}w`);
           }
         } catch (docErr) {
           emit('writing', 'Writing Agent', basePercent, `  ✗ Failed: ${entry.name}`, `WritingAgent: error on "${entry.name}": ${docErr instanceof Error ? docErr.message : docErr}`);
@@ -319,7 +319,7 @@ export class AgentOrchestrator {
 
       emit(
         'complete', 'Complete', 100,
-        `Done — ${documents.length} outputs, ${totalWords.toLocaleString()} words`,
+        `Done - ${documents.length} outputs, ${totalWords.toLocaleString()} words`,
         `ReviewAgent: complete. Total ${totalWords.toLocaleString()} words in ${((Date.now() - startMs) / 1000).toFixed(1)}s`
       );
 

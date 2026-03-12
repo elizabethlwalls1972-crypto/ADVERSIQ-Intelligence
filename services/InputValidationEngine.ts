@@ -1,4 +1,4 @@
-﻿/**
+/**
  * INPUT VALIDATION ENGINE - Complete Validation Suite
  * 
  * This engine addresses ALL stress test failures by implementing:
@@ -9,24 +9,24 @@
  * 5. Edge case handling (all zeros, massive text, unicode attacks)
  * 
  * STRESS TESTS FIXED:
- * - âœ“ TEST 1.1: Infinite Growth Rate
- * - âœ“ TEST 1.2: Negative Investment Amount
- * - âœ“ TEST 1.3: Zero Market Size
- * - âœ“ TEST 1.4: Massive Text Input
- * - âœ“ TEST 2.1: Profitable While Losing Money
- * - âœ“ TEST 2.2: One-Year-Old with 20-Year Track Record
- * - âœ“ TEST 2.3: Monopoly Claims in Fragmented Market
- * - âœ“ TEST 3.1: All Zero Inputs
- * - âœ“ TEST 3.2: Incomplete Data - Missing Critical Fields
- * - âœ“ TEST 3.3: Unicode Attack (Zalgo Text)
- * - âœ“ TEST 4.1: RROI: Zero Risk Claimed
- * - âœ“ TEST 4.2: SPI: Perfect Scores on Everything
- * - âœ“ TEST 4.3: Neural Field: Maximum Excitation
- * - âœ“ TEST 5.1: Adversarial: Hide Debt in Intangibles
- * - âœ“ TEST 5.2: Adversarial: All Successful Peers
- * - âœ“ TEST 5.3: Adversarial: Claim Pre-Approval in Corrupt Region
- * - âœ“ TEST 7.1: Known Pattern: Theranos Red Flags
- * - âœ“ TEST 7.2: Known Pattern: Solyndra Technology Risk
+ * - " TEST 1.1: Infinite Growth Rate
+ * - " TEST 1.2: Negative Investment Amount
+ * - " TEST 1.3: Zero Market Size
+ * - " TEST 1.4: Massive Text Input
+ * - " TEST 2.1: Profitable While Losing Money
+ * - " TEST 2.2: One-Year-Old with 20-Year Track Record
+ * - " TEST 2.3: Monopoly Claims in Fragmented Market
+ * - " TEST 3.1: All Zero Inputs
+ * - " TEST 3.2: Incomplete Data - Missing Critical Fields
+ * - " TEST 3.3: Unicode Attack (Zalgo Text)
+ * - " TEST 4.1: RROI: Zero Risk Claimed
+ * - " TEST 4.2: SPI: Perfect Scores on Everything
+ * - " TEST 4.3: Neural Field: Maximum Excitation
+ * - " TEST 5.1: Adversarial: Hide Debt in Intangibles
+ * - " TEST 5.2: Adversarial: All Successful Peers
+ * - " TEST 5.3: Adversarial: Claim Pre-Approval in Corrupt Region
+ * - " TEST 7.1: Known Pattern: Theranos Red Flags
+ * - " TEST 7.2: Known Pattern: Solyndra Technology Risk
  */
 
 export interface ValidationIssue {

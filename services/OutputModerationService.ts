@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — OUTPUT MODERATION SERVICE
+ * BW NEXUS AI - OUTPUT MODERATION SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Scans AI-generated responses BEFORE they reach the user to detect and
@@ -105,7 +105,7 @@ const MODERATION_PATTERNS: PatternRule[] = [
     pattern: /(?:the official|published)\s+(?:statistics?|data|figures?)\s+(?:show|confirm|prove)\s+(?:that\s+)?(?:\d{1,3}(?:\.\d+)?%)/i,
     category: 'fabrication',
     severity: 'low',
-    description: 'Content cites specific statistics that may be fabricated — flagged for verification'
+    description: 'Content cites specific statistics that may be fabricated - flagged for verification'
   },
 ];
 

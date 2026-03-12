@@ -1,14 +1,14 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — REASONING PIPELINE
+ * BW NEXUS AI - REASONING PIPELINE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Implements the 4-step cognitive loop the OS runs on every user input:
  *
- *   Step 1 — QUESTION   : Classify and understand what the user is really asking
- *   Step 2 — THOUGHT    : Reason through the problem space internally
- *   Step 3 — SOLUTION   : Identify the best answer approach before writing it
- *   Step 4 — ANSWER     : Produce the final response grounded in steps 1–3
+ *   Step 1 - QUESTION   : Classify and understand what the user is really asking
+ *   Step 2 - THOUGHT    : Reason through the problem space internally
+ *   Step 3 - SOLUTION   : Identify the best answer approach before writing it
+ *   Step 4 - ANSWER     : Produce the final response grounded in steps 1-3
  *
  * This is the "brain before mouth" layer. The AI must think before it talks.
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -47,7 +47,7 @@ export interface ReasoningInput {
 export interface ReasoningOutput {
   /** Step 1: What is the user really asking? */
   questionClassification: string;
-  /** Step 2: Internal reasoning — what do we know? what matters? */
+  /** Step 2: Internal reasoning - what do we know? what matters? */
   thought: string;
   /** Step 3: What is the best response approach? */
   solutionApproach: string;
@@ -87,7 +87,7 @@ function formatIntelligenceBlock(
       parts.push(`\n**Hidden risks detected:**\n${structured.hiddenRisks.map(r => `  • ${r}`).join('\n')}`);
     }
     if (structured.strategicScore > 0) {
-      parts.push(`\n**NSIL trust score:** ${structured.strategicScore}/100 — ${structured.nsилSummary}`);
+      parts.push(`\n**NSIL trust score:** ${structured.strategicScore}/100 - ${structured.nsилSummary}`);
     }
     if (structured.situationSummary) {
       parts.push(`\n**Situation analysis:** ${structured.situationSummary.slice(0, 600)}`);
@@ -127,9 +127,9 @@ const THINK_PROMPT = (input: ReasoningInput) => {
     ? `\n\n## RECENT CONVERSATION:\n${input.conversationHistory.slice(-4).map(t => `${t.role.toUpperCase()}: ${t.content.slice(0, 300)}`).join('\n\n')}`
     : '';
 
-  return `You are about to respond to a user. Before writing your answer, you MUST reason through the problem in three steps. Think carefully — this reasoning shapes the quality of your final answer.
+  return `You are about to respond to a user. Before writing your answer, you MUST reason through the problem in three steps. Think carefully - this reasoning shapes the quality of your final answer.
 
-CRITICAL: You MUST answer the user's question directly. If they ask about a person, place, or topic — your reasoning must focus on delivering a substantive factual briefing. Do NOT reason about asking for more context — reason about what you KNOW and how to deliver maximum value immediately.
+CRITICAL: You MUST answer the user's question directly. If they ask about a person, place, or topic - your reasoning must focus on delivering a substantive factual briefing. Do NOT reason about asking for more context - reason about what you KNOW and how to deliver maximum value immediately.
 
 ## USER MESSAGE:
 "${input.userMessage}"
@@ -140,7 +140,7 @@ ${formatIntelligenceBlock(input.intelligenceBlock, input.brainBlock)}
 
 ---
 
-Respond ONLY in this exact JSON format — no other text:
+Respond ONLY in this exact JSON format - no other text:
 
 {
   "step1_question": "<What is the user actually asking? What is their real intent behind the words? What decision are they trying to make?>",
@@ -187,13 +187,13 @@ ${input.brainBlock ? `\n## INTELLIGENCE DATA:\n${input.brainBlock.slice(0, 16000
 
 ---
 
-CRITICAL RULES — OBEY THESE:
+CRITICAL RULES - OBEY THESE:
 1. ANSWER FIRST with substantive factual knowledge. Do NOT ask for context, motive, or clarification before answering.
 2. If asked about a person, place, country, or topic: deliver a comprehensive briefing with real facts, data, and analysis.
-3. Do NOT say "I've captured the key elements" or ask "What outcome are you trying to achieve?" — these phrases are BANNED.
+3. Do NOT say "I've captured the key elements" or ask "What outcome are you trying to achieve?" - these phrases are BANNED.
 4. Do NOT run a numbered intake checklist or ask multiple questions.
-5. Sound like a senior consultant who has worked across 80+ countries — confident, direct, and knowledgeable.
-6. Use specific facts from the intelligence data and context if available — cite sources naturally.
+5. Sound like a senior consultant who has worked across 80+ countries - confident, direct, and knowledgeable.
+6. Use specific facts from the intelligence data and context if available - cite sources naturally.
 7. After delivering your substantive answer, you may ask at most ONE targeted follow-up question if genuinely useful.
 
 Write your response now. Follow your reasoning. Be direct, specific, and professional.`;
@@ -353,7 +353,7 @@ export async function runReasoningPipeline(
 }
 
 /**
- * Streaming version — streams the final answer token by token after thinking.
+ * Streaming version - streams the final answer token by token after thinking.
  * The think step is awaited silently (or surfaced via onThought).
  */
 export async function runReasoningPipelineStream(
@@ -389,7 +389,7 @@ export async function runReasoningPipelineStream(
     await conversationMemoryManager.addTurn('user', input.userMessage);
   } catch { /* optional */ }
 
-  // ── Think (non-streaming — must complete before answer begins) ─────────────
+  // ── Think (non-streaming - must complete before answer begins) ─────────────
   let reasoning: {
     step1_question: string;
     step2_thought: string;

@@ -826,10 +826,10 @@ export class HistoricalDataPipeline {
 
     // Cross-signal analysis
     if (trends.gdpGrowth.direction === 'improving' && trends.fdi.direction === 'improving') {
-      opportunitySignals.push(`STRONG SIGNAL: ${country} shows correlated GDP + FDI growth — investment momentum confirmed`);
+      opportunitySignals.push(`STRONG SIGNAL: ${country} shows correlated GDP + FDI growth - investment momentum confirmed`);
     }
     if (trends.gdpGrowth.direction === 'declining' && trends.corruption.direction === 'declining') {
-      riskSignals.push(`WARNING: ${country} shows correlated GDP decline + governance deterioration — systemic risk`);
+      riskSignals.push(`WARNING: ${country} shows correlated GDP decline + governance deterioration - systemic risk`);
     }
 
     return { profile: resolved, formulaInputs, trends, riskSignals, opportunitySignals };

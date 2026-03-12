@@ -1,4 +1,4 @@
-﻿import { invokeAI } from './awsBedrockService';
+import { callAIGateway } from './UnifiedAIGateway';
 
 export async function solveAndAct(problem: string, context: any, params: any, options: any) {
   // Try backend first
@@ -12,10 +12,10 @@ export async function solveAndAct(problem: string, context: any, params: any, op
       return res.json();
     }
   } catch {
-    console.warn('[AutonomousClient] Backend unavailable, falling back to direct Gemini');
+    console.warn('[AutonomousClient] Backend unavailable, falling back to multi-brain AI');
   }
 
-  // Direct Gemini fallback
+  // Multi-brain AI via Unified Gateway (Together → Groq → Server fallback)
   try {
     const prompt = `You are an autonomous strategic AI agent. Analyze the following problem and generate actionable solutions.
 
@@ -35,25 +35,29 @@ Generate 3-5 specific, actionable solutions. Return ONLY valid JSON in this exac
   "summary": "Brief overall summary"
 }`;
 
-    const result = await invokeAI(prompt);
+    const result = await callAIGateway(prompt, undefined, {
+      taskType: 'reason',
+      caller: 'autonomousClient/solveAndAct',
+    });
     const cleaned = result.text.trim().replace(/^```json\s*/, '').replace(/```\s*$/, '').trim();
-    const parsed = JSON.parse(cleaned);
-    return {
-      solutions: parsed.solutions || [],
-      summary: parsed.summary || 'AI-generated autonomous analysis complete'
-    };
-  } catch (geminiError) {
-    console.warn('[AutonomousClient] Gemini fallback failed:', geminiError);
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+      const parsed = JSON.parse(match[0]);
+      return {
+        solutions: parsed.solutions || [],
+        summary: parsed.summary || 'AI-generated autonomous analysis complete'
+      };
+    }
+  } catch (aiError) {
+    console.warn('[AutonomousClient] Multi-brain AI failed:', aiError);
   }
 
-  // Final hardcoded fallback
+  // Graceful degradation - indicate AI unavailability
   return {
     solutions: [
-      { action: 'Conduct comprehensive market analysis', reasoning: `Evaluate ${context?.region || 'target'} market conditions and competitive landscape`, confidence: 75 },
-      { action: 'Identify strategic partnership opportunities', reasoning: 'Map potential partners aligned with organizational objectives', confidence: 70 },
-      { action: 'Assess regulatory environment', reasoning: `Understand ${context?.region || 'regional'} compliance requirements and governance frameworks`, confidence: 72 }
+      { action: 'Configure AI provider API keys', reasoning: 'Set VITE_TOGETHER_API_KEY or VITE_GROQ_API_KEY for full autonomous capability', confidence: 0 }
     ],
-    summary: 'Autonomous analysis completed with baseline recommendations'
+    summary: 'AI providers unavailable - configure API keys for autonomous analysis'
   };
 }
 

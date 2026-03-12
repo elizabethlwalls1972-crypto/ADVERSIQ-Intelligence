@@ -1,4 +1,4 @@
-﻿import { EventBus } from './EventBus';
+import { EventBus } from './EventBus';
 import { persistentMemory, type MemoryEntry } from './PersistentMemorySystem';
 
 export interface CodeImprovement {
@@ -48,7 +48,7 @@ export class SelfImprovementEngine {
     this.loadState();
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CORE: Analyze system performance and generate real improvements â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ CORE: Analyze system performance and generate real improvements â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   async analyzeAndImprove(): Promise<SelfImprovementAction[]> {
     if (this.isImproving) return [];
     this.isImproving = true;
@@ -56,7 +56,7 @@ export class SelfImprovementEngine {
     try {
       const suggestions: SelfImprovementAction[] = [];
 
-      // 1. Analyze recent failures â†’ generate targeted fixes
+      // 1. Analyze recent failures ' generate targeted fixes
       const failures = persistentMemory.recall('failures', 50);
       const failurePatterns = this.analyzeFailurePatterns(failures);
 
@@ -87,7 +87,7 @@ export class SelfImprovementEngine {
         });
       }
 
-      // 3. Accuracy drift detection â†’ auto-tune weights
+      // 3. Accuracy drift detection ' auto-tune weights
       const accuracyDrift = this.detectAccuracyDrift();
       if (accuracyDrift.hasDrift) {
         suggestions.push({
@@ -131,7 +131,7 @@ export class SelfImprovementEngine {
     }
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Execute a real improvement â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Execute a real improvement â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   async executeImprovement(action: SelfImprovementAction): Promise<boolean> {
     try {
       let success = false;
@@ -179,7 +179,7 @@ export class SelfImprovementEngine {
     }
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Real: accuracy recalibration â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Real: accuracy recalibration â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private applyAccuracyTuning(_action: SelfImprovementAction): boolean {
     if (this.accuracyLog.length < 10) return false;
@@ -197,7 +197,7 @@ export class SelfImprovementEngine {
     return true;
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Real: performance optimization â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Real: performance optimization â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private applyPerformanceOptimization(_action: SelfImprovementAction): boolean {
     const now = Date.now();
@@ -226,7 +226,7 @@ export class SelfImprovementEngine {
     }
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Real: bug pattern fix â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Real: bug pattern fix â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   private applyBugFix(action: SelfImprovementAction): boolean {
     const fixKey = `bugfix_${action.id.slice(0, 8)}`;
     this.runtimeWeights[fixKey] = 1;
@@ -255,7 +255,7 @@ export class SelfImprovementEngine {
     return true;
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Telemetry: record accuracy readings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Telemetry: record accuracy readings â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   recordAccuracy(predicted: number, actual: number): void {
     this.accuracyLog.push({ timestamp: Date.now(), predicted, actual, delta: predicted - actual });
     if (this.accuracyLog.length > 200) this.accuracyLog = this.accuracyLog.slice(-200);
@@ -266,14 +266,14 @@ export class SelfImprovementEngine {
     if (this.performanceLog.length > 500) this.performanceLog = this.performanceLog.slice(-500);
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Get runtime weight corrections â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Get runtime weight corrections â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   getWeight(key: string, fallback: number = 0): number {
     return this.runtimeWeights[key] ?? fallback;
   }
 
   getAllWeights(): Record<string, number> { return { ...this.runtimeWeights }; }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Analysis helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Analysis helpers â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   private analyzeFailurePatterns(failures: MemoryEntry[]): Array<{
     description: string; frequency: number; confidence: number; requiredFixes: string[];
   }> {
@@ -352,7 +352,7 @@ export class SelfImprovementEngine {
     });
   }
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Persistence â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ Persistence â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   private saveState(): void {
     try {
       localStorage.setItem('bwNexusSelfImprovement', JSON.stringify({

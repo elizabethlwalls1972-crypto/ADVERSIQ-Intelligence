@@ -1,20 +1,20 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * DOCUMENT INTEGRITY SERVICE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  *
  * Ensures every output from the BWGA Ai OS carries:
- *   1. Provenance tracking â€” who generated, when, what inputs
- *   2. Integrity classification headers â€” AI-generated, requires verification
- *   3. Tamper detection â€” hash-based integrity verification
- *   4. Immutable audit trail â€” every generation logged
- *   5. Anti-corruption guardrails â€” mandatory disclaimers
- *   6. Confidence scoring â€” how reliable is this output
+ *   1. Provenance tracking " who generated, when, what inputs
+ *   2. Integrity classification headers " AI-generated, requires verification
+ *   3. Tamper detection " hash-based integrity verification
+ *   4. Immutable audit trail " every generation logged
+ *   5. Anti-corruption guardrails " mandatory disclaimers
+ *   6. Confidence scoring " how reliable is this output
  *
  * This service wraps ALL document outputs to ensure they cannot be
  * misrepresented as independent professional advice.
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 // ============================================================================
@@ -158,12 +158,12 @@ export class DocumentIntegrityService {
     };
 
     const classification = params.confidence === 'high'
-      ? 'ðŸŸ¢ AI-GENERATED INTELLIGENCE â€” HIGH CONFIDENCE'
+      ? 'AI-GENERATED INTELLIGENCE - HIGH CONFIDENCE'
       : params.confidence === 'medium'
-        ? 'ðŸŸ¡ AI-GENERATED INTELLIGENCE â€” MODERATE CONFIDENCE'
+        ? 'AI-GENERATED INTELLIGENCE - MODERATE CONFIDENCE'
         : params.confidence === 'low'
-          ? 'ðŸŸ  AI-GENERATED INTELLIGENCE â€” LOW CONFIDENCE'
-          : 'ðŸ”´ AI-GENERATED INTELLIGENCE â€” INSUFFICIENT DATA';
+          ? 'AI-GENERATED INTELLIGENCE - LOW CONFIDENCE'
+          : '"´ AI-GENERATED INTELLIGENCE - INSUFFICIENT DATA';
 
     return {
       classification,
@@ -191,8 +191,8 @@ export class DocumentIntegrityService {
         'Environmental compliance requirements must be verified with competent authorities.',
         'Labour law applicability must be confirmed with employment law specialists.',
       ],
-      legalNotice: 'Â© BWGA Ai OS. This document contains AI-generated analysis based on pattern recognition, historical parallels, and computational methodology. No warranty of accuracy is provided or implied. All intellectual property in the underlying methodology remains with the system operators.',
-      dataFreshnessWarning: `Analysis generated: ${new Date().toISOString()}. Data currency varies by component â€” regulatory data may be up to 12 months behind current law. Always verify against current official sources.`,
+      legalNotice: ' BWGA Ai OS. This document contains AI-generated analysis based on pattern recognition, historical parallels, and computational methodology. No warranty of accuracy is provided or implied. All intellectual property in the underlying methodology remains with the system operators.',
+      dataFreshnessWarning: `Analysis generated: ${new Date().toISOString()}. Data currency varies by component " regulatory data may be up to 12 months behind current law. Always verify against current official sources.`,
     };
   }
 
@@ -326,7 +326,7 @@ export class DocumentIntegrityService {
 
     // Footer
     const footer = [
-      `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€`,
+      `â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€`,
       `Document ID: ${provenance.documentId}`,
       `Generated: ${provenance.generatedAt}`,
       `Confidence: ${confidence.toUpperCase()}`,
@@ -334,7 +334,7 @@ export class DocumentIntegrityService {
       `Patterns: ${provenance.patternMatchCount} | Parallels: ${provenance.historicalParallelsUsed} | Formulas: ${provenance.formulasApplied}`,
       `Ethical Gate: ${provenance.ethicalGateResult}`,
       `Model: ${provenance.modelUsed}`,
-      `â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€`,
+      `â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€`,
       header.legalNotice,
     ].join('\n');
 
@@ -346,21 +346,21 @@ export class DocumentIntegrityService {
    */
   static formatHeaderForDocument(header: IntegrityHeader): string {
     const lines: string[] = [
-      `â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•`,
+      ``,
       header.classification,
-      `â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•`,
+      ``,
       ``,
       header.confidenceStatement,
       ``,
       `**Mandatory Disclaimers:**`,
-      ...header.mandatoryDisclaimers.map(d => `â€¢ ${d}`),
+      ...header.mandatoryDisclaimers.map(d => `${d}`),
       ``,
       `**Verification Requirements:**`,
-      ...header.verificationRequirements.map(v => `â€¢ ${v}`),
+      ...header.verificationRequirements.map(v => `${v}`),
       ``,
       `**Data Freshness:** ${header.dataFreshnessWarning}`,
       ``,
-      `â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•`,
+      ``,
       ``,
     ];
     return lines.join('\n');

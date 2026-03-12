@@ -1,4 +1,4 @@
-﻿import { EventBus } from './EventBus';
+import { EventBus } from './EventBus';
 import { persistentMemory } from './PersistentMemorySystem';
 import { researchLocation, type LocationResult } from './geminiLocationService';
 import { deepLocationResearch, type DeepResearchResult } from './deepLocationResearchService';
@@ -89,7 +89,7 @@ export class AutomaticSearchService {
   async proactiveSearchForReport(params: any): Promise<void> {
     if (!this.config.proactiveSearch) return;
 
-    // Re-entrancy guard â€” prevents infinite recursion via EventBus listeners
+    // Re-entrancy guard " prevents infinite recursion via EventBus listeners
     if (this.isProactiveSearching) return;
     this.isProactiveSearching = true;
 

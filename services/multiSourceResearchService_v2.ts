@@ -1,7 +1,7 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * ENHANCED MULTI-SOURCE LOCATION RESEARCH SERVICE (V2)
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * FULL CAPABILITIES SYSTEM - WORKS ON STATIC HOSTING (AWS, Netlify, etc.)
  * 
@@ -30,7 +30,7 @@ import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
 
-// AI research uses AWS Bedrock (invokeBedrockDirect) — no Gemini key needed
+// AI research uses AWS Bedrock (invokeBedrockDirect) - no Gemini key needed
 
 // ==================== TYPES ====================
 
@@ -175,7 +175,7 @@ Return ONLY valid JSON with real data (no markdown, no explanation text):
     "nicknames": ["Common nicknames or titles"],
     "timezone": "Timezone (e.g., 'AEST (UTC+10)', 'PHT (UTC+8)', 'EST (UTC-5)')",
     "currency": "Official currency with code (e.g., 'Philippine Peso (PHP)', 'Australian Dollar (AUD)')",
-    "area": "Geographic area (e.g., '42.88 kmÂ²', '12,368 kmÂ²')",
+    "area": "Geographic area (e.g., '42.88 km', '12,368 km')",
     "climate": "Climate type (e.g., 'Oceanic/Temperate', 'Subtropical humid')",
     "businessHours": "Typical business hours (e.g., '9:00 AM - 5:00 PM AEST')"
   },
@@ -395,7 +395,7 @@ async function tryDirectGeminiResearch(
     }
     if (restCountriesData) {
       const rc = restCountriesData;
-      multiSourceContext.push(`COUNTRY DATA: ${rc.name} (${rc.officialName}), Population: ${(rc.population as number)?.toLocaleString()}, Capital: ${(rc.capital as string[])?.[0]}, Region: ${rc.region}/${rc.subregion}, Area: ${(rc.area as number)?.toLocaleString()} kmÂ², Languages: ${Object.values(rc.languages || {}).join(', ')}, Currencies: ${Object.keys(rc.currencies || {}).join(', ')}, Timezones: ${(rc.timezones as string[])?.join(', ')}`);
+      multiSourceContext.push(`COUNTRY DATA: ${rc.name} (${rc.officialName}), Population: ${(rc.population as number)?.toLocaleString()}, Capital: ${(rc.capital as string[])?.[0]}, Region: ${rc.region}/${rc.subregion}, Area: ${(rc.area as number)?.toLocaleString()} km², Languages: ${Object.values(rc.languages || {}).join(', ')}, Currencies: ${Object.keys(rc.currencies || {}).join(', ')}, Timezones: ${(rc.timezones as string[])?.join(', ')}`);
     }
     if (wikidataStructured?.description) {
       multiSourceContext.push(`WIKIDATA: ${wikidataStructured.label} - ${wikidataStructured.description}`);
@@ -1249,7 +1249,7 @@ async function fetchGeoNamesData(
     },
     'paris': {
       name: 'Paris',
-      adminName1: 'ÃŽle-de-France',
+      adminName1: 'le-de-France',
       countryName: 'France',
       population: 2165423,
       elevation: 35,
@@ -1764,10 +1764,10 @@ function transformAIToProfile(
     },
     geography: {
       title: 'Geographic Context',
-      introduction: `Located at ${profile.latitude.toFixed(4)}Â°, ${profile.longitude.toFixed(4)}Â° in ${profile.country}.`,
+      introduction: `Located at ${profile.latitude.toFixed(4)}°, ${profile.longitude.toFixed(4)}° in ${profile.country}.`,
       paragraphs: [],
       keyFacts: [
-        `Coordinates: ${profile.latitude.toFixed(4)}Â°, ${profile.longitude.toFixed(4)}Â°`,
+        `Coordinates: ${profile.latitude.toFixed(4)}°, ${profile.longitude.toFixed(4)}°`,
         `Region: ${profile.region || profile.country}`
       ],
       conclusion: 'Geographic positioning supports regional connectivity.'
@@ -2137,10 +2137,10 @@ async function tryBackendResearch(
       },
       geography: {
         title: 'Geographic Context',
-        introduction: `Located at ${profile.latitude}Â°, ${profile.longitude}Â° in ${profile.country}.`,
+        introduction: `Located at ${profile.latitude}°, ${profile.longitude}° in ${profile.country}.`,
         paragraphs: [],
         keyFacts: [
-          `Coordinates: ${profile.latitude}Â°, ${profile.longitude}Â°`,
+          `Coordinates: ${profile.latitude}°, ${profile.longitude}°`,
           `Climate: ${profile.climate}`,
           `Region: ${profile.region}`
         ],
@@ -3012,9 +3012,9 @@ function extractStructuredData(
   }
 
   // Area
-  const areaMatch = normalizedText.match(/area(?:\s*(?:of|is))?\s*([0-9][0-9,.]+)\s*(?:km2|kmÂ²|sq\s*km)/i);
+  const areaMatch = normalizedText.match(/area(?:\s*(?:of|is))?\s*([0-9][0-9,.]+)\s*(?:km2|km²|sq\s*km)/i);
   if (areaMatch) {
-    data.area = `${areaMatch[1]} kmÂ²`;
+    data.area = `${areaMatch[1]} km²`;
   }
 
   // Established / Founded

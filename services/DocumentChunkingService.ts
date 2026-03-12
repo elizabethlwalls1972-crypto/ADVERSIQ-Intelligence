@@ -1,16 +1,16 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — DOCUMENT CHUNKING SERVICE (RAG Pipeline)
+ * BW NEXUS AI - DOCUMENT CHUNKING SERVICE (RAG Pipeline)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Splits documents/text into semantically meaningful chunks for vector
  * embedding and retrieval. This is the "ingestion" phase of the RAG pipeline.
  *
  * Chunking Strategies:
- *  1. Sentence-boundary  — Splits on sentence endings, respects paragraphs
- *  2. Sliding window      — Overlapping fixed-size windows
- *  3. Semantic sections   — Splits on headers/topic boundaries
- *  4. Hybrid              — Combines sentence + semantic (default)
+ *  1. Sentence-boundary  - Splits on sentence endings, respects paragraphs
+ *  2. Sliding window      - Overlapping fixed-size windows
+ *  3. Semantic sections   - Splits on headers/topic boundaries
+ *  4. Hybrid              - Combines sentence + semantic (default)
  *
  * Each chunk includes:
  *  • text: The chunk content
@@ -77,7 +77,7 @@ function chunkBySentence(text: string, maxSize: number, minSize: number, overlap
       currentStart = offset - overlap;
     } else {
       if (!currentChunk) currentStart = offset;
-      currentChunk += (currentChunk ? ' ' : '') + sentence;
+      currentChunk += (currentChunk ? ' - : '') + sentence;
     }
     offset += sentence.length + 1; // +1 for space
   }
@@ -125,7 +125,7 @@ function chunkBySemantic(text: string, maxSize: number, minSize: number): Array<
     const sectionTitle = headerMatch ? headerMatch[2].trim() : undefined;
 
     if (section.length > maxSize) {
-      // Section too large — sub-chunk by sentence
+      // Section too large - sub-chunk by sentence
       const subChunks = chunkBySentence(section, maxSize, minSize, 50);
       for (const sub of subChunks) {
         chunks.push({
@@ -229,7 +229,7 @@ class DocumentChunkingService {
           if (embeddings[i]) chunks[i].embedding = embeddings[i];
         }
       } catch {
-        // Embeddings are optional — proceed without them
+        // Embeddings are optional - proceed without them
       }
     }
 

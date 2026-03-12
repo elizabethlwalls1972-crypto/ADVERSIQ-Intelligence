@@ -88,7 +88,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             subtitle: 'Self-directed agents that plan research, spawn specialists, evolve their own models, query live global data, and simulate cascading futures.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 22-engine parallel brain fires on every query — multi-model consensus, goal-directed agent spawning, self-modifying formulas, live intelligence from 10+ global APIs (ACLED, OpenSanctions, UN Comtrade, GDELT, World Bank, Wikidata), and forward-looking system dynamics simulation.',
+            summary: 'A 22-engine parallel brain fires on every query - multi-model consensus, goal-directed agent spawning, self-modifying formulas, live intelligence from 10+ global APIs (ACLED, OpenSanctions, UN Comtrade, GDELT, World Bank, Wikidata), and forward-looking system dynamics simulation.',
             full: (
                 <div className="space-y-6">
                     <p className="text-sm text-slate-700 leading-relaxed">These systems give the OS the ability to act on its own &mdash; not just respond to prompts. They plan research, spawn specialist agents, evolve their own scoring models based on outcomes, query live global data sources in real time, and simulate futures with cascading feedback loops. Every autonomous action is governed by gates that control what happens without human approval.</p>
@@ -258,9 +258,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [demoTyping, setDemoTyping] = useState(false);
     const demoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const DEMO_MESSAGES = [
-        { role: 'user' as const, text: "Head of strategy, Cairns Regional Development Authority. We want to attract a cold-chain logistics hub — developer has expressed interest. Need the investment case, critical risks, and who we should be engaging." },
-        { role: 'system' as const, text: 'Jurisdiction: Australia — Queensland · Sector: Logistics / Cold-chain · Policy Pack: Asia-Pacific Advisory · Readiness: 42% → proceeding.' },
-        { role: 'assistant' as const, text: "Cairns has a structurally strong case — airport freight capacity, Port expansion, and Queensland's agriculture corridor create real demand pull.\n\n3 critical flags: counterparty integrity (CIS verification required), competing priority risk (FNQ infrastructure stall history), workforce gap (no local cold-chain talent pool).\n\nEngage now: NAIF (likely funder), Woolworths/Coles (anchor tenant demand validation), James Cook University (workforce pipeline).\n\nIs the developer bringing equity or seeking public co-investment?" },
+        { role: 'user' as const, text: "Head of strategy, Cairns Regional Development Authority. We want to attract a cold-chain logistics hub - developer has expressed interest. Need the investment case, critical risks, and who we should be engaging." },
+        { role: 'system' as const, text: 'Jurisdiction: Australia - Queensland · Sector: Logistics / Cold-chain · Policy Pack: Asia-Pacific Advisory · Readiness: 42% → proceeding.' },
+        { role: 'assistant' as const, text: "Cairns has a structurally strong case - airport freight capacity, Port expansion, and Queensland's agriculture corridor create real demand pull.\n\n3 critical flags: counterparty integrity (CIS verification required), competing priority risk (FNQ infrastructure stall history), workforce gap (no local cold-chain talent pool).\n\nEngage now: NAIF (likely funder), Woolworths/Coles (anchor tenant demand validation), James Cook University (workforce pipeline).\n\nIs the developer bringing equity or seeking public co-investment?" },
         { role: 'system' as const, text: 'Case file updated · Readiness: 61% · 5 documents queued: Investment Prospectus, Due Diligence Framework, NAIF Brief, Stakeholder Plan, Risk Register.' },
         { role: 'user' as const, text: "Public-private structure. NAIF deadline is 8 weeks. We need a board-ready package." },
         { role: 'assistant' as const, text: "Eight weeks is workable. Four tracks in parallel: financial model (CAPEX/OPEX, IRR for both tranches), counterparty diligence (CIS + SPV governance), anchor tenant LOI (NAIF requires private demand evidence), First Nations early engagement (mandatory for FNQ).\n\nGenerating: NAIF Submission Brief, Investment Prospectus (board version), Risk Register, Stakeholder Engagement Plan, LOI template.\n\nStart with NAIF brief and risk register, or financial model framework first?" },
@@ -300,7 +300,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         { step: 3, title: "Market Analysis", description: "Demand drivers, supply gaps, competitive landscape, pricing dynamics, and growth trajectory.", details: ["Demand drivers and market size", "Supply gap identification", "Competitive landscape analysis", "Pricing dynamics and benchmarks", "Growth trajectory and projections", "Market entry strategy"], gliEnabled: true, gliNote: "Live intelligence enriches market sizing with GDP, trade flows, and sector benchmarks" },
         { step: 4, title: "Financial Structure", description: "CAPEX, OPEX, revenue model, funding mix, IRR targets, payback expectations, and currency exposure.", details: ["CAPEX and OPEX breakdown", "Revenue model and streams", "Funding mix and sources", "IRR targets and returns", "Payback period expectations", "Currency exposure and hedging"], gliEnabled: true, gliNote: "Tax incentive data, economic zone structures, and cost indicators inform financial modelling" },
         { step: 5, title: "Risk Assessment", description: "Political, regulatory, operational, financial, environmental, and social risks with probability and impact scoring.", details: ["Political and regulatory risk", "Operational risk factors", "Financial and currency risk", "Environmental and social risk", "Probability and impact scoring", "Risk matrix and mitigations"], gliEnabled: true, gliNote: "Political, economic, natural, and regulatory risk scores sourced from live intelligence" },
-        { step: 6, title: "Stakeholder Mapping", description: "Government bodies, investors, partners, communities, and regulators — mapped by influence, interest, and engagement strategy.", details: ["Government bodies and ministries", "Investor and capital partner profiles", "Delivery and implementation partners", "Community and civil society", "Regulators and compliance bodies", "Influence, interest, and engagement matrix"], gliEnabled: true, gliNote: "Major employers, foreign company presence, and key government contacts surfaced from live data" },
+        { step: 6, title: "Stakeholder Mapping", description: "Government bodies, investors, partners, communities, and regulators - mapped by influence, interest, and engagement strategy.", details: ["Government bodies and ministries", "Investor and capital partner profiles", "Delivery and implementation partners", "Community and civil society", "Regulators and compliance bodies", "Influence, interest, and engagement matrix"], gliEnabled: true, gliNote: "Major employers, foreign company presence, and key government contacts surfaced from live data" },
         { step: 7, title: "Implementation Pathway", description: "Phasing, milestones, dependencies, critical path, resource requirements, and decision gates.", details: ["Project phases and sequencing", "Milestone definitions and timelines", "Dependency mapping", "Critical path analysis", "Resource requirements per phase", "Go/no-go decision gates"], gliEnabled: true, gliNote: "Entry timeline guidance and infrastructure readiness indicators from live intelligence" },
         { step: 8, title: "Compliance Requirements", description: "Permits, licenses, environmental approvals, sector-specific regulations, and international standards.", details: ["Permits and licensing requirements", "Environmental approvals and assessments", "Sector-specific regulatory obligations", "International standards compliance", "Anti-bribery and sanctions screening", "GDPR and data handling where applicable"], gliEnabled: true, gliNote: "Jurisdiction-specific regulatory frameworks and compliance risk flags applied automatically" },
         { step: 9, title: "Partnership Terms", description: "Equity split, governance structure, decision rights, exit mechanisms, IP ownership, and non-compete clauses.", details: ["Equity split and ownership structure", "Governance and decision-making rights", "Exit mechanisms and triggers", "IP ownership and licensing", "Non-compete and exclusivity provisions", "Dispute resolution framework"] },
@@ -422,7 +422,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                TIER 1: HERO HOOK — The Trust Gap (Full-Width Narrative)
+                TIER 1: HERO HOOK - The Trust Gap (Full-Width Narrative)
             ═══════════════════════════════════════════════════════════════ */}
             <section id="platform" className="relative py-12 px-4 bg-white overflow-hidden">
                 {/* Subtle background texture */}
@@ -450,7 +450,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </p>
                     </div>
 
-                    {/* Comparison — Photo + Script Cards (matches How It Thinks pattern) */}
+                    {/* Comparison - Photo + Script Cards (matches How It Thinks pattern) */}
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Standard AI Card */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
@@ -507,7 +507,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
             {/* ═══════════════════════════════════════════════════════════════
-                TIER 2: ORIGINAL DEVELOPMENTS — 5 Equal Category Cards
+                TIER 2: ORIGINAL DEVELOPMENTS - 5 Equal Category Cards
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
@@ -531,7 +531,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </p>
                     </div>
 
-                    {/* Six Equal Category Cards (A–E + Architecture) */}
+                    {/* Six Equal Category Cards (A-E + Architecture) */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
                         {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
                             const cat = categoryDetails[key];
@@ -559,7 +559,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             );
                         })}
 
-                        {/* 6th Card — The Intelligence Architecture */}
+                        {/* 6th Card - The Intelligence Architecture */}
                         <div className="group relative bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
                             <div className="bg-gradient-to-r from-slate-900 to-blue-900 p-5">
                                 <div className="flex items-center gap-3 mb-3">
@@ -609,7 +609,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             )}
 
             {/* ═══════════════════════════════════════════════════════════════
-                INTERSTITIAL CTA — Full-Width Break
+                INTERSTITIAL CTA - Full-Width Break
             ═══════════════════════════════════════════════════════════════ */}
             <section className="relative py-16 px-4 overflow-hidden">
                 <div className="absolute inset-0">
@@ -625,12 +625,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                TIER 3: SUPPORTING INFORMATION — Outputs, Assurance, Factory
+                TIER 3: SUPPORTING INFORMATION - Outputs, Assurance, Factory
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
 
-                    {/* What You Walk Away With — Photo + Script Card */}
+                    {/* What You Walk Away With - Photo + Script Card */}
                     <div className="mb-16">
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
                             <div className="h-56 relative overflow-hidden">
@@ -642,7 +642,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             <div className="p-6 md:p-8">
                                 <p className="text-base text-slate-700 leading-relaxed text-justify mb-6">
-                                    You leave with a <strong>complete operating position</strong>—not a pitch deck requiring interpretation, but a defensible strategy with pre-mapped objection responses, stakeholder-specific messaging, and sequenced next steps. BW Ai compresses what typically requires <strong>six months of advisory engagement</strong> into outputs ready for board presentations, investor conversations, regulator submissions, and partnership negotiations on day one.
+                                    You leave with a <strong>complete operating position</strong>-not a pitch deck requiring interpretation, but a defensible strategy with pre-mapped objection responses, stakeholder-specific messaging, and sequenced next steps. BW Ai compresses what typically requires <strong>six months of advisory engagement</strong> into outputs ready for board presentations, investor conversations, regulator submissions, and partnership negotiations on day one.
                                 </p>
 
                                 {/* Reflexive Intelligence */}
@@ -663,7 +663,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Assurance + Document Factory — Two Photo + Script Cards */}
+                    {/* Assurance + Document Factory - Two Photo + Script Cards */}
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Assurance Architecture Card */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
@@ -701,7 +701,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                CLOSING — Dark Full-Width Position Statement
+                CLOSING - Dark Full-Width Position Statement
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
                 <div className="max-w-4xl mx-auto text-center">
@@ -728,10 +728,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-xs text-slate-400 max-w-xs leading-relaxed hidden sm:block">Automated display of a live session. Exact replica of the system.</p>
                     </div>
 
-                    {/* Demo window — pixel-match to BWConsultantOS */}
+                    {/* Demo window - pixel-match to BWConsultantOS */}
                     <div className="border border-stone-200 shadow-lg flex flex-col overflow-hidden" style={{ fontFamily: "'Söhne','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif", height: '480px' }}>
 
-                        {/* Header banner — identical to BWConsultantOS */}
+                        {/* Header banner - identical to BWConsultantOS */}
                         <div className="px-6 py-4 flex items-center justify-between relative overflow-hidden flex-shrink-0"
                             style={{ backgroundImage:'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)', backgroundSize:'cover', backgroundPosition:'center' }}>
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-blue-900/70" />
@@ -760,7 +760,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </button>
                         </div>
 
-                        {/* Main body: chat + right sidebar — flex-1 */}
+                        {/* Main body: chat + right sidebar - flex-1 */}
                         <div className="flex flex-1 overflow-hidden">
 
                             {/* Chat panel */}
@@ -768,7 +768,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {/* Messages scroll area */}
                                 <div className="flex-1 overflow-y-auto p-6 space-y-4">
                                     <div className="flex justify-center">
-                                        <span className="text-[10px] px-3 py-1 bg-white border border-stone-200 text-slate-400">Scenario: Cairns Regional Development Authority — Cold-Chain Logistics Hub, North Queensland</span>
+                                        <span className="text-[10px] px-3 py-1 bg-white border border-stone-200 text-slate-400">Scenario: Cairns Regional Development Authority - Cold-Chain Logistics Hub, North Queensland</span>
                                     </div>
 
                                     {DEMO_MESSAGES.slice(0, demoChatStep).map((msg, i) => (
@@ -816,7 +816,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <div className="flex items-center gap-3 pt-1" style={{ animation:'bwMsgIn 0.25s ease-out' }}>
                                             <div className="flex items-center gap-1.5 text-xs text-slate-400">
                                                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                                                Session complete — 5 documents queued
+                                                Session complete - 5 documents queued
                                             </div>
                                             <button onClick={() => { setDemoChatStep(0); setDemoTyping(false); }}
                                                 className="text-xs px-3 py-1.5 border border-stone-300 text-slate-600 hover:bg-stone-100 transition-colors">
@@ -841,7 +841,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
 
-                            {/* Right sidebar — white, w-80, exact match to BWConsultantOS */}
+                            {/* Right sidebar - white, w-80, exact match to BWConsultantOS */}
                             <div className="w-80 border-l border-stone-200 bg-white flex flex-col flex-shrink-0 overflow-y-auto">
                                 {/* Case Summary header */}
                                 <div className="p-4 border-b border-stone-200 bg-slate-50 flex-shrink-0">
@@ -851,7 +851,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </h2>
                                     {/* Policy Pack */}
                                     <div className={`mt-2 text-[11px] px-2 py-1 border transition-all duration-500 ${demoChatStep >= 2 ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-slate-400 bg-slate-50 border-slate-200'}`}>
-                                        Policy Pack: {demoChatStep >= 2 ? 'Asia-Pacific Advisory' : '—'}
+                                        Policy Pack: {demoChatStep >= 2 ? 'Asia-Pacific Advisory' : '-'}
                                     </div>
                                     {/* Readiness + skill + pilot row */}
                                     <div className="mt-2 flex items-center gap-2 text-[11px]">
@@ -886,7 +886,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
                                         {demoChatStep < DEMO_MESSAGES.length && (
                                             <p className="mt-0.5 text-[10px] text-slate-600">
-                                                Next: HIGH — {demoChatStep < 2 ? 'Jurisdiction & sector' : demoChatStep < 4 ? 'Counterparty verification' : 'Anchor tenant evidence'}
+                                                Next: HIGH - {demoChatStep < 2 ? 'Jurisdiction & sector' : demoChatStep < 4 ? 'Counterparty verification' : 'Anchor tenant evidence'}
                                             </p>
                                         )}
                                     </div>
@@ -924,7 +924,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <h3 className="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">NSIL Signals Extracted</h3>
                                     <div className="space-y-2">
                                         {[
-                                            { label: 'Jurisdiction', value: 'Australia — Queensland', step: 2 },
+                                            { label: 'Jurisdiction', value: 'Australia - Queensland', step: 2 },
                                             { label: 'Sector', value: 'Cold-chain / Logistics', step: 2 },
                                             { label: 'Policy Pack', value: 'Asia-Pacific Advisory', step: 2 },
                                             { label: 'Counterparty', value: 'Developer (CIS pending)', step: 3 },
@@ -975,7 +975,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {expandedPersona === 'council' && (
                                     <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
                                         <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
-                                        <p>&bull; Investment Prospectus (1–100 pages, scored and stress-tested)</p>
+                                        <p>&bull; Investment Prospectus (1-100 pages, scored and stress-tested)</p>
                                         <p>&bull; Structural Twin Analysis &mdash; matched to historical parallels from 10+ countries</p>
                                         <p>&bull; Project Lifecycle Map with phased milestones and decision gates</p>
                                         <p>&bull; Latent Advantage Mining &mdash; surfaces hidden regional assets</p>
@@ -1010,7 +1010,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {expandedPersona === 'government' && (
                                     <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5 text-xs text-slate-600">
                                         <p className="font-semibold text-slate-800 mb-1">Full deliverable list:</p>
-                                        <p>&bull; Scored Viability Assessment with overall viability rating (0–100)</p>
+                                        <p>&bull; Scored Viability Assessment with overall viability rating (0-100)</p>
                                         <p>&bull; Ethical &amp; Governance Gate Report &mdash; flags compliance gaps before approval</p>
                                         <p>&bull; Friction Analysis &mdash; identifies execution blockers and stakeholder misalignment</p>
                                         <p>&bull; Case Study Upload &amp; Analysis &mdash; upload proposals or mandates for instant NSIL scoring</p>
@@ -1116,7 +1116,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         Every report you generate is measured against IFC Performance Standards and UN Sustainable Development Goals &mdash; the same frameworks used by the World Bank, DFIs, and 100+ global financial institutions. You don&rsquo;t need to know the standards. You just need to answer the intake questions.
                     </p>
 
-                    {/* How It Works — 3 step cards */}
+                    {/* How It Works - 3 step cards */}
                     <div className="grid md:grid-cols-3 gap-6 mb-10">
                         <div className="bg-white border-2 border-slate-200 p-6 hover:shadow-md transition-shadow">
                             <div className="flex items-center gap-3 mb-4">
@@ -1150,7 +1150,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* What this means for you — callout */}
+                    {/* What this means for you - callout */}
                     <div className="bg-gradient-to-r from-blue-100 to-blue-50 border-l-4 border-blue-500 p-6 rounded-r-xl mb-0">
                         <h3 className="text-base font-bold text-slate-900 mb-3">What This Means For You</h3>
                         <div className="grid md:grid-cols-3 gap-4">
@@ -1182,7 +1182,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         We&rsquo;re not looking for customers. We&rsquo;re looking for partners &mdash; organisations willing to put this system to work on real problems and help us sharpen it. Every pilot shapes the intelligence. Every partnership makes the platform stronger for every user after you. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
                     </p>
 
-                    {/* Three Partnership Cards — partner-focused */}
+                    {/* Three Partnership Cards - partner-focused */}
                     <div className="grid md:grid-cols-3 gap-6">
                         <div className="bg-white border-2 border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             <div className="h-36 relative overflow-hidden">
@@ -2001,7 +2001,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </section>
 
-                        {/* Stage 2 — Adversarial Analysis */}
+                        {/* Stage 2 - Adversarial Analysis */}
                         <section className="py-8 px-6 md:px-8 bg-slate-50 border-t border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-amber-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">STAGE 2 &mdash; ADVERSARIAL ANALYSIS</p>
@@ -2042,7 +2042,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </section>
 
-                        {/* Stage 3 — Institutional Output */}
+                        {/* Stage 3 - Institutional Output */}
                         <section className="py-8 px-6 md:px-8 bg-white border-t border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-emerald-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">STAGE 3 &mdash; INSTITUTIONAL OUTPUT</p>
@@ -3620,7 +3620,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Popup header */}
                         <div className="sticky top-0 z-10 bg-gradient-to-r from-slate-900 to-slate-800 rounded-t-lg px-8 py-6 flex items-center justify-between">
                             <div>
-                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">NSIL Runtime — How It Thinks Now</p>
+                                <p className="text-blue-400 uppercase tracking-[0.2em] text-sm font-bold mb-1">NSIL Runtime - How It Thinks Now</p>
                                 <h3 className="text-2xl font-bold text-white">Inside the NSIL &mdash; Current Layers, Formulas &amp; Engines</h3>
                             </div>
                             <button onClick={() => setShowFormulas(false)} className="text-slate-400 hover:text-white transition-colors p-2">
@@ -3696,7 +3696,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <strong>User Signal Decoder</strong> &mdash; Shannon entropy analysis of narrative patterns. Detects repetition (uncertainty), avoidance (hidden concerns), emotional emphasis (priority signals). Acts as mirror to surface unspoken decision drivers.
                                 </div>
                                 <div>
-                                    <strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself. Flags when NSIL's own conclusions align too strongly with your stated preferences—runs explicit contradiction checks.
+                                    <strong>Internal Echo Detector</strong> &mdash; Prevents confirmation bias inside the machine itself. Flags when NSIL's own conclusions align too strongly with your stated preferences-runs explicit contradiction checks.
                                 </div>
                                 <div>
                                     <strong>Investment Lifecycle Mapper</strong> &mdash; Identifies project stage (pre-launch, scaling, plateau, exit) and adjusts analytical framework. Early-stage deals need different risk tolerance than late-stage exits.
@@ -3977,19 +3977,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     NSIL current runtime is built on:
                                 </p>
                                 <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-700 mb-3">
-                                    <li><strong>34+ Specialized Intelligence Engines</strong> — Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus proactive and reflexive engines</li>
-                                    <li><strong>12 Core Algorithm Engines</strong> — From vector memory retrieval to frontier intelligence with negotiation simulation</li>
-                                    <li><strong>10-Layer Deterministic Pipeline</strong> — Laws &rarr; Shield &rarr; Boardroom &rarr; Engine &rarr; Stress Test &rarr; Brain &rarr; Autonomous &rarr; Proactive &rarr; Output &rarr; Reflexive</li>
-                                    <li><strong>46+ Proprietary Formulas</strong> — Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring</li>
-                                    <li><strong>7 Neuroscience Models</strong> — Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
-                                    <li><strong>22-Engine Parallel Brain</strong> — BrainIntegrationService fires formula indices, regional kernel, decision pipeline, domain agents, persona debate, derived indices, OSINT, ReactiveIntelligence, GlobalIssueResolver, SelfImprovementEngine, ACLED, OpenSanctions, UN Comtrade, and Tavily simultaneously via Promise.allSettled</li>
-                                    <li><strong>10+ Live External Data APIs</strong> — ACLED conflict data, OpenSanctions screening, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata SPARQL, Wikipedia, REST Countries, DuckDuckGo web search, Tavily deep research — every data point timestamped with confidence scoring</li>
-                                    <li><strong>Regional Development Kernel</strong> — RegionalDevelopmentOrchestrator, Partner Intelligence Engine, Problem-to-Solution Graph, Global Data Fabric, Outcome Learning Service</li>
-                                    <li><strong>Case Study Method Layer</strong> — 5-gate methodological validation enforced across all entry paths before any output generates</li>
-                                    <li><strong>Reactive Agentic Runtime</strong> — Streamed responses, draft-time signal extraction, concurrent planner/executor tasks, message-level provenance confidence, adaptive query routing (info/person/location/complex analysis detection), and world knowledge grants on every turn</li>
-                                    <li><strong>Self-Learning &amp; Self-Improvement Loop</strong> — SelfImprovementEngine (runtime weight tuning with Welch&rsquo;s t-test drift detection and rollback), selfLearningEngine (EventBus-driven continuous learning from every system event), GlobalIssueResolver (universal problem-solver with root cause analysis)</li>
-                                    <li><strong>8 Global Issue Packs</strong> — Water Security, Energy Transition, Logistics Corridors, Housing Systems, Health Systems, Digital Infrastructure, Workforce Transition, Climate Resilience</li>
-                                    <li><strong>Output at Scale</strong> — 156+ letter templates, 247+ document outputs, adaptive intake-to-generation flow, full case study analysis, multi-audience translation, partner-aware institutional drafting</li>
+                                    <li><strong>34+ Specialized Intelligence Engines</strong> - Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus proactive and reflexive engines</li>
+                                    <li><strong>12 Core Algorithm Engines</strong> - From vector memory retrieval to frontier intelligence with negotiation simulation</li>
+                                    <li><strong>10-Layer Deterministic Pipeline</strong> - Laws &rarr; Shield &rarr; Boardroom &rarr; Engine &rarr; Stress Test &rarr; Brain &rarr; Autonomous &rarr; Proactive &rarr; Output &rarr; Reflexive</li>
+                                    <li><strong>46+ Proprietary Formulas</strong> - Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring</li>
+                                    <li><strong>7 Neuroscience Models</strong> - Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
+                                    <li><strong>22-Engine Parallel Brain</strong> - BrainIntegrationService fires formula indices, regional kernel, decision pipeline, domain agents, persona debate, derived indices, OSINT, ReactiveIntelligence, GlobalIssueResolver, SelfImprovementEngine, ACLED, OpenSanctions, UN Comtrade, and Tavily simultaneously via Promise.allSettled</li>
+                                    <li><strong>10+ Live External Data APIs</strong> - ACLED conflict data, OpenSanctions screening, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata SPARQL, Wikipedia, REST Countries, DuckDuckGo web search, Tavily deep research - every data point timestamped with confidence scoring</li>
+                                    <li><strong>Regional Development Kernel</strong> - RegionalDevelopmentOrchestrator, Partner Intelligence Engine, Problem-to-Solution Graph, Global Data Fabric, Outcome Learning Service</li>
+                                    <li><strong>Case Study Method Layer</strong> - 5-gate methodological validation enforced across all entry paths before any output generates</li>
+                                    <li><strong>Reactive Agentic Runtime</strong> - Streamed responses, draft-time signal extraction, concurrent planner/executor tasks, message-level provenance confidence, adaptive query routing (info/person/location/complex analysis detection), and world knowledge grants on every turn</li>
+                                    <li><strong>Self-Learning &amp; Self-Improvement Loop</strong> - SelfImprovementEngine (runtime weight tuning with Welch&rsquo;s t-test drift detection and rollback), selfLearningEngine (EventBus-driven continuous learning from every system event), GlobalIssueResolver (universal problem-solver with root cause analysis)</li>
+                                    <li><strong>8 Global Issue Packs</strong> - Water Security, Energy Transition, Logistics Corridors, Housing Systems, Health Systems, Digital Infrastructure, Workforce Transition, Climate Resilience</li>
+                                    <li><strong>Output at Scale</strong> - 156+ letter templates, 247+ document outputs, adaptive intake-to-generation flow, full case study analysis, multi-audience translation, partner-aware institutional drafting</li>
                                 </ul>
                                 <p className="text-sm text-slate-700 italic font-semibold">
                                     Every recommendation has a complete audit trail. Every formula has published mathematics. Every engine has working code. This is not a chatbot narrative generator &mdash; it is an operating system for institutional intelligence, regional development, and strategic translation across government, banking, and private-sector contexts. Built from ground truth. Benchmarked against real decisions. Ready for sovereign-grade deployment.

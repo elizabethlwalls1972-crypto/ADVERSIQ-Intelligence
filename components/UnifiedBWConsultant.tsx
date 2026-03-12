@@ -202,7 +202,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
           const summaryLines = result.sections
             .slice(0, 3)
             .map((s: { heading: string; content: string }) => `**${s.heading}:** ${s.content.slice(0, 180)}...`);
-          const proactiveNote = `Here's what I found for "${queryText}":\n\n${summaryLines.join('\n\n')}\n\nI've prepared a full Fact Sheet with deeper analysis — it's open now. Need me to dig into a specific angle? Just tell me what detail matters most.`;
+          const proactiveNote = `Here's what I found for "${queryText}":\n\n${summaryLines.join('\n\n')}\n\nI've prepared a full Fact Sheet with deeper analysis - it's open now. Need me to dig into a specific angle? Just tell me what detail matters most.`;
           setChatMessages(prev => [...prev, { type: 'bw', text: proactiveNote }]);
           setCurrentQuery(queryText);
           setFactSheetResponse(result);
@@ -248,12 +248,12 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
     void processQuery(prompt);
   }, [initialPrompt, detectedContext, processQuery]);
 
-  // Landing page UI — Landscape ChatGPT-style: wide, compact, no vertical scroll
+  // Landing page UI - Landscape ChatGPT-style: wide, compact, no vertical scroll
   if (detectedContext === 'landing') {
     return (
       <>
         <div className={`flex flex-col bg-white overflow-hidden ${className}`} style={{ fontFamily: "'Söhne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
-          {/* LANDSCAPE LAYOUT — response left, input right */}
+          {/* LANDSCAPE LAYOUT - response left, input right */}
           <div className="flex flex-col md:flex-row" style={{ height: '340px' }}>
             {/* LEFT: Response / Chat Area */}
             <div className="flex-1 overflow-y-auto p-5 space-y-3 bg-stone-50 border-r border-stone-200">
@@ -262,7 +262,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                   <Brain size={36} className="text-blue-200 mb-3" />
                   <h3 className="text-base font-semibold text-slate-700 mb-1">How can I help you today?</h3>
                   <p className="text-xs text-slate-500 max-w-sm leading-relaxed mb-4">
-                    Proactive intelligence — provide a location, company, or topic and I'll deliver strategic insights.
+                    Proactive intelligence - provide a location, company, or topic and I'll deliver strategic insights.
                   </p>
                   <div className="grid grid-cols-2 gap-2 w-full max-w-md">
                     {[
@@ -334,7 +334,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                       handleSubmit(e);
                     }
                   }}
-                  placeholder="Describe what you need — a location, company, sector, investment question, or risk scenario...\n\nThe more detail you provide, the more precise my analysis."
+                  placeholder="Describe what you need - a location, company, sector, investment question, or risk scenario...\n\nThe more detail you provide, the more precise my analysis."
                   disabled={isLoading}
                   className="flex-1 px-4 py-3 text-sm border border-stone-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 resize-none leading-relaxed"
                 />
@@ -353,7 +353,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
                 </div>
               </form>
               <div className="px-4 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700">
-                <strong>NSIL Agentic Runtime</strong> — Proactive intelligence activates when you provide
+                <strong>NSIL Agentic Runtime</strong> - Proactive intelligence activates when you provide
               </div>
             </div>
           </div>
@@ -428,7 +428,7 @@ export const UnifiedBWConsultant: React.FC<UnifiedBWConsultantProps> = ({
 
       {/* INFO */}
       <div className="px-3 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700">
-        <strong>NSIL v3.2</strong> — Powered by multi-agent intelligence
+        <strong>NSIL v3.2</strong> - Powered by multi-agent intelligence
       </div>
     </div>
   );

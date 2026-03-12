@@ -4,7 +4,7 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  * 
  * Detects when the world has changed enough that past patterns no longer apply.
- * This is the "self-aware" layer — the system questioning its own assumptions.
+ * This is the "self-aware" layer - the system questioning its own assumptions.
  * 
  * Three types of drift detected:
  *   1. CONCEPT DRIFT: The relationship between inputs and outcomes has changed

@@ -15,7 +15,7 @@
  *   7. Partner/investment matching readiness
  *   8. Recommended documents & letters to generate
  *
- * This service bridges the upload gap — uploaded documents are no longer
+ * This service bridges the upload gap - uploaded documents are no longer
  * cosmetic. Every uploaded file feeds directly into the intelligence pipeline.
  *
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -406,23 +406,23 @@ function runAdversarialDebate(text: string, scores: CaseStudyAnalysis['scores'],
   const majorStrengths = strengths.filter(s => s.severity !== 'minor');
 
   const skeptic = criticalWeaknesses.length > 0
-    ? `This case has ${criticalWeaknesses.length} critical gap(s): ${criticalWeaknesses.map(w => w.category).join(', ')}. Overall viability at ${scores.overallViability}% is not defensible for investment without addressing these. Financial viability scores only ${scores.financialViability}/100 — no investor will proceed without clearer revenue models, cost structures, and exit pathways. The sustainability question remains unanswered.`
+    ? `This case has ${criticalWeaknesses.length} critical gap(s): ${criticalWeaknesses.map(w => w.category).join(', ')}. Overall viability at ${scores.overallViability}% is not defensible for investment without addressing these. Financial viability scores only ${scores.financialViability}/100 - no investor will proceed without clearer revenue models, cost structures, and exit pathways. The sustainability question remains unanswered.`
     : `The case is structurally sound but scores ${scores.overallViability}/100 overall. Evidence strength (${scores.evidenceStrength}/100) and risk management (${scores.riskManagement}/100) need improvement before this reaches investor-grade. Specific quantitative outcomes would strengthen confidence.`;
 
   const advocate = majorStrengths.length > 0
     ? `This case demonstrates ${majorStrengths.length} notable strengths: ${majorStrengths.slice(0, 3).map(s => s.category).join(', ')}. Governance quality at ${scores.governanceQuality}/100 and stakeholder alignment at ${scores.stakeholderAlignment}/100 show institutional foundations exist. The replication viability score of ${scores.replicationViability}/100 indicates potential for scaling to similar contexts. With targeted improvements to the identified gaps, this case could become a strong investment/partnership proposition.`
     : `The case addresses a real development need and attempts a structured approach. The implementation process is documented, which provides a foundation. With additional evidence and financial modeling, this could progress.`;
 
-  const regulator = `From a compliance and governance standpoint: governance quality scores ${scores.governanceQuality}/100. ${scores.governanceQuality > 60 ? 'Institutional structures are present, but need clear accountability chains, reporting obligations, and sunset clauses.' : 'The governance framework is insufficient for regulatory confidence. Need clear legal mandates, accountability structures, oversight bodies, and compliance monitoring.'} Risk management at ${scores.riskManagement}/100 ${scores.riskManagement > 50 ? 'identifies risks but needs mitigation protocols with trigger thresholds.' : 'is critically weak — no structured risk register, no mitigation hierarchy, no escalation procedures.'}`;
+  const regulator = `From a compliance and governance standpoint: governance quality scores ${scores.governanceQuality}/100. ${scores.governanceQuality > 60 ? 'Institutional structures are present, but need clear accountability chains, reporting obligations, and sunset clauses.' : 'The governance framework is insufficient for regulatory confidence. Need clear legal mandates, accountability structures, oversight bodies, and compliance monitoring.'} Risk management at ${scores.riskManagement}/100 ${scores.riskManagement > 50 ? 'identifies risks but needs mitigation protocols with trigger thresholds.' : 'is critically weak - no structured risk register, no mitigation hierarchy, no escalation procedures.'}`;
 
   const accountant = `Financial viability: ${scores.financialViability}/100. ${scores.financialViability > 60 ? 'Budget structures exist but need unit economics, cost-per-beneficiary analysis, and sustainability projections.' : 'No adequate financial analysis. Need: total programme cost, cost-per-beneficiary, funding sources, sustainability model, ROI/SROI projections, and exit costs.'} Evidence strength at ${scores.evidenceStrength}/100 ${scores.evidenceStrength > 50 ? 'provides some basis for projections but requires baseline data and counterfactual analysis.' : 'is too low for any credible financial projection. Baseline data and control comparisons essential.'}`;
 
-  const operator = `Implementation readiness: ${scores.implementationReadiness}/100. ${scores.implementationReadiness > 60 ? 'The process is documented and has been tested through pilot implementation. For scaling: need standardized operating procedures, training modules, handover protocols.' : 'Implementation detail is insufficient. Need: phased timeline with milestones, resource allocation per phase, staffing plan, supply chain requirements, and quality assurance checkpoints.'} Stakeholder alignment at ${scores.stakeholderAlignment}/100 ${scores.stakeholderAlignment > 50 ? 'is workable but partnership agreements need formalizing.' : 'is a blocker — without aligned stakeholders, execution will fail regardless of design quality.'}`;
+  const operator = `Implementation readiness: ${scores.implementationReadiness}/100. ${scores.implementationReadiness > 60 ? 'The process is documented and has been tested through pilot implementation. For scaling: need standardized operating procedures, training modules, handover protocols.' : 'Implementation detail is insufficient. Need: phased timeline with milestones, resource allocation per phase, staffing plan, supply chain requirements, and quality assurance checkpoints.'} Stakeholder alignment at ${scores.stakeholderAlignment}/100 ${scores.stakeholderAlignment > 50 ? 'is workable but partnership agreements need formalizing.' : 'is a blocker - without aligned stakeholders, execution will fail regardless of design quality.'}`;
 
   const avgScore = scores.overallViability;
   const consensusStrength = Math.round(avgScore * 0.6 + (criticalWeaknesses.length === 0 ? 20 : 0) + (majorStrengths.length > 2 ? 15 : 5));
   const consensus = avgScore >= 65
-    ? `Conditional proceed. The case has structural merit (${avgScore}/100) but requires specific improvements before it reaches investment or partnership readiness. Address the identified gaps — particularly ${weaknesses.slice(0, 2).map(w => w.category).join(' and ')} — then re-assess.`
+    ? `Conditional proceed. The case has structural merit (${avgScore}/100) but requires specific improvements before it reaches investment or partnership readiness. Address the identified gaps - particularly ${weaknesses.slice(0, 2).map(w => w.category).join(' and ')} - then re-assess.`
     : avgScore >= 40
       ? `Hold and strengthen. The case scores ${avgScore}/100, below the threshold for partner/investor engagement. Fundamental gaps in ${weaknesses.filter(w => w.severity === 'critical').map(w => w.category).join(', ')} must be resolved. Recommend structured development using the guided intake protocol to fill evidence gaps.`
       : `Do not proceed in current form. Overall viability at ${avgScore}/100 indicates the case is not ready for external presentation. Recommend complete rework using the 10-step intake protocol to build from structured foundations.`;
@@ -500,7 +500,7 @@ function recommendDocuments(scores: CaseStudyAnalysis['scores'], sector: string)
   }
 
   const letters: string[] = [];
-  if (scores.partnerMatchReadiness > 40) letters.push('Letter of Intent — Partnership', 'Expression of Interest — Government Project');
+  if (scores.partnerMatchReadiness > 40) letters.push('Letter of Intent - Partnership', 'Expression of Interest - Government Project');
   if (scores.financialViability > 40) letters.push('Investor Update Letter', 'DFI Concept Note Cover Letter');
   if (scores.governanceQuality > 40) letters.push('MoU Proposal Letter', 'Government Incentive Application');
   if (scores.stakeholderAlignment > 30) letters.push('Stakeholder Engagement Letter', 'Community Notification Letter');
@@ -530,7 +530,7 @@ export class CaseStudyAnalyzer {
     // Extract timeframe
     const yearMatches = text.match(/\b(19|20)\d{2}\b/g) || [];
     const years = yearMatches.map(Number).sort();
-    const timeframe = years.length >= 2 ? `${years[0]} — ${years[years.length - 1]}` : years.length === 1 ? `${years[0]}` : 'Not specified';
+    const timeframe = years.length >= 2 ? `${years[0]} - ${years[years.length - 1]}` : years.length === 1 ? `${years[0]}` : 'Not specified';
 
     // Extract and score sections
     const sections = extractSections(text);

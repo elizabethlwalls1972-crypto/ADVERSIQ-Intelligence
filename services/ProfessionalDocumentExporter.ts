@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PROFESSIONAL DOCUMENT EXPORT SERVICE
  * 
  * Generates properly formatted, professional-grade documents suitable for:
@@ -118,22 +118,22 @@ export class ProfessionalDocumentExporter {
           content: '',
           metrics: [
             { 
-              label: 'SPIâ„¢ (Strategic Partnership Index)', 
+              label: 'SPI(Strategic Partnership Index)', 
               value: `${analysisResults.spiScore || 82}/100`, 
               status: (analysisResults.spiScore || 82) >= 70 ? 'positive' : 'neutral' 
             },
             { 
-              label: 'IVASâ„¢ (Investment Viability)', 
+              label: 'IVAS(Investment Viability)', 
               value: `${analysisResults.ivasScore || 76}/100`, 
               status: (analysisResults.ivasScore || 76) >= 70 ? 'positive' : 'neutral' 
             },
             { 
-              label: 'RROIâ„¢ (Regional ROI)', 
+              label: 'RROI(Regional ROI)', 
               value: `${analysisResults.rroi || 18.4}%`, 
               status: (analysisResults.rroi || 18.4) >= 15 ? 'positive' : 'neutral' 
             },
             { 
-              label: 'FRSâ„¢ (Flywheel Readiness)', 
+              label: 'FRS(Flywheel Readiness)', 
               value: `${analysisResults.frsScore || 78}/100`, 
               status: (analysisResults.frsScore || 78) >= 70 ? 'positive' : 'neutral' 
             }
@@ -188,14 +188,14 @@ export class ProfessionalDocumentExporter {
         {
           title: 'Recommended Partners',
           type: 'paragraph',
-          content: `Based on our SEAMâ„¢ (Symbiotic Ecosystem Assessment & Matching) analysis, we have identified strategic partners that align with ${entityName}'s objectives and operational requirements.`
+          content: `Based on our SEAM(Symbiotic Ecosystem Assessment & Matching) analysis, we have identified strategic partners that align with ${entityName}'s objectives and operational requirements.`
         },
         {
           title: 'Partner Rankings',
           type: 'table',
           content: '',
           tableData: {
-            headers: ['Rank', 'Partner', 'SEAMâ„¢ Score', 'Key Strength', 'Consideration'],
+            headers: ['Rank', 'Partner', 'SEAMScore', 'Key Strength', 'Consideration'],
             rows: (analysisResults.partnerMatches || [
               { name: 'Primary Partner Candidate', score: 89, details: 'Strong market presence' },
               { name: 'Alternative Partner 1', score: 76, details: 'Regional expertise' },
@@ -625,7 +625,7 @@ export class ProfessionalDocumentExporter {
     </style>
 </head>
 <body>
-    <button class="print-controls no-print" onclick="window.print()">ðŸ–¨ï¸ Print / Save as PDF</button>
+    <button class="print-controls no-print" onclick="window.print()">-¨ï¸ Print / Save as PDF</button>
     
     ${opts.includeWatermark ? '<div class="watermark">CONFIDENTIAL</div>' : ''}
     
@@ -740,7 +740,7 @@ export class ProfessionalDocumentExporter {
         case 'recommendation':
           return `
             <div class="recommendation-box keep-together">
-                <h3>âœ… Strategic Recommendation: PROCEED</h3>
+                <h3>Strategic Recommendation: PROCEED</h3>
                 <p>${section.content}</p>
             </div>`;
           
@@ -856,7 +856,7 @@ export class ProfessionalDocumentExporter {
     </style>
 </head>
 <body>
-    <button class="print-btn no-print" onclick="window.print()">ðŸ–¨ï¸ Print / PDF</button>
+    <button class="print-btn no-print" onclick="window.print()">-¨ï¸ Print / PDF</button>
     
     <div class="letterhead">
         <h1>${params.senderCompany}</h1>

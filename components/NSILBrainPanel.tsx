@@ -30,25 +30,25 @@ const PersonaCard: React.FC<{
   const config = {
     skeptic: {
       title: 'The Skeptic',
-      icon: '📄',
+      icon: '',
       color: 'red',
       description: 'Finds deal-killers and hidden risks'
     },
     advocate: {
       title: 'The Advocate',
-      icon: '🚀',
+      icon: '',
       color: 'green',
       description: 'Identifies opportunities and synergies'
     },
     regulator: {
       title: 'The Regulator',
-      icon: '🧐',
+      icon: '',
       color: 'blue',
       description: 'Checks legal and compliance requirements'
     },
     accountant: {
       title: 'The Accountant',
-      icon: '📊',
+      icon: '',
       color: 'yellow',
       description: 'Validates financial viability'
     },

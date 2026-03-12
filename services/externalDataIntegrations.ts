@@ -1,4 +1,4 @@
-﻿// Lightweight external data integrations with rate-limited stubs
+// Lightweight external data integrations with rate-limited stubs
 // Purpose: centralize world-bank, numbeo, opencorporates, marine/flight stubs + basic rate limiting
 
 export interface WorldBankIndicators {
@@ -97,7 +97,7 @@ export async function fetchNumbeoCityData(cityName: string): Promise<NumbeoCityD
     const meta = (import.meta as any);
     const key = meta?.env?.VITE_NUMBEO_API_KEY || process.env?.NUMBEO_API_KEY;
     if (!key) {
-      // No API key available — return null (no mock data)
+      // No API key available - return null (no mock data)
       console.log(`[External] Numbeo: No API key configured for ${cityName}. Skipping.`);
       return null;
     }

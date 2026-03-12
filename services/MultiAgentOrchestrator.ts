@@ -2,12 +2,13 @@
 /**
  * MULTI-AGENT ORCHESTRATOR
  * 
- * Central nervous system that coordinates multiple specialized AI agents
- * Uses the live 'runAI_Agent' service to generate real insights.
+ * Central nervous system that coordinates multiple specialized AI agents.
+ * Uses the Unified AI Gateway to route agent tasks to the optimal brain
+ * (Together 70B, Groq 70B, GPT-OSS 120B) with automatic fallback.
  */
 
 import type { ReportParameters } from '../types';
-import { runAI_Agent } from './geminiService';
+import { runAgentViaGateway } from './UnifiedAIGateway';
 
 export interface AgentResponse {
   agentType: 'historical' | 'government' | 'banking' | 'corporate' | 'market' | 'risk' | 'custom';
@@ -51,20 +52,20 @@ export interface SynthesizedAnalysis {
  */
 export class HistoricalPatternAgent {
   static async analyzeHistoricalPatterns(params: ReportParameters, query: string): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Historical Pattern Agent",
-        "Analyze 100 years of economic history to find precedents for this organization's strategy in the target region. Look for boom/bust cycles and policy shifts.",
+        `Analyze 100 years of economic history to find precedents for this organization's strategy in the target region. Look for boom/bust cycles and policy shifts. Query: ${query}`,
         { region: params.region, country: params.country, industry: params.industry, intent: params.strategicIntent }
     );
 
     return {
       agentType: 'historical',
       confidence: result.confidence,
-      sources: ['World Bank Archives (Simulated)', 'Corporate History DB'],
+      sources: ['World Bank Archives', 'Historical Economic Databases'],
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 100,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }
@@ -75,7 +76,7 @@ export class HistoricalPatternAgent {
  */
 export class GovernmentPolicyAgent {
   static async analyzeGovernmentIncentives(params: ReportParameters): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Government Policy Agent",
         "Analyze current and historical government incentives, tax treaties, and regulatory frameworks for foreign direct investment.",
         { country: params.country, sector: params.industry }
@@ -88,7 +89,7 @@ export class GovernmentPolicyAgent {
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 5,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }
@@ -99,7 +100,7 @@ export class GovernmentPolicyAgent {
  */
 export class BankingFinanceAgent {
   static async analyzeFinancingOptions(params: ReportParameters, investmentSize: number): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Banking & Finance Agent",
         `Analyze financing options for a $${investmentSize}M investment. Evaluate interest rates, credit availability, and banking partners.`,
         { country: params.country, revenue: params.revenueBand }
@@ -112,7 +113,7 @@ export class BankingFinanceAgent {
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 1,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }
@@ -123,7 +124,7 @@ export class BankingFinanceAgent {
  */
 export class CorporateStrategyAgent {
   static async analyzeCorporatePatterns(params: ReportParameters): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Corporate Strategy Agent",
         "Analyze expansion patterns of similar corporations. Identify common pivot points and success models.",
         { orgType: params.organizationType, industry: params.industry, size: params.revenueBand }
@@ -136,7 +137,7 @@ export class CorporateStrategyAgent {
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 10,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }
@@ -147,7 +148,7 @@ export class CorporateStrategyAgent {
  */
 export class MarketDynamicsAgent {
   static async analyzeMarketDynamics(params: ReportParameters): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Market Dynamics Agent",
         "Analyze the competitive landscape, entry barriers, and market saturation levels.",
         { region: params.region, industry: params.industry }
@@ -160,7 +161,7 @@ export class MarketDynamicsAgent {
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 2,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }
@@ -171,7 +172,7 @@ export class MarketDynamicsAgent {
  */
 export class RiskAssessmentAgent {
   static async assessInvestmentRisks(params: ReportParameters): Promise<AgentResponse> {
-    const result = await runAI_Agent(
+    const result = await runAgentViaGateway(
         "Risk Assessment Agent",
         "Identify critical failure modes, geopolitical risks, and currency volatility exposure.",
         { country: params.country, riskTolerance: params.riskTolerance }
@@ -180,11 +181,11 @@ export class RiskAssessmentAgent {
     return {
       agentType: 'risk',
       confidence: result.confidence,
-      sources: ['Geopolitical Risk Index', 'Currency Volatility Charts'],
+      sources: ['Geopolitical Risk Index', 'Currency Volatility Data'],
       findings: result.findings,
       recommendations: result.recommendations,
       dataAge: 0,
-      gaps: result.gaps || []
+      gaps: result.gaps
     };
   }
 }

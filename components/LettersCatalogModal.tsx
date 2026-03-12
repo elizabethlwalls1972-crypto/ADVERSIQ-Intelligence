@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — LETTERS & DOCUMENTS CATALOG
+ * BW NEXUS AI - LETTERS & DOCUMENTS CATALOG
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Full 247-document + 156-letter browsable library.
@@ -224,10 +224,10 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
     try {
       await downloadAsDocx(content, {
         title: name.toUpperCase(),
-        subtitle: `${params?.organizationName || 'BW Global Advisory'} — ${params?.country || 'Global'}`,
+        subtitle: `${params?.organizationName || 'BW Global Advisory'} - ${params?.country || 'Global'}`,
         classification: 'CONFIDENTIAL',
         preparedFor: params?.organizationName || 'Client',
-        preparedBy: 'BW Global Advisory — NEXUS AI',
+        preparedBy: 'BW Global Advisory - NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
         reportId: `BWGA-${new Date().getFullYear()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
       });
@@ -420,7 +420,7 @@ const LettersCatalogModal: React.FC<LettersCatalogModalProps> = ({
             BW NEXUS AI &middot; {catalog.totalDocumentTypes} Document Types &middot; {catalog.totalLetterTypes} Letter Templates &middot; Powered by NSIL Agentic Runtime
           </span>
           <span className={generateFn ? 'text-green-600 font-semibold' : 'text-stone-400'}>
-            {generateFn ? '● Generation active — case context injected' : '○ Open via Case Study Builder for AI generation'}
+            {generateFn ? '● Generation active - case context injected' : '○ Open via Case Study Builder for AI generation'}
           </span>
         </div>
       </div>

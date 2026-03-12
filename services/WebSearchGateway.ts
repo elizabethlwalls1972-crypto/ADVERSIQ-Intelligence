@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — WEB SEARCH GATEWAY
+ * BW NEXUS AI - WEB SEARCH GATEWAY
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Unified web search and content extraction service. Provides a single
@@ -12,7 +12,7 @@
  *  3. Falls back to GDELT + Wikipedia when no search API keys
  *  4. Can extract content from specific URLs (via server proxy)
  *
- * This is the "Google access" layer — the ability to search the web
+ * This is the "Google access" layer - the ability to search the web
  * and READ actual web page content, not just titles/snippets.
  * ═══════════════════════════════════════════════════════════════════════════════
  */
@@ -246,7 +246,7 @@ async function extractPageContent(url: string): Promise<WebPageContent | null> {
 // ─── Public API ─────────────────────────────────────────────────────────────
 
 /**
- * Unified web search — automatically picks the best available provider.
+ * Unified web search - automatically picks the best available provider.
  * Provider priority: Server (Serper) → Tavily (client) → GDELT fallback
  */
 export async function webSearch(query: string, opts: SearchOptions = {}): Promise<WebSearchResult[]> {
@@ -290,7 +290,7 @@ export async function webSearch(query: string, opts: SearchOptions = {}): Promis
 }
 
 /**
- * Deep research — search + extract content from top results.
+ * Deep research - search + extract content from top results.
  * Returns search results enriched with full page content.
  */
 export async function deepResearch(

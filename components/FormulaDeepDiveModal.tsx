@@ -84,7 +84,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                             <h4 className="text-sm font-bold text-slate-800 mb-2">Novelty</h4>
                             <ul className="list-disc list-inside space-y-1 text-sm text-slate-600">
                                 <li><span className="font-semibold">Intent Computation:</span> Machine-legible mandates without losing richness.</li>
-                                <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate a' Debate a' Counterfactuals a' Score a' Synthesize a' Deliver.</li>
+                                <li><span className="font-semibold">Governed Reasoning (NSIL):</span> Validate a' Debate a> Counterfactuals a> Score a> Synthesize a' Deliver.</li>
                                 <li><span className="font-semibold">Agentic Brain:</span> Owns the case, anticipates questions, surfaces contradictions, learns continuously.</li>
                             </ul>
                         </div>
@@ -118,7 +118,7 @@ const FormulaDeepDiveModal: React.FC<FormulaDeepDiveModalProps> = ({ isOpen, onC
                             </div>
                             <div className="space-y-1">
                                 <p className="font-semibold text-slate-800">Nexus Path</p>
-                                <p>Governed debate a' counterfactuals a' explainable scores a' live documents that update instantly.</p>
+                                <p>Governed debate a' counterfactuals a> explainable scores a' live documents that update instantly.</p>
                             </div>
                         </div>
                     </section>

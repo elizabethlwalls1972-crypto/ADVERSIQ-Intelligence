@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * USER SIGNAL DECODER — Reflexive Intelligence Layer (Layer 9)
+ * USER SIGNAL DECODER - Reflexive Intelligence Layer (Layer 9)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Theory: Discourse Analysis + Repetition Compulsion (Freud, 1914) +
@@ -12,10 +12,10 @@
  *
  * This engine:
  *   1. Scans ALL user input fields simultaneously
- *   2. Detects repetition — same phrases/concepts across fields
- *   3. Detects avoidance — what SHOULD be mentioned but isn't
- *   4. Detects circularity — returning to the same concern
- *   5. Identifies emotional emphasis — where language intensity spikes
+ *   2. Detects repetition - same phrases/concepts across fields
+ *   3. Detects avoidance - what SHOULD be mentioned but isn't
+ *   4. Detects circularity - returning to the same concern
+ *   5. Identifies emotional emphasis - where language intensity spikes
  *   6. Generates PROACTIVE QUESTIONS the system should ask the user
  *
  * The system should not just answer. It should ask what the user can't.
@@ -159,7 +159,7 @@ export class UserSignalDecoder {
 
   /**
    * Full decode of user inputs.
-   * Finds what they're actually saying — and what they're not.
+   * Finds what they're actually saying - and what they're not.
    */
   static decode(input: UserInputSnapshot): UserSignalReport {
     const allText = this.collectAllText(input);
@@ -263,7 +263,7 @@ export class UserSignalDecoder {
           phrase,
           fieldsFoundIn: fieldList,
           frequency: fields.size,
-          interpretation: `User mentions "${phrase}" across ${fields.size} different input fields, suggesting this is a core concern — possibly more important than they've explicitly stated.`,
+          interpretation: `User mentions "${phrase}" across ${fields.size} different input fields, suggesting this is a core concern - possibly more important than they've explicitly stated.`,
           hiddenPriority: this.interpretRepetition(phrase)
         });
       }
@@ -277,12 +277,12 @@ export class UserSignalDecoder {
 
   private static interpretRepetition(phrase: string): string {
     const p = phrase.toLowerCase();
-    if (p.includes('risk') || p.includes('concern') || p.includes('worry')) return 'Risk anxiety — user may need reassurance or clearer risk mitigation framework';
-    if (p.includes('growth') || p.includes('opportunity') || p.includes('potential')) return 'Growth ambition — user is seeking validation that opportunity is real';
-    if (p.includes('partner') || p.includes('investor') || p.includes('collaboration')) return 'Connection seeking — user may lack network access and needs matchmaking';
-    if (p.includes('community') || p.includes('local') || p.includes('regional')) return 'Place identity — user ties their project to regional identity and pride';
-    if (p.includes('government') || p.includes('policy') || p.includes('regulation')) return 'Institutional navigation — user may be blocked by bureaucratic processes';
-    if (p.includes('funding') || p.includes('capital') || p.includes('budget')) return 'Resource constraint — user needs financing pathways, not just analysis';
+    if (p.includes('risk') || p.includes('concern') || p.includes('worry')) return 'Risk anxiety - user may need reassurance or clearer risk mitigation framework';
+    if (p.includes('growth') || p.includes('opportunity') || p.includes('potential')) return 'Growth ambition - user is seeking validation that opportunity is real';
+    if (p.includes('partner') || p.includes('investor') || p.includes('collaboration')) return 'Connection seeking - user may lack network access and needs matchmaking';
+    if (p.includes('community') || p.includes('local') || p.includes('regional')) return 'Place identity - user ties their project to regional identity and pride';
+    if (p.includes('government') || p.includes('policy') || p.includes('regulation')) return 'Institutional navigation - user may be blocked by bureaucratic processes';
+    if (p.includes('funding') || p.includes('capital') || p.includes('budget')) return 'Resource constraint - user needs financing pathways, not just analysis';
     return 'This topic appears to be a hidden priority the user has not explicitly labelled';
   }
 
@@ -376,15 +376,15 @@ export class UserSignalDecoder {
   private static generateRootQuestion(theme: string, reps: RepetitionSignal[], _fieldTexts: Record<string, string>): string {
     const fieldNames = [...new Set(reps.flatMap(r => r.fieldsFoundIn))];
     switch (theme) {
-      case 'risk': return `What is the specific risk you are most concerned about? You mention risk-related concepts across ${fieldNames.join(', ')} — is there a single scenario you are trying to prevent?`;
-      case 'growth': return `What does success actually look like for you? You reference growth in multiple contexts — is this revenue growth, geographic expansion, capability building, or recognition?`;
-      case 'partner': return `What kind of partner do you actually need? You mention partnerships repeatedly — are you seeking capital, expertise, market access, or legitimacy?`;
-      case 'funding': return `What is your actual funding gap? You reference financial concerns across your inputs — is the core issue access to capital, cost of capital, or cashflow timing?`;
-      case 'government': return `What is the government's actual role in your project? You mention government in multiple contexts — are they a partner, a blocker, a funder, or a regulator?`;
-      case 'community': return `What is the community outcome you are trying to achieve? You emphasise community across your inputs — is this about jobs, services, identity, or political support?`;
-      case 'technology': return `What specific technology capability do you need? Technology appears across your inputs — is this about infrastructure, skills, automation, or digital presence?`;
-      case 'market': return `Which market are you actually targeting? Market references appear across your inputs — is this about domestic demand, export markets, or attracting inbound investment?`;
-      default: return `You mention "${theme}" across ${fieldNames.join(', ')} — what is the single most important question you need answered about this?`;
+      case 'risk': return `What is the specific risk you are most concerned about? You mention risk-related concepts across ${fieldNames.join(', ')} - is there a single scenario you are trying to prevent?`;
+      case 'growth': return `What does success actually look like for you? You reference growth in multiple contexts - is this revenue growth, geographic expansion, capability building, or recognition?`;
+      case 'partner': return `What kind of partner do you actually need? You mention partnerships repeatedly - are you seeking capital, expertise, market access, or legitimacy?`;
+      case 'funding': return `What is your actual funding gap? You reference financial concerns across your inputs - is the core issue access to capital, cost of capital, or cashflow timing?`;
+      case 'government': return `What is the government's actual role in your project? You mention government in multiple contexts - are they a partner, a blocker, a funder, or a regulator?`;
+      case 'community': return `What is the community outcome you are trying to achieve? You emphasise community across your inputs - is this about jobs, services, identity, or political support?`;
+      case 'technology': return `What specific technology capability do you need? Technology appears across your inputs - is this about infrastructure, skills, automation, or digital presence?`;
+      case 'market': return `Which market are you actually targeting? Market references appear across your inputs - is this about domestic demand, export markets, or attracting inbound investment?`;
+      default: return `You mention "${theme}" across ${fieldNames.join(', ')} - what is the single most important question you need answered about this?`;
     }
   }
 
@@ -454,7 +454,7 @@ export class UserSignalDecoder {
   ): ProactiveQuestion[] {
     const questions: ProactiveQuestion[] = [];
 
-    // From avoidances — highest priority
+    // From avoidances - highest priority
     for (const avoidance of avoidances) {
       questions.push({
         id: `avoid-${avoidance.missingTopic.replace(/\s/g, '-')}`,
@@ -466,7 +466,7 @@ export class UserSignalDecoder {
       });
     }
 
-    // From circularities — the root question
+    // From circularities - the root question
     for (const circ of circularities) {
       questions.push({
         id: `circ-${circ.coreConcern}`,
@@ -478,7 +478,7 @@ export class UserSignalDecoder {
       });
     }
 
-    // From repetitions — deeper investigation
+    // From repetitions - deeper investigation
     for (const rep of repetitions.slice(0, 3)) {
       questions.push({
         id: `rep-${rep.phrase.replace(/\s/g, '-').slice(0, 30)}`,
@@ -490,7 +490,7 @@ export class UserSignalDecoder {
       });
     }
 
-    // From emphasis — reframe questions
+    // From emphasis - reframe questions
     const highEmphasis = emphases.filter(e => e.intensityScore > 0.3);
     for (const em of highEmphasis.slice(0, 2)) {
       if (em.emotionalValence === 'defensive') {
@@ -574,10 +574,10 @@ export class UserSignalDecoder {
     const hasRecognitionNeed = repetitions.some(r => r.phrase.includes('overlook') || r.phrase.includes('ignore') || r.phrase.includes('recogni'));
 
     if (hasRegionalContext && hasFundingAnxiety) {
-      return 'The user likely needs concrete funding pathways and institutional-grade documentation to attract investment — not just analysis of whether the opportunity is viable.';
+      return 'The user likely needs concrete funding pathways and institutional-grade documentation to attract investment - not just analysis of whether the opportunity is viable.';
     }
     if (hasRegionalContext && hasRecognitionNeed) {
-      return 'The user likely needs help articulating their region\'s competitive identity in the language that investors and institutions expect — the capability exists, the translation is missing.';
+      return 'The user likely needs help articulating their region\'s competitive identity in the language that investors and institutions expect - the capability exists, the translation is missing.';
     }
     if (hasFundingAnxiety) {
       return 'The user\'s core need appears to be capital access, not strategic analysis. The system should prioritise funding pathway recommendations and investor-ready documentation.';

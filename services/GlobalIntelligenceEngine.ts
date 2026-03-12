@@ -218,7 +218,7 @@ function generateStrategicArtifacts(
       narrative: battlePlanNarrative,
       bullets: [
         `Phase 0 (0-3 months): Stand up an Advisor Console and ingest legacy documents to auto-populate the ${industry} dossier.`,
-        `Phase 1 (3-9 months): Form partner pods across ${region} with shared readiness scorecards (target alignment ${alignmentScore >= 8 ? 'maintain â‰¥8/10' : 'lift to â‰¥8/10'}).`,
+        `Phase 1 (3-9 months): Form partner pods across ${region} with shared readiness scorecards (target alignment ${alignmentScore >= 8 ? 'maintain 8/10' : 'lift to 8/10'}).`,
         `Phase 2 (9-18 months): Deploy capital in sequenced tranches using precedent-based KPIs and digital command centers.`,
       ],
     },

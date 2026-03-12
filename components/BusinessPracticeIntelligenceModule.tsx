@@ -363,7 +363,7 @@ const countryProfiles: { [key: string]: CountryProfile } = {
     bestPractices: [
       'Hire local advisor with royal/government connections (expensive but essential)',
       'Allocate 12-18 months for real negotiations',
-      'Understand that "yes" often means "maybe"a"follow-up constantly',
+      'Understand that "yes- often means "maybe"a"follow-up constantly',
       'Budget for high-level engagement (executive travel, extended stays)',
       'Plan for facilitation payments and consulting fees ($50K-$500K+ common)',
       'Have cultural training on Islam and Middle Eastern business norms'

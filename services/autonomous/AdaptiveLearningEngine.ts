@@ -3,7 +3,7 @@
  * ADAPTIVE LEARNING ENGINE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Learns from EVERY interaction — not just stored cases. Each user query,
+ * Learns from EVERY interaction - not just stored cases. Each user query,
  * report generation, and outcome builds a richer internal model.
  *
  * This is fundamentally different from the existing BacktestingCalibrationEngine
@@ -21,13 +21,13 @@
  *   - Knowledge Distillation:
  *     Extract generalised rules from specific interactions
  *   - Forgetting Curve (Ebbinghaus):
- *     R = e^(-t/S) — knowledge retention decays without reinforcement
+ *     R = e^(-t/S) - knowledge retention decays without reinforcement
  *     The system re-learns patterns that haven't been reinforced recently
  *
  * Why this is unprecedented:
  *   Typical AI systems are static between deployments. This engine continuously
  *   updates its internal model with every interaction, extracts patterns,
- *   and adjusts its confidence — like a human expert gaining experience.
+ *   and adjusts its confidence - like a human expert gaining experience.
  *
  * ═══════════════════════════════════════════════════════════════════════════════
  */
@@ -49,8 +49,8 @@ export interface InteractionRecord {
   input: Record<string, unknown>;
   output: Record<string, unknown>;
   scores: Record<string, number>;
-  userSatisfaction: number | null; // 1–5 if provided
-  outcomeAccuracy: number | null; // 0–100 if outcome is known
+  userSatisfaction: number | null; // 1-5 if provided
+  outcomeAccuracy: number | null; // 0-100 if outcome is known
   patternsExtracted: string[];
 }
 
@@ -63,7 +63,7 @@ export interface LearnedPattern {
   firstSeen: string;
   lastSeen: string;
   reinforcementCount: number;
-  retentionStrength: number; // Ebbinghaus retention 0–1
+  retentionStrength: number; // Ebbinghaus retention 0-1
   associatedCountries: string[];
   associatedSectors: string[];
   actionImplication: string;
@@ -311,9 +311,9 @@ export class AdaptiveLearningEngine {
       const belief = this.beliefs.get(beliefKey);
       if (!belief) continue;
 
-      // Bayesian update — conjugate normal-normal
+      // Bayesian update - conjugate normal-normal
       const observationVariance = 0.05; // assumed observation noise
-      const observation = value / 100; // normalise to 0–1
+      const observation = value / 100; // normalise to 0-1
 
       const newVariance = 1 / (1 / belief.posteriorVariance + 1 / observationVariance);
       const newMean = newVariance * (belief.posteriorMean / belief.posteriorVariance + observation / observationVariance);
@@ -411,9 +411,9 @@ export class AdaptiveLearningEngine {
       : 0;
 
     const recommendations: string[] = [];
-    if (this.ewmaAccuracy < 60) recommendations.push('Consider recalibrating formula weights — prediction accuracy trending low');
-    if (decayed.length > active.length) recommendations.push('Many patterns decaying — system needs more diverse use cases');
-    if (this.ewmaSatisfaction < 3) recommendations.push('User satisfaction trending below 3/5 — investigate common complaint patterns');
+    if (this.ewmaAccuracy < 60) recommendations.push('Consider recalibrating formula weights - prediction accuracy trending low');
+    if (decayed.length > active.length) recommendations.push('Many patterns decaying - system needs more diverse use cases');
+    if (this.ewmaSatisfaction < 3) recommendations.push('User satisfaction trending below 3/5 - investigate common complaint patterns');
 
     return {
       totalInteractions: this.interactions.length,

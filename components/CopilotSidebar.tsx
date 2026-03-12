@@ -88,7 +88,7 @@ export default function CopilotSidebar({ caseId, currentContext }: {
 
   async function runOption(id:string) {
     setLoading(true);
-    append('Requesting: ' + id + '...');
+    append('Requesting: - + id + '...');
     try {
         // Use the existing geminiService instead of fetch
         const mockParams: ReportParameters = currentContext?.params || {} as any;

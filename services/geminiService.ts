@@ -1,12 +1,12 @@
-﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — AI SERVICE (AWS BEDROCK — Claude 3.5 Sonnet)
+ * BW NEXUS AI - AI SERVICE (AWS BEDROCK - Claude 3.5 Sonnet)
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Gemini has been removed. All AI calls now route to:
- *   1. Backend API  (/api/ai/*)  — primary path when server is running
- *   2. AWS Bedrock direct (SigV4) — browser fallback, no server needed
+ *   1. Backend API  (/api/ai/*)  - primary path when server is running
+ *   2. AWS Bedrock direct (SigV4) - browser fallback, no server needed
  *
  * All exports preserve their original function signatures so every component
  * import continues to work without any changes.
@@ -46,7 +46,7 @@ function isTogetherConfigured(): boolean {
 }
 
 /**
- * Primary AI call — Together.ai (Llama 3.1 70B).
+ * Primary AI call - Together.ai (Llama 3.1 70B).
  * Falls back to Bedrock only if Together is not configured.
  */
 async function ai(prompt: string, system = SYSTEM_INSTRUCTION): Promise<string> {
@@ -60,7 +60,7 @@ async function ai(prompt: string, system = SYSTEM_INSTRUCTION): Promise<string> 
 }
 
 /**
- * Streaming AI call — Together.ai (SSE). Falls back to non-streaming if needed.
+ * Streaming AI call - Together.ai (SSE). Falls back to non-streaming if needed.
  */
 async function aiStream(prompt: string, system = SYSTEM_INSTRUCTION, onToken?: (t: string) => void): Promise<string> {
   if (isTogetherConfigured()) {
@@ -421,7 +421,7 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
   const MAX_BYTES = 18 * 1024 * 1024;
 
   if (file.size > MAX_BYTES) {
-    return `[${file.name}] — File too large for extraction (${(file.size / 1024 / 1024).toFixed(1)} MB). Please reduce to under 18 MB.`;
+    return `[${file.name}] - File too large for extraction (${(file.size / 1024 / 1024).toFixed(1)} MB). Please reduce to under 18 MB.`;
   }
 
   // 1. Bedrock vision/document API (PDF, images)
@@ -438,7 +438,7 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
   if (lowerName.endsWith('.pdf')) {
     try {
       const pdfjsLib = await import('pdfjs-dist');
-      // Point the worker at the bundled file in pdfjs-dist — Vite resolves this at build time
+      // Point the worker at the bundled file in pdfjs-dist - Vite resolves this at build time
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
         'pdfjs-dist/build/pdf.worker.min.mjs',
         import.meta.url
@@ -457,14 +457,14 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
       }
       const fullText = pages.join('\n\n').trim();
       if (fullText.length > 50) {
-        return `[${file.name}] (${pdf.numPages} pages — client extracted)\n${fullText.slice(0, 60000)}`;
+        return `[${file.name}] (${pdf.numPages} pages - client extracted)\n${fullText.slice(0, 60000)}`;
       }
     } catch (pdfErr) {
       console.warn('Client-side PDF extraction failed, falling back:', pdfErr);
     }
   }
 
-  // 3. Plain text fallback (txt, md, csv, xml — anything readable as text)
+  // 3. Plain text fallback (txt, md, csv, xml - anything readable as text)
   const isTextLike = ['.txt', '.md', '.csv', '.xml', '.json', '.html', '.htm', '.log'].some(e => lowerName.endsWith(e));
   const ext = Object.keys(SUPPORTED_MIME_TYPES).find(e => lowerName.endsWith(e));
   if (isTextLike || (ext && SUPPORTED_MIME_TYPES[ext]?.startsWith('text/'))) {
@@ -476,6 +476,6 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     } catch { /* ignore */ }
   }
 
-  return `[${file.name}] — File content could not be extracted. Please convert to plain text (.txt) and re-upload, or paste the content directly into the chat.`;
+  return `[${file.name}] - File content could not be extracted. Please convert to plain text (.txt) and re-upload, or paste the content directly into the chat.`;
 };
 

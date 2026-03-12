@@ -1,4 +1,5 @@
-﻿import { EventBus } from './EventBus';
+import { EventBus } from './EventBus';
+import { persistentVectorStore } from './PersistentVectorStore';
 
 export interface MemoryEntry {
   id: string;
@@ -50,6 +51,17 @@ export class PersistentMemorySystem {
 
     await this.saveToStorage();
     EventBus.emit({ type: 'memoryUpdated', reportId: category, cases: [{ id: fullEntry.id, score: fullEntry.confidence, why: fullEntry.lessonsLearned || [fullEntry.action] }] });
+
+    // Bridge to vector store for semantic search capability
+    try {
+      persistentVectorStore.addKnowledge(
+        `[${category}] ${fullEntry.action}`,
+        JSON.stringify({ ...fullEntry.context, lessons: fullEntry.lessonsLearned }),
+        { category, memoryId: fullEntry.id, confidence: fullEntry.confidence }
+      );
+    } catch {
+      // Vector store bridge is non-blocking
+    }
   }
 
   recall(category: string, limit = 10): MemoryEntry[] {
@@ -66,13 +78,31 @@ export class PersistentMemorySystem {
       allEntries.push(...entries);
     }
 
-    return allEntries
+    const keywordResults = allEntries
       .filter(entry =>
         entry.action.toLowerCase().includes(query.toLowerCase()) ||
         JSON.stringify(entry.context).toLowerCase().includes(query.toLowerCase())
       )
       .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
       .slice(0, 20);
+
+    // Also query vector store for semantic matches
+    try {
+      const vectorResults = persistentVectorStore.search(query, 10, 0.3);
+      for (const vr of vectorResults) {
+        const meta = vr.metadata as { memoryId?: string; category?: string } | undefined;
+        if (meta?.memoryId && !keywordResults.some(kr => kr.id === meta.memoryId)) {
+          // Find original entry from store
+          const cat = meta.category || '';
+          const found = (this.memory.get(cat) || []).find(e => e.id === meta.memoryId);
+          if (found) keywordResults.push(found);
+        }
+      }
+    } catch {
+      // Vector search bridge is non-blocking
+    }
+
+    return keywordResults.slice(0, 20);
   }
 
   // Liability Protection
@@ -141,9 +171,9 @@ export class PersistentMemorySystem {
 
     // 3. Suggest improved approach based on confidence level
     if (entry.confidence < 0.3) {
-      lessons.push('Very low confidence — consider gathering additional evidence or context before re-attempting.');
+      lessons.push('Very low confidence - consider gathering additional evidence or context before re-attempting.');
     } else if (entry.confidence < 0.6) {
-      lessons.push('Moderate confidence — partial data available. Cross-reference with similar past actions before re-attempting.');
+      lessons.push('Moderate confidence - partial data available. Cross-reference with similar past actions before re-attempting.');
     }
 
     // 4. Learn from timing patterns
@@ -157,9 +187,9 @@ export class PersistentMemorySystem {
 
     // 5. Context-aware recommendation
     if (contextStr.includes('timeout') || contextStr.includes('network')) {
-      lessons.push('Infrastructure-related failure — check connectivity and retry with exponential backoff.');
+      lessons.push('Infrastructure-related failure - check connectivity and retry with exponential backoff.');
     } else if (contextStr.includes('permission') || contextStr.includes('auth')) {
-      lessons.push('Authorization failure — verify credentials and access scope before retry.');
+      lessons.push('Authorization failure - verify credentials and access scope before retry.');
     }
 
     return lessons.length > 0 ? lessons : [`Action '${entry.action}' failed. Review context and retry with adjusted parameters.`];

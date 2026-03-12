@@ -1,7 +1,7 @@
 ﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * AWS BEDROCK LOCATION INTELLIGENCE SERVICE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * PRODUCTION-READY - AWS BEDROCK ONLY
  * - Uses AWS Bedrock (Claude) for all AI operations
@@ -171,7 +171,7 @@ async function fetchLocationIntelligenceFromServer(
         : ai?.economy?.currency || 'USD',
       climate: ai?.geography?.climate || 'Varies by season',
       areaSize: countryInfo?.area 
-        ? `${countryInfo.area.toLocaleString()} kmÂ²` 
+        ? `${countryInfo.area.toLocaleString()} km²` 
         : ai?.geography?.area || 'Unknown',
       businessHours: '9:00 AM - 5:00 PM',
       _rawWikiExtract: data.wikipedia || undefined
@@ -474,7 +474,7 @@ async function fetchLocationIntelligenceClientSide(
         ? Object.values(countryInfo.currencies).map(c => `${c.name} (${c.symbol})`).join(', ')
         : 'N/A',
       climate: 'Varies by season',
-      areaSize: countryInfo?.area ? `${countryInfo.area.toLocaleString()} kmÂ²` : 'N/A',
+      areaSize: countryInfo?.area ? `${countryInfo.area.toLocaleString()} km²` : 'N/A',
       businessHours: '9:00 AM - 5:00 PM',
       // flagUrl and googleMapsUrl removed to match CityProfile type
       _rawWikiExtract: wikiExtract

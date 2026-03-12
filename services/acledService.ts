@@ -1,8 +1,8 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * ACLED — Armed Conflict Location & Event Data
+ * ACLED - Armed Conflict Location & Event Data
  * ═══════════════════════════════════════════════════════════════════
- * Free API — requires registration at acleddata.com for a key.
+ * Free API - requires registration at acleddata.com for a key.
  * Set VITE_ACLED_KEY and VITE_ACLED_EMAIL in your .env file.
  *
  * Provides: real-time political violence, protest, conflict, and

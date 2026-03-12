@@ -6,7 +6,7 @@
  * - Live Report Mode → PROACTIVE CHATBOT (guides through report)
  */
 
-import { invokeAI } from './awsBedrockService';
+import { callAIGateway } from './UnifiedAIGateway';
 import LiveDataService from './LiveDataService';
 
 export type ConsultantContext = 'landing' | 'live-report';
@@ -159,11 +159,11 @@ export class ContextAwareBWConsultant {
       }
     }
 
-    // Generate fact sheet via AI
+    // Generate fact sheet via multi-brain AI gateway
     const prompt = LANDING_PAGE_PROMPTS.factSheet(query, liveData);
-    const aiResponse = await invokeAI(prompt);
+    const aiResponse = await callAIGateway(prompt, undefined, { taskType: 'general', caller: 'ContextAwareBWConsultant/factSheet' });
 
-    if (aiResponse.provider === 'fallback' || isAIFailureText(aiResponse.text)) {
+    if (isAIFailureText(aiResponse.text)) {
       return {
         format: 'chat-response',
         context: 'landing',
@@ -232,7 +232,7 @@ export class ContextAwareBWConsultant {
     _reportData?: Record<string, unknown>
   ): Promise<ChatResponse> {
     const prompt = LIVE_REPORT_PROMPTS.proactiveChat(query);
-    const aiResponse = await invokeAI(prompt);
+    const aiResponse = await callAIGateway(prompt, undefined, { taskType: 'general', caller: 'ContextAwareBWConsultant/chat' });
 
     // Return natural conversational response
     return {

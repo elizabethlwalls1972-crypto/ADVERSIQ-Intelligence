@@ -1,4 +1,4 @@
-﻿import { EventBus } from './EventBus';
+import { EventBus } from './EventBus';
 import { persistentMemory } from './PersistentMemorySystem';
 
 export interface SubAgent {
@@ -205,7 +205,7 @@ export class AgentSpawner {
       }
     }
 
-    // General-purpose execution — any agent can execute using its capability set
+    // General-purpose execution - any agent can execute using its capability set
     const capUsed = agent.capabilities[0] || 'general';
     if (capabilityMap[capUsed]) {
       return capabilityMap[capUsed]();
@@ -250,7 +250,7 @@ export class AgentSpawner {
 
   private conductResearch(task: AgentTask): string[] {
     const keywords = task.description.split(/\s+/).filter(w => w.length > 3);
-    return keywords.map(kw => `Research signal: ${kw} — context extracted from task scope`);
+    return keywords.map(kw => `Research signal: ${kw} - context extracted from task scope`);
   }
 
   // Terminate agent

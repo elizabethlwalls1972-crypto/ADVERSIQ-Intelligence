@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — PII DETECTION & SCRUBBING SERVICE
+ * BW NEXUS AI - PII DETECTION & SCRUBBING SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Detects and redacts Personally Identifiable Information (PII) from AI
@@ -17,9 +17,9 @@
  *  • Bank account / IBAN numbers
  *
  * Modes:
- *  • 'redact'   — Replace PII with [REDACTED-TYPE]
- *  • 'mask'     — Partially mask (e.g., ****@****.com)
- *  • 'detect'   — Flag only, don't modify text
+ *  • 'redact'   - Replace PII with [REDACTED-TYPE]
+ *  • 'mask'     - Partially mask (e.g., ****@****.com)
+ *  • 'detect'   - Flag only, don't modify text
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 

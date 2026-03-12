@@ -4,7 +4,7 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Autonomous ethical evaluation of every recommendation the system produces.
- * Not a checkbox exercise — this is computational ethics applied to economic
+ * Not a checkbox exercise - this is computational ethics applied to economic
  * development strategy.
  *
  * Mathematical Foundation:
@@ -14,11 +14,11 @@
  *     least-advantaged group benefits
  *   - Proportionality Calculus: benefit must be proportional to risk imposed
  *   - Intergenerational Equity: discount rate for future generations ≤ 1.4%
- *     (Stern Review methodology) — future harm is not discountable
+ *     (Stern Review methodology) - future harm is not discountable
  *
  * Why this is unprecedented:
  *   No investment analysis platform applies formal ethical reasoning frameworks
- *   to score recommendations. Palantir, Kensho, Bloomberg Terminal — none
+ *   to score recommendations. Palantir, Kensho, Bloomberg Terminal - none
  *   calculate a Rawlsian fairness index or intergenerational equity score.
  *   This engine does.
  *
@@ -33,15 +33,15 @@ export interface StakeholderGroup {
   id: string;
   name: string;
   population: number;      // approximate affected population
-  vulnerability: number;   // 0–1, higher = more vulnerable
-  voiceStrength: number;   // 0–1, higher = more political/economic power
-  currentWellbeing: number; // 0–100
+  vulnerability: number;   // 0-1, higher = more vulnerable
+  voiceStrength: number;   // 0-1, higher = more political/economic power
+  currentWellbeing: number; // 0-100
   projectedImpact: number; // -100 to +100 (negative = harmed)
 }
 
 export interface EthicalDimension {
   name: string;
-  score: number;   // 0–100
+  score: number;   // 0-100
   weight: number;  // relative importance
   reasoning: string;
   flags: EthicalFlag[];
@@ -55,7 +55,7 @@ export interface EthicalFlag {
 }
 
 export interface EthicalAssessment {
-  overallEthicsScore: number;      // 0–100
+  overallEthicsScore: number;      // 0-100
   utilitarian: EthicalDimension;
   rawlsian: EthicalDimension;
   environmental: EthicalDimension;
@@ -65,7 +65,7 @@ export interface EthicalAssessment {
   culturalSensitivity: EthicalDimension;
   flags: EthicalFlag[];
   stakeholderImpactMap: StakeholderGroup[];
-  giniCoefficient: number;   // inequality measure 0–1
+  giniCoefficient: number;   // inequality measure 0-1
   recommendation: 'proceed' | 'proceed-with-conditions' | 'redesign' | 'reject';
   conditions: string[];
   processingTimeMs: number;
@@ -81,11 +81,11 @@ export interface EthicalContext {
   displacementRisk: boolean;
   communityConsulted: boolean;
   indigenousLandOverlap: boolean;
-  localOwnershipPercentage: number;      // 0–100
-  profitRepatriationPercentage: number;  // 0–100 (how much profit leaves the region)
+  localOwnershipPercentage: number;      // 0-100
+  profitRepatriationPercentage: number;  // 0-100 (how much profit leaves the region)
   taxIncentivesOffered: boolean;
   labourStandards: 'international' | 'national' | 'below-national' | 'unknown';
-  supplyChainVisibility: number;         // 0–100
+  supplyChainVisibility: number;         // 0-100
 }
 
 // ============================================================================
@@ -170,7 +170,7 @@ function generateStakeholders(ctx: EthicalContext): StakeholderGroup[] {
 export class EthicalReasoningEngine {
 
   /**
-   * Gini Coefficient — measures inequality of impact distribution.
+   * Gini Coefficient - measures inequality of impact distribution.
    * G = (2 Σᵢ i·xᵢ) / (n Σᵢ xᵢ) - (n+1)/n
    * Range: 0 (perfect equality) to 1 (perfect inequality)
    */
@@ -189,7 +189,7 @@ export class EthicalReasoningEngine {
   }
 
   /**
-   * Utilitarian Assessment — greatest good for greatest number.
+   * Utilitarian Assessment - greatest good for greatest number.
    * U = Σᵢ (populationᵢ × impactᵢ) / Σᵢ populationᵢ
    */
   private static assessUtilitarian(stakeholders: StakeholderGroup[]): EthicalDimension {
@@ -205,7 +205,7 @@ export class EthicalReasoningEngine {
       flags.push({
         severity: 'critical',
         dimension: 'Utilitarian',
-        description: 'Net population-weighted impact is negative — more people are harmed than helped',
+        description: 'Net population-weighted impact is negative - more people are harmed than helped',
         mitigation: 'Redesign project to ensure positive aggregate impact across all stakeholder groups'
       });
     }
@@ -221,7 +221,7 @@ export class EthicalReasoningEngine {
   }
 
   /**
-   * Rawlsian Assessment — focus on the least advantaged group.
+   * Rawlsian Assessment - focus on the least advantaged group.
    * Score = impact on the most vulnerable stakeholder group.
    * Inequality is acceptable ONLY if the worst-off group benefits.
    */
@@ -253,7 +253,7 @@ export class EthicalReasoningEngine {
       flags.push({
         severity: 'warning',
         dimension: 'Rawlsian Fairness',
-        description: `Group "${mostVulnerable.name}" has low voice strength (${mostVulnerable.voiceStrength}) and negative impact — classic power asymmetry`,
+        description: `Group "${mostVulnerable.name}" has low voice strength (${mostVulnerable.voiceStrength}) and negative impact - classic power asymmetry`,
         mitigation: 'Establish formal community representation and grievance mechanism'
       });
     }
@@ -301,10 +301,10 @@ export class EthicalReasoningEngine {
   }
 
   /**
-   * Intergenerational Equity — Stern discount rate applied.
+   * Intergenerational Equity - Stern discount rate applied.
    * Future harm weighted at δ = 1.4% annual discount rate (not the typical 3-5%).
    * PV_harm = FV_harm × e^(-0.014 × t)
-   * At 30 years: PV = 0.66 × FV — 2/3 of the future cost still counts TODAY.
+   * At 30 years: PV = 0.66 × FV - 2/3 of the future cost still counts TODAY.
    */
   private static assessIntergenerational(ctx: EthicalContext, stakeholders: StakeholderGroup[]): EthicalDimension {
     const futureGen = stakeholders.find(s => s.id === 'SG-FUTURE-GENERATIONS');
@@ -320,7 +320,7 @@ export class EthicalReasoningEngine {
         severity: 'critical',
         dimension: 'Intergenerational Equity',
         description: `Projected negative impact on future generations: ${futureImpact}. Using Stern discount rate (1.4%), ` +
-          `this registers as ${sternDiscountedImpact.toFixed(1)} in present value — the cost is NOT ignorable.`,
+          `this registers as ${sternDiscountedImpact.toFixed(1)} in present value - the cost is NOT ignorable.`,
         mitigation: 'Redesign to eliminate long-term negative externalities or establish remediation fund'
       });
     }
@@ -348,7 +348,7 @@ export class EthicalReasoningEngine {
       flags.push({
         severity: 'warning',
         dimension: 'Transparency',
-        description: 'Community not consulted — reduces legitimacy and increases opposition risk',
+        description: 'Community not consulted - reduces legitimacy and increases opposition risk',
         mitigation: 'Conduct meaningful community consultation before proceeding'
       });
     }
@@ -362,7 +362,7 @@ export class EthicalReasoningEngine {
       flags.push({
         severity: 'warning',
         dimension: 'Transparency',
-        description: 'Labour standards unknown — cannot assess worker protection',
+        description: 'Labour standards unknown - cannot assess worker protection',
         mitigation: 'Verify labour standards and commit to ILO core conventions'
       });
     }
@@ -378,7 +378,7 @@ export class EthicalReasoningEngine {
   }
 
   /**
-   * Proportionality Assessment — benefit must be proportional to risk imposed.
+   * Proportionality Assessment - benefit must be proportional to risk imposed.
    */
   private static assessProportionality(ctx: EthicalContext, stakeholders: StakeholderGroup[]): EthicalDimension {
     // Calculate benefit-to-harm ratio
@@ -397,7 +397,7 @@ export class EthicalReasoningEngine {
       flags.push({
         severity: 'warning',
         dimension: 'Proportionality',
-        description: `${ctx.profitRepatriationPercentage}% profit repatriation with tax incentives — region bears costs but captures little value`,
+        description: `${ctx.profitRepatriationPercentage}% profit repatriation with tax incentives - region bears costs but captures little value`,
         mitigation: 'Negotiate local reinvestment commitments or reduce incentive generosity'
       });
     }
@@ -426,7 +426,7 @@ export class EthicalReasoningEngine {
         flags.push({
           severity: 'critical',
           dimension: 'Cultural Sensitivity',
-          description: 'Indigenous land overlap without community consultation — violates FPIC principles',
+          description: 'Indigenous land overlap without community consultation - violates FPIC principles',
           mitigation: 'Implement Free, Prior and Informed Consent (FPIC) process per UN Declaration on Indigenous Rights'
         });
       } else {
@@ -518,7 +518,7 @@ export class EthicalReasoningEngine {
   }
 
   /**
-   * Quick ethical check — returns pass/fail with top concern.
+   * Quick ethical check - returns pass/fail with top concern.
    */
   static quickCheck(ctx: EthicalContext): { pass: boolean; score: number; topConcern: string } {
     const result = this.assess(ctx);

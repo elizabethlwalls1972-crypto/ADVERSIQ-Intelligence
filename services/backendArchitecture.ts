@@ -1,4 +1,4 @@
-﻿/**
+/**
  * BACKEND INFRASTRUCTURE REQUIREMENTS
  * 
  * This document outlines the complete backend needed to support
@@ -290,7 +290,7 @@ export const BACKEND_ARCHITECTURE = {
         'Single agent (historical pattern)',
         'Basic data layer',
         'Open source LLM integration',
-        'Frontend â†’ Backend connection'
+        'Frontend-Backend connection'
       ],
       scope: 'One country (Vietnam or India)'
     },

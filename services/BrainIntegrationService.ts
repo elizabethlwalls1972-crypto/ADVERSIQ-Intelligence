@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — BRAIN INTEGRATION SERVICE
+ * BW NEXUS AI - BRAIN INTEGRATION SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * The unified "always-on" background brain that aggregates every analytical
@@ -10,15 +10,15 @@
  * prompt so the consultant speaks from the full intelligence of every engine.
  *
  * Engines activated here (all previously orphaned):
- *  • AdversarialReasoningService   – 5-persona debate + shield + counterfactuals
- *  • ComprehensiveIndicesEngine     – 15 strategic indices (BARNA, CRI, NVI …)
- *  • MultiAgentOrchestrator         – Gemini / GPT-4 / Claude consensus layer
- *  • HistoricalLearningEngine       – 200-year economic pattern matching
- *  • externalDataIntegrations       – World Bank, OpenCorporates, Numbeo
- *  • MotivationDetector             – stakeholder motivation analysis
- *  • PersonaEngine                  – 5-persona analysis
- *  • CounterfactualEngine           – what-if scenario modelling
- *  • OutcomeTracker                 – prior outcome learning
+ *  • AdversarialReasoningService   - 5-persona debate + shield + counterfactuals
+ *  • ComprehensiveIndicesEngine     - 15 strategic indices (BARNA, CRI, NVI …)
+ *  • MultiAgentOrchestrator         - Gemini / GPT-4 / Claude consensus layer
+ *  • HistoricalLearningEngine       - 200-year economic pattern matching
+ *  • externalDataIntegrations       - World Bank, OpenCorporates, Numbeo
+ *  • MotivationDetector             - stakeholder motivation analysis
+ *  • PersonaEngine                  - 5-persona analysis
+ *  • CounterfactualEngine           - what-if scenario modelling
+ *  • OutcomeTracker                 - prior outcome learning
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
@@ -115,31 +115,31 @@ export interface BrainContext {
   recommendedLetterIds: string[];
   /** Methodology knowledge base lookup (internal reference library) */
   methodologyKB: { methodologies: any[]; countryIntel: any; sectorIntel: any[]; internalKnowledgeAvailable: boolean } | null;
-  /** IFC Global Standards — compliance gap analysis */
+  /** IFC Global Standards - compliance gap analysis */
   ifcAssessment: any | null;
-  /** Pattern confidence — historical pattern strength for this case */
+  /** Pattern confidence - historical pattern strength for this case */
   patternAssessment: any | null;
-  /** Maturity engine — 1-5 scale across strategic dimensions */
+  /** Maturity engine - 1-5 scale across strategic dimensions */
   maturityScores: { scores: any[]; insights: any[] } | null;
-  /** Problem-to-solution graph — root causes, bottlenecks, leverage points */
+  /** Problem-to-solution graph - root causes, bottlenecks, leverage points */
   problemGraph: any | null;
-  /** Global data fabric — normalised signals snapshot */
+  /** Global data fabric - normalised signals snapshot */
   dataFabric: any | null;
-  /** Motivation detector — stakeholder motivation red-flags */
+  /** Motivation detector - stakeholder motivation red-flags */
   motivationAnalysis: any | null;
-  /** Counterfactual engine — what-if scenario analysis */
+  /** Counterfactual engine - what-if scenario analysis */
   counterfactualAnalysis: any | null;
   /** Domain agent synthesis (Gov, Banking, Corporate, Market, Risk, Historical) */
   domainAnalysis: SynthesizedAnalysis | null;
-  /** Historical parallel matches — 60 years of documented practice from the case library */
+  /** Historical parallel matches - 60 years of documented practice from the case library */
   historicalParallels: ParallelMatchResult | null;
-  /** Ranked partner candidates — best matched institutional, government, corporate partners */
+  /** Ranked partner candidates - best matched institutional, government, corporate partners */
   rankedPartners: RankedPartner[] | null;
-  /** Situation analysis — perspectives, blind spots, contrarian view */
+  /** Situation analysis - perspectives, blind spots, contrarian view */
   situationAnalysis: { unconsideredNeeds: string[]; blindSpots: string[]; recommendedQuestions: string[]; contrarianView: string } | null;
-  /** Self-learning insights — performance-based recommendations */
+  /** Self-learning insights - performance-based recommendations */
   selfLearningInsights: string[] | null;
-  /** Unbiased analysis — pro/con, debate positions, alternative options */
+  /** Unbiased analysis - pro/con, debate positions, alternative options */
   unbiasedAnalysis: { proPoints: string[]; conPoints: string[]; alternatives: string[] } | null;
   /** 4-persona analysis: Skeptic / Advocate / Regulator / Accountant */
   personaAnalysis: { skepticFindings: string[]; advocateFindings: string[]; regulatorFindings: string[]; accountantFindings: string[] } | null;
@@ -147,13 +147,13 @@ export interface BrainContext {
   referenceEngagements: Array<{ id: string; scenario: string; summary: string; playbook: string[]; outcomes: string[] }> | null;
   /** OSINT results for the target country/org */
   osintResults: Array<{ title: string; url: string; snippet: string }> | null;
-  /** Derived indices — PRI / TCO / CRI computed scores */
+  /** Derived indices - PRI / TCO / CRI computed scores */
   derivedIndices: { pri?: any; cri?: any; tco?: any } | null;
-  /** ConsultantGate — who/where/what/audience/deadline completeness check */
+  /** ConsultantGate - who/where/what/audience/deadline completeness check */
   gateStatus: { isReady: boolean; missing: string[]; summary: Record<string, string> } | null;
-  /** Reactive intelligence — live opportunity signals */
+  /** Reactive intelligence - live opportunity signals */
   reactiveOpportunities: Array<{ id: string; type: string; description?: string; signal?: string }> | null;
-  /** Reactive intelligence — live risk signals */
+  /** Reactive intelligence - live risk signals */
   reactiveRisks: Array<{ id: string; type: string; description?: string; signal?: string }> | null;
 }
 
@@ -275,7 +275,7 @@ function formatExternalDataBlock(ext: BrainContext['externalData'], country: str
 export class BrainIntegrationService {
   /**
    * Run all background engines in parallel and return a rich context block.
-   * Safe to call on every non-trivial turn — results are cached for 3 minutes
+   * Safe to call on every non-trivial turn - results are cached for 3 minutes
    * per unique (country × org × readiness-bucket) key.
    */
   static async enrich(
@@ -337,18 +337,18 @@ export class BrainIntegrationService {
       strategicQuestion.length > 20
         ? MultiAgentOrchestrator.runConsensus(strategicQuestion, { params, readiness }).catch(() => null)
         : Promise.resolve(null),
-      // NSIL Intelligence Hub — national strategic intelligence layer
+      // NSIL Intelligence Hub - national strategic intelligence layer
       Promise.resolve(NSILIntelligenceHub.quickAssess(params)).catch(() => null),
       // Composite score (SPI/IVAS/SCF)
       CompositeScoreService.getScores(params as ReportParameters).catch(() => null),
-      // Compliance framework — jurisdiction-specific alerts
+      // Compliance framework - jurisdiction-specific alerts
       country
         ? Promise.resolve(GlobalComplianceFramework.checkCompliance({
             country,
             sector: (params as any).sector || params.organizationType || undefined,
           })).catch(() => null)
         : Promise.resolve(null),
-      // Case graph — structural relationship map of the case
+      // Case graph - structural relationship map of the case
       Promise.resolve(CaseGraphBuilder.build({
         organizationName: params.organizationName,
         country: params.country,
@@ -357,7 +357,7 @@ export class BrainIntegrationService {
         objectives: ((params as any).strategicIntent || []).join(', ') || (params as any).objectives || '',
         constraints: (params as any).constraints || '',
       })).catch(() => null),
-      // Regional development kernel — ranked interventions and ecosystem analysis
+      // Regional development kernel - ranked interventions and ecosystem analysis
       country && readiness >= 50
         ? Promise.resolve(RegionalDevelopmentOrchestrator.run({
             regionProfile: country,
@@ -373,7 +373,7 @@ export class BrainIntegrationService {
             partnerCandidates: [],
           })).catch(() => null)
         : Promise.resolve(null),
-      // DecisionPipeline — structured decision packet with ranked options
+      // DecisionPipeline - structured decision packet with ranked options
       readiness >= 40 && params.country
         ? DecisionPipeline.run(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
@@ -386,11 +386,11 @@ export class BrainIntegrationService {
             includeCustomData: false,
           }).catch(() => null)
         : Promise.resolve(null),
-      // PersonaEngine — Skeptic / Advocate / Regulator / Accountant
+      // PersonaEngine - Skeptic / Advocate / Regulator / Accountant
       readiness >= 30
         ? PersonaEngine.runFullAnalysis(params).catch(() => null)
         : Promise.resolve(null),
-      // DerivedIndexService — PRI (Political Risk), TCO (Total Cost), CRI (Country Risk)
+      // DerivedIndexService - PRI (Political Risk), TCO (Total Cost), CRI (Country Risk)
       params.country && readiness >= 35
         ? Promise.all([
             DerivedIndexService.calculatePRI(params as ReportParameters).catch(() => null),
@@ -398,39 +398,39 @@ export class BrainIntegrationService {
             DerivedIndexService.calculateCRI(params as ReportParameters).catch(() => null),
           ]).catch(() => null)
         : Promise.resolve(null),
-      // OSINT search — live open-source intelligence for country/org
+      // OSINT search - live open-source intelligence for country/org
       (country || orgName) && readiness >= 25
         ? osintSearch(`${country} ${orgName} strategic investment opportunities`.trim(), ['government', 'news', 'business'], 6).catch(() => null)
         : Promise.resolve(null),
-      // ReactiveIntelligenceEngine — opportunity detection
+      // ReactiveIntelligenceEngine - opportunity detection
       country && readiness >= 40
         ? ReactiveIntelligenceEngine.detectOpportunities(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
-      // ReactiveIntelligenceEngine — live risk monitoring
+      // ReactiveIntelligenceEngine - live risk monitoring
       country && readiness >= 40
         ? ReactiveIntelligenceEngine.monitorRisks(params as ReportParameters).catch(() => null)
         : Promise.resolve(null),
-      // GlobalIssueResolver — universal problem-solver treating any query as a solvable issue
+      // GlobalIssueResolver - universal problem-solver treating any query as a solvable issue
       strategicQuestion.length > 20
         ? new GlobalIssueResolver().resolveIssue(strategicQuestion.substring(0, 300)).catch(() => null)
         : Promise.resolve(null),
-      // SelfImprovementEngine — runtime weight tuning and regression correction
+      // SelfImprovementEngine - runtime weight tuning and regression correction
       readiness >= 50
         ? selfImprovementEngine.analyzeAndImprove().catch(() => null)
         : Promise.resolve(null),
-      // ACLED — real-time conflict & political violence data
+      // ACLED - real-time conflict & political violence data
       country && readiness >= 30
         ? getACLEDSummary(country).catch(() => null)
         : Promise.resolve(null),
-      // OpenSanctions — sanctions & PEP screening for the target org/partner
+      // OpenSanctions - sanctions & PEP screening for the target org/partner
       orgName
         ? screenEntitySanctions(orgName).catch(() => null)
         : Promise.resolve(null),
-      // UN Comtrade — bilateral trade statistics for the target country
+      // UN Comtrade - bilateral trade statistics for the target country
       country && readiness >= 30
         ? fetchComtradeData(country).catch(() => null)
         : Promise.resolve(null),
-      // Tavily — deep web research on the strategic question (needs API key)
+      // Tavily - deep web research on the strategic question (needs API key)
       strategicQuestion.length > 20 && readiness >= 40
         ? tavilyResearchQuestion(strategicQuestion, country).catch(() => null)
         : Promise.resolve(null),
@@ -475,7 +475,7 @@ export class BrainIntegrationService {
       ? osintRaw.slice(0, 5).map(r => ({ title: r.title || '', url: r.url || '', snippet: r.snippet || r.body || '' }))
       : null;
 
-    // ReactiveIntelligenceEngine — opportunity + risk signals
+    // ReactiveIntelligenceEngine - opportunity + risk signals
     const reactiveOpportunitiesRaw = reactiveOpportunitiesResult.status === 'fulfilled' ? reactiveOpportunitiesResult.value as any[] | null : null;
     const reactiveOpportunities = Array.isArray(reactiveOpportunitiesRaw)
       ? reactiveOpportunitiesRaw.slice(0, 5).map(o => ({ id: o.id || '', type: o.type || 'opportunity', description: o.description || o.signal || '', signal: o.signal || '' }))
@@ -486,25 +486,25 @@ export class BrainIntegrationService {
       ? reactiveRisksRaw.slice(0, 5).map(r => ({ id: r.id || '', type: r.type || 'risk', description: r.description || r.signal || '', signal: r.signal || '' }))
       : null;
 
-    // GlobalIssueResolver — structured issue analysis
+    // GlobalIssueResolver - structured issue analysis
     const globalIssueAnalysis = globalIssueResult.status === 'fulfilled' ? globalIssueResult.value as any | null : null;
 
-    // SelfImprovementEngine — weight tuning actions (fire-and-forget, no prompt injection needed)
+    // SelfImprovementEngine - weight tuning actions (fire-and-forget, no prompt injection needed)
     void (selfImprovementResult); // consumed for side-effects only
 
-    // ACLED — conflict events
+    // ACLED - conflict events
     const acledSummary = acledResult.status === 'fulfilled' ? acledResult.value as import('./acledService').ACLEDSummary | null : null;
 
-    // OpenSanctions — partner screening
+    // OpenSanctions - partner screening
     const sanctionsScreen = sanctionsResult.status === 'fulfilled' ? sanctionsResult.value as import('./openSanctionsService').SanctionsScreenResult | null : null;
 
-    // UN Comtrade — trade data
+    // UN Comtrade - trade data
     const comtradeData = comtradeResult.status === 'fulfilled' ? comtradeResult.value as import('./unComtradeService').ComtradeData | null : null;
 
-    // Tavily — synthesized research answer
+    // Tavily - synthesized research answer
     const tavilyResearch = tavilyResult.status === 'fulfilled' ? tavilyResult.value as import('./tavilySearchService').TavilySearchResponse | null : null;
 
-    // ConsultantGate — sync evaluation of case completeness
+    // ConsultantGate - sync evaluation of case completeness
     const gateStatus = (() => {
       try {
         const result = ConsultantGateService.evaluate(params as ReportParameters);
@@ -512,7 +512,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // GlobalIntelligenceEngine — sync reference engagement matching
+    // GlobalIntelligenceEngine - sync reference engagement matching
     const referenceEngagements = (() => {
       try {
         const model = buildAdvisorInputFromParams(params as ReportParameters);
@@ -527,7 +527,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // Unpack new engines (indices 13–20 in the settled array)
+    // Unpack new engines (indices 13-20 in the settled array)
     const _settledAll = [
       indicesResult, adversarialResult, historicalResult, worldBankData,
       openCorpData, numbeoData, consensusResult, nsilResult, compositeResult,
@@ -535,7 +535,7 @@ export class BrainIntegrationService {
     ];
     // The 7 new engines were added after decisionResult in the allSettled array.
     // We need to destructure from the original Promise.allSettled call.
-    // They are NOT in settledAll above — they're in the raw call below.
+    // They are NOT in settledAll above - they're in the raw call below.
     // We re-run them synchronously (cached) via direct assignment:
     const methodologyKB = (() => { try { return MethodologyKnowledgeBase.lookupAll({ country, industry: (params as any).sector ? [(params as any).sector] : undefined, problemStatement: strategicQuestion || (params as any).currentMatter || '' }); } catch { return null; } })();
     const patternAssessment = (() => { try { return PatternConfidenceEngine.assess(params as ReportParameters); } catch { return null; } })();
@@ -543,7 +543,7 @@ export class BrainIntegrationService {
     const problemGraph = (() => { try { return ((params as any).currentMatter || strategicQuestion) ? ProblemToSolutionGraphService.buildGraph({ currentMatter: (params as any).currentMatter || strategicQuestion, objectives: (params as any).objectives || strategicQuestion, constraints: (params as any).constraints || '', evidenceNotes: (params as any).uploadedDocuments || [] }) : null; } catch { return null; } })();
     const dataFabric = (() => { try { return country ? GlobalDataFabricService.buildSnapshot(country, (params as any).jurisdiction || country, [(params as any).organizationType || '', (params as any).sector || ''].filter(Boolean)) : null; } catch { return null; } })();
 
-    // ── Situation Analysis Engine — perspectives, blind spots, contrarian view ─
+    // ── Situation Analysis Engine - perspectives, blind spots, contrarian view ─
     const situationAnalysis = (() => {
       try {
         const summary = SituationAnalysisEngine.quickSummary(params);
@@ -556,7 +556,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // ── Self-Learning Engine — performance-based recommendations ──────────────
+    // ── Self-Learning Engine - performance-based recommendations ──────────────
     const selfLearningInsights = (() => {
       try {
         const recs = (selfLearningEngine as any).getRecommendations?.();
@@ -564,7 +564,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // ── Unbiased Analysis Engine — pro/con, debate, alternatives ─────────────
+    // ── Unbiased Analysis Engine - pro/con, debate, alternatives ─────────────
     const unbiasedAnalysis = (() => {
       try {
         const eng = new UnbiasedAnalysisEngine();
@@ -580,7 +580,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // ── OutcomeTracker — track enrichment run for learning ────────────────────
+    // ── OutcomeTracker - track enrichment run for learning ────────────────────
     (() => {
       try {
         const tracker = new OutcomeTracker();
@@ -590,7 +590,7 @@ export class BrainIntegrationService {
       } catch { /* non-critical */ }
     })();
 
-    // ── Historical Parallel Matcher — 60 years of global case evidence ────────
+    // ── Historical Parallel Matcher - 60 years of global case evidence ────────
     const historicalParallels: ParallelMatchResult | null = (() => {
       try {
         if (readiness >= 15 && (country || strategicQuestion || (params as any).currentMatter)) {
@@ -603,7 +603,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })();
 
-    // ── Partner Intelligence Engine — ranked institutional/corporate matches ──
+    // ── Partner Intelligence Engine - ranked institutional/corporate matches ──
     const GLOBAL_PARTNER_CANDIDATES: PartnerCandidate[] = [
       { id: 'ifc', name: 'IFC (Intl Finance Corporation)', type: 'multilateral', countries: ['global'], sectors: ['infrastructure', 'finance', 'agribusiness', 'manufacturing', 'technology', 'healthcare'] },
       { id: 'adb', name: 'Asian Development Bank', type: 'multilateral', countries: ['philippines', 'vietnam', 'indonesia', 'thailand', 'india', 'bangladesh', 'cambodia', 'china', 'myanmar'], sectors: ['infrastructure', 'energy', 'urban', 'agriculture', 'finance', 'climate'] },
@@ -632,16 +632,16 @@ export class BrainIntegrationService {
         return null;
       } catch { return null; }
     })();
-    // IFC assessment (sync path — assessProject is synchronous)
+    // IFC assessment (sync path - assessProject is synchronous)
     const ifcAssessment = (() => { try { return (country && ((params as any).sector || (params as any).organizationType)) ? IFCGlobalStandardsEngine.assessProject({ country, sector: (params as any).sector || (params as any).organizationType || 'investment', projectType: (params as any).organizationType || 'investment', investmentSizeM: 10, hasESMS: readiness >= 60, hasLaborPolicies: true, prohibitsChildLabor: true, prohibitsForcedLabor: true, hasOHSProgram: readiness >= 50 }) : null; } catch { return null; } })();
 
-    // Motivation Detector — stakeholder motivation red-flags (sync static)
+    // Motivation Detector - stakeholder motivation red-flags (sync static)
     const motivationAnalysis = (() => { try { return MotivationDetector.analyze(params as ReportParameters); } catch { return null; } })();
 
-    // Counterfactual Engine — what-if scenario modelling (sync static)
+    // Counterfactual Engine - what-if scenario modelling (sync static)
     const counterfactualAnalysis = (() => { try { return CounterfactualEngine.analyze(params); } catch { return null; } })();
 
-    // narrativeSynthesisEngine — bound for future prompt reference (singleton)
+    // narrativeSynthesisEngine - bound for future prompt reference (singleton)
     const _narrativeSynth = narrativeSynthesisEngine;
     void _narrativeSynth;
 
@@ -684,8 +684,8 @@ export class BrainIntegrationService {
     // ── Build the combined prompt block ───────────────────────────────────────
     const promptParts: string[] = [
       `\n\n${'═'.repeat(70)}`,
-      `## BWGA AI BRAIN CONTEXT — Readiness ${readiness}% — ${new Date().toISOString()}`,
-      `This block is injected from the background intelligence layer. Use it to inform your response — do not summarise it verbatim, but let it shape the precision and depth of your recommendations.`,
+      `## BWGA AI BRAIN CONTEXT - Readiness ${readiness}% - ${new Date().toISOString()}`,
+      `This block is injected from the background intelligence layer. Use it to inform your response - do not summarise it verbatim, but let it shape the precision and depth of your recommendations.`,
     ];
 
     if (indices) promptParts.push(formatIndicesBlock(indices));
@@ -758,7 +758,7 @@ export class BrainIntegrationService {
         promptParts.push(`\n### ── REGIONAL DEVELOPMENT KERNEL (${country}) ──`);
         promptParts.push(`**Top Recommended Interventions:**`);
         (rk.interventions as any[]).slice(0, 3).forEach((iv: any) => {
-          promptParts.push(`- **${iv.title}** (score: ${iv.score}) — ${iv.rationale}`);
+          promptParts.push(`- **${iv.title}** (score: ${iv.score}) - ${iv.rationale}`);
         });
       }
       if (rk.executionPlan?.length) {
@@ -785,7 +785,7 @@ export class BrainIntegrationService {
     if (storedPartners.length) {
       promptParts.push(`\n### ── KNOWN PARTNERS IN SYSTEM (${storedPartners.length}) ──`);
       storedPartners.forEach((p: any) => {
-        promptParts.push(`- **${p.name}** (${p.country || '?'}) — ${p.sector || p.type || ''}${p.trustScore ? ` | Trust: ${p.trustScore}` : ''}`);
+        promptParts.push(`- **${p.name}** (${p.country || '?'}) - ${p.sector || p.type || ''}${p.trustScore ? ` | Trust: ${p.trustScore}` : ''}`);
       });
     }
 
@@ -867,7 +867,7 @@ export class BrainIntegrationService {
       if (df.signals?.length) {
         promptParts.push(`\n### ── GLOBAL DATA FABRIC SIGNALS (${(df.signals as any[]).length}) ──`);
         (df.signals as any[]).slice(0, 4).forEach((s: any) => {
-          promptParts.push(`- [${(s.type || 'signal').toUpperCase()}] ${s.headline || s.title || s.summary || ''}${s.impact ? ` — Impact: ${s.impact}` : ''}`);
+          promptParts.push(`- [${(s.type || 'signal').toUpperCase()}] ${s.headline || s.title || s.summary || ''}${s.impact ? ` - Impact: ${s.impact}` : ''}`);
         });
       }
     }
@@ -900,7 +900,7 @@ export class BrainIntegrationService {
       promptParts.push(`**Synthesis:** ${historicalParallels.synthesisInsight}`);
       if (historicalParallels.matches[0]) {
         const top = historicalParallels.matches[0];
-        promptParts.push(`**Closest Precedent:** ${top.title} (${top.country}, ${top.year}) — ${top.outcome} — "${top.description.substring(0, 150)}"`);
+        promptParts.push(`**Closest Precedent:** ${top.title} (${top.country}, ${top.year}) - ${top.outcome} - "${top.description.substring(0, 150)}"`);
         if (top.lessonsLearned?.length) promptParts.push(`**Key Lessons:** ${top.lessonsLearned.slice(0, 2).join(' | ')}`);
       }
       if (historicalParallels.commonSuccessFactors.length) {
@@ -916,12 +916,12 @@ export class BrainIntegrationService {
 
     // ── Ranked Partner Candidates ─────────────────────────────────────────────
     if (rankedPartners && rankedPartners.length > 0) {
-      promptParts.push(`\n### ── PARTNER INTELLIGENCE ENGINE — Top ${Math.min(4, rankedPartners.length)} Ranked Partners for ${country} ──`);
+      promptParts.push(`\n### ── PARTNER INTELLIGENCE ENGINE - Top ${Math.min(4, rankedPartners.length)} Ranked Partners for ${country} ──`);
       rankedPartners.slice(0, 4).forEach((rp, i) => {
         const reasons = rp.reasons.slice(0, 2).join(', ') || 'general strategic alignment';
-        promptParts.push(`${i + 1}. **${rp.partner.name}** (${rp.partner.type}) — Score: ${rp.score.total}/100 | Fit: ${rp.score.partnerFit} | Policy Alignment: ${rp.score.policyAlignment} | Delivery: ${rp.score.deliveryReliability} — ${reasons}`);
+        promptParts.push(`${i + 1}. **${rp.partner.name}** (${rp.partner.type}) - Score: ${rp.score.total}/100 | Fit: ${rp.score.partnerFit} | Policy Alignment: ${rp.score.policyAlignment} | Delivery: ${rp.score.deliveryReliability} - ${reasons}`);
       });
-      promptParts.push(`When advising on partners, introductions, letters of intent, or engagement strategies — reference these ranked matches with their scores and alignment rationale.`);
+      promptParts.push(`When advising on partners, introductions, letters of intent, or engagement strategies - reference these ranked matches with their scores and alignment rationale.`);
     }
 
     // ── Counterfactual Analysis ───────────────────────────────────────────────
@@ -1007,7 +1007,7 @@ export class BrainIntegrationService {
     if (referenceEngagements && referenceEngagements.length) {
       promptParts.push(`\n### ── REFERENCE ENGAGEMENTS (CASE LIBRARY) ──`);
       referenceEngagements.slice(0, 2).forEach(e => {
-        promptParts.push(`**${e.scenario}** — ${e.summary}`);
+        promptParts.push(`**${e.scenario}** - ${e.summary}`);
         if (e.playbook.length) promptParts.push(`  Playbook: ${e.playbook.slice(0, 2).join(' / ')}`);
         if (e.outcomes.length) promptParts.push(`  Outcomes: ${e.outcomes.slice(0, 2).join(' / ')}`);
       });
@@ -1017,7 +1017,7 @@ export class BrainIntegrationService {
     if (osintResults && osintResults.length) {
       promptParts.push(`\n### ── OSINT LIVE INTELLIGENCE ──`);
       osintResults.slice(0, 3).forEach(r => {
-        promptParts.push(`**${r.title}** — ${r.snippet.substring(0, 150)}`);
+        promptParts.push(`**${r.title}** - ${r.snippet.substring(0, 150)}`);
       });
     }
 
@@ -1068,11 +1068,11 @@ export class BrainIntegrationService {
       if (sanctionsScreen.flaggedLists.length) promptParts.push(`**Flagged Lists:** ${sanctionsScreen.flaggedLists.join(', ')}`);
       sanctionsScreen.hits.slice(0, 2).forEach(h => {
         const tags = [h.isSanctioned ? '🚫 SANCTIONED' : '', h.isPEP ? '⚠️ PEP' : ''].filter(Boolean).join(' ');
-        promptParts.push(`- ${h.name} [${h.schema}] ${tags}${h.position ? ` — ${h.position}` : ''}`);
+        promptParts.push(`- ${h.name} [${h.schema}] ${tags}${h.position ? ` - ${h.position}` : ''}`);
       });
     } else if (sanctionsScreen) {
       promptParts.push(`\n### ── SANCTIONS & PEP SCREENING ──`);
-      promptParts.push(`**Entity:** ${sanctionsScreen.query} | **Status:** ✅ Clear — No matches on monitored sanctions lists.`);
+      promptParts.push(`**Entity:** ${sanctionsScreen.query} | **Status:** ✅ Clear - No matches on monitored sanctions lists.`);
     }
 
     // ── UN Comtrade Trade Data ────────────────────────────────────────────────

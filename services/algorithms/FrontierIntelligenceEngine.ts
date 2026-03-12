@@ -276,7 +276,7 @@ const buildInstitutionalMemory = async (params: ReportParameters): Promise<Insti
   ];
 
   const learnedRules = [
-    'Regulatory certainty precedes capital velocity by 2–4 quarters',
+    'Regulatory certainty precedes capital velocity by 2-4 quarters',
     'Local partner credibility accelerates permit throughput',
     'FX volatility above 6% requires hedging in contract terms'
   ];
@@ -413,7 +413,7 @@ const buildStakeholderSimulation = (base: ReturnType<typeof deriveBaseScores>): 
 const buildExplainabilityContract = (params: ReportParameters, inputs: FrontierIntelligenceInputs): ExplainabilityContract => {
   const assumptions = [
     params.revenueBand ? 'Revenue band validated' : 'Revenue band missing: assume mid-market baseline',
-    params.headcountBand ? 'Headcount band validated' : 'Headcount band missing: assume 250–500 employees',
+    params.headcountBand ? 'Headcount band validated' : 'Headcount band missing: assume 250-500 employees',
     params.strategicIntent?.length ? 'Strategic intent provided' : 'Strategic intent inferred from mandate'
   ];
 

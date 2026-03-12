@@ -122,7 +122,7 @@ function parseMarkdownToBlocks(markdown: string): Block[] {
       i++; continue;
     }
 
-    // Horizontal rule — page-break-style separator
+    // Horizontal rule - page-break-style separator
     if (/^---+$/.test(trimmed)) {
       blocks.push(new Paragraph({ text: '', pageBreakBefore: true }));
       i++; continue;
@@ -267,7 +267,7 @@ function buildCoverPage(meta: DocxDocumentMeta): Paragraph[] {
       spacing: { before: 40, after: 40 },
     }),
     new Paragraph({
-      children: [new TextRun({ text: `CONFIDENTIAL — Not for distribution without prior written authorisation. Prepared exclusively for the named recipient.`, size: 16, color: '888888', italics: true })],
+      children: [new TextRun({ text: `CONFIDENTIAL - Not for distribution without prior written authorisation. Prepared exclusively for the named recipient.`, size: 16, color: '888888', italics: true })],
       alignment: AlignmentType.CENTER,
       spacing: { before: 600, after: 0 },
     }),
@@ -307,7 +307,7 @@ function buildStrategicIntelligenceAppendix(meta: DocxDocumentMeta): Paragraph[]
     lines.push(new Paragraph({ text: 'Top Overlooked Regional Opportunities', heading: HeadingLevel.HEADING_2, spacing: { before: 140, after: 80 } }));
     meta.topRegionalOpportunities!.slice(0, 5).forEach((opportunity, index) => {
       lines.push(new Paragraph({
-        children: parseInline(`${index + 1}. **${opportunity.place}** — Opportunity score: **${opportunity.score}**`),
+        children: parseInline(`${index + 1}. **${opportunity.place}** - Opportunity score: **${opportunity.score}**`),
         spacing: { before: 60, after: 40 }
       }));
       (opportunity.reason || []).slice(0, 3).forEach((reason) => {
@@ -350,7 +350,7 @@ export async function exportToDocx(
 
   const headerPara = new Paragraph({
     children: [
-      new TextRun({ text: `${meta.title} — ${meta.preparedFor}`, size: 16, color: '666666' }),
+      new TextRun({ text: `${meta.title} - ${meta.preparedFor}`, size: 16, color: '666666' }),
     ],
     alignment: AlignmentType.RIGHT,
   });

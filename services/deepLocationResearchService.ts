@@ -1,7 +1,7 @@
 ﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * DEEP LOCATION RESEARCH SERVICE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  * 
  * COMPREHENSIVE fact-finding intelligence system that:
  * 1. Extracts REAL data from multiple sources (Wikipedia, Wikidata, news)
@@ -11,7 +11,7 @@
  * 5. Suggests similar cities for comparison
  * 
  * NO PLACEHOLDERS - REAL DATA OR EXPLICIT "NOT FOUND" STATUS
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
@@ -155,7 +155,7 @@ async function deepWikipediaExtract(locationQuery: string): Promise<WikipediaExt
     
     // Split by common section headers
     const sectionHeaders = [
-      'History', 'Geography', 'Climate', 'Demographics', 'Economy', 
+      'History', 'Geography', 'Climate', 'Demographics', 'Economy',
       'Government', 'Infrastructure', 'Education', 'Culture', 'Tourism',
       'Transportation', 'Notable people', 'Sister cities', 'References'
     ];
@@ -263,8 +263,8 @@ function extractDataFromWikiText(text: string): {
 
   // Area patterns
   const areaPatterns = [
-    /area[:\s]+([0-9,]+(?:\.[0-9]+)?)\s*(?:kmÂ²|sq\s*km|square\s*kilometers?)/gi,
-    /([0-9,]+(?:\.[0-9]+)?)\s*(?:kmÂ²|sq\s*km|square\s*kilometers?)/gi,
+    /area[:\s]+([0-9,]+(?:\.[0-9]+)?)\s*(?:km²|sq\s*km|square\s*kilometers?)/gi,
+    /([0-9,]+(?:\.[0-9]+)?)\s*(?:km²|sq\s*km|square\s*kilometers?)/gi,
     /covers?\s+(?:an\s+)?area\s+of\s+([0-9,]+(?:\.[0-9]+)?)/gi
   ];
 
@@ -273,7 +273,7 @@ function extractDataFromWikiText(text: string): {
     if (match) {
       const numMatch = match[0].match(/([0-9,]+(?:\.[0-9]+)?)/);
       if (numMatch) {
-        result.area = `${numMatch[1]} kmÂ²`;
+        result.area = `${numMatch[1]} km²`;
         break;
       }
     }

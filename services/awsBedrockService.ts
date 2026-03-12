@@ -1,5 +1,5 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * TOGETHER.AI SERVICE (legacy name: awsBedrockService)
  * 
  * NOTE: Despite the filename, ALL code in this file calls Together.ai.
@@ -20,12 +20,12 @@ const TOGETHER_MODEL   = (import.meta as ImportMeta & { env?: Record<string, str
 const _TOGETHER_KEY    = () => (import.meta as ImportMeta & { env?: Record<string, string> }).env?.VITE_TOGETHER_API_KEY || '';
 
 /**
- * Core Together.ai call — supports streaming and non-streaming.
+ * Core Together.ai call - supports streaming and non-streaming.
  * This is the single function all AI calls route through.
  */
 async function invokeTogetherAI(
   userPrompt: string,
-  systemPrompt = 'You are BWGA AI — a senior strategic advisor powered by the BW NEXUS AI agentic runtime. Be concise, professional, and evidence-based.',
+  systemPrompt = 'You are BWGA AI - a senior strategic advisor powered by the BW NEXUS AI agentic runtime. Be concise, professional, and evidence-based.',
   onToken?: (t: string) => void
 ): Promise<string> {
   const key = _TOGETHER_KEY();
@@ -47,7 +47,7 @@ async function invokeTogetherAI(
   }
 
   // Direct Together.ai (browser → API)
-  if (!key) throw new Error('VITE_TOGETHER_API_KEY not set in .env — add it and restart dev server');
+  if (!key) throw new Error('VITE_TOGETHER_API_KEY not set in .env - add it and restart dev server');
 
   const body = JSON.stringify({
     model: TOGETHER_MODEL,
@@ -618,25 +618,25 @@ export const isDirectBedrockConfigured = (): boolean => {
   return true;
 };
 
-// SigV4 helpers removed — Together.ai uses a simple Bearer token.
+// SigV4 helpers removed - Together.ai uses a simple Bearer token.
 async function _signBedrockRequest(_body: string, _path: string): Promise<Record<string, string>> {
   return { 'Content-Type': 'application/json' };
 }
 
 /**
  * Direct browser → Together.ai invoke.
- * Drop-in replacement for invokeBedrockDirect — same signature.
+ * Drop-in replacement for invokeBedrockDirect - same signature.
  */
 export async function invokeBedrockDirect(
   userPrompt: string,
-  systemPrompt = 'You are BWGA AI — a senior strategic advisor powered by the BW NEXUS AI agentic runtime.'
+  systemPrompt = 'You are BWGA AI - a senior strategic advisor powered by the BW NEXUS AI agentic runtime.'
 ): Promise<string> {
   return invokeTogetherAI(userPrompt, systemPrompt);
 }
 
 /**
  * Streaming version via Together.ai SSE.
- * Drop-in replacement for invokeBedrockDirectStream — same signature.
+ * Drop-in replacement for invokeBedrockDirectStream - same signature.
  */
 export async function invokeBedrockDirectStream(
   userPrompt: string,
@@ -686,11 +686,11 @@ export async function extractFileViaBedrock(file: File): Promise<string> {
   // Send extracted text to Together.ai for analysis
   try {
     const extractedText = ext
-      ? `[Attached ${ext.slice(1).toUpperCase()} file: ${file.name} — binary content provided as base64. Describe and extract key contents.]`
+      ? `[Attached ${ext.slice(1).toUpperCase()} file: ${file.name} - binary content provided as base64. Describe and extract key contents.]`
       : (contentBlock as Record<string, unknown>).text as string || '';
     if (!extractedText.trim()) return '';
     return await invokeTogetherAI(
-      `Extract ALL key information from this document — organizations, countries, objectives, decisions, financials, timelines, stakeholders, findings, and risks. Be thorough and structured.\n\n${extractedText}`,
+      `Extract ALL key information from this document - organizations, countries, objectives, decisions, financials, timelines, stakeholders, findings, and risks. Be thorough and structured.\n\n${extractedText}`,
       'You are a document intelligence specialist. Extract and organize all meaningful information clearly.'
     );
   } catch { return ''; }

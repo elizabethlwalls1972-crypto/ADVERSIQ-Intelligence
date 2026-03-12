@@ -1,21 +1,21 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * SITUATION ANALYSIS ENGINE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  *
  * The engine that sees what the user is asking from ALL perspectives:
- *   1. Explicit Needs â€” what they literally said
- *   2. Implicit Needs â€” what they meant but didn't articulate
- *   3. Unconsidered Needs â€” what they don't know they need
- *   4. Contrarian View â€” what would a sceptic say?
- *   5. Historical Parallel â€” what happened before in similar situations?
- *   6. Stakeholder View â€” how do OTHER stakeholders see this?
- *   7. Time-Horizon View â€” short/medium/long-term divergence
+ *   1. Explicit Needs " what they literally said
+ *   2. Implicit Needs " what they meant but didn't articulate
+ *   3. Unconsidered Needs " what they don't know they need
+ *   4. Contrarian View " what would a sceptic say?
+ *   5. Historical Parallel " what happened before in similar situations?
+ *   6. Stakeholder View " how do OTHER stakeholders see this?
+ *   7. Time-Horizon View " short/medium/long-term divergence
  *
- * This engine is the "parent in the room" â€” it looks beyond what's asked
+ * This engine is the "parent in the room" " it looks beyond what's asked
  * and surfaces what a 60-year experienced advisor would raise.
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import { ReportParameters } from '../types';
@@ -73,7 +73,7 @@ export interface SituationAnalysisResult {
 export class SituationAnalysisEngine {
 
   /**
-   * Full situation analysis â€” sees the problem from all 7 angles.
+   * Full situation analysis " sees the problem from all 7 angles.
    */
   static analyse(params: Partial<ReportParameters>): SituationAnalysisResult {
     const p = params as Record<string, unknown>;
@@ -88,13 +88,13 @@ export class SituationAnalysisEngine {
     const _objectives = (p.strategicObjectives as string[]) || [];
     const timeline = (p.expansionTimeline as string) || 'medium-term';
 
-    // 1. Explicit needs â€” what they literally asked for
+    // 1. Explicit needs " what they literally asked for
     const explicitNeeds = this.extractExplicitNeeds(params);
 
-    // 2. Implicit needs â€” what they meant but didn't say
+    // 2. Implicit needs " what they meant but didn't say
     const implicitNeeds = this.extractImplicitNeeds(params, country, sector, intent, orgType);
 
-    // 3. Unconsidered needs â€” what a 60-year advisor would raise
+    // 3. Unconsidered needs " what a 60-year advisor would raise
     const unconsideredNeeds = this.findUnconsideredNeeds(params, country, sector, intent, orgType, risk);
 
     // 4. Contrarian view
@@ -141,9 +141,9 @@ export class SituationAnalysisEngine {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // EXPLICIT NEEDS â€” what they literally said
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
+  // EXPLICIT NEEDS " what they literally said
+  // 
 
   private static extractExplicitNeeds(params: Partial<ReportParameters>): string[] {
     const needs: string[] = [];
@@ -167,9 +167,9 @@ export class SituationAnalysisEngine {
     return needs;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // IMPLICIT NEEDS â€” what they meant but didn't articulate
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
+  // IMPLICIT NEEDS " what they meant but didn't articulate
+  // 
 
   private static extractImplicitNeeds(
     params: Partial<ReportParameters>,
@@ -180,33 +180,33 @@ export class SituationAnalysisEngine {
   ): string[] {
     const implicit: string[] = [];
 
-    // If seeking partnerships â†’ implicitly needs due diligence framework
+    // If seeking partnerships ' implicitly needs due diligence framework
     if (intent.toLowerCase().includes('partner')) {
       implicit.push('Due diligence framework for partner vetting');
       implicit.push('Exit strategy if partnership underperforms');
     }
 
-    // If entering new country â†’ implicitly needs regulatory mapping
+    // If entering new country ' implicitly needs regulatory mapping
     if (country !== 'Not specified') {
       implicit.push(`Regulatory compliance map for ${country}`);
       implicit.push(`Cultural business practice norms in ${country}`);
       implicit.push(`Political stability assessment for investment horizon`);
     }
 
-    // If manufacturing â†’ supply chain resilience
+    // If manufacturing ' supply chain resilience
     if (sector.toLowerCase().includes('manufactur')) {
       implicit.push('Supply chain vulnerability assessment');
       implicit.push('Workforce availability and training pipeline');
     }
 
-    // If government entity â†’ public accountability framework
+    // If government entity ' public accountability framework
     if (orgType.toLowerCase().includes('government') || orgType.toLowerCase().includes('public')) {
       implicit.push('Public accountability and transparency requirements');
       implicit.push('Procurement compliance framework');
       implicit.push('Stakeholder communication strategy');
     }
 
-    // If private sector â†’ ROI justification for board
+    // If private sector ' ROI justification for board
     if (orgType.toLowerCase().includes('private') || orgType.toLowerCase().includes('corporate')) {
       implicit.push('Board-ready ROI justification');
       implicit.push('Competitive advantage quantification');
@@ -218,9 +218,9 @@ export class SituationAnalysisEngine {
     return implicit;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // UNCONSIDERED NEEDS â€” what they don't know they need
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
+  // UNCONSIDERED NEEDS " what they don't know they need
+  // 
 
   private static findUnconsideredNeeds(
     params: Partial<ReportParameters>,
@@ -239,7 +239,7 @@ export class SituationAnalysisEngine {
         need: 'Currency exposure and hedging strategy',
         whyItMatters: `Operating in ${country} exposes you to exchange rate fluctuations. In emerging markets, a 15-30% swing in 12 months is historically common.`,
         urgency: 'important',
-        source: 'METH-001: Investment Attraction Methodology â€” 58 years of data'
+        source: 'METH-001: Investment Attraction Methodology - 58 years of data'
       });
     }
 
@@ -259,7 +259,7 @@ export class SituationAnalysisEngine {
         need: 'Leadership continuity & succession risk',
         whyItMatters: 'Government personnel rotate every 3-5 years. Projects that depend on specific champions fail when those champions move on.',
         urgency: 'important',
-        source: 'Government Behaviour Pattern â€” 45+ countries'
+        source: 'Government Behaviour Pattern - 45+ countries'
       });
     }
 
@@ -281,9 +281,9 @@ export class SituationAnalysisEngine {
         !String(p.problemStatement || '').toLowerCase().includes('social impact')) {
       needs.push({
         need: 'Environmental and social impact assessment',
-        whyItMatters: 'ESG compliance is now a prerequisite for institutional investors and many government tenders. Retroactive compliance is 3-5Ã— more expensive.',
+        whyItMatters: 'ESG compliance is now a prerequisite for institutional investors and many government tenders. Retroactive compliance is 3-5Ã- more expensive.',
         urgency: 'advisory',
-        source: 'Ethical Reasoning Engine â€” Modern Investment Standards'
+        source: 'Ethical Reasoning Engine - Modern Investment Standards'
       });
     }
 
@@ -293,7 +293,7 @@ export class SituationAnalysisEngine {
         need: `Local content requirements in ${country}`,
         whyItMatters: 'Most countries mandate minimum local participation (hiring, procurement, ownership). Non-compliance can result in licence revocation.',
         urgency: 'important',
-        source: 'Investment Attraction Methodology â€” 140 countries'
+        source: 'Investment Attraction Methodology - 140 countries'
       });
     }
 
@@ -308,9 +308,9 @@ export class SituationAnalysisEngine {
     return needs;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // CONTRARIAN VIEW
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static buildContrarianView(
     params: Partial<ReportParameters>,
@@ -325,11 +325,11 @@ export class SituationAnalysisEngine {
     challenges.push(`What if the ${sector} sector is already saturated in this market by the time you operationalise?`);
     challenges.push(`Is a ${intent} actually the right approach, or would organic development serve ${orgName} better?`);
     challenges.push(`Have you considered that the incentive package that makes this attractive today may expire or be reduced?`);
-    challenges.push(`What would happen if you did nothing â€” what is the real cost of inaction?`);
+    challenges.push(`What would happen if you did nothing " what is the real cost of inaction?`);
 
     return {
       viewpoint: 'Contrarian / Sceptic',
-      icon: 'ðŸ”',
+      icon: '',
       analysis: `A sceptical advisor would challenge the fundamental assumptions: (1) ${challenges[0]} (2) ${challenges[1]} (3) The cost of inaction may be lower than the cost of a poorly structured partnership.`,
       confidence: 65,
       actionItems: [
@@ -340,9 +340,9 @@ export class SituationAnalysisEngine {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // HISTORICAL PARALLEL
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static buildHistoricalParallel(
     params: Partial<ReportParameters>,
@@ -390,16 +390,16 @@ export class SituationAnalysisEngine {
 
     return {
       viewpoint: 'Historical Parallel',
-      icon: 'ðŸ“š',
+      icon: '',
       analysis: historicalInsight,
       confidence: 72,
       actionItems
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // STAKEHOLDER VIEWS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static buildStakeholderViews(
     params: Partial<ReportParameters>,
@@ -414,7 +414,7 @@ export class SituationAnalysisEngine {
     // Government/Regulator perspective
     views.push({
       viewpoint: `${country} Government / Regulator`,
-      icon: 'ðŸ›ï¸',
+      icon: '',
       analysis: `The host government will evaluate this through their investment promotion lens: jobs created, technology transferred, tax revenue generated, and local supply chain linkage. They will also assess whether ${orgName}'s activities align with national development priorities.`,
       confidence: 78,
       actionItems: [
@@ -427,7 +427,7 @@ export class SituationAnalysisEngine {
     // Local community perspective
     views.push({
       viewpoint: 'Local Community',
-      icon: 'ðŸ‘¥',
+      icon: '',
       analysis: `Local communities will evaluate: employment quality (not just quantity), environmental impact, displacement risk, and whether benefits stay local or are repatriated. Community resistance has delayed or killed 30% of large investment projects globally.`,
       confidence: 70,
       actionItems: [
@@ -440,7 +440,7 @@ export class SituationAnalysisEngine {
     // Investor/Board perspective
     views.push({
       viewpoint: 'Investor / Board',
-      icon: 'ðŸ’¼',
+      icon: '',
       analysis: `Investors will demand: clear ROI timeline, risk-adjusted returns, exit mechanisms, and governance safeguards. For ${orgType} entities, additional accountability requirements may apply. Typical investor patience for emerging market returns is 3-5 years.`,
       confidence: 80,
       actionItems: [
@@ -453,7 +453,7 @@ export class SituationAnalysisEngine {
     // Competitor perspective
     views.push({
       viewpoint: 'Competitor',
-      icon: 'âš”ï¸',
+      icon: '',
       analysis: `Competitors will observe your ${intent} in ${country}/${sector} and may pre-empt, copy, or counter-position. The window for first-mover advantage in most markets is 12-18 months.`,
       confidence: 60,
       actionItems: [
@@ -466,9 +466,9 @@ export class SituationAnalysisEngine {
     return views;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // TIME-HORIZON DIVERGENCE
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static buildTimeHorizonDivergence(
     params: Partial<ReportParameters>,
@@ -489,9 +489,9 @@ export class SituationAnalysisEngine {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // BLIND SPOTS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static identifyBlindSpots(
     params: Partial<ReportParameters>,
@@ -503,33 +503,33 @@ export class SituationAnalysisEngine {
     const p = params as Record<string, unknown>;
 
     // No calibration data
-    if (!p.calibration) blindSpots.push('No calibration constraints defined â€” formula outputs will use default assumptions');
+    if (!p.calibration) blindSpots.push('No calibration constraints defined - formula outputs will use default assumptions');
 
     // No partner criteria
-    if (!(p.partnerFitCriteria as string[])?.length) blindSpots.push('No partner fitness criteria defined â€” matching will use generic defaults');
+    if (!(p.partnerFitCriteria as string[])?.length) blindSpots.push('No partner fitness criteria defined - matching will use generic defaults');
 
     // No success metrics
-    if (!(p.successMetrics as string[])?.length) blindSpots.push('No success metrics defined â€” unable to evaluate outcome quality');
+    if (!(p.successMetrics as string[])?.length) blindSpots.push('No success metrics defined - unable to evaluate outcome quality');
 
     // No stakeholder concerns
-    if (!p.stakeholderConcerns) blindSpots.push('No stakeholder concerns documented â€” risk of unaddressed objections');
+    if (!p.stakeholderConcerns) blindSpots.push('No stakeholder concerns documented - risk of unaddressed objections');
 
     // High ratio of unconsidered needs indicates shallow intake
     if (unconsidered.filter(n => n.urgency === 'critical').length >= 2) {
-      blindSpots.push('Multiple critical unconsidered needs detected â€” intake may be too shallow');
+      blindSpots.push('Multiple critical unconsidered needs detected - intake may be too shallow');
     }
 
     // If explicit needs are very few, intake is incomplete
     if (explicit.length < 3) {
-      blindSpots.push('Very few explicit requirements â€” recommend completing more intake steps');
+      blindSpots.push('Very few explicit requirements - recommend completing more intake steps');
     }
 
     return blindSpots;
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // RECOMMENDED QUESTIONS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static generateRecommendedQuestions(
     params: Partial<ReportParameters>,
@@ -565,9 +565,9 @@ export class SituationAnalysisEngine {
     return questions.slice(0, 8);
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // READINESS SCORE
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static calculateReadiness(
     params: Partial<ReportParameters>,
@@ -601,9 +601,9 @@ export class SituationAnalysisEngine {
     return Math.max(10, Math.min(95, score));
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // QUICK SUMMARY â€” for inline consultant use
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
+  // QUICK SUMMARY " for inline consultant use
+  // 
 
   static quickSummary(params: Partial<ReportParameters>): {
     readiness: number;

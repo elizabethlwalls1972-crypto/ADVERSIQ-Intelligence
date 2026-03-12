@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — TOGETHER AI SERVICE
+ * BW NEXUS AI - TOGETHER AI SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Open-source LLM backend via Together.ai API.
@@ -58,7 +58,7 @@ export async function callTogether(
   const lower = key.toLowerCase();
   if (!key || key.length < 20 || lower.includes('your-') || lower.includes('your_') || lower.includes('key-here') || lower.includes('placeholder')) {
     throw new Error(
-      '\n\n=== BW NEXUS AI — API KEY REQUIRED ===\n\n' +
+      '\n\n=== BW NEXUS AI - API KEY REQUIRED ===\n\n' +
       'No valid Together.ai API key found.\n\n' +
       '1. Get a FREE key at: https://api.together.xyz\n' +
       '2. Open .env and set: VITE_TOGETHER_API_KEY=<your-real-key>\n' +

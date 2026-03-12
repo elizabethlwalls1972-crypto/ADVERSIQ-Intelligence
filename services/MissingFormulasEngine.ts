@@ -1,4 +1,4 @@
-﻿
+
 import {
   ReportParameters,
   AdvancedIndexResults,
@@ -565,9 +565,9 @@ class AdvancedIndexService {
     if (!params.contingencyPlans) sequencingRisks.push('No contingency plan to resequence on disruption.');
 
     const dependencyMap = [
-      'Permits â†’ Procurement â†’ Mobilization',
-      'Funding release â†’ Capex build â†’ Talent onboarding',
-      'Pilot launch â†’ KPI validation â†’ Scale decision'
+      'Permits -> Procurement -> Mobilization',
+      'Funding release -> Capex build -> Talent onboarding',
+      'Pilot launch -> KPI validation -> Scale decision'
     ];
 
     score = clamp(score, 15, 95);
@@ -796,7 +796,7 @@ class AdvancedIndexService {
       score,
       band: determineBand(score),
       drivers: [`Institutional distance ${distance}`],
-      pressurePoints: distance > 55 ? ['High institutional distance â€“ expect governance frictions'] : [],
+      pressurePoints: distance > 55 ? ['High institutional distance - expect governance frictions'] : [],
       recommendation: 'Institutionalize joint steering committee to keep governance gap visible.',
       dataSources: composite.dataSources,
       distanceScore: distance,
@@ -1018,12 +1018,12 @@ class AdvancedIndexService {
     const compoundingHalfLifeMonths = Math.max(6, Math.round(24 - score / 4));
 
     if (params.targetPartner) {
-      loopDesign.push(`Partner onboarding â†’ shared telemetry â†’ reinvest in ${params.targetPartner} corridor â†’ repeat`);
+      loopDesign.push(`Partner onboarding ' shared telemetry ' reinvest in ${params.targetPartner} corridor ' repeat`);
       energySources.push(`Anchor partner trust: ${params.targetPartner}`);
     } else {
-      loopDesign.push('Market entry â†’ activation telemetry â†’ localized reinvestment â†’ expanded demand');
+      loopDesign.push('Market entry -> activation telemetry -> localized reinvestment -> expanded demand');
     }
-    loopDesign.push('Outcome tracing â†’ playbook refresh â†’ redeploy capital');
+    loopDesign.push('Outcome tracing -> playbook refresh -> redeploy capital');
 
     energySources.push(`Innovation signal ${Math.round(innovation)}/100`);
     energySources.push(`Talent depth ${Math.round(talent)}/100`);

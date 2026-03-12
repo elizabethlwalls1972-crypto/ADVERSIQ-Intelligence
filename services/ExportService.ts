@@ -1,4 +1,4 @@
-﻿import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 import { ReportPayload } from '../types';
 import { GovernanceService } from './GovernanceService';
 import { ReportOrchestrator } from './ReportOrchestrator';
@@ -54,7 +54,7 @@ function buildPdfFromMarkdown(markdown: string, meta: DocxDocumentMeta): Blob {
       doc.text(line.replace(/^###\s+/, ''), margin, y);
       y += 6;
     } else if (line.startsWith('# ')) {
-      // skip — already in header
+      // skip - already in header
     } else if (line.startsWith('- ') || line.startsWith('* ')) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
@@ -73,7 +73,7 @@ function buildPdfFromMarkdown(markdown: string, meta: DocxDocumentMeta): Blob {
       doc.text(line.replace(/\*\*/g, ''), margin, y);
       y += 5;
     } else if (line.startsWith('|')) {
-      // Simple table — treat each row as plain text
+      // Simple table - treat each row as plain text
       doc.setFont('courier', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(40, 40, 40);
@@ -108,7 +108,7 @@ function buildPdfFromMarkdown(markdown: string, meta: DocxDocumentMeta): Blob {
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
-    doc.text(`${meta.classification} — ${meta.preparedBy}   |   Page ${p} of ${totalPages}`,
+    doc.text(`${meta.classification} - ${meta.preparedBy}   |   Page ${p} of ${totalPages}`,
       margin, doc.internal.pageSize.getHeight() - 8);
   }
 
@@ -131,7 +131,7 @@ function buildMarkdownFromPayload(payload: ReportPayload): string {
   const rec = payload.recommendations;
   const conf = payload.confidenceScores;
 
-  md.push(`# Strategic Intelligence Report — ${m.country}`);
+  md.push(`# Strategic Intelligence Report - ${m.country}`);
   md.push(`**Region:** ${m.region}  `);
   md.push(`**Report ID:** ${m.reportId}  `);
   md.push(`**Date:** ${m.timestamp}  `);
@@ -241,7 +241,7 @@ function buildMarkdownFromPayload(payload: ReportPayload): string {
 /** Build DocxDocumentMeta from a ReportPayload. */
 function buildDocxMeta(payload: ReportPayload): DocxDocumentMeta {
   return {
-    title: `Strategic Intelligence Report — ${payload.metadata.country}`,
+    title: `Strategic Intelligence Report - ${payload.metadata.country}`,
     subtitle: `${payload.metadata.region} Regional Analysis`,
     preparedFor: payload.metadata.requesterType,
     preparedBy: 'BW Global Advisory AI',

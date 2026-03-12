@@ -1,4 +1,4 @@
-﻿/**
+/**
  * OUTCOME VALIDATION & LEARNING SYSTEM
  * 
  * This system tracks predictions vs. actual outcomes and learns which formulas work best.
@@ -526,7 +526,7 @@ export class OutcomeValidationEngine {
                 match
             });
 
-            console.log(`  ${match ? 'âœ“' : 'âœ—'} ${historicalCase.title}: Predicted ${predicted}, Actually ${actual}`);
+            console.log(`  ${match ? '"' : '-'} ${historicalCase.title}: Predicted ${predicted}, Actually ${actual}`);
         }
 
         const accuracyRate = accurateCount / this.historicalCases.length;
@@ -597,7 +597,7 @@ export class OutcomeValidationEngine {
             .map(f => ({
                 name: f.formulaName,
                 score: f.f1Score,
-                status: f.f1Score > 0.7 ? 'âœ“ Performing' : f.f1Score > 0.4 ? 'âš  Needs Review' : 'âœ— Critical'
+                status: f.f1Score > 0.7 ? '" Performing' : f.f1Score > 0.4 ? 'Needs Review' : '- Critical'
             }));
 
         const criticalInsights = this.learningInsights

@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — PDF ANNOTATION SERVICE
+ * BW NEXUS AI - PDF ANNOTATION SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Creates annotated response documents from uploaded source material.
@@ -13,7 +13,7 @@
  *   │ (highlighted with red border)   │   ║ Key finding / recommendation      ║
  *   └─────────────────────────────────┘   ╚═══════════════════════════════════╝
  *
- * Output: .pdf blob download — "BWGA-Annotated-[title].pdf"
+ * Output: .pdf blob download - "BWGA-Annotated-[title].pdf"
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
@@ -22,7 +22,7 @@ import jsPDF from 'jspdf';
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface SourceAnnotation {
-  /** Short label for this passage (e.g. "Lesson 3 — Poor Regions Stay Poor") */
+  /** Short label for this passage (e.g. "Lesson 3 - Poor Regions Stay Poor") */
   label: string;
   /** The verbatim or summarised passage being annotated */
   sourceText: string;
@@ -138,7 +138,7 @@ function drawCoverPage(doc: jsPDF, params: AnnotatedDocumentParams): void {
   const metaY = afterTitle + 26;
   const metaItems = [
     ['Prepared for', params.preparedFor],
-    ['Prepared by', 'BW Global Advisory — NEXUS AI'],
+    ['Prepared by', 'BW Global Advisory - NEXUS AI'],
     ['Report ID', params.reportId],
     ['Date', new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })],
     ['Annotations', `${params.annotations.length} passages analysed`],
@@ -356,9 +356,9 @@ function drawAnnotationBlock(
  *   executiveSummary: '...',
  *   annotations: [
  *     {
- *       label: 'Lesson 3 — Poor Regions Stay Poor',
+ *       label: 'Lesson 3 - Poor Regions Stay Poor',
  *       sourceText: 'No major changes have occurred in Philippine economic geography...',
- *       analysisText: 'NSIL scores this as a structural lock-in pattern. Historical parallel: Indonesia coastal-inland divergence 1998–2006...',
+ *       analysisText: 'NSIL scores this as a structural lock-in pattern. Historical parallel: Indonesia coastal-inland divergence 1998-2006...',
  *       engineSources: ['NSIL', 'HistoricalMatcher'],
  *       severity: 'critical',
  *     },
@@ -407,7 +407,7 @@ export class PDFAnnotationService {
       doc.setFontSize(7);
       setTextColour(doc, COLOURS.textMid);
       doc.text(`${params.reportId}  •  Page ${p} of ${totalPages}`, W - MARGIN - 22, doc.internal.pageSize.getHeight() - 6);
-      doc.text('CONFIDENTIAL  —  BW Global Advisory Pty Ltd', MARGIN, doc.internal.pageSize.getHeight() - 6);
+      doc.text('CONFIDENTIAL  -  BW Global Advisory Pty Ltd', MARGIN, doc.internal.pageSize.getHeight() - 6);
     }
 
     // Download

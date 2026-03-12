@@ -1,16 +1,16 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
  * METHODOLOGY KNOWLEDGE BASE
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  *
  * The internal reference library. When the system encounters a question,
  * it checks this knowledge base BEFORE reaching for external sources.
  *
- * This is the "parent" knowledge â€” accumulated from decades of documented
+ * This is the "parent" knowledge " accumulated from decades of documented
  * practice. The system looks here first, reaches outward only when this
  * is insufficient.
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 // ============================================================================
@@ -63,9 +63,9 @@ export interface SectorIntelligence {
 
 export class MethodologyKnowledgeBase {
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // CORE METHODOLOGY ENTRIES
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   private static METHODOLOGIES: MethodologyEntry[] = [
     {
@@ -97,7 +97,7 @@ export class MethodologyKnowledgeBase {
       whatNeverWorks: [
         'Assuming published incentives apply automatically without application',
         'Expecting incentives alone to compensate for poor infrastructure',
-        'Treating incentive regimes as permanent â€” they all have sunset provisions',
+        'Treating incentive regimes as permanent - they all have sunset provisions',
         'Ignoring local content requirements attached to incentive packages',
       ],
       standardTimelines: {
@@ -111,7 +111,7 @@ export class MethodologyKnowledgeBase {
         'Compliance and reporting': '$10,000 - $30,000/year',
         'Professional advisory (legal/tax)': '$20,000 - $100,000',
       },
-      governmentBehaviourPattern: 'Governments will always start with the standard published package. Everything beyond that requires negotiation leverage â€” typically employment commitments, technology transfer, or strategic sector alignment.',
+      governmentBehaviourPattern: 'Governments will always start with the standard published package. Everything beyond that requires negotiation leverage - typically employment commitments, technology transfer, or strategic sector alignment.',
       investorBehaviourPattern: 'Investors compare 3-5 competing locations and use incentive packages as a tiebreaker rather than a primary selection criterion. Infrastructure and labour availability dominate the decision.',
     },
     {
@@ -125,7 +125,7 @@ export class MethodologyKnowledgeBase {
         'Plan cycles are 5-6 years, tied to political terms',
         'Sectoral categories are always: agriculture, industry, services, infrastructure',
         'Decentralisation is always stated as a goal; centralisation is the persistent reality',
-        'Growth centre designation is universal â€” growth pole theory from the 1950s',
+        'Growth centre designation is universal - growth pole theory from the 1950s',
         'Regional disparity measurements use the same GRDP-per-capita methodology globally',
       ],
       commonMistakes: [
@@ -178,10 +178,10 @@ export class MethodologyKnowledgeBase {
         'Inventing a new feasibility structure when the standard is established and expected',
         'Underestimating the time and cost of a proper feasibility study',
         'Treating financial projections as single-point estimates rather than ranges',
-        'Omitting institutional/governance analysis â€” the section most likely to kill a project',
+        'Omitting institutional/governance analysis - the section most likely to kill a project',
       ],
       whatAlwaysWorks: [
-        'Following the UNIDO structure â€” reviewers expect it',
+        'Following the UNIDO structure - reviewers expect it',
         'Including sensitivity analysis showing what breaks the project',
         'Producing executive summaries that stand alone as decision documents',
         'Getting independent verification of key market assumptions',
@@ -216,7 +216,7 @@ export class MethodologyKnowledgeBase {
       description: 'PPPs across infrastructure, social services, and utility sectors follow the same structural framework regardless of jurisdiction. The risk allocation matrix determines project viability.',
       keyInsights: [
         'Risk allocation follows the principle: allocate to the party best able to manage',
-        'Demand risk is the most contested allocation â€” government guarantee or private risk',
+        'Demand risk is the most contested allocation - government guarantee or private risk',
         'Contract tenor 20-30 years with termination provisions is standard',
         'Minimum Revenue Guarantee (MRG) or Viability Gap Funding (VGF) for social infrastructure',
         'Unsolicited proposals represent 30-40% of PPP pipeline in emerging markets',
@@ -232,12 +232,12 @@ export class MethodologyKnowledgeBase {
     {
       id: 'METH-005',
       domain: 'Export Development and Market Entry',
-      principle: 'Market entry strategies for emerging market companies follow a ladder: indirect export â†’ direct export â†’ licensing/franchise â†’ JV â†’ wholly-owned subsidiary.',
+      principle: 'Market entry strategies for emerging market companies follow a ladder: indirect export - direct export - licensing/franchise - JV - wholly-owned subsidiary.',
       stableForYears: 55,
       applicableCountries: 160,
       description: 'The internationalisation pathway has been documented since the Uppsala model (1977). Companies from every country follow the same incremental commitment path.',
       keyInsights: [
-        'The psychic distance effect is real â€” companies expand first to culturally similar markets',
+        'The psychic distance effect is real - companies expand first to culturally similar markets',
         'Export readiness assessment is a prerequisite; 60% of first-time exporters fail within 3 years',
         'Trade shows and trade missions remain the most effective B2B market entry channels',
         'Free trade agreements reduce tariff barriers but non-tariff barriers persist',
@@ -266,7 +266,7 @@ export class MethodologyKnowledgeBase {
         'Zone generation evolution: 1st gen (trade), 2nd gen (manufacturing), 3rd gen (mixed-use innovation), 4th gen (smart/green)',
       ],
       commonMistakes: ['Building infrastructure before tenant demand analysis', 'Designing incentives without fiscal impact assessment', 'Placing zones in politically preferred but economically suboptimal locations', 'Duplicating zones without specialisation differentiation'],
-      whatAlwaysWorks: ['Anchor tenant strategy â€” secure 1-2 large tenants before marketing', 'One-stop-shop with real authority (not just a window)', 'Infrastructure built to international standards from day one', 'Active IPA with dedicated zone promotion team'],
+      whatAlwaysWorks: ['Anchor tenant strategy - secure 1-2 large tenants before marketing', 'One-stop-shop with real authority (not just a window)', 'Infrastructure built to international standards from day one', 'Active IPA with dedicated zone promotion team'],
       whatNeverWorks: ['Build it and they will come approach', 'Zones without reliable power, water, and telecoms', 'Bureaucratic duplication within the zone', 'Zones in remote locations without transport links'],
       standardTimelines: { 'Feasibility and design': '12-18 months', 'Legal framework establishment': '6-12 months', 'Infrastructure construction (Phase 1)': '18-36 months', 'Anchor tenant attraction': 'concurrent with construction', 'Break-even occupancy': '5-8 years' },
       standardCostRanges: { 'Pre-development studies': '$500K - $2M', 'Infrastructure (per hectare)': '$500K - $3M', 'Zone management setup': '$1M - $5M annual', 'Investor promotion': '$500K - $2M annual' },
@@ -276,20 +276,20 @@ export class MethodologyKnowledgeBase {
     {
       id: 'METH-007',
       domain: 'Development Finance and Impact Investment',
-      principle: 'Development finance follows a standard project cycle: identification â†’ preparation â†’ appraisal â†’ negotiation â†’ board approval â†’ implementation â†’ evaluation.',
+      principle: 'Development finance follows a standard project cycle: identification - preparation - appraisal - negotiation - board approval - implementation - evaluation.',
       stableForYears: 50,
       applicableCountries: 140,
-      description: 'Whether World Bank, ADB, AfDB, IFC, or bilateral donors â€” the project cycle is identical. The acronyms differ; the methodology does not.',
+      description: 'Whether World Bank, ADB, AfDB, IFC, or bilateral donors - the project cycle is identical. The acronyms differ; the methodology does not.',
       keyInsights: [
         'The project cycle is typically 6-8 years from identification to completion evaluation',
         'Preparation phase consumes 60% of the effort; implementation follows momentum',
         'Environmental and social safeguards are the primary cause of delay (50% of cases)',
-        'Co-financing multiplier effect: $1 DFI â†’ $3-5 total project funding',
-        'Results frameworks (logical framework approach) are universal â€” output â†’ outcome â†’ impact',
+        'Co-financing multiplier effect: $1 DFI -> $3-5 total project funding',
+        'Results frameworks (logical framework approach) are universal - output -> outcome -> impact',
       ],
-      commonMistakes: ['Underestimating DFI procurement timelines (18-24 months is normal)', 'Assuming DFI funding means DFI implementation â€” government ownership is required', 'Inadequate safeguards preparation', 'Treating monitoring and evaluation as an afterthought'],
-      whatAlwaysWorks: ['Country strategy alignment â€” projects must fit DFI country programme', 'Government ownership and commitment letters early', 'Experienced project implementation unit with DFI experience', 'Realistic disbursement schedules with contingencies'],
-      whatNeverWorks: ['Rushing DFI processes â€” they have institutional calendars', 'Projects without government counterpart funding commitment', 'Proposals that ignore DFI safeguard requirements', 'Standalone projects outside the country strategy'],
+      commonMistakes: ['Underestimating DFI procurement timelines (18-24 months is normal)', 'Assuming DFI funding means DFI implementation - government ownership is required', 'Inadequate safeguards preparation', 'Treating monitoring and evaluation as an afterthought'],
+      whatAlwaysWorks: ['Country strategy alignment - projects must fit DFI country programme', 'Government ownership and commitment letters early', 'Experienced project implementation unit with DFI experience', 'Realistic disbursement schedules with contingencies'],
+      whatNeverWorks: ['Rushing DFI processes - they have institutional calendars', 'Projects without government counterpart funding commitment', 'Proposals that ignore DFI safeguard requirements', 'Standalone projects outside the country strategy'],
       standardTimelines: { 'Concept to approval': '18-36 months', 'Approval to first disbursement': '6-12 months', 'Implementation': '4-7 years', 'Completion evaluation': '12-18 months post-close' },
       standardCostRanges: { 'Project preparation (DFI-funded)': '$500K - $3M', 'Implementation support': '5-8% of project cost', 'Mid-term review': '$100K - $500K', 'Impact evaluation': '$200K - $1M' },
       governmentBehaviourPattern: 'Governments treat DFI funds as external resources requiring less internal accountability. Successful projects always have strong government ownership and counterpart commitment.',
@@ -298,10 +298,10 @@ export class MethodologyKnowledgeBase {
     {
       id: 'METH-008',
       domain: 'Technology Transfer and Industrial Upgrading',
-      principle: 'Technology transfer follows a 4-stage pathway: import â†’ absorb â†’ adapt â†’ innovate. This has been the documented pattern since Japan in the 1950s.',
+      principle: 'Technology transfer follows a 4-stage pathway: import > absorb > adapt > innovate. This has been the documented pattern since Japan in the 1950s.',
       stableForYears: 65,
       applicableCountries: 130,
-      description: 'Korea, Taiwan, China, Vietnam â€” all followed the same technology transfer pathway. Time-to-innovation varies but the sequence does not.',
+      description: 'Korea, Taiwan, China, Vietnam - all followed the same technology transfer pathway. Time-to-innovation varies but the sequence does not.',
       keyInsights: [
         'Absorption capacity (human capital, institutional readiness) determines transfer speed',
         'Licensing precedes manufacturing; manufacturing precedes innovation',
@@ -320,18 +320,18 @@ export class MethodologyKnowledgeBase {
     {
       id: 'METH-009',
       domain: 'Climate Finance and Green Transition',
-      principle: 'Climate finance mobilisation follows: NDC commitment â†’ sector transition plan â†’ project pipeline â†’ blended finance â†’ implementation â†’ MRV (Measurement, Reporting, Verification).',
+      principle: 'Climate finance mobilisation follows: NDC commitment > sector transition plan > project pipeline > blended finance > implementation > MRV (Measurement, Reporting, Verification).',
       stableForYears: 15,
       applicableCountries: 195,
       description: 'Post-Paris Agreement, climate finance has created a new but structured methodology. GCF, GEF, CTF, and bilateral climate funds all require the same project preparation framework.',
       keyInsights: [
-        'GCF board meets 3x/year â€” project cycle is 18-36 months minimum',
+        'GCF board meets 3x/year - project cycle is 18-36 months minimum',
         'Accredited Entity model means most countries access GCF through intermediaries',
         'Blended finance (concessional + commercial) is the dominant model',
         'Climate taxonomy alignment is becoming a precondition for all DFI funding',
         'Just Transition framing (protecting workers and communities) is now mandatory',
       ],
-      commonMistakes: ['Treating climate finance as free money â€” it has strict MRV requirements', 'Ignoring adaptation â€” 50% of climate finance should go to adaptation', 'Underestimating GCF safeguard requirements', 'Failing to demonstrate additionality (would not happen without climate finance)'],
+      commonMistakes: ['Treating climate finance as free money - it has strict MRV requirements', 'Ignoring adaptation - 50% of climate finance should go to adaptation', 'Underestimating GCF safeguard requirements', 'Failing to demonstrate additionality (would not happen without climate finance)'],
       whatAlwaysWorks: ['NDA engagement from concept stage', 'Project design aligned with NDC priority sectors', 'Blended finance structure showing private sector leverage', 'Robust MRV framework using international standards'],
       whatNeverWorks: ['Applications without NDA endorsement', 'Projects without clear climate rationale (development co-benefits are not enough)', 'Proposals without private sector co-financing for mitigation', 'Projects in sectors not identified in the countrys NDC'],
       standardTimelines: { 'Concept note to funding proposal': '12-24 months', 'GCF board review': '3-6 months', 'Effectiveness to first disbursement': '6-12 months', 'Project implementation': '5-10 years' },
@@ -349,12 +349,12 @@ export class MethodologyKnowledgeBase {
       keyInsights: [
         'Adequate procedures defence (UK Bribery Act) is the global compliance standard',
         'Third-party due diligence is where 70% of corruption exposure occurs',
-        'Facilitation payments are the most politically contentious area â€” banned under UK law, permitted under US law',
+        'Facilitation payments are the most politically contentious area - banned under UK law, permitted under US law',
         'Compliance programme effectiveness is measured by detection rate, not zero-incident claims',
         'Whistleblower mechanisms that actually protect whistleblowers are the strongest deterrent',
       ],
       commonMistakes: ['Zero-tolerance policies without implementation mechanisms', 'Due diligence limited to counterparty checks without ongoing monitoring', 'Training programmes that are tick-box exercises', 'Assuming compliance in one jurisdiction satisfies all'],
-      whatAlwaysWorks: ['Risk-based approach: focus compliance resources on highest-risk transactions', 'Senior management tone from the top â€” visible commitment', 'Confidential reporting channels with non-retaliation guarantees', 'Regular third-party compliance audits'],
+      whatAlwaysWorks: ['Risk-based approach: focus compliance resources on highest-risk transactions', 'Senior management tone from the top - visible commitment', 'Confidential reporting channels with non-retaliation guarantees', 'Regular third-party compliance audits'],
       whatNeverWorks: ['Paper policies without enforcement', 'Relying on local law compliance alone when international law applies extra-territorially', 'Ignoring facilitation payment exposure', 'Treating compliance as a legal department function rather than organisational culture'],
       standardTimelines: { 'Compliance programme design': '3-6 months', 'Implementation and training': '6-12 months', 'First compliance audit': '12 months after launch', 'Maturity (embedded culture)': '3-5 years' },
       standardCostRanges: { 'Compliance programme design': '$50K - $500K', 'Annual compliance management': '$100K - $1M', 'Third-party due diligence (per transaction)': '$5K - $50K', 'Compliance audit': '$30K - $200K' },
@@ -363,9 +363,9 @@ export class MethodologyKnowledgeBase {
     },
   ];
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // COUNTRY INTELLIGENCE PROFILES
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   private static COUNTRIES: CountryIntelligence[] = [
     {
@@ -382,7 +382,7 @@ export class MethodologyKnowledgeBase {
         'Power costs among highest in ASEAN',
       ],
       whatWorksHere: [
-        'IT-BPM sector â€” Philippines is #2 globally',
+        'IT-BPM sector - Philippines is #2 globally',
         'Engaging with LGU leadership directly for local permits',
         'Aligning with PDP (Philippine Development Plan) priorities for faster approval',
         'Export-oriented manufacturing in PEZA zones for simplified customs',
@@ -403,10 +403,10 @@ export class MethodologyKnowledgeBase {
         'Dual approval system (national + provincial) for larger investments',
       ],
       whatWorksHere: [
-        'Manufacturing for export â€” electronics, textiles, food processing',
+        'Manufacturing for export - electronics, textiles, food processing',
         'Locating in second-tier provinces for better incentives and lower costs',
         'Samsung, Intel supply chain proximity for electronics sector',
-        'Infrastructure improvement trajectory â€” rapid multi-year improvement',
+        'Infrastructure improvement trajectory - rapid multi-year improvement',
       ],
       historicalContext: 'Doi Moi economic reforms (1986). Rapid industrialisation model. Growth concentrated in Hanoi-Hai Phong and Ho Chi Minh City corridors. Second-tier cities emerging as competitive alternatives.',
     },
@@ -425,7 +425,7 @@ export class MethodologyKnowledgeBase {
       ],
       whatWorksHere: [
         'Resource-based processing (nickel, palm oil, rubber)',
-        'Digital economy â€” Gojek, Tokopedia demonstrate market size',
+        'Digital economy - Gojek, Tokopedia demonstrate market size',
         'Engaging with provincial governments for operational permits',
         'Java-centric initially, then expanding to resource-rich outer islands',
       ],
@@ -447,7 +447,7 @@ export class MethodologyKnowledgeBase {
       whatWorksHere: [
         'Regional Australia has genuine opportunity gaps and willing local government',
         'R&D tax incentive is globally competitive for innovation-oriented investments',
-        'Critical minerals processing â€” government actively seeking investment',
+        'Critical minerals processing - government actively seeking investment',
         'Agricultural technology and food processing for export to Asia',
       ],
       historicalContext: 'Regional development has been a persistent challenge. Population concentrated in 5 coastal capitals. Regional Development Australia network provides local coordination. Skills shortage in regional areas is the primary constraint.',
@@ -467,13 +467,13 @@ export class MethodologyKnowledgeBase {
       ],
       whatWorksHere: [
         'Agricultural technology and premium food/beverage',
-        'Renewable energy â€” high percentage of renewable electricity',
+        'Renewable energy - high percentage of renewable electricity',
         'Regional councils actively seeking industry diversification',
         'Strong intellectual property protection and rule of law',
       ],
       historicalContext: 'Economic reforms from 1984 onwards. Regional economic development via regional councils and economic development agencies. Tourism-dependent regions diversifying post-COVID.',
     },
-    // â”€â”€ SUB-SAHARAN AFRICA â”€â”€
+    // â"€â"€ SUB-SAHARAN AFRICA â"€â"€
     {
       country: 'Kenya',
       region: 'East Africa',
@@ -492,8 +492,8 @@ export class MethodologyKnowledgeBase {
       keyAgencies: ['Rwanda Development Board (RDB)'],
       incentiveStructure: 'CIT 0-15% for priority sectors; 7yr+ tax holidays for strategic investments; IP incentives; innovation hub benefits',
       typicalTimeline: 'Business registration: 6 hours (online). RDB facilitation: 1-4 weeks. Full operational: 1-3 months.',
-      knownChallenges: ['Small domestic market (14M population)', 'Landlocked â€” logistics costs via Mombasa or Dar es Salaam', 'Limited local supply chain depth', 'Regional geopolitical dynamics (DRC border)'],
-      whatWorksHere: ['ICT/innovation sector â€” government actively enabling', 'Tourism (gorilla trekking, conference tourism)', 'Business registration speed â€” one of fastest in Africa', 'Clean governance culture â€” CPI 54 (one of highest in Africa)'],
+      knownChallenges: ['Small domestic market (14M population)', 'Landlocked - logistics costs via Mombasa or Dar es Salaam', 'Limited local supply chain depth', 'Regional geopolitical dynamics (DRC border)'],
+      whatWorksHere: ['ICT/innovation sector - government actively enabling', 'Tourism (gorilla trekking, conference tourism)', 'Business registration speed - one of fastest in Africa', 'Clean governance culture - CPI 54 (one of highest in Africa)'],
       historicalContext: 'Post-genocide reconstruction (1994+). Vision 2020 and Vision 2050 driving transformation. Kigali as conference hub. Smart Africa initiative driving digital transformation across continent. KIFC positioning as regional financial centre.',
     },
     {
@@ -527,7 +527,7 @@ export class MethodologyKnowledgeBase {
       typicalTimeline: 'GIPC registration: 5-10 business days. Free zone: 1-3 months.',
       knownChallenges: ['Cedi depreciation', 'Fiscal pressures (IMF programme)', 'Minimum capital requirements for foreign investors ($200K-$500K)', 'Power tariff increases'],
       whatWorksHere: ['Cocoa processing and agribusiness', 'Oil & gas services (Jubilee field ecosystem)', 'AfCFTA pilot trading under African free trade agreement', 'Financial services (growing hub)'],
-      historicalContext: 'First sub-Saharan country to gain independence (1957). Structural adjustment (1980s-90s). Oil discovery (2007) transformed fiscal outlook. Hosts AfCFTA Secretariat â€” pivotal role in African trade integration. Democratic governance since 1992 (longest unbroken in West Africa).',
+      historicalContext: 'First sub-Saharan country to gain independence (1957). Structural adjustment (1980s-90s). Oil discovery (2007) transformed fiscal outlook. Hosts AfCFTA Secretariat - pivotal role in African trade integration. Democratic governance since 1992 (longest unbroken in West Africa).',
     },
     {
       country: 'Ethiopia',
@@ -548,10 +548,10 @@ export class MethodologyKnowledgeBase {
       incentiveStructure: 'CFC: 0% CIT 5yr then 8.75%; industrial zones: 5yr holiday + reduced rate; export incentives; automotive ecosystem incentives',
       typicalTimeline: 'Company setup: 1-2 weeks. CFC: 2-4 weeks. Industrial zone entry: 1-3 months.',
       knownChallenges: ['French/Arabic language requirements for documentation', 'Labour market informality', 'Water scarcity in agricultural regions', 'Regional economic disparities'],
-      whatWorksHere: ['Automotive manufacturing (Renault, PSA â€” Africa #1 auto producer)', 'Aerospace components (Bombardier, Safran)', 'Offshoring (CFC Casablanca for financial services)', 'Renewable energy (Noor Ouarzazate worlds largest concentrated solar plant)'],
+      whatWorksHere: ['Automotive manufacturing (Renault, PSA - Africa #1 auto producer)', 'Aerospace components (Bombardier, Safran)', 'Offshoring (CFC Casablanca for financial services)', 'Renewable energy (Noor Ouarzazate worlds largest concentrated solar plant)'],
       historicalContext: 'Hassan II industrial policy legacy. Mohamed VI economic modernisation. Automotive ecosystem breakthrough (2012+). Africa first high-speed rail. CFC positioning as gateway between Europe, Africa, and Middle East. Strategic geographic position.',
     },
-    // â”€â”€ LATIN AMERICA & CARIBBEAN â”€â”€
+    // â"€â"€ LATIN AMERICA & CARIBBEAN â"€â"€
     {
       country: 'Brazil',
       region: 'South America',
@@ -560,7 +560,7 @@ export class MethodologyKnowledgeBase {
       incentiveStructure: 'Manaus FTZ incentives (tax exemptions until 2073); SUDENE/SUDAM regional incentives; state ICMS tax competition; innovation tax breaks (Lei do Bem)',
       typicalTimeline: 'Company formation: 2-6 weeks (varies). State incentive negotiation: 3-12 months.',
       knownChallenges: ['Tax complexity (custo Brasil)', 'Labour law rigidity (CLT framework)', 'Logistics infrastructure gaps', 'Bureaucratic compliance costs'],
-      whatWorksHere: ['Agribusiness â€” world #1 soybean, coffee, sugar, beef, orange juice exporter', 'Manaus FTZ for electronics assembly', 'Pre-salt oil & gas upstream', 'BNDES development financing as catalyst'],
+      whatWorksHere: ['Agribusiness - world #1 soybean, coffee, sugar, beef, orange juice exporter', 'Manaus FTZ for electronics assembly', 'Pre-salt oil & gas upstream', 'BNDES development financing as catalyst'],
       historicalContext: 'Import substitution (1930s-80s). Plano Real stabilisation (1994). Commodity supercycle (2004-11). Petrobras pre-salt development. Largest economy in Latin America and 8th globally. Strong regulatory institutions (CADE, CVM, IBAMA).',
     },
     {
@@ -571,8 +571,8 @@ export class MethodologyKnowledgeBase {
       incentiveStructure: 'FTZ: 20% CIT (vs 35%); mega-investments: 15yr legal stability; Orange Economy 7yr tax exemption; ZOMAC (conflict zone) incentives',
       typicalTimeline: 'Company setup: 1-2 weeks. FTZ: 2-4 months.',
       knownChallenges: ['Security concerns in some regions (greatly improved)', 'Infrastructure gaps (mountain geography)', 'Informal economy large (40%+)', 'Labour costs rising in major cities'],
-      whatWorksHere: ['Technology sector (MedellÃ­n transformation)', 'Creative industries (Orange Economy)', 'Agricultural exports (coffee, flowers, avocados)', 'Nearshoring from US companies'],
-      historicalContext: 'Peace process (2016 FARC agreement). OECD membership (2020). Demographic dividend window. MedellÃ­n as innovation city narrative. Pacific Alliance member with Chile, Peru, Mexico. Significant reduction in violence metrics over 20 years.',
+      whatWorksHere: ['Technology sector (Medelln transformation)', 'Creative industries (Orange Economy)', 'Agricultural exports (coffee, flowers, avocados)', 'Nearshoring from US companies'],
+      historicalContext: 'Peace process (2016 FARC agreement). OECD membership (2020). Demographic dividend window. Medelln as innovation city narrative. Pacific Alliance member with Chile, Peru, Mexico. Significant reduction in violence metrics over 20 years.',
     },
     {
       country: 'Costa Rica',
@@ -583,9 +583,9 @@ export class MethodologyKnowledgeBase {
       typicalTimeline: 'Company setup: 1-2 weeks. Free zone: 1-3 months.',
       knownChallenges: ['Small domestic market (5.2M)', 'Rising cost competitiveness vs other CAFTA countries', 'Limited industrial land in Greater Metropolitan Area', 'Fiscal deficit pressures on incentive sustainability'],
       whatWorksHere: ['Medical devices manufacturing (#1 employer in free zones)', 'Shared services / BPO for North American market', 'Life sciences and precision manufacturing', 'Carbon neutrality positioning for ESG-aligned investors'],
-      historicalContext: 'Intel investment (1997) â€” transformational FDI case study. Diversification from agriculture to high-value manufacturing. No military since 1948 â€” investment in education instead. Environmental leadership. OECD accession process.',
+      historicalContext: 'Intel investment (1997) - transformational FDI case study. Diversification from agriculture to high-value manufacturing. No military since 1948 - investment in education instead. Environmental leadership. OECD accession process.',
     },
-    // â”€â”€ EASTERN EUROPE & CENTRAL ASIA â”€â”€
+    // â"€â"€ EASTERN EUROPE & CENTRAL ASIA â"€â"€
     {
       country: 'Poland',
       region: 'Central Europe',
@@ -594,7 +594,7 @@ export class MethodologyKnowledgeBase {
       incentiveStructure: 'Polish Investment Zone: 10-15yr CIT exemption (25-70% QI cost); EU fund co-financing; R&D super-deduction (200%)',
       typicalTimeline: 'Company setup: 2-4 weeks. Investment Zone decision: 1-2 months.',
       knownChallenges: ['Skilled labour competition among investors', 'Wage escalation (8-12% annually in manufacturing)', 'Regulatory change pace', 'Political dynamics affecting judicial independence perception'],
-      whatWorksHere: ['Automotive and EV battery manufacturing (Europe #1 battery production base)', 'Shared services and BPO (KrakÃ³w, WrocÅ‚aw, ÅÃ³dÅº)', 'IT development (strong STEM graduates)', 'Food processing for EU market'],
+      whatWorksHere: ['Automotive and EV battery manufacturing (Europe #1 battery production base)', 'Shared services and BPO (Krakw, WrocÅ‚aw, d)', 'IT development (strong STEM graduates)', 'Food processing for EU market'],
       historicalContext: 'Shock therapy (1990). EU accession (2004). Largest beneficiary of EU cohesion funds. Rapid industrialisation via FDI-led export manufacturing. 30+ consecutive years of GDP growth (only European country).',
     },
     {
@@ -608,7 +608,7 @@ export class MethodologyKnowledgeBase {
       whatWorksHere: ['Oil & gas upstream and midstream', 'Mining (uranium #1 globally, copper, gold)', 'AIFC as regional financial centre', 'Logistics hub on Belt and Road corridor'],
       historicalContext: 'Independence (1991). Oil-led growth model. New capital Astana/Nur-Sultan. AIFC modeled on DIFC. Belt and Road transit corridor positioning. Trans-Caspian International Transport Route (Middle Corridor) gaining importance.',
     },
-    // â”€â”€ MIDDLE EAST â”€â”€
+    // â"€â"€ MIDDLE EAST â"€â"€
     {
       country: 'United Arab Emirates',
       region: 'Gulf',
@@ -627,11 +627,11 @@ export class MethodologyKnowledgeBase {
       keyAgencies: ['MISA', 'PIF (Public Investment Fund)', 'Royal Commission for Industrial Cities', 'NEOM Authority'],
       incentiveStructure: '0% PIT; reduced CIT for priority sectors; giga-project-specific incentives; industrial land at subsidised rates; Saudization credit incentives',
       typicalTimeline: 'MISA licence: 1-4 weeks. Operational: 2-6 months.',
-      knownChallenges: ['Saudization quotas (Nitaqat) â€” local employment requirements', 'Social and cultural transformation pace', 'Mega-project execution risk (multiple giga-projects simultaneous)', 'Labour market competition for skilled nationals'],
-      whatWorksHere: ['Mega-project supply chain and services (NEOM, The Line, Red Sea)', 'Entertainment and tourism sector (opening rapidly)', 'Renewable energy (ACWA Power â€” worlds largest green hydrogen)', 'Defence industrial localisation'],
+      knownChallenges: ['Saudization quotas (Nitaqat) - local employment requirements', 'Social and cultural transformation pace', 'Mega-project execution risk (multiple giga-projects simultaneous)', 'Labour market competition for skilled nationals'],
+      whatWorksHere: ['Mega-project supply chain and services (NEOM, The Line, Red Sea)', 'Entertainment and tourism sector (opening rapidly)', 'Renewable energy (ACWA Power - worlds largest green hydrogen)', 'Defence industrial localisation'],
       historicalContext: 'Oil-based economy since 1930s. Vision 2030 (2016) most ambitious transformation agenda globally. PIF as sovereign catalyst ($700B+ AUM). Massive infrastructure spending. Social reforms (entertainment, tourism, gender participation). IPO of Aramco. Giga-projects represent $1T+ planned investment.',
     },
-    // â”€â”€ ADDITIONAL PACIFIC ISLANDS â”€â”€
+    // â"€â"€ ADDITIONAL PACIFIC ISLANDS â"€â"€
     {
       country: 'Fiji',
       region: 'Pacific Islands',
@@ -645,9 +645,9 @@ export class MethodologyKnowledgeBase {
     },
   ];
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // SECTOR INTELLIGENCE
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   private static SECTORS: SectorIntelligence[] = [
     {
@@ -698,7 +698,7 @@ export class MethodologyKnowledgeBase {
       standardStructure: 'Contract farming, cooperative aggregation, or direct operation. Revenue from commodity sales, processing margin, or export premium.',
       regulatoryPattern: 'Land use regulations, export permits, food safety certification (HACCP/GlobalGAP), phytosanitary requirements for export.',
       knownRisks: [
-        'Weather and climate variability â€” the fundamental agricultural risk',
+        'Weather and climate variability - the fundamental agricultural risk',
         'Price volatility for commodity crops',
         'Land tenure uncertainty in reform-affected areas',
         'Post-harvest loss (20-40% in emerging markets)',
@@ -715,7 +715,7 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Critical minerals supercycle driven by energy transition (lithium, cobalt, copper, nickel, rare earths). ESG requirements transforming operating standards.',
       emergingMarketContext: 'Resource-rich developing countries seeking downstream processing and value addition. Community benefit-sharing and environmental remediation are flashpoint issues.',
       typicalInvestmentRange: '$10M-$5B per project (exploration to production)',
-      standardStructure: 'Exploration concession â†’ bankable feasibility study â†’ project finance (60-80% debt) â†’ EPC contract â†’ offtake agreements â†’ operations â†’ closure plan.',
+      standardStructure: 'Exploration concession - bankable feasibility study - project finance (60-80% debt) - EPC contract - offtake agreements - operations - closure plan.',
       regulatoryPattern: 'Mining code with fiscal regime (royalties 2-10%), environmental bond, community development agreement, progressive taxation. Resource nationalism on the rise.',
       knownRisks: ['Commodity price volatility', 'Resource nationalism and fiscal regime changes', 'Community opposition and social licence loss', 'Environmental remediation liability', 'Artisanal mining conflict'],
       successFactors: ['Secured offtake agreements before development decision', 'Established community benefit-sharing agreement early', 'World-class EIA and environmental management plan', 'Diversified customer base for production', 'Closure plan and financial assurance from day one'],
@@ -725,9 +725,9 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Global fintech market $310B+. Mobile money, digital banking, InsurTech, RegTech, embedded finance. Regulatory sandboxes proliferating.',
       emergingMarketContext: 'Financial inclusion gap (1.4B unbanked globally) is the primary demand driver. Mobile-first markets leapfrogging traditional banking. M-Pesa model replicated across Africa and Asia.',
       typicalInvestmentRange: '$100K-$50M for platform development and licensing',
-      standardStructure: 'Seed/Series A â†’ regulatory licence â†’ market launch â†’ scale â†’ Series B/C â†’ profitability â†’ potential exit. Payment processing, lending, and InsurTech are the dominant verticals.',
-      regulatoryPattern: 'Regulatory sandbox â†’ limited licence â†’ full licence. Central bank supervision. Anti-money laundering (AML/CFT) requirements. Data protection compliance.',
-      knownRisks: ['Regulatory uncertainty â€” frameworks evolving rapidly', 'Customer acquisition cost in competitive markets', 'Cybersecurity and data breach liability', 'Correspondent banking relationships for cross-border'],
+      standardStructure: 'Seed/Series A - regulatory licence - market launch - scale - Series B/C - profitability - potential exit. Payment processing, lending, and InsurTech are the dominant verticals.',
+      regulatoryPattern: 'Regulatory sandbox - limited licence - full licence. Central bank supervision. Anti-money laundering (AML/CFT) requirements. Data protection compliance.',
+      knownRisks: ['Regulatory uncertainty - frameworks evolving rapidly', 'Customer acquisition cost in competitive markets', 'Cybersecurity and data breach liability', 'Correspondent banking relationships for cross-border'],
       successFactors: ['Early regulatory engagement (sandbox programme)', 'Partnership with established financial institution', 'Mobile-first UX design for target market', 'Robust KYC/AML infrastructure from inception'],
     },
     {
@@ -735,7 +735,7 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Global healthcare market $12T+. Post-COVID infrastructure investment. Telehealth normalised. Pharmaceutical supply chain diversification from China/India.',
       emergingMarketContext: 'Universal health coverage push driving infrastructure demand. Local pharmaceutical manufacturing for supply security. Medical tourism growth in specialised markets.',
       typicalInvestmentRange: '$1M-$500M depending on sub-sector (clinic to manufacturing plant)',
-      standardStructure: 'Regulatory approval â†’ facility design â†’ GMP certification â†’ production/operations â†’ WHO prequalification (for generics). Medical devices: CE marking or FDA equivalent.',
+      standardStructure: 'Regulatory approval - facility design - GMP certification - production/operations - WHO prequalification (for generics). Medical devices: CE marking or FDA equivalent.',
       regulatoryPattern: 'National drug authority approval cycle 12-36 months. GMP compliance mandatory. Price controls in many markets. Health technology assessment emerging.',
       knownRisks: ['Regulatory approval timeline uncertainty', 'Price controls and margin compression', 'Intellectual property enforcement gaps', 'Supply chain dependency for APIs and excipients'],
       successFactors: ['Regulatory strategy aligned with target market approvals', 'GMP compliance from design phase', 'WHO prequalification for procurement access', 'Local clinical trial data where required'],
@@ -745,7 +745,7 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Global tourism $9.5T economic impact pre-COVID, recovered to 95% by 2024. Experiential and sustainable tourism growing at 2x rate of mass tourism.',
       emergingMarketContext: 'Tourism contributes 10-40% of GDP in many developing countries. Ecotourism, cultural tourism, and community-based tourism create local employment. Over-tourism in hotspots driving diversification.',
       typicalInvestmentRange: '$500K-$200M (eco-lodge to resort development)',
-      standardStructure: 'Tourism master plan â†’ market analysis â†’ site development â†’ operator selection â†’ construction â†’ soft opening â†’ full operations. Management contract or franchise model for international brands.',
+      standardStructure: 'Tourism master plan - market analysis - site development - operator selection - construction - soft opening - full operations. Management contract or franchise model for international brands.',
       regulatoryPattern: 'Tourism authority licensing. Environmental approval for coastal/protected area development. Cultural heritage protection requirements. Aviation bilateral agreements affect visitor flows.',
       knownRisks: ['Seasonality and demand volatility', 'Climate vulnerability (coastal, alpine)', 'Over-dependence on single source market', 'Infrastructure bottlenecks (airport capacity, roads)'],
       successFactors: ['Distinctive value proposition (not competing on price)', 'Year-round programming to reduce seasonality', 'Community integration and local employment', 'Digital marketing and direct booking capability'],
@@ -755,7 +755,7 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Global e-commerce $6.3T. Platform economies dominating. Gig economy regulation evolving. Data economy creating new value chains.',
       emergingMarketContext: 'Mobile internet penetration enabling leapfrog. Social commerce dominant in Southeast Asia. Last-mile logistics is the primary bottleneck. Digital payment infrastructure enables e-commerce growth.',
       typicalInvestmentRange: '$50K-$100M (startup to platform scale)',
-      standardStructure: 'Platform development â†’ market launch â†’ user acquisition â†’ marketplace monetisation â†’ logistics build-out â†’ profitability. Asset-light models preferred but logistics investment often necessary.',
+      standardStructure: 'Platform development > market launch > user acquisition > marketplace monetisation > logistics build-out > profitability. Asset-light models preferred but logistics investment often necessary.',
       regulatoryPattern: 'Consumer protection regulations. Data localisation requirements. Digital services tax (emerging in many jurisdictions). Competition law for platform dominance.',
       knownRisks: ['Winner-takes-most market dynamics', 'Regulatory disruption (data localisation, digital tax)', 'Customer acquisition costs in competitive markets', 'Logistics and fulfilment complexity'],
       successFactors: ['Local market adaptation (not copy-paste from other markets)', 'Payment infrastructure integration', 'Last-mile logistics partnership or build', 'Trust-building mechanisms (ratings, buyer protection)'],
@@ -765,16 +765,16 @@ export class MethodologyKnowledgeBase {
       globalTrend: 'Global infrastructure investment gap $15T by 2040. Climate-resilient infrastructure emerging requirement. Smart cities and digital infrastructure co-investment.',
       emergingMarketContext: 'Urbanisation driving massive infrastructure demand. PPP models for financing. MDB co-financing essential for de-risking. Chinese Belt and Road creating competition/opportunity dynamic.',
       typicalInvestmentRange: '$5M-$10B per project',
-      standardStructure: 'Feasibility â†’ procurement (ICB/PPP) â†’ financial close â†’ EPC contract â†’ construction â†’ commissioning â†’ operations. Project finance dominant for large projects.',
+      standardStructure: 'Feasibility - procurement (ICB/PPP) - financial close - EPC contract - construction - commissioning - operations. Project finance dominant for large projects.',
       regulatoryPattern: 'Government procurement law. PPP framework. Environmental clearance. Land acquisition (often the longest process). Building codes and safety standards.',
-      knownRisks: ['Cost and time overruns (global average: 25% over budget, 20% over time)', 'Land acquisition delays', 'Currency risk on long-tenor projects', 'Political cycle â€” projects can be deprioritised mid-construction'],
+      knownRisks: ['Cost and time overruns (global average: 25% over budget, 20% over time)', 'Land acquisition delays', 'Currency risk on long-tenor projects', 'Political cycle - projects can be deprioritised mid-construction'],
       successFactors: ['Bankable feasibility study with realistic cost estimates', 'Secured land and environmental clearances before construction', 'Experienced EPC contractor with local track record', 'Adequate contingency (15-20% of base cost)'],
     },
   ];
 
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
   // QUERY METHODS
-  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   /**
    * Look up methodology for a given domain.
@@ -873,7 +873,7 @@ export class MethodologyKnowledgeBase {
   }
 
   /**
-   * Generate a knowledge briefing for the user â€” what the system
+   * Generate a knowledge briefing for the user " what the system
    * already knows before the user tells it anything.
    */
   static generateKnowledgeBriefing(params: { country?: string; industry?: string[] }): string {

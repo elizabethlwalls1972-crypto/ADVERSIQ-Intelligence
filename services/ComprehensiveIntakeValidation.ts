@@ -1,4 +1,4 @@
-﻿/**
+/**
  * COMPREHENSIVE INTAKE VALIDATION & READINESS ENGINE
  * 
  * Validates that all 9 sections are complete and coherent
@@ -356,7 +356,7 @@ function validateFinancial(model: ComprehensiveSystemModel): ValidationResult {
     criticalGaps,
     recommendations: [
       'Define capital investment required and sources',
-      'Build revenue stream model (unit price Ã— volume)',
+      'Build revenue stream model (unit price x volume)',
       'Estimate cost structure (COGS, OpEx)',
       'Calculate returns (IRR, payback, multiple)',
       'Run scenario and sensitivity analysis',
@@ -489,7 +489,7 @@ function validateExecution(model: ComprehensiveSystemModel): ValidationResult {
     gaps,
     criticalGaps,
     recommendations: [
-      'Break execution into 3 phases: Foundation â†’ Ramp â†’ Scale',
+      'Break execution into 3 phases: Foundation -> Ramp -> Scale',
       'Define key milestones for each phase',
       'Identify critical path items',
       'Map task dependencies',
@@ -566,7 +566,7 @@ export function generateReadinessReport(model: ComprehensiveSystemModel): string
   report += '## SECTION BREAKDOWN\n\n';
   
   for (const section of validation.sectionScores) {
-    const icon = section.status === 'complete' ? 'âœ…' : section.status === 'in-progress' ? 'âš ï¸' : 'âŒ';
+    const icon = section.status === 'complete' ? '' : section.status === 'in-progress' ? '' : '';
     report += `### ${icon} ${section.section} - ${section.completeness}%\n`;
     report += `Status: **${section.status}**\n`;
     
@@ -574,7 +574,7 @@ export function generateReadinessReport(model: ComprehensiveSystemModel): string
       report += `**Missing:**\n`;
       section.gaps.forEach(gap => {
         const isCritical = section.criticalGaps && ['Organization Legal Name', 'Problem Statement', 'Risk Register'].includes(gap);
-        report += `- ${isCritical ? 'ðŸ”´ **CRITICAL**' : 'âš ï¸'} ${gap}\n`;
+        report += `- ${isCritical ? '"´ **CRITICAL**' : ''} ${gap}\n`;
       });
     }
     

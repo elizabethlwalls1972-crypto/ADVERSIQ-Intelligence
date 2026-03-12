@@ -412,7 +412,7 @@ export class OptimizedAgenticBrain {
       if (humanCognition.attentionAllocation.attentionShifts > 5) {
         hceBiasAdjustment -= 0.05; // many attention shifts = uncertainty
         hceAttentionDrivers.push(
-          `HCE detected ${humanCognition.attentionAllocation.attentionShifts} attention shifts — uncertainty present`
+          `HCE detected ${humanCognition.attentionAllocation.attentionShifts} attention shifts - uncertainty present`
         );
       }
 
@@ -476,7 +476,7 @@ export class OptimizedAgenticBrain {
     // Inject HCE-derived attention drivers
     topDrivers.push(...hceAttentionDrivers);
 
-    // Top risks — amplified by HCE emotional processing
+    // Top risks - amplified by HCE emotional processing
     const topRisks: string[] = [];
     
     if (contradictions.contradictions.length > 0) {
@@ -629,7 +629,7 @@ export class OptimizedAgenticBrain {
         id: `${runId}-frontier-negotiation`,
         type: 'strategy',
         title: 'Frontier Negotiation Strategy',
-        description: `${frontier.negotiation.negotiationStrategy} — agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
+        description: `${frontier.negotiation.negotiationStrategy} - agreement probability ${Math.round(frontier.negotiation.agreementProbability)}%`,
         confidence: frontier.negotiation.agreementProbability / 100,
         isAutonomous: true
       });

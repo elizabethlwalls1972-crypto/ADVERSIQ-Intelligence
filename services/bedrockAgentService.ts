@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
- * BW NEXUS AI — AWS BEDROCK AGENT SERVICE
+ * BW NEXUS AI - AWS BEDROCK AGENT SERVICE
  * ═══════════════════════════════════════════════════════════════════════════════
  *
  * Client-side driver for AWS Bedrock Agents.
@@ -143,7 +143,7 @@ export async function invokeBedrockAgent(
 ): Promise<string> {
   // ── Fallback to Together.ai if unconfigured ────────────────────────────────
   if (!isBedrockAgentConfigured()) {
-    console.info('[BedrockAgent] Not configured — falling back to Together.ai');
+    console.info('[BedrockAgent] Not configured - falling back to Together.ai');
     return generateWithTogether(inputText, TOGETHER_SYSTEM_PROMPT, options.onToken);
   }
 
@@ -221,7 +221,7 @@ export async function invokeBedrockAgent(
   }
 
   if (!fullText) {
-    // Agent returned empty — fallback
+    // Agent returned empty - fallback
     return generateWithTogether(inputText, TOGETHER_SYSTEM_PROMPT, options.onToken);
   }
 
@@ -249,11 +249,11 @@ Objectives: ${params.objectives}
 ${params.documentTypes?.length ? `Priority Documents: ${params.documentTypes.join(', ')}` : ''}
 
 Instructions:
-1. CALL ResearchAction — gather country/market intelligence
-2. CALL AnalysisAction — run brain engines and get context
-3. CALL DocumentAction — generate each requested document type
-4. CALL RiskAction — identify key risks
-5. CALL PartnerAction — identify strategic partners
+1. CALL ResearchAction - gather country/market intelligence
+2. CALL AnalysisAction - run brain engines and get context
+3. CALL DocumentAction - generate each requested document type
+4. CALL RiskAction - identify key risks
+5. CALL PartnerAction - identify strategic partners
 6. Return all generated content with section headings
 
 Do not stop until all documents are complete.

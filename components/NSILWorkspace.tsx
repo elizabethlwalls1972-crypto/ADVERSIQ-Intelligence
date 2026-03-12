@@ -26,7 +26,7 @@ interface NSILWorkspaceProps {
 }
 
 /**
- * NSILWorkspace — redirects to Consultant OS.
+ * NSILWorkspace - redirects to Consultant OS.
  * The full workspace UI has been consolidated into BWConsultantOS.
  * If no redirect callback is available, shows a minimal message.
  */

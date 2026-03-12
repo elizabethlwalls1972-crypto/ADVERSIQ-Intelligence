@@ -1,25 +1,25 @@
-﻿/**
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
- * NSIL INTELLIGENCE HUB â€” THE SINGLE MASTER CONTROL POINT
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/**
+ * 
+ * NSIL INTELLIGENCE HUB " THE SINGLE MASTER CONTROL POINT
+ * 
  *
  * This is THE central brain of the entire operating system.
  * Every engine, every formula, every autonomous subsystem reports through here.
  *
  * Architecture:
- *   Layer 0 â€” Knowledge Architecture: PatternConfidence + MethodologyKnowledgeBase
- *   Layer 1 â€” Input Shield: adversarial input validation
- *   Layer 2 â€” Multi-Agent Debate: 5 PersonaEngine personas
- *   Layer 3 â€” Formula Scoring: 21 DAG-scheduled formulas + 8 autonomous indices
- *   Layer 4 â€” Stress Testing: CounterfactualEngine + ScenarioSimulation (Monte Carlo)
- *   Layer 5 â€” Human Cognition: HumanCognitionEngine (7 models)
- *   Layer 6 â€” Autonomous Intelligence: 8 new engines
+ *   Layer 0 " Knowledge Architecture: PatternConfidence + MethodologyKnowledgeBase
+ *   Layer 1 " Input Shield: adversarial input validation
+ *   Layer 2 " Multi-Agent Debate: 5 PersonaEngine personas
+ *   Layer 3 " Formula Scoring: 21 DAG-scheduled formulas + 8 autonomous indices
+ *   Layer 4 " Stress Testing: CounterfactualEngine + ScenarioSimulation (Monte Carlo)
+ *   Layer 5 " Human Cognition: HumanCognitionEngine (7 models)
+ *   Layer 6 " Autonomous Intelligence: 8 new engines
  *              CreativeSynthesis, CrossDomainTransfer, AutonomousGoal,
  *              EthicalReasoning, SelfEvolvingAlgorithm, AdaptiveLearning,
  *              EmotionalIntelligence, ScenarioSimulation
- *   Layer 7 â€” Proactive Layer: continuous monitoring, drift detection, backtesting
- *   Layer 8 â€” Output Synthesis: provenance, audit trail, document generation
- *   Layer 9 â€” Reflexive Intelligence: 7 engines that turn analytical power inward
+ *   Layer 7 " Proactive Layer: continuous monitoring, drift detection, backtesting
+ *   Layer 8 " Output Synthesis: provenance, audit trail, document generation
+ *   Layer 9 " Reflexive Intelligence: 7 engines that turn analytical power inward
  *              UserSignalDecoder, InternalEchoDetector, InvestmentLifecycleMapper,
  *              RegionalMirroringEngine, RegionalIdentityDecoder,
  *              LatentAdvantageMiner, UniversalTranslationLayer
@@ -27,7 +27,7 @@
  * Every public method returns a typed result with full provenance.
  * Nothing is hidden. Everything is auditable.
  *
- * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * 
  */
 
 import { ReportParameters } from '../types';
@@ -106,25 +106,25 @@ export interface AutonomousIntelligence {
 }
 
 export interface ReflexiveIntelligence {
-  // User signal analysis â€” what the user is really asking
+  // User signal analysis " what the user is really asking
   userSignals: UserSignalReport;
   
-  // Internal echoes â€” connections within user's own data
+  // Internal echoes " connections within user's own data
   internalEchoes: EchoReport;
   
-  // Investment lifecycle â€” where the region sits on the curve
+  // Investment lifecycle " where the region sits on the curve
   lifecyclePosition: LifecycleReport;
   
-  // Regional mirroring â€” structural twins
+  // Regional mirroring " structural twins
   mirrorAnalysis: MirroringReport;
   
-  // Identity decoding â€” simulacrum detection
+  // Identity decoding " simulacrum detection
   identityAnalysis: IdentityReport;
   
-  // Latent advantages â€” "junk DNA" mining
+  // Latent advantages " "junk DNA" mining
   latentAdvantages: LatentAdvantageReport;
   
-  // Universal translation â€” audience-specific outputs
+  // Universal translation " audience-specific outputs
   translationPackage: TranslationReport;
 }
 
@@ -151,7 +151,7 @@ export interface IntelligenceReport {
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
   
-  // Reflexive intelligence layer â€” system turns analytical power inward
+  // Reflexive intelligence layer " system turns analytical power inward
   reflexive?: ReflexiveIntelligence;
   
   // Applicable insights from past decisions
@@ -192,16 +192,16 @@ export interface QuickAssessment {
 
 export class NSILIntelligenceHub {
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // AUTONOMOUS ENGINE INSTANCES (singleton pattern)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   private static selfEvolvingEngine = new SelfEvolvingAlgorithmEngine();
   private static adaptiveLearningEngine = new AdaptiveLearningEngine();
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // MASTER CONTROL â€” FULL ANALYSIS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
+  // MASTER CONTROL " FULL ANALYSIS
+  // 
 
   /**
    * Run full intelligence analysis.
@@ -210,8 +210,8 @@ export class NSILIntelligenceHub {
    * Execution order:
    * 1. Input validation (always first)
    * 2. Outcome tracker (historical insights)
-   * 3. Core analysis (Personas, Counterfactual, Unbiased) â€” parallel
-   * 4. Autonomous intelligence layer â€” parallel
+   * 3. Core analysis (Personas, Counterfactual, Unbiased) " parallel
+   * 4. Autonomous intelligence layer " parallel
    * 5. Adaptive learning record
    * 6. Self-evolution check
    * 7. Recommendation synthesis (all signals converge)
@@ -221,15 +221,15 @@ export class NSILIntelligenceHub {
     const componentsRun: string[] = [];
     const reportId = `INTEL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     
-    // â”€â”€ Step 1: Input Validation (always runs first) â”€â”€
+    // â"€â"€ Step 1: Input Validation (always runs first) â"€â"€
     const inputValidation = InputShieldService.validate(params);
     componentsRun.push('InputShield');
     
-    // â”€â”€ Step 2: Historical insights â”€â”€
+    // â"€â"€ Step 2: Historical insights â"€â"€
     const applicableInsights = OutcomeTracker.getApplicableInsights(params);
     componentsRun.push('OutcomeTracker');
     
-    // â”€â”€ Step 3 & 4: Core analysis + Autonomous layer (parallel) â”€â”€
+    // â"€â"€ Step 3 & 4: Core analysis + Autonomous layer (parallel) â"€â"€
     let personaAnalysis: FullPersonaAnalysis | undefined;
     let counterfactual: CounterfactualAnalysis | undefined;
     let unbiasedAnalysis: FullUnbiasedAnalysis | undefined;
@@ -275,7 +275,7 @@ export class NSILIntelligenceHub {
       autonomous = this.emptyAutonomous();
     }
     
-    // â”€â”€ Step 5: Record interaction for adaptive learning â”€â”€
+    // â"€â"€ Step 5: Record interaction for adaptive learning â"€â"€
     this.adaptiveLearningEngine.recordInteraction({
       timestamp: new Date().toISOString(),
       type: 'report',
@@ -292,10 +292,10 @@ export class NSILIntelligenceHub {
       outcomeAccuracy: null
     });
     
-    // â”€â”€ Step 6: Exploration mutation (Thompson sampling) â”€â”€
+    // â"€â"€ Step 6: Exploration mutation (Thompson sampling) â"€â"€
     this.selfEvolvingEngine.exploreMutation();
     
-    // â”€â”€ Step 7: Synthesize unified recommendation â”€â”€
+    // â"€â"€ Step 7: Synthesize unified recommendation â"€â"€
     const recommendation = this.synthesizeRecommendation(
       inputValidation,
       personaAnalysis,
@@ -334,9 +334,9 @@ export class NSILIntelligenceHub {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // AUTONOMOUS INTELLIGENCE LAYER
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   /**
    * Run all 8 autonomous engines and compile results.
@@ -347,7 +347,7 @@ export class NSILIntelligenceHub {
     const sector = ((params as Record<string, string[]>).industry || ['general'])[0] || 'general';
     const region = (params as Record<string, string>).region || '';
 
-    // 1. Creative Synthesis â€” novel strategy generation
+    // 1. Creative Synthesis " novel strategy generation
     const creativeCtx: SynthesisContext = { country, sector, region, investmentSizeM: 10, existingCapabilities: [], constraints: [], objectives: ['growth', 'sustainability'] };
     const creativeResult = CreativeSynthesisEngine.synthesise(creativeCtx, 5);
     const creativeStrategies = creativeResult.strategies.map(s => ({
@@ -356,7 +356,7 @@ export class NSILIntelligenceHub {
       feasibilityScore: s.feasibilityScore
     }));
 
-    // 2. Cross-Domain Transfer â€” structural analogies
+    // 2. Cross-Domain Transfer " structural analogies
     const transferCtx: TransferContext = { country, sector, region, challenge: 'market access and infrastructure', currentState: ['emerging market', 'developing infrastructure'], desiredState: ['competitive market', 'robust infrastructure'] };
     const transferResult = CrossDomainTransferEngine.analyse(transferCtx);
     const crossDomainInsights = transferResult.topInsights.slice(0, 5).map(t => ({
@@ -365,7 +365,7 @@ export class NSILIntelligenceHub {
       transferScore: t.confidence
     }));
 
-    // 3. Autonomous Goals â€” self-initiated objectives
+    // 3. Autonomous Goals " self-initiated objectives
     const goalCtx: GoalGenerationContext = { country, sector, region, spiScore: 50, rroiScore: 50, riskFlags: [], opportunities: [], dataGaps: [], stakeholderConcerns: [], timelineWeeks: 12, investmentSizeM: 10, existingGoals: [] };
     const goalEngine = new AutonomousGoalEngine();
     const goalResult = goalEngine.generateGoals(goalCtx);
@@ -376,7 +376,7 @@ export class NSILIntelligenceHub {
       reasoning: g.reasoning
     }));
 
-    // 4. Ethical Reasoning â€” value alignment check
+    // 4. Ethical Reasoning " value alignment check
     const ethicalCtx: EthicalContext = {
       country,
       region,
@@ -400,7 +400,7 @@ export class NSILIntelligenceHub {
       flags: ethicalResult.flags.map(f => ({ severity: f.severity, description: f.description }))
     };
 
-    // 5. Emotional Intelligence â€” stakeholder emotional dynamics
+    // 5. Emotional Intelligence " stakeholder emotional dynamics
     const emotionalCtx: EmotionalContext = {
       country,
       region,
@@ -421,7 +421,7 @@ export class NSILIntelligenceHub {
       framingRecommendation: emotionalResult.prospectTheory.framingRecommendation
     };
 
-    // 6. Scenario Simulation â€” forward-looking Monte Carlo
+    // 6. Scenario Simulation " forward-looking Monte Carlo
     const simCtx: SimulationContext = {
       country,
       region,
@@ -440,7 +440,7 @@ export class NSILIntelligenceHub {
       riskLevel: simResult.riskLevel
     };
 
-    // 7. Self-Evolving Algorithm â€” get evolution state
+    // 7. Self-Evolving Algorithm " get evolution state
     const evoReport = this.selfEvolvingEngine.getReport();
     const evolutionReport = {
       generation: evoReport.generation,
@@ -448,7 +448,7 @@ export class NSILIntelligenceHub {
       mutationsApplied: evoReport.mutationsApplied
     };
 
-    // 8. Adaptive Learning â€” get learning state
+    // 8. Adaptive Learning " get learning state
     const learnReport = this.adaptiveLearningEngine.getReport();
     const learningReport = {
       patternsLearned: learnReport.patternsLearned,
@@ -481,13 +481,13 @@ export class NSILIntelligenceHub {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // REFLEXIVE INTELLIGENCE LAYER (Layer 9)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
 
   /**
    * Run all 7 reflexive engines and compile results.
-   * This layer turns the system's analytical power inward â€” on the user's
+   * This layer turns the system's analytical power inward " on the user's
    * own inputs, assumptions, blind spots, and hidden assets.
    */
   private static runReflexiveLayer(
@@ -521,13 +521,13 @@ export class NSILIntelligenceHub {
         : []
     };
 
-    // 1. User Signal Decoder â€” detect repetition, avoidance, circularity
+    // 1. User Signal Decoder " detect repetition, avoidance, circularity
     const userSignals = UserSignalDecoder.decode(snapshot);
 
-    // 2. Internal Echo Detector â€” cross-reference within user's own data
+    // 2. Internal Echo Detector " cross-reference within user's own data
     const internalEchoes = InternalEchoDetector.detect(snapshot);
 
-    // 3. Investment Lifecycle Mapper â€” where is this region on the curve?
+    // 3. Investment Lifecycle Mapper " where is this region on the curve?
     const lifecycleCtx: LifecycleContext = {
       region,
       country,
@@ -551,16 +551,16 @@ export class NSILIntelligenceHub {
     };
     const lifecyclePosition = InvestmentLifecycleMapper.map(lifecycleCtx);
 
-    // 4. Regional Mirroring Engine â€” find structural twins
+    // 4. Regional Mirroring Engine " find structural twins
     const mirrorAnalysis = RegionalMirroringEngine.mirror(snapshot);
 
-    // 5. Regional Identity Decoder â€” simulacrum detection
+    // 5. Regional Identity Decoder " simulacrum detection
     const identityAnalysis = RegionalIdentityDecoder.decode(snapshot);
 
-    // 6. Latent Advantage Miner â€” "junk DNA" mining
+    // 6. Latent Advantage Miner " "junk DNA" mining
     const latentAdvantages = LatentAdvantageMiner.mine(snapshot);
 
-    // 7. Universal Translation Layer â€” audience-specific outputs
+    // 7. Universal Translation Layer " audience-specific outputs
     // Convert key findings into translation inputs
     const translationInputs: TranslationInput[] = [];
 
@@ -579,7 +579,7 @@ export class NSILIntelligenceHub {
     // Add latent advantages as translation inputs
     for (const adv of latentAdvantages.latentAdvantages.slice(0, 3)) {
       translationInputs.push({
-        finding: `Hidden asset: ${adv.asset} â€” ${adv.historicalValue}`,
+        finding: `Hidden asset: ${adv.asset} " ${adv.historicalValue}`,
         category: 'hidden-asset',
         confidence: adv.confidenceScore * 100,
         region, sector,
@@ -621,12 +621,12 @@ export class NSILIntelligenceHub {
     };
   }
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   // QUICK ASSESSMENT
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // 
   
   /**
-   * Quick assessment â€” faster, less comprehensive.
+   * Quick assessment " faster, less comprehensive.
    * Now includes ethical gate check and emotional climate.
    */
   static quickAssess(params: Partial<ReportParameters>): QuickAssessment {
@@ -690,9 +690,9 @@ export class NSILIntelligenceHub {
     if (status === 'red') {
       headline = 'Critical issues must be resolved before analysis';
     } else if (status === 'green') {
-      headline = 'Inputs validated â€” analysis ready to proceed';
+      headline = 'Inputs validated - analysis ready to proceed';
     } else if (status === 'yellow') {
-      headline = 'Some concerns identified â€” review recommended';
+      headline = 'Some concerns identified - review recommended';
     } else {
       headline = 'Multiple concerns require attention';
     }
@@ -847,7 +847,7 @@ export class NSILIntelligenceHub {
     confidenceFactors.push(signals.counterfactualRobustness);
 
     // Autonomous signal weights
-    // Ethical gate â€” hard constraint
+    // Ethical gate " hard constraint
     if (signals.ethicalRecommendation === 'reject') actionScore -= 40;
     else if (signals.ethicalRecommendation === 'redesign') actionScore -= 20;
     
@@ -944,7 +944,7 @@ export class NSILIntelligenceHub {
   }
   
   /**
-   * Get component health status â€” all 13 engines
+   * Get component health status " all 13 engines
    */
   static getComponentStatus(): Array<{
     component: string;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * INPUT SHIELD SERVICE - Adversarial Input Validation
  * 
  * This service cross-checks user-provided inputs against authoritative data sources
@@ -82,14 +82,14 @@ const FRAUD_PATTERNS = [
   }
 ];
 
-// Known country data for validation â€” 195 countries
+// Known country data for validation " 195 countries
 const COUNTRY_DATA: Record<string, { 
   gdpGrowth: number; 
   doingBusinessRank: number; 
   corruptionIndex: number;
   sanctioned: boolean;
 }> = {
-  // â”€â”€ HIGH INCOME / DEVELOPED â”€â”€
+  // â"€â"€ HIGH INCOME / DEVELOPED â"€â"€
   'Australia': { gdpGrowth: 2.4, doingBusinessRank: 14, corruptionIndex: 73, sanctioned: false },
   'United States': { gdpGrowth: 2.1, doingBusinessRank: 6, corruptionIndex: 67, sanctioned: false },
   'United Kingdom': { gdpGrowth: 1.1, doingBusinessRank: 8, corruptionIndex: 71, sanctioned: false },
@@ -138,7 +138,7 @@ const COUNTRY_DATA: Record<string, {
   'Oman': { gdpGrowth: 1.3, doingBusinessRank: 68, corruptionIndex: 44, sanctioned: false },
   'Uruguay': { gdpGrowth: 0.4, doingBusinessRank: 101, corruptionIndex: 74, sanctioned: false },
   'Chile': { gdpGrowth: 0.2, doingBusinessRank: 59, corruptionIndex: 66, sanctioned: false },
-  // â”€â”€ UPPER MIDDLE INCOME â”€â”€
+  // â"€â"€ UPPER MIDDLE INCOME â"€â"€
   'China': { gdpGrowth: 5.2, doingBusinessRank: 31, corruptionIndex: 45, sanctioned: false },
   'Mexico': { gdpGrowth: 3.2, doingBusinessRank: 60, corruptionIndex: 31, sanctioned: false },
   'Brazil': { gdpGrowth: 2.9, doingBusinessRank: 124, corruptionIndex: 36, sanctioned: false },
@@ -171,7 +171,7 @@ const COUNTRY_DATA: Record<string, {
   'Lebanon': { gdpGrowth: -0.2, doingBusinessRank: 143, corruptionIndex: 24, sanctioned: false },
   'Iraq': { gdpGrowth: -2.1, doingBusinessRank: 172, corruptionIndex: 23, sanctioned: false },
   'Libya': { gdpGrowth: -1.2, doingBusinessRank: 186, corruptionIndex: 18, sanctioned: false },
-  // â”€â”€ LOWER MIDDLE INCOME â”€â”€
+  // â"€â"€ LOWER MIDDLE INCOME â"€â"€
   'India': { gdpGrowth: 6.3, doingBusinessRank: 63, corruptionIndex: 40, sanctioned: false },
   'Vietnam': { gdpGrowth: 5.0, doingBusinessRank: 70, corruptionIndex: 42, sanctioned: false },
   'Philippines': { gdpGrowth: 5.6, doingBusinessRank: 95, corruptionIndex: 33, sanctioned: false },
@@ -205,7 +205,7 @@ const COUNTRY_DATA: Record<string, {
   'Guatemala': { gdpGrowth: 3.4, doingBusinessRank: 96, corruptionIndex: 24, sanctioned: false },
   'Bolivia': { gdpGrowth: 2.1, doingBusinessRank: 150, corruptionIndex: 29, sanctioned: false },
   'Paraguay': { gdpGrowth: 4.5, doingBusinessRank: 125, corruptionIndex: 28, sanctioned: false },
-  // â”€â”€ LOW INCOME â”€â”€
+  // â"€â"€ LOW INCOME â"€â"€
   'Ethiopia': { gdpGrowth: 7.2, doingBusinessRank: 159, corruptionIndex: 37, sanctioned: false },
   'Rwanda': { gdpGrowth: 7.0, doingBusinessRank: 38, corruptionIndex: 54, sanctioned: false },
   'DRC': { gdpGrowth: 6.2, doingBusinessRank: 183, corruptionIndex: 20, sanctioned: false },
@@ -222,10 +222,10 @@ const COUNTRY_DATA: Record<string, {
   'Afghanistan': { gdpGrowth: -3.0, doingBusinessRank: 173, corruptionIndex: 24, sanctioned: false },
   'Haiti': { gdpGrowth: -1.9, doingBusinessRank: 179, corruptionIndex: 17, sanctioned: false },
   'Yemen': { gdpGrowth: -2.0, doingBusinessRank: 187, corruptionIndex: 16, sanctioned: false },
-  // â”€â”€ ADDITIONAL NOTABLE ECONOMIES â”€â”€
+  // â"€â"€ ADDITIONAL NOTABLE ECONOMIES â"€â"€
   'United Arab Emirates': { gdpGrowth: 3.4, doingBusinessRank: 16, corruptionIndex: 67, sanctioned: false },
   'Saudi Arabia': { gdpGrowth: -0.8, doingBusinessRank: 62, corruptionIndex: 55, sanctioned: false },
-  // â”€â”€ SANCTIONED / RESTRICTED â”€â”€
+  // â"€â"€ SANCTIONED / RESTRICTED â"€â"€
   'Russia': { gdpGrowth: 0.7, doingBusinessRank: 28, corruptionIndex: 28, sanctioned: true },
   'Iran': { gdpGrowth: 2.5, doingBusinessRank: 127, corruptionIndex: 24, sanctioned: true },
   'North Korea': { gdpGrowth: -0.1, doingBusinessRank: 190, corruptionIndex: 17, sanctioned: true },
@@ -236,60 +236,60 @@ const COUNTRY_DATA: Record<string, {
   'Cuba': { gdpGrowth: 1.3, doingBusinessRank: 150, corruptionIndex: 45, sanctioned: true },
 };
 
-// OFAC SDN, EU Sanctions, UN Security Council consolidated list â€” entities/individuals
+// OFAC SDN, EU Sanctions, UN Security Council consolidated list " entities/individuals
 const SANCTIONS_WATCHLIST = [
-  // â”€â”€ Russian Entities â”€â”€
+  // â"€â"€ Russian Entities â"€â"€
   'rosneft', 'gazprom', 'sberbank', 'vtb bank', 'russian direct investment fund',
   'gazprombank', 'alfa-bank', 'sovcombank', 'novatek', 'transneft',
   'rostec', 'united aircraft corporation', 'united shipbuilding corporation',
   'almaz-antey', 'tactical missiles corporation', 'russian railways',
   'kalashnikov concern', 'kamaz', 'russian agricultural bank', 'promsvyazbank',
   'wagner group', 'prigozhin', 'internet research agency',
-  // â”€â”€ Iranian Entities â”€â”€
+  // â"€â"€ Iranian Entities â"€â"€
   'national iranian oil company', 'islamic revolutionary guard corps',
   'irgc-qods force', 'bank melli iran', 'bank mellat', 'bank saderat iran',
   'bank tejarat', 'bank sepah', 'iran air', 'mahan air', 'shipping lines iran',
   'atomic energy organization of iran', 'defense industries organization iran',
   'iran electronics industries', 'shahid hemmat industrial group',
-  // â”€â”€ North Korean Entities â”€â”€
+  // â"€â"€ North Korean Entities â"€â"€
   'korea mining development trading corporation', 'foreign trade bank dprk',
   'korea kwangson banking corp', 'korea national insurance corporation',
   'korea ryonbong general corporation', 'reconnaissance general bureau',
   'munitions industry department', 'second economic committee dprk',
   'ocean maritime management', 'air koryo',
-  // â”€â”€ Designated Terrorist Organizations â”€â”€
+  // â"€â"€ Designated Terrorist Organizations â"€â"€
   'hezbollah', 'hamas', 'isis', 'isil', 'al-qaeda', 'al-nusra front',
   'boko haram', 'al-shabaab', 'taliban', 'lashkar-e-taiba',
   'jaish-e-mohammed', 'islamic state khorasan', 'haqqani network',
   'popular front for the liberation of palestine',
   'kurdistan workers party', 'pkk', 'farc dissident groups',
   'real ira', 'continuity ira', 'aum shinrikyo',
-  // â”€â”€ Sanctioned Individuals (key figures) â”€â”€
+  // â"€â"€ Sanctioned Individuals (key figures) â"€â"€
   'nicolas maduro', 'bashar al-assad', 'kim jong un', 'ali khamenei',
   'alexander lukashenko', 'vladamir putin', 'sergei lavrov',
   'ramzan kadyrov', 'yevgeny prigozhin', 'viktor medvedchuk',
   'min aung hlaing', 'daniel ortega',
-  // â”€â”€ Venezuelan Entities â”€â”€
+  // â"€â"€ Venezuelan Entities â"€â"€
   'petroleos de venezuela', 'pdvsa', 'banco de venezuela',
   'banco bicentenario de venezuela', 'cvg electrificacion del caroni',
-  // â”€â”€ Syrian Entities â”€â”€
+  // â"€â"€ Syrian Entities â"€â"€
   'central bank of syria', 'commercial bank of syria', 'syrianair',
   'scientific studies and research center syria',
-  // â”€â”€ Belarusian Entities â”€â”€
+  // â"€â"€ Belarusian Entities â"€â"€
   'belaruskali', 'grodno azot', 'naftan', 'belarusian oil company',
   'belavia belarusian airlines', 'beltelecom',
-  // â”€â”€ Myanmar Entities â”€â”€
+  // â"€â"€ Myanmar Entities â"€â"€
   'myanmar economic corporation', 'myanma economic holdings',
   'myanmar oil and gas enterprise', 'myanmar gems enterprise',
-  // â”€â”€ Cuban Entities â”€â”€
+  // â"€â"€ Cuban Entities â"€â"€
   'gaesa', 'cimex', 'habanos sa', 'cubanacan',
-  // â”€â”€ Money Laundering Networks â”€â”€
+  // â"€â"€ Money Laundering Networks â"€â"€
   'danske bank estonia', 'wirecard ag',
-  // â”€â”€ Proliferation Networks â”€â”€
+  // â"€â"€ Proliferation Networks â"€â"€
   'khan research laboratories', 'a.q. khan network'
 ];
 
-// â”€â”€ AML / Financial Crime Pattern Detection â”€â”€
+// â"€â"€ AML / Financial Crime Pattern Detection â"€â"€
 const _AML_RED_FLAGS: Array<{
   pattern: string;
   description: string;
@@ -460,7 +460,7 @@ export class InputShieldService {
       recommendations.push('BLOCKED: Critical issues must be resolved before proceeding');
       validationResults
         .filter(r => r.flag === 'critical')
-        .forEach(r => recommendations.push(`â€¢ ${r.suggestion || 'Address: ' + r.message}`));
+        .forEach(r => recommendations.push(`${r.suggestion || 'Address: ' + r.message}`));
     }
     
     if (warningCount > 0 && criticalCount === 0) {
@@ -468,7 +468,7 @@ export class InputShieldService {
       validationResults
         .filter(r => r.flag === 'warning')
         .slice(0, 3)
-        .forEach(r => recommendations.push(`â€¢ ${r.suggestion || r.message}`));
+        .forEach(r => recommendations.push(`${r.suggestion || r.message}`));
     }
     
     if (overallStatus === 'trusted' && overallTrust >= 80) {

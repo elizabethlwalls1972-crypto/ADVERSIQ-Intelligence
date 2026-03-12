@@ -5,7 +5,7 @@
  * 
  * Generates novel strategic recommendations by combining unrelated knowledge
  * domains through computational creativity techniques. This is NOT pattern
- * matching — it is combinatorial invention.
+ * matching - it is combinatorial invention.
  *
  * Mathematical Foundation:
  *   - Bisociation Theory (Koestler 1964): creativity = intersection of
@@ -41,10 +41,10 @@ export interface KnowledgeFrame {
 export interface Bisociation {
   frameA: KnowledgeFrame;
   frameB: KnowledgeFrame;
-  intersectionStrength: number; // 0–1, Jaccard similarity of transferable concepts
+  intersectionStrength: number; // 0-1, Jaccard similarity of transferable concepts
   emergentInsights: string[];
-  noveltyScore: number; // 0–1, inverse of prior co-occurrence
-  feasibilityScore: number; // 0–1, structural compatibility
+  noveltyScore: number; // 0-1, inverse of prior co-occurrence
+  feasibilityScore: number; // 0-1, structural compatibility
   strategicValue: number; // weighted combination
 }
 
@@ -88,7 +88,7 @@ export interface SynthesisContext {
 }
 
 // ============================================================================
-// KNOWLEDGE FRAME LIBRARY — Real embedded knowledge, not placeholders
+// KNOWLEDGE FRAME LIBRARY - Real embedded knowledge, not placeholders
 // ============================================================================
 
 const KNOWLEDGE_FRAMES: KnowledgeFrame[] = [
@@ -375,7 +375,7 @@ export class CreativeSynthesisEngine {
 
   /**
    * Combine transferable insights from two frames into emergent strategies.
-   * This is the core creative act — merging mental spaces (Fauconnier & Turner).
+   * This is the core creative act - merging mental spaces (Fauconnier & Turner).
    */
   private static combineInsights(frameA: KnowledgeFrame, frameB: KnowledgeFrame): string[] {
     const insights: string[] = [];
@@ -383,7 +383,7 @@ export class CreativeSynthesisEngine {
     // Cross-pollinate: apply each frame's transferable insights to the other's domain
     for (const insightA of frameA.transferableInsights) {
       for (const insightB of frameB.transferableInsights) {
-        // Find conceptual bridges — shared abstract concepts
+        // Find conceptual bridges - shared abstract concepts
         const wordsA = new Set(insightA.toLowerCase().split(/\W+/).filter(w => w.length > 3));
         const wordsB = new Set(insightB.toLowerCase().split(/\W+/).filter(w => w.length > 3));
         const sharedConcepts = [...wordsA].filter(w => wordsB.has(w));
@@ -446,7 +446,7 @@ export class CreativeSynthesisEngine {
     score += capabilityOverlap * 0.3;
     _factors++;
 
-    // Check constraint compatibility — success conditions should not conflict with constraints
+    // Check constraint compatibility - success conditions should not conflict with constraints
     const constraintConflicts = context.constraints.filter(c =>
       bisociation.frameA.successConditions.concat(bisociation.frameB.successConditions)
         .some(s => s.toLowerCase().includes(c.toLowerCase()))
@@ -507,7 +507,7 @@ export class CreativeSynthesisEngine {
         `to create a unique value proposition not available through conventional approaches.`,
       sourceFrames: [bisociation.frameA.id, bisociation.frameB.id],
       bisociationPath: `Creative leap: "${bisociation.frameA.transferableInsights[0]}" (${bisociation.frameA.domain}) ` +
-        `meets "${bisociation.frameB.transferableInsights[0]}" (${bisociation.frameB.domain}) — ` +
+        `meets "${bisociation.frameB.transferableInsights[0]}" (${bisociation.frameB.domain}) - ` +
         `emergent insight: ${bisociation.emergentInsights[0] || 'novel combination identified'}`,
       noveltyScore: bisociation.noveltyScore,
       feasibilityScore: bisociation.feasibilityScore,
@@ -582,7 +582,7 @@ export class CreativeSynthesisEngine {
   }
 
   /**
-   * Quick creative assessment — returns top 3 cross-domain ideas without full analysis.
+   * Quick creative assessment - returns top 3 cross-domain ideas without full analysis.
    */
   static quickIdeate(context: SynthesisContext): string[] {
     const result = this.synthesise(context, 3);
