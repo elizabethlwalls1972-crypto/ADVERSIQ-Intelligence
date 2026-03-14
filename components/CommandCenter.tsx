@@ -480,22 +480,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-2 gap-6 mb-10">
                         {/* ── LEFT: Every Other AI ── */}
                         <div className="relative rounded-md overflow-hidden border border-red-200/60 shadow-md">
-                            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-52 object-cover" loading="lazy" />
-                            <div className="absolute top-0 left-0 right-0 h-52 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-red-900/50 flex flex-col justify-end p-5">
+                            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-48 object-cover" loading="lazy" />
+                            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-red-900/50 flex flex-col justify-end p-5">
                                 <p className="text-[10px] font-bold text-red-300 uppercase tracking-widest mb-1">The problem</p>
                                 <span className="text-white font-bold text-xl drop-shadow">Every Other AI</span>
                             </div>
-                            <div className="p-5 bg-red-50/20 space-y-3">
-                                {[
-                                    ['No identity', 'Doesn\u2019t ask who you are, what firm you represent, or what you\u2019re trying to achieve. Everyone gets the same blank prompt box.'],
-                                    ['No verification', 'Cannot check a corporate registry, screen sanctions, or verify an LEI. Gives fluent, confident answers fabricated from training data.'],
-                                    ['Regional bias', 'Trained on 100\u00d7 more content about New York than Suva. Lesser-known markets get the nearest Western comparison, not their own reality.'],
-                                    ['No second opinion', 'One model, one pass, no adversarial check. No engine asks \u201Cwhat if the opposite is true?\u201D before the answer reaches you.'],
-                                    ['No source trail', 'When it doesn\u2019t have data it fills the gap with confident fiction. You can\u2019t trace a single claim back to a named source.'],
-                                ].map(([title, desc], i) => (
-                                    <div key={i} className="flex items-start gap-3">
-                                        <span className="mt-1 w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">&times;</span>
-                                        <div><span className="font-semibold text-slate-900 text-sm">{title}.</span> <span className="text-sm text-slate-600">{desc}</span></div>
+                            <div className="divide-y divide-red-100">
+                                {([
+                                    ['gap-id', 'No Identity or Context', 'Doesn\u2019t ask who you are, what firm you represent, or what you\u2019re trying to achieve. A first-time founder exploring Papua New Guinea and a seasoned investor evaluating a $200M port deal in Mozambique both get the same blank prompt box. No intake, no case building, no memory across sessions.'],
+                                    ['gap-verify', 'No Entity Verification', 'Ask \u201CIs Sunrise Holdings Ltd in Fiji legitimate?\u201D and you get a fluent, confident answer \u2014 fabricated from statistical patterns. It cannot query a corporate registry, screen against sanctions lists, verify an LEI number, or pull real governance scores. In advisory work, where capital gets committed on this basis, that\u2019s dangerous.'],
+                                    ['gap-bias', 'Systemic Regional Bias', 'The internet has 100\u00d7 more content about New York than Suva. Lesser-known markets get mapped to the nearest Western comparison \u2014 erasing their actual characteristics. Negative framing dominates because limited training data skews toward news coverage of problems, not opportunities. Pattern-matching dressed up as analysis.'],
+                                    ['gap-engine', 'Single-Pass, No Challenge', 'One model, one pass, one perspective. No second engine asking \u201Cwhat if the opposite is true?\u201D No counterfactual simulation, no scoring formula that treats Fiji and Singapore identically, no adversarial debate. For decisions affecting communities, investments, or government strategy \u2014 one perspective isn\u2019t enough.'],
+                                    ['gap-memory', 'No Case Memory', 'Every conversation starts at zero. It doesn\u2019t remember what you discussed last week, what entities were flagged, or what strategy was being developed. There is no case file, no continuity, no compounding intelligence across sessions.'],
+                                    ['gap-output', 'No Actionable Deliverables', 'Gives you paragraphs of text \u2014 not documents you can use. No Letters of Intent, no due diligence reports, no board-ready strategy briefs, no stakeholder-specific versions. You still need a team to turn the answer into something someone can act on.'],
+                                    ['gap-ethics', 'No Ethical or Compliance Gate', 'Recommendations are not checked against fairness principles, environmental standards, or jurisdiction-specific regulations. There is no computational ethics layer, no IFC Performance Standard assessment, and no mechanism to reject a recommendation on ethical grounds even when the financial case is strong.'],
+                                ] as [string, string, string][]).map(([id, title, detail]) => (
+                                    <div key={id} className="px-5 py-3 bg-red-50/20 cursor-pointer hover:bg-red-50/40 transition-colors" onClick={() => toggleCard(id)}>
+                                        <div className="flex items-center gap-3">
+                                            <span className="w-5 h-5 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-xs font-bold">&times;</span>
+                                            <span className="font-semibold text-slate-900 text-sm flex-1">{title}</span>
+                                            <span className={`text-red-400 text-xs transition-transform ${expandedCards.has(id) ? 'rotate-180' : ''}`}>&#9660;</span>
+                                        </div>
+                                        {expandedCards.has(id) && (
+                                            <p className="text-sm text-slate-600 leading-relaxed mt-2 ml-8">{detail}</p>
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -503,23 +511,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* ── RIGHT: This System ── */}
                         <div className="relative rounded-md overflow-hidden border border-blue-200/60 shadow-md">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-52 object-cover" loading="lazy" />
-                            <div className="absolute top-0 left-0 right-0 h-52 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-blue-900/50 flex flex-col justify-end p-5">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop&auto=format&q=80" alt="" className="w-full h-48 object-cover" loading="lazy" />
+                            <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-slate-900/70 via-slate-900/40 to-blue-900/50 flex flex-col justify-end p-5">
                                 <p className="text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-1">The solution</p>
                                 <span className="text-white font-bold text-xl drop-shadow">This System</span>
                             </div>
-                            <div className="p-5 bg-blue-50/20 space-y-3">
-                                {[
-                                    ['Knows who you are', 'Structured intake captures your role, firm, sector, purpose, and experience level before any analysis begins. Context shapes everything.'],
-                                    ['Verifies against real registries', 'Sanctions databases, corporate registries, LEI lookups, governance scores, independent web search, and live news \u2014 real lookups, every time.'],
-                                    ['Same formula, every country', 'The identical weighted scoring model runs for Papua New Guinea and the United States. The methodology doesn\u2019t discriminate.'],
-                                    ['19 engines challenge every answer', 'Adversarial debate, counterfactual simulation, blind-spot detection, sanctions screening, and entity intelligence \u2014 deterministic and auditable.'],
-                                    ['Every claim sourced', 'Tells you what it verified, what it couldn\u2019t, and which data source each finding came from. When it lacks data, it says so.'],
-                                    ['Spots disruption opportunities', 'Scans live global events \u2014 wars, sanctions, trade fractures \u2014 and identifies where regional markets can capture displaced demand.'],
-                                ].map(([title, desc], i) => (
-                                    <div key={i} className="flex items-start gap-3">
-                                        <span className="mt-1 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-xs font-bold">&#10003;</span>
-                                        <div><span className="font-semibold text-slate-900 text-sm">{title}.</span> <span className="text-sm text-slate-600">{desc}</span></div>
+                            <div className="divide-y divide-blue-100">
+                                {([
+                                    ['sol-id', 'Structured Intake \u2014 Learns You First', 'Captures your role, firm, sector, purpose, experience level, and what results you need before any analysis begins. A novice gets broader educational framing. A professional gets entity-level intelligence and risk quantification immediately. Both get the same unbiased data \u2014 the presentation adapts to the person. That\u2019s the difference between a chat interface and an advisory system.'],
+                                    ['sol-verify', 'Real Registry Verification', 'When someone mentions a company, partner, or jurisdiction, the Entity Intelligence Pipeline fires automatically \u2014 querying OpenSanctions, OpenCorporates, GLEIF, Brave Search, GDELT, V-Dem, and Tavily in parallel. It tells you what it verified and what it couldn\u2019t. Every significant finding traces back to a named source. When it lacks data, it says so \u2014 instead of filling the gap with confident fiction.'],
+                                    ['sol-bias', 'Same Formula, Every Country', 'The identical weighted scoring model \u2014 38 proprietary indices \u2014 runs for Papua New Guinea exactly as it runs for the United States. Data inputs differ because reality differs, but the methodology doesn\u2019t discriminate. Regional unknowns are evaluated on true merit, not internet popularity. Backtested against 200+ real historical cases with known outcomes.'],
+                                    ['sol-engine', '19 Engines Challenge Every Answer', 'Adversarial Bayesian debate with 5 independent personas, counterfactual Monte Carlo simulation, propositional logic validation, neuroscience-based cognition modelling, cross-domain analogical reasoning, blind-spot detection, sanctions screening, and live entity intelligence \u2014 all firing in parallel. Deterministic: run it again tomorrow with the same inputs and you get the same answer. Every output comes with a method trail.'],
+                                    ['sol-memory', 'Persistent Case Intelligence', 'The system builds a case file, not a chat log. It remembers who you are, what you\u2019re working on, what entities were flagged, what strategy is being developed, and what was discussed before. Context compounds across sessions \u2014 shaping the depth of analysis, the risks surfaced, and the follow-up questions asked.'],
+                                    ['sol-output', 'Execution-Ready Deliverables', 'Generates Letters of Intent, MOUs, NDAs, Term Sheets, strategic briefs, stakeholder narratives, and partnership frameworks directly from the analysis. Five audience-specific formats \u2014 investor, government, community, partner, executive \u2014 so the same findings are framed correctly for whoever reads them. Compresses weeks of advisory into a decision-ready operating flow.'],
+                                    ['sol-ethics', 'Computational Ethics + 195-Country Compliance', 'Every recommendation is scored against Rawlsian fairness, intergenerational equity, multi-stakeholder utility, and Gini inequality impact \u2014 mathematical scores, not checkbox exercises. All 8 IFC Performance Standards assessed automatically. A 195-country compliance database checks jurisdiction-specific regulations. The system can recommend \u201Creject\u201D on ethical grounds alone, even when the financial case is strong.'],
+                                ] as [string, string, string][]).map(([id, title, detail]) => (
+                                    <div key={id} className="px-5 py-3 bg-blue-50/20 cursor-pointer hover:bg-blue-50/40 transition-colors" onClick={() => toggleCard(id)}>
+                                        <div className="flex items-center gap-3">
+                                            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-xs font-bold">&#10003;</span>
+                                            <span className="font-semibold text-slate-900 text-sm flex-1">{title}</span>
+                                            <span className={`text-blue-400 text-xs transition-transform ${expandedCards.has(id) ? 'rotate-180' : ''}`}>&#9660;</span>
+                                        </div>
+                                        {expandedCards.has(id) && (
+                                            <p className="text-sm text-slate-600 leading-relaxed mt-2 ml-8">{detail}</p>
+                                        )}
                                     </div>
                                 ))}
                             </div>
