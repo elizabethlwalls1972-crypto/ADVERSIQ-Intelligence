@@ -375,48 +375,62 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* OUR ORIGIN */}
-            <section className="py-10 px-4 bg-white">
+            {/* WHAT WE DO — Bold Value Proposition */}
+            <section className="py-16 px-4 bg-white">
                 <div className="max-w-5xl mx-auto">
-                    <h2 className="text-2xl md:text-3xl font-light mb-6 text-slate-900">The Story of Regional Cities</h2>
-                    <div className="space-y-4 text-base text-slate-700 leading-relaxed text-justify mb-8">
-                        <p>
-                            Regional cities are not secondary economies. They carry national supply chains, food systems, energy corridors, logistics routes, and workforce growth that keep countries running &mdash; yet capital flows to familiar metros while regional opportunities are under-scored, under-financed, or evaluated with models built for entirely different contexts.
-                        </p>
-                        <p>
-                            For years, there has been no single system dedicated to regional investment, development, and growth across jurisdictions. Teams assemble fragmented reports, hire disconnected consultants, and work under time pressure with tools that were never designed for the decisions they are actually making.
-                        </p>
-                        <p>
-                            The pattern is consistent: <strong>every &ldquo;new idea&rdquo; is old somewhere.</strong> Across SEZs, PPPs, growth corridors, and sector strategies, the underlying principles repeat. <strong>The past is the solution library.</strong> But no system existed to extract those principles and apply them at scale &mdash; until now.
-                        </p>
-                        <p>
-                            BWGA Ai is a digital boardroom purpose-built for regional decision-making. It applies institutional-grade reasoning to investment, trade, and development &mdash; combining structured intake, multi-layer analysis, and document-grade output so mayors, agencies, founders, and boards can move from uncertainty to execution-ready direction with confidence. It doesn&rsquo;t copy other places &mdash; it extracts transferable principles and applies them to your context, producing evidence-linked recommendations that are easier to defend, fund, and execute.
+                    {/* Headline */}
+                    <div className="text-center mb-12">
+                        <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-3">The Advisory Platform</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-4">
+                            Institutional-Grade Intelligence.<br />Regional Focus. Zero Gatekeepers.
+                        </h2>
+                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                            BWGA Ai is a digital boardroom purpose-built for regional investment, trade, and development decisions &mdash; delivering consultant-level analysis without the six-month timeline or six-figure fee.
                         </p>
                     </div>
 
-                    {/* Personal Story  -  Brayden Walls */}
-                    <div className="relative rounded-sm overflow-hidden mb-8 shadow-lg border-2 border-slate-300">
-                        <img 
-                            src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&h=1080&fit=crop&q=80" 
-                            alt="Regional landscape" 
-                            className="absolute inset-0 w-full h-full object-cover" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-900/75 to-slate-800/85" />
-                        <div className="relative z-10 p-8 md:p-10">
-                            <h3 className="text-2xl font-semibold text-white mb-4">Brayden Walls &mdash; Founder &amp; Sole Developer</h3>
-                            
-                            <p className="text-base text-slate-200 leading-relaxed mb-4">
-                                I spent 16 months living and building in the Philippines, where I repeatedly saw the same gap: strong local potential, but weak access to investor-grade tools and decision frameworks.
-                            </p>
-                            <p className="text-base text-slate-200 leading-relaxed mb-6">
-                                I taught myself to code and converted economic development frameworks into software. The result isn&rsquo;t a chatbot &mdash; it&rsquo;s a reasoning system designed to deliver consultant-level strategic analysis faster, cheaper, and at wider scale.
-                            </p>
+                    {/* Three Value Pillars */}
+                    <div className="grid md:grid-cols-3 gap-6 mb-14">
+                        <div className="bg-slate-50 border border-slate-200 p-6 text-center">
+                            <div className="w-12 h-12 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Verified Intelligence</h3>
+                            <p className="text-sm text-slate-600">Real registries. Real data sources. Every entity checked against live global databases &mdash; not guesses from training data.</p>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 p-6 text-center">
+                            <div className="w-12 h-12 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Unbiased Methodology</h3>
+                            <p className="text-sm text-slate-600">The same scoring formula runs for Papua New Guinea that runs for the United States. Regional markets evaluated on merit, not internet popularity.</p>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 p-6 text-center">
+                            <div className="w-12 h-12 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 mb-2">Execution-Ready Output</h3>
+                            <p className="text-sm text-slate-600">Walk away with boardroom-ready documents &mdash; LOIs, MOUs, strategy briefs &mdash; formatted for investors, governments, and partners.</p>
+                        </div>
+                    </div>
 
+                    {/* The Thesis — Why This Exists */}
+                    <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 rounded-sm p-8 md:p-10 text-white mb-10">
+                        <div className="grid md:grid-cols-2 gap-8 items-center">
+                            <div>
+                                <p className="text-sm font-bold text-blue-400 uppercase tracking-wider mb-3">The Thesis</p>
+                                <p className="text-xl font-light leading-relaxed mb-4">
+                                    Every &ldquo;new idea&rdquo; is old somewhere. Across SEZs, PPPs, growth corridors, and sector strategies, the underlying principles repeat. <strong className="text-white">The past is the solution library.</strong>
+                                </p>
+                                <p className="text-base text-slate-300 leading-relaxed">
+                                    No system existed to extract those principles and apply them at scale. So we built one &mdash; a reasoning system that learns from 200+ real cases across 50+ countries to give regional decision-makers the same calibre of analysis that only major metros could afford.
+                                </p>
+                            </div>
                             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-sm p-6">
                                 <p className="text-lg text-white leading-relaxed italic mb-3">
-                                    &ldquo;Every &lsquo;new idea&rsquo; is old somewhere. The child learns what the parent already knows. The past isn&rsquo;t historical interest. The past is the solution library.&rdquo;
+                                    &ldquo;The child learns what the parent already knows. The past isn&rsquo;t historical interest. The past is the solution library.&rdquo;
                                 </p>
-                                <p className="text-slate-300 text-sm font-medium">&mdash; Brayden Walls, Founder &amp; Sole Developer</p>
+                                <p className="text-slate-300 text-sm font-medium">&mdash; Brayden Walls, Founder</p>
                             </div>
                         </div>
                     </div>
