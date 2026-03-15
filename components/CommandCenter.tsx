@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
@@ -56,39 +56,39 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             subtitle: 'Five proprietary engines that score, debate, validate, and simulate before any output is produced.',
             icon: 'A',
             color: 'from-blue-600 to-blue-800',
-            summary: 'Neuroscience-based cognition modelling, adversarial Bayesian debate, propositional logic validation, cross-domain analogical reasoning, and Monte Carlo simulation \u2014 five engines that run in sequence on every input.',
+            summary: 'Neuroscience-based cognition modelling, adversarial Bayesian debate, propositional logic validation, cross-domain analogical reasoning, and Monte Carlo simulation &mdash; five engines that run in sequence on every input.',
             full: (
                 <div className="space-y-6">
-                    <p className="text-sm text-slate-700 leading-relaxed">These five engines form the analytical core of the NSIL pipeline. Every input passes through all of them before any output is produced. They were not adapted from existing tools \u2014 each applies theory from a specific academic discipline to investment intelligence for the first time.</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">These five engines form the analytical core of the NSIL pipeline. Every input passes through all of them before any output is produced. They were not adapted from existing tools &mdash; each applies theory from a specific academic discipline to investment intelligence for the first time.</p>
 
                     <div className="border-l-2 border-blue-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Human Cognition Engine</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Seven neuroscience models \u2014 Wilson-Cowan neural field equations, Friston\u2019s Free Energy Principle, Rao & Ballard predictive coding, Itti-Koch salience mapping, Baars\u2019 Global Workspace Theory, neurovisceral emotional processing, and Baddeley\u2019s working memory model. These are university-level differential equations applied to investment analysis: modelling how a real decision-maker will respond to your proposal, what they\u2019ll pay attention to, what will feel wrong, and where their cognitive blind spots exist.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 5 \u2014 runs after quantitative scoring, before autonomous intelligence. Produces a \u201Chuman reception forecast\u201D that shapes how findings are framed in final output.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Seven neuroscience models &mdash; Wilson-Cowan neural field equations, Friston&rsquo;s Free Energy Principle, Rao & Ballard predictive coding, Itti-Koch salience mapping, Baars&rsquo; Global Workspace Theory, neurovisceral emotional processing, and Baddeley&rsquo;s working memory model. These are university-level differential equations applied to investment analysis: modelling how a real decision-maker will respond to your proposal, what they&rsquo;ll pay attention to, what will feel wrong, and where their cognitive blind spots exist.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 5 &mdash; runs after quantitative scoring, before autonomous intelligence. Produces a &ldquo;human reception forecast&rdquo; that shapes how findings are framed in final output.</p>
                     </div>
 
                     <div className="border-l-2 border-blue-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Bayesian Debate Engine</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Five independent personas \u2014 Skeptic, Advocate, Regulator, Accountant, Operator \u2014 argue over every conclusion using Bayesian belief updating and Nash bargaining. Each persona independently votes proceed, pause, restructure, or reject. Beliefs are updated with weighted evidence. The system stops early when posterior probability exceeds 75% consensus. Disagreements are preserved in the output \u2014 you see where the Skeptic and Advocate couldn\u2019t agree, and why.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 2 \u2014 the first analytical gate. No data reaches the formula layer without surviving adversarial debate. This prevents confirmation bias structurally.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Five independent personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; argue over every conclusion using Bayesian belief updating and Nash bargaining. Each persona independently votes proceed, pause, restructure, or reject. Beliefs are updated with weighted evidence. The system stops early when posterior probability exceeds 75% consensus. Disagreements are preserved in the output &mdash; you see where the Skeptic and Advocate couldn&rsquo;t agree, and why.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 2 &mdash; the first analytical gate. No data reaches the formula layer without surviving adversarial debate. This prevents confirmation bias structurally.</p>
                     </div>
 
                     <div className="border-l-2 border-blue-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">SAT Contradiction Solver</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Your inputs are converted into propositional logic clauses (conjunctive normal form) and run through a DPLL-like satisfiability solver. \u201CLow risk + 40% ROI\u201D or \u201Csmall budget + global expansion + fast timeline\u201D \u2014 contradictions are caught mathematically before any AI model processes the case. No other business intelligence tool validates inputs for logical impossibility at the propositional level.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 1 \u2014 the input shield. Logically impossible claims are flagged before any resources are spent on analysis.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Your inputs are converted into propositional logic clauses (conjunctive normal form) and run through a DPLL-like satisfiability solver. &ldquo;Low risk + 40% ROI&rdquo; or &ldquo;small budget + global expansion + fast timeline&rdquo; &mdash; contradictions are caught mathematically before any AI model processes the case. No other business intelligence tool validates inputs for logical impossibility at the propositional level.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 1 &mdash; the input shield. Logically impossible claims are flagged before any resources are spent on analysis.</p>
                     </div>
 
                     <div className="border-l-2 border-blue-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Cross-Domain Transfer Engine</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Applies formal structural analogies from ecology, medicine, physics, and military strategy to economic development using Gentner\u2019s Structure-Mapping Theory. Coral reef recovery maps to regional economic recovery: keystone species = anchor industry, biodiversity = diversification, reef bleaching = economic shock. The engine contains fully modelled domain libraries with quantitative rules. These are patterns no economist would think to look for.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 6 \u2014 autonomous intelligence. Generates insights that expand the analysis beyond conventional economic frameworks.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Applies formal structural analogies from ecology, medicine, physics, and military strategy to economic development using Gentner&rsquo;s Structure-Mapping Theory. Coral reef recovery maps to regional economic recovery: keystone species = anchor industry, biodiversity = diversification, reef bleaching = economic shock. The engine contains fully modelled domain libraries with quantitative rules. These are patterns no economist would think to look for.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 6 &mdash; autonomous intelligence. Generates insights that expand the analysis beyond conventional economic frameworks.</p>
                     </div>
 
                     <div className="border-l-2 border-blue-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Counterfactual & Monte Carlo Engine</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Generates \u201Cwhat if?\u201D scenarios and runs 10,000-iteration Monte Carlo simulations producing probabilistic outcome distributions. Calculates Value-at-Risk (95th percentile), expected shortfall, probability of loss, and full histograms. The regret analysis layer quantifies the cost of doing nothing. Every recommendation becomes a probability-weighted statement, not a binary yes/no.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 4 \u2014 stress testing. Runs after formula scoring to test whether conclusions hold under adverse conditions.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Generates &ldquo;what if?&rdquo; scenarios and runs 10,000-iteration Monte Carlo simulations producing probabilistic outcome distributions. Calculates Value-at-Risk (95th percentile), expected shortfall, probability of loss, and full histograms. The regret analysis layer quantifies the cost of doing nothing. Every recommendation becomes a probability-weighted statement, not a binary yes/no.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 4 &mdash; stress testing. Runs after formula scoring to test whether conclusions hold under adverse conditions.</p>
                     </div>
                 </div>
             ),
@@ -98,21 +98,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             subtitle: 'Self-directed agents that plan research, spawn specialists, evolve their own models, query live global data, and simulate cascading futures.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 22-engine parallel brain fires on every query \u2014 multi-model consensus, goal-directed agents, self-modifying formulas, 15+ live global APIs, entity verification across 7 sources, geopolitical arbitrage detection, and forward-looking system dynamics simulation.',
+            summary: 'A 22-engine parallel brain fires on every query &mdash; multi-model consensus, goal-directed agents, self-modifying formulas, 15+ live global APIs, entity verification across 7 sources, geopolitical arbitrage detection, and forward-looking system dynamics simulation.',
             full: (
                 <div className="space-y-6">
                     <p className="text-sm text-slate-700 leading-relaxed">These systems give the OS the ability to act on its own &mdash; not just respond to prompts. They plan research, spawn specialist agents, evolve their own scoring models based on outcomes, query live global data sources in real time, and simulate futures with cascading feedback loops. Every autonomous action is governed by gates that control what happens without human approval.</p>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Multi-Agent Brain System</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Multiple AI models (Gemini, GPT-4, Claude, Mistral) orchestrated together as a consensus panel \u2014 not as fallbacks. They vote on findings with weighted confidence based on historical accuracy per domain. If models disagree, you see the disagreement. This prevents single-model hallucination and ensures outputs are cross-validated by independent reasoning architectures.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Multiple AI models (Gemini, GPT-4, Claude, Mistral) orchestrated together as a consensus panel &mdash; not as fallbacks. They vote on findings with weighted confidence based on historical accuracy per domain. If models disagree, you see the disagreement. This prevents single-model hallucination and ensures outputs are cross-validated by independent reasoning architectures.</p>
                         <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Runs across all NSIL layers. Each engine can call the Multi-Agent Brain for validation, creating multi-model checkpoints throughout the pipeline.</p>
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Autonomous Orchestrator & Agent Spawner</h4>
                         <p className="text-sm text-slate-600 leading-relaxed">A goal-directed autonomy layer with governance gates (red/amber/green). The system plans its own research tasks, spawns specialist agents via the Agent Spawner, executes them against a mission graph with dependency tracking, and verifies outcomes through the Outcome Verification Engine. It decides what questions need answering, not just how to answer yours. The mission graph persists state so work resumes exactly where it left off.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 6 \u2014 autonomous intelligence. This is what makes the system proactive rather than reactive.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 6 &mdash; autonomous intelligence. This is what makes the system proactive rather than reactive.</p>
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
@@ -167,36 +167,36 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'c': {
             title: 'Reflexive Intelligence',
-            subtitle: 'The system analyses the user, not just the market \u2014 detecting what you\u2019re not saying and reframing for every audience.',
+            subtitle: 'The system analyses the user, not just the market &mdash; detecting what you&rsquo;re not saying and reframing for every audience.',
             icon: 'C',
             color: 'from-amber-600 to-amber-800',
             summary: 'Identity reality-checking using post-structuralist theory, latent advantage mining from casual mentions, audience-adaptive translation, and hidden motivation detection.',
             full: (
                 <div className="space-y-6">
-                    <p className="text-sm text-slate-700 leading-relaxed">Most systems only analyse external conditions. This layer analyses you \u2014 how you\u2019re framing your situation, what you\u2019re not mentioning, whether your competitive identity is authentic, and what your real motivation might be. It then adapts everything for whoever will read the output.</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">Most systems only analyse external conditions. This layer analyses you &mdash; how you&rsquo;re framing your situation, what you&rsquo;re not mentioning, whether your competitive identity is authentic, and what your real motivation might be. It then adapts everything for whoever will read the output.</p>
 
                     <div className="border-l-2 border-amber-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Regional Identity Decoder</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Based on Baudrillard\u2019s Simulacra theory combined with Porter\u2019s Competitiveness Theory. Scans all inputs for generic investment marketing language \u2014 phrases like \u201Cstrategically located\u201D and \u201Cskilled workforce\u201D that appear in 90%+ of investment brochures globally and therefore communicate nothing. Flags competitive identity loss and surfaces the hidden assets the region undersells but that are structurally non-replicable.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 8 \u2014 reflexive intelligence. Catches when a region is presenting a simulacrum rather than its authentic advantage, and corrects the framing before output.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Based on Baudrillard&rsquo;s Simulacra theory combined with Porter&rsquo;s Competitiveness Theory. Scans all inputs for generic investment marketing language &mdash; phrases like &ldquo;strategically located&rdquo; and &ldquo;skilled workforce&rdquo; that appear in 90%+ of investment brochures globally and therefore communicate nothing. Flags competitive identity loss and surfaces the hidden assets the region undersells but that are structurally non-replicable.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 8 &mdash; reflexive intelligence. Catches when a region is presenting a simulacrum rather than its authentic advantage, and corrects the framing before output.</p>
                     </div>
 
                     <div className="border-l-2 border-amber-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Latent Advantage Miner</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Inspired by the \u201Cjunk DNA\u201D concept from molecular biology. Scans every input field for assets mentioned casually that the user doesn\u2019t realise are strategically significant. \u201CWe have a small port\u201D \u2014 ports are non-replicable. \u201CMany of our people work overseas\u201D \u2014 diaspora networks are proven investment channels (Philippines, Israel, Ireland). Cross-references against the Historical Parallel Matcher\u2019s precedent database.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 8 \u2014 reflexive intelligence. Ensures no strategic asset is overlooked because the user didn\u2019t know it mattered.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Inspired by the &ldquo;junk DNA&rdquo; concept from molecular biology. Scans every input field for assets mentioned casually that the user doesn&rsquo;t realise are strategically significant. &ldquo;We have a small port&rdquo; &mdash; ports are non-replicable. &ldquo;Many of our people work overseas&rdquo; &mdash; diaspora networks are proven investment channels (Philippines, Israel, Ireland). Cross-references against the Historical Parallel Matcher&rsquo;s precedent database.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 8 &mdash; reflexive intelligence. Ensures no strategic asset is overlooked because the user didn&rsquo;t know it mattered.</p>
                     </div>
 
                     <div className="border-l-2 border-amber-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Universal Translation Layer</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Takes analytical findings and translates them into five audience-specific formats: Investor (ROI-focused), Government (policy-aligned), Community (impact-centred), Partner/IPA (technical), Executive (board-ready). Uses Aristotelian rhetoric (ethos/pathos/logos) and Halliday\u2019s Register Theory. \u201CYoung population\u201D means cheap labour to an investor, demographic dividend to a government, and opportunity to a community leader. Same truth, different framing.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 10 \u2014 audience-adaptive output. The final layer before the user sees anything.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Takes analytical findings and translates them into five audience-specific formats: Investor (ROI-focused), Government (policy-aligned), Community (impact-centred), Partner/IPA (technical), Executive (board-ready). Uses Aristotelian rhetoric (ethos/pathos/logos) and Halliday&rsquo;s Register Theory. &ldquo;Young population&rdquo; means cheap labour to an investor, demographic dividend to a government, and opportunity to a community leader. Same truth, different framing.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 10 &mdash; audience-adaptive output. The final layer before the user sees anything.</p>
                     </div>
 
                     <div className="border-l-2 border-amber-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Motivation Detector</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Scans all user text for trigger patterns that reveal real motivation: crisis signals, capital stress, desperation markers, time pressure cues, sanctions exposure hints. Each pattern is assigned a risk level. A user under financial stress asking about \u201Cquick ROI\u201D gets different treatment than a long-term strategic planner. The system reads why you\u2019re asking, not just what you asked.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 1 \u2014 input shield. Detects context before the analysis begins, shaping how the entire pipeline processes the case.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Scans all user text for trigger patterns that reveal real motivation: crisis signals, capital stress, desperation markers, time pressure cues, sanctions exposure hints. Each pattern is assigned a risk level. A user under financial stress asking about &ldquo;quick ROI&rdquo; gets different treatment than a long-term strategic planner. The system reads why you&rsquo;re asking, not just what you asked.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 1 &mdash; input shield. Detects context before the analysis begins, shaping how the entire pipeline processes the case.</p>
                     </div>
                 </div>
             ),
@@ -213,13 +213,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     <div className="border-l-2 border-violet-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">MetaCognition Engine</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Continuously audits the system\u2019s own reasoning \u2014 detecting overconfidence (certainty exceeds evidence quality), confirmation bias (finding what it expects), missing counterfactuals (arguments not considered), pattern overfitting (conclusions from too few cases), and stale assumptions (outdated data). Produces a cognitive reliability score for every analysis and generates self-improvement directives.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 7 \u2014 proactive monitoring. \u201CThinking about thinking\u201D \u2014 catches the system\u2019s own mistakes before they reach you.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">Continuously audits the system&rsquo;s own reasoning &mdash; detecting overconfidence (certainty exceeds evidence quality), confirmation bias (finding what it expects), missing counterfactuals (arguments not considered), pattern overfitting (conclusions from too few cases), and stale assumptions (outdated data). Produces a cognitive reliability score for every analysis and generates self-improvement directives.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 7 &mdash; proactive monitoring. &ldquo;Thinking about thinking&rdquo; &mdash; catches the system&rsquo;s own mistakes before they reach you.</p>
                     </div>
 
                     <div className="border-l-2 border-violet-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Drift Detection & Backtesting</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">All 38 proprietary formulas are backtested against 200+ real historical cases with known outcomes \u2014 Tesla Shanghai, Samsung Vietnam, PEZA Philippines, Rwanda IT Hub, the Marshall Plan. Drift detection uses Welch\u2019s t-test for three types of change: concept drift, data drift, and performance drift. When detected, the system automatically widens confidence intervals and triggers recalibration.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">All 38 proprietary formulas are backtested against 200+ real historical cases with known outcomes &mdash; Tesla Shanghai, Samsung Vietnam, PEZA Philippines, Rwanda IT Hub, the Marshall Plan. Drift detection uses Welch&rsquo;s t-test for three types of change: concept drift, data drift, and performance drift. When detected, the system automatically widens confidence intervals and triggers recalibration.</p>
                         <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Runs continuously. The system knows its own accuracy per country, per sector, and per strategy type. This is how it stays honest over time.</p>
                     </div>
 
@@ -245,7 +245,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'e': {
             title: 'Proprietary Quantitative Architecture',
-            subtitle: '38 scoring indices, 200+ backtested cases, and 195-country compliance \u2014 the knowledge base underneath everything.',
+            subtitle: '38 scoring indices, 200+ backtested cases, and 195-country compliance &mdash; the knowledge base underneath everything.',
             icon: 'E',
             color: 'from-rose-600 to-rose-800',
             summary: 'Purpose-built scoring formulas running as a dependency graph, sixty years of searchable institutional memory, and a 195-country queryable compliance engine.',
@@ -256,50 +256,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="border-l-2 border-rose-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">38 Proprietary Scoring Indices</h4>
                         <p className="text-sm text-slate-600 leading-relaxed">BARNA, NVI, CRI, SPI, RROI, SEAM, IVAS, SCF, CAP, AGI, VCI, ATI, ESI, ISI, OSI, TCO, PRI, RNI, SRA, IDV, FMS, DCS, DQS, GCS, RDBI, AFC and more. Each is a composite formula purpose-built for investment and regional strategy. They run as a dependency DAG (directed acyclic graph) with topological-sort parallel execution, memoisation of intermediate results, mathematical bounds enforcement, and confidence intervals per formula per context.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 3 \u2014 quantitative scoring. The DAG scheduler executes all 38 formulas with dependency-aware parallelism. Every score traces back to its exact inputs and weights.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 3 &mdash; quantitative scoring. The DAG scheduler executes all 38 formulas with dependency-aware parallelism. Every score traces back to its exact inputs and weights.</p>
                     </div>
 
                     <div className="border-l-2 border-rose-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Historical Parallel Matcher</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">200+ real historical cases \u2014 Shenzhen SEZ 1980, PEZA Philippines 1995, Rwanda IT Hub 2010, Silicon Valley formation, Dubai free zone model, Singapore\u2019s industrialisation. Searchable by structural similarity using vector-based matching across economic, demographic, infrastructure, and institutional dimensions. Each case stores what worked, what failed, time to outcome, and key contributing factors.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">200+ real historical cases &mdash; Shenzhen SEZ 1980, PEZA Philippines 1995, Rwanda IT Hub 2010, Silicon Valley formation, Dubai free zone model, Singapore&rsquo;s industrialisation. Searchable by structural similarity using vector-based matching across economic, demographic, infrastructure, and institutional dimensions. Each case stores what worked, what failed, time to outcome, and key contributing factors.</p>
                         <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Called by multiple NSIL layers. The Backtesting Engine uses it for calibration. The Latent Advantage Miner cross-references it. Generated documents cite specific precedents.</p>
                     </div>
 
                     <div className="border-l-2 border-rose-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">195-Country Compliance & IFC Standards</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">A structured, code-queryable database covering investment frameworks, key agencies, tax treaty networks, sanctions status, dispute resolution mechanisms, data privacy frameworks, anti-corruption laws, and regional bloc memberships for 195 countries. All 8 IFC Performance Standards (PS1\u2013PS8) implemented as assessable rules mapped to UN Sustainable Development Goals. The \u201CGlobal Baseline + Local Search\u201D model applies universal standards first, then finds local law to fill gaps.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 9 \u2014 compliance checking. Automatically activated when the system detects the user\u2019s jurisdiction. No manual selection required.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">A structured, code-queryable database covering investment frameworks, key agencies, tax treaty networks, sanctions status, dispute resolution mechanisms, data privacy frameworks, anti-corruption laws, and regional bloc memberships for 195 countries. All 8 IFC Performance Standards (PS1&ndash;PS8) implemented as assessable rules mapped to UN Sustainable Development Goals. The &ldquo;Global Baseline + Local Search&rdquo; model applies universal standards first, then finds local law to fill gaps.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: NSIL Layer 9 &mdash; compliance checking. Automatically activated when the system detects the user&rsquo;s jurisdiction. No manual selection required.</p>
                     </div>
                 </div>
             ),
         },
     };
-
-    // Demo chat animation state
-    const [demoChatStep, setDemoChatStep] = useState(0);
-    const [demoTyping, setDemoTyping] = useState(false);
-    const demoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const DEMO_MESSAGES = [
-        { role: 'user' as const, text: "Head of strategy, Cairns Regional Development Authority. We want to attract a cold-chain logistics hub - developer has expressed interest. Need the investment case, critical risks, and who we should be engaging." },
-        { role: 'system' as const, text: 'Jurisdiction: Australia - Queensland · Sector: Logistics / Cold-chain · Policy Pack: Asia-Pacific Advisory · Readiness: 42% → proceeding.' },
-        { role: 'assistant' as const, text: "Cairns has a structurally strong case - airport freight capacity, Port expansion, and Queensland's agriculture corridor create real demand pull.\n\n3 critical flags: counterparty integrity (CIS verification required), competing priority risk (FNQ infrastructure stall history), workforce gap (no local cold-chain talent pool).\n\nEngage now: NAIF (likely funder), Woolworths/Coles (anchor tenant demand validation), James Cook University (workforce pipeline).\n\nIs the developer bringing equity or seeking public co-investment?" },
-        { role: 'system' as const, text: 'Case file updated · Readiness: 61% · 5 documents queued: Investment Prospectus, Due Diligence Framework, NAIF Brief, Stakeholder Plan, Risk Register.' },
-        { role: 'user' as const, text: "Public-private structure. NAIF deadline is 8 weeks. We need a board-ready package." },
-        { role: 'assistant' as const, text: "Eight weeks is workable. Four tracks in parallel: financial model (CAPEX/OPEX, IRR for both tranches), counterparty diligence (CIS + SPV governance), anchor tenant LOI (NAIF requires private demand evidence), First Nations early engagement (mandatory for FNQ).\n\nGenerating: NAIF Submission Brief, Investment Prospectus (board version), Risk Register, Stakeholder Engagement Plan, LOI template.\n\nStart with NAIF brief and risk register, or financial model framework first?" },
-    ];
-
-    useEffect(() => {
-        if (demoChatStep >= DEMO_MESSAGES.length) return;
-        const isAssistant = DEMO_MESSAGES[demoChatStep]?.role === 'assistant' || DEMO_MESSAGES[demoChatStep]?.role === 'system';
-        setDemoTyping(isAssistant);
-        const delay = isAssistant ? 1800 : 900;
-        demoTimerRef.current = setTimeout(() => {
-            setDemoTyping(false);
-            setDemoChatStep((s) => s + 1);
-        }, delay);
-        return () => { if (demoTimerRef.current) clearTimeout(demoTimerRef.current); };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [demoChatStep]);
 
     // Global Location Intelligence state - LIVE SEARCH
     const [_locationQuery, _setLocationQuery] = useState('');
@@ -427,104 +401,91 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* [REMOVED - moved to new structured section] */}
 
             {/* ═══════════════════════════════════════════════════════════════
-                NARRATIVE FLOW: Problem → Status Quo → Solution → How → Output
+                NARRATIVE FLOW: Problem + Status Quo → Solution (consolidated)
             ═══════════════════════════════════════════════════════════════ */}
 
             <section className="py-12 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-1 gap-8">
 
-                        {/* 1. WHY THIS DOESN'T EXIST YET - The AI Problem */}
+                        {/* CARD 1: Why This Doesn't Exist + Status Quo (MERGED) */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
+                            {/* Photo (LEFT) */}
+                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80" alt="The gap in current AI tools" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            </div>
+                            
+                            {/* Text Content (RIGHT) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Why This Doesn&rsquo;t Exist Yet</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">This Requires More Than a Language Model</h4>
-                                </div>
+                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">Why This Doesn't Exist Yet</span>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Current AI Gives You Answers. This System Gives You Defensible Positions.</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    ChatGPT can give you generic advice about Vietnam or market trends. But it can&rsquo;t validate a specific partnership claim against real sanctions data. It can&rsquo;t run five deliberate perspectives and let them disagree. It can&rsquo;t tell you with quantified confidence how much of the analysis you can actually trust.
+                                    Ask ChatGPT whether to invest in a cold-chain hub in North Queensland and you'll get a polished paragraph. It won't check whether the developer is on a sanctions list. It won't tell you the NAIF funding window closes in eight weeks. It won't flag that there's no local cold-chain workforce. It will sound confident — and that's the problem.
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    This system exists <strong className="text-slate-900">specifically for hard decisions</strong> &mdash; the kind where you need to prove your thinking to skeptics, regulators, and investors. That requires structured reasoning, live data validation, and transparent debate.
+                                    Real decisions need more than fluency. They need <strong className="text-slate-900">structured adversarial reasoning</strong>, live data validation against real registries, and outputs that survive scrutiny from boards, regulators, and investors. That infrastructure doesn't exist in any general-purpose AI — because it was never designed to.
                                 </p>
-                                <div className="space-y-2.5">
+                                
+                                {/* Why AI Fails List */}
+                                <div className="space-y-2 mb-5">
                                     {[
-                                        'Generic AI can\'t verify entities against live registries and sanctions lists',
-                                        'Single-model systems have no internal disagreement — no second opinion',
-                                        'Standard outputs lack the audit trail boards and regulators require',
+                                        'No entity verification — cannot check sanctions lists, corporate registries, or ownership chains',
+                                        'Single perspective — one model, one answer, no internal challenge or second opinion',
+                                        'No audit trail — outputs cannot be traced back to data sources or reasoning steps',
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-start gap-2">
-                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&times;</span>
+                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">×</span>
                                             <p className="text-sm text-slate-600 leading-snug">{item}</p>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80" alt="Complex decision making" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                
+                                {/* Status Quo Box */}
+                                <div className="bg-slate-100 border border-slate-200 rounded-lg p-4">
+                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">The Status Quo — Answer Machines</p>
+                                    <p className="text-xs text-slate-600 mb-3">One model. One response. Generated from memorised internet text with no live verification. It doesn't know your context, your constraints, or your jurisdiction. Cities it's heard of get thoughtful analysis. Everywhere else gets recycled generalisations dressed up as insight.</p>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {[
+                                            'Gives advice without asking who you are or what you need',
+                                            'Cannot confirm whether a company, entity, or partner actually exists',
+                                            'Detailed on London and New York — vague on Cairns, Suva, and Vientiane',
+                                            'No competing perspective — never challenges its own conclusions',
+                                            'Loses all context the moment you close the tab',
+                                            'Produces paragraphs, not documents a board can act on',
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-start gap-2">
+                                                <span className="mt-0.5 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">×</span>
+                                                <p className="text-xs text-slate-600 leading-snug">{item}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* 2. ANSWER MACHINES - The Status Quo */}
+                        {/* CARD 2: What We Built + How It Works + What You Get (MERGED) */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
+                            {/* Text Content (LEFT) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-red-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">The Status Quo</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Answer Machines</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    One model generates one response from memorised internet text. It doesn&rsquo;t ask who you are. It cannot check a registry, screen a sanctions list, or verify an entity.
-                                    Familiar places get the benefit of the doubt. Everywhere else gets the benefit of the stereotype.
+                                <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">The System That Replaces the Gap</h4>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    So we built what doesn't exist. A system where five specialized AI reasoning engines — Skeptic, Advocate, Accountant, Regulator, Operator — run independently on every case. They don't agree by default. The Skeptic flags the risks your optimism missed. The Regulator catches the compliance exposure you didn't know applied. The Accountant stress-tests the numbers everyone else assumed were solid. You see the full debate before you see a conclusion.
                                 </p>
-                                <div className="space-y-2.5">
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
+                                    Every claim is validated against live data — not training data from two years ago. OpenSanctions for entity screening. OpenCorporates for registry verification. World Bank for macro indicators. GDELT for real-time news sentiment. V-Dem for governance quality. If the system can't verify something, it tells you — with a confidence score, not a guess.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
+                                    The output isn't a summary you have to rewrite. It's a board-ready package: investment prospectus, risk register, stakeholder engagement plan, funding submission brief — all traceable back to the data sources and the reasoning that produced them.
+                                </p>
+                                
+                                {/* Core Capabilities */}
+                                <div className="space-y-2 mb-5">
                                     {[
-                                        'Doesn\u2019t ask who you are before advising you',
-                                        'Cannot verify whether a company or entity actually exists',
-                                        'Knows far more about metros than the places that need these tools',
-                                        'No second opinion — nothing challenges its own answer',
-                                        'Forgets everything the moment you close the window',
-                                        'Gives you paragraphs, not documents a board can act on',
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-red-100 text-red-500 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">&times;</span>
-                                            <p className="text-sm text-slate-600 leading-snug">{item}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=500&fit=crop&q=80" alt="A single laptop — the limits of current AI" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                        {/* 3. WHAT WE BUILT - The Solution */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">What We Built</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Reasoning That Survives Argument</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Five specialized reasoning engines debate each other before you see a conclusion. The Skeptic questions risk. The Advocate finds upside. The Accountant checks math. The Regulator watches compliance. The Operator asks if execution is possible. They argue. They disagree. And you see all of it.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    The system then validates every claim against real data sources &mdash; World Bank, sanctions lists, trade statistics, news feeds, legal registries. It stress-tests your assumptions with what-if scenarios. It quantifies confidence levels. It flags what it doesn&rsquo;t know. And it produces a decision-ready report that your board can actually act on, with every conclusion traced back to the data and the debate.
-                                </p>
-                                <div className="space-y-2.5">
-                                    {[
-                                        'Five perspectives that genuinely disagree with each other',
-                                        'Real data validation against live sources, not guesses',
-                                        'Stress-tested with what-if scenarios on rates, partnerships, markets',
-                                        'Quantified confidence levels — you know what to trust and what to question',
-                                        'All reasoning visible — debate transcripts, data sources, logic chains',
-                                        'Decision-ready documents ready for boardrooms and investors',
+                                        'Five AI perspectives that challenge each other — disagreements shown, not hidden',
+                                        'Live entity verification against sanctions, corporate registries, and ownership chains',
+                                        'Confidence scoring on every claim — you know exactly what to trust',
+                                        'Decision-ready documents, not paragraphs you need to reformat',
                                     ].map((item, i) => (
                                         <div key={i} className="flex items-start gap-2">
                                             <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
@@ -532,79 +493,55 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop&q=80" alt="Team debating and reasoning together" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                        {/* 4. HOW IT WORKS - The Process */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-slate-800/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">How It Works</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">You Describe. The System Reasons.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    You describe your opportunity &mdash; the who, what, where, why. The system then runs it through a structured reasoning pipeline that no single analyst could replicate.
-                                </p>
-                                <div className="space-y-2.5">
-                                    {[
-                                        'Structures your input into a normalized case dataset, checking for missing constraints',
-                                        'Runs 5 specialized perspectives: Skeptic, Advocate, Accountant, Regulator, Operator',
-                                        'Validates every claim against live data (World Bank, sanctions, trade, registries)',
-                                        'Stress-tests with what-if scenarios on rates, partnerships, and markets',
-                                        'Scores using 21 proprietary formulas measuring success, ROI, and alignment',
-                                        'Produces decision-ready report — all reasoning traced back to data and debate',
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="mt-0.5 w-5 h-5 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center flex-shrink-0 text-[10px] font-bold">{i + 1}</span>
-                                            <p className="text-sm text-slate-600 leading-snug">{item}</p>
+                                
+                                {/* Two-Column Grid: How It Works + What You Get */}
+                                <div className="grid md:grid-cols-2 gap-6 bg-slate-50 rounded-lg p-4 border border-slate-200">
+                                    {/* How It Works */}
+                                    <div className="border-l-2 border-slate-400 pl-4">
+                                        <p className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">How It Works</p>
+                                        <div className="space-y-2">
+                                            {[
+                                                'You describe your opportunity — who, what, where, why',
+                                                'System structures it into a normalized case dataset',
+                                                'Five engines run independently: Skeptic, Advocate, Accountant, Regulator, Operator',
+                                                'Claims validated against live registries, sanctions, trade data',
+                                                'What-if stress testing on rates, partnerships, and market shifts',
+                                                'Scored across 21 proprietary formulas — then assembled into documents',
+                                            ].map((item, i) => (
+                                                <div key={i} className="flex items-start gap-2">
+                                                    <span className="mt-0.5 w-5 h-5 rounded-full bg-white text-slate-700 flex items-center justify-center flex-shrink-0 text-[10px] font-bold border border-slate-300">{i + 1}</span>
+                                                    <p className="text-xs text-slate-600 leading-snug">{item}</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop&q=80" alt="Structured analysis workflow" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                        {/* 5. WHAT YOU GET - The Output */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-green-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">What You Get</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Not a Pitch. Not a Summary. A Defensible Position.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Not a consultant summary you have to rewrite. Not paragraphs you can&rsquo;t use. You get documents your board can act on, with every conclusion traced to its source.
-                                </p>
-                                <div className="space-y-2.5">
-                                    {[
-                                        'A defensible strategic analysis your board can reference',
-                                        'Real disagreements shown (not hidden). If Skeptic and Advocate disagree, you see it.',
-                                        'Quantified confidence levels. "89% confident on market data. 54% on partner stability."',
-                                        'Explicit assumptions flagged. What the system doesn\'t know, it tells you.',
-                                        'Executable recommendations with sequencing, milestones, and risk mitigation',
-                                        'Ready-to-use documents: partnership agreements, investor briefs, negotiation frameworks',
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
-                                            <p className="text-sm text-slate-600 leading-snug">{item}</p>
+                                    </div>
+                                    
+                                    {/* What You Get */}
+                                    <div className="border-l-2 border-blue-500 pl-4">
+                                        <p className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">What You Get</p>
+                                        <p className="text-[11px] text-slate-500 mb-3">Not a pitch deck requiring interpretation. A defensible operating position.</p>
+                                        <div className="space-y-2">
+                                            {[
+                                                'Board-ready strategic analysis with sourced reasoning',
+                                                'Full adversarial debate transcript — all five perspectives visible',
+                                                'Confidence scores per claim (e.g. "89% market data, 54% partner stability")',
+                                                'Assumptions explicitly flagged — what the system doesn\'t know, it says',
+                                                'Sequenced recommendations with milestones and risk mitigation',
+                                                'Ready-to-use LOIs, prospectuses, NAIF briefs, and stakeholder plans',
+                                            ].map((item, i) => (
+                                                <div key={i} className="flex items-start gap-2">
+                                                    <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">✓</span>
+                                                    <p className="text-xs text-slate-600 leading-snug">{item}</p>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
                             </div>
                             
-                            {/* Photo (Right) */}
+                            {/* Photo (RIGHT) */}
                             <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop&q=80" alt="Board-ready deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&q=80" alt="AI reasoning and neural networks" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
 
@@ -669,21 +606,44 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
             {/* ═══════ Category Read More Modal ═══════ */}
             {expandedEngine && categoryDetails[expandedEngine] && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setExpandedEngine(null)}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                        <div className={`sticky top-0 bg-gradient-to-r ${categoryDetails[expandedEngine].color} px-6 py-5 flex items-center justify-between rounded-t-2xl z-10`}>
-                            <div className="flex items-center gap-3">
-                                <span className="flex-shrink-0 w-9 h-9 rounded-full bg-white/20 text-white text-sm font-bold flex items-center justify-center">{categoryDetails[expandedEngine].icon}</span>
-                                <div>
-                                    <h3 className="text-lg font-bold text-white">{categoryDetails[expandedEngine].title}</h3>
-                                    <p className="text-xs text-white/70">{categoryDetails[expandedEngine].subtitle}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => setExpandedEngine(null)} className="text-white/70 hover:text-white transition-colors flex-shrink-0">
-                                <X size={20} />
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setExpandedEngine(null)}>
+                    <div className="bg-white border border-slate-200 shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                        {/* Photo Header */}
+                        <div className="h-44 relative overflow-hidden flex-shrink-0">
+                            <img 
+                                src={
+                                    expandedEngine === 'a' ? 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=400&fit=crop&q=80' :
+                                    expandedEngine === 'b' ? 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=400&fit=crop&q=80' :
+                                    expandedEngine === 'c' ? 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop&q=80' :
+                                    expandedEngine === 'd' ? 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=400&fit=crop&q=80' :
+                                    'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1200&h=400&fit=crop&q=80'
+                                }
+                                alt={categoryDetails[expandedEngine].title}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
+                            <button 
+                                onClick={() => setExpandedEngine(null)} 
+                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center shadow-lg"
+                            >
+                                <X size={18} />
                             </button>
+                            <div className="absolute bottom-4 left-6 right-6">
+                                <span className={`inline-block px-2.5 py-1 ${
+                                    expandedEngine === 'a' ? 'bg-blue-600' :
+                                    expandedEngine === 'b' ? 'bg-emerald-600' :
+                                    expandedEngine === 'c' ? 'bg-amber-600' :
+                                    expandedEngine === 'd' ? 'bg-violet-600' :
+                                    'bg-rose-600'
+                                } text-white text-[10px] font-bold uppercase tracking-wider mb-2`}>
+                                    Core Engine {categoryDetails[expandedEngine].icon}
+                                </span>
+                                <h3 className="text-xl font-bold text-white leading-snug">{categoryDetails[expandedEngine].title}</h3>
+                                <p className="text-sm text-white/80 mt-1">{categoryDetails[expandedEngine].subtitle}</p>
+                            </div>
                         </div>
-                        <div className="px-6 py-6">
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto px-6 py-6">
                             {categoryDetails[expandedEngine].full}
                         </div>
                     </div>
@@ -798,234 +758,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
 
-            {/* BW CONSULTANT AI DEMO - Display Mode Only */}
-            <section className="py-8 px-4 bg-white">
-                <style>{`@keyframes bwMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}`}</style>
-                <div className="max-w-7xl mx-auto">
-                    <div className="mb-3 flex items-center justify-between">
-                        <div>
-                            <p className="text-[10px] font-semibold text-blue-600 uppercase tracking-wider mb-0.5">Meet Your AI Partner</p>
-                            <h2 className="text-xl font-bold text-slate-900">BW Consultant AI</h2>
-                        </div>
-                        <p className="text-xs text-slate-400 max-w-xs leading-relaxed hidden sm:block">Automated display of a live session. Exact replica of the system.</p>
-                    </div>
-
-                    {/* Demo window - pixel-match to BWConsultantOS */}
-                    <div className="border border-stone-200 shadow-lg flex flex-col overflow-hidden" style={{ fontFamily: "'Söhne','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif", height: '480px' }}>
-
-                        {/* Header banner - identical to BWConsultantOS */}
-                        <div className="px-6 py-4 flex items-center justify-between relative overflow-hidden flex-shrink-0"
-                            style={{ backgroundImage:'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)', backgroundSize:'cover', backgroundPosition:'center' }}>
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-blue-900/70" />
-                            <div className="relative z-10 flex items-center gap-3">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-                                <div>
-                                    <h1 className="text-xl font-bold text-white">BW Consultant</h1>
-                                    <span className="text-blue-200 text-xs">Powered by NSIL Agentic Runtime • Case Study Builder</span>
-                                </div>
-                                <span className="ml-1 px-2 py-0.5 bg-white/10 border border-white/20 text-white text-[9px] font-semibold">DEMO</span>
-                            </div>
-                            <div className="relative z-10 hidden md:flex items-center gap-1.5">
-                                {(['Intake','Discovery','Analysis','Recommendations','Generation'] as const).map((p, idx) => {
-                                    const activeIdx = Math.min(4, Math.floor((demoChatStep / DEMO_MESSAGES.length) * 5));
-                                    return (
-                                        <React.Fragment key={p}>
-                                            {idx > 0 && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-300/50"><polyline points="9 18 15 12 9 6"/></svg>}
-                                            <span className={`px-3 py-1.5 text-xs font-medium transition-all ${idx === activeIdx ? 'bg-white text-blue-800' : idx < activeIdx ? 'bg-blue-700/50 text-blue-100' : 'bg-blue-800/30 text-blue-300/70'}`}>{p}</span>
-                                        </React.Fragment>
-                                    );
-                                })}
-                            </div>
-                            <button onClick={() => termsAccepted && onEnterPlatform?.()} className="relative z-10 ml-3 px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium flex items-center gap-2 border border-white/20 transition-all">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-                                Full Session
-                            </button>
-                        </div>
-
-                        {/* Main body: chat + right sidebar - flex-1 */}
-                        <div className="flex flex-1 overflow-hidden">
-
-                            {/* Chat panel */}
-                            <div className="flex-1 flex flex-col bg-stone-50 overflow-hidden">
-                                {/* Messages scroll area */}
-                                <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                                    <div className="flex justify-center">
-                                        <span className="text-[10px] px-3 py-1 bg-white border border-stone-200 text-slate-400">Scenario: Cairns Regional Development Authority - Cold-Chain Logistics Hub, North Queensland</span>
-                                    </div>
-
-                                    {DEMO_MESSAGES.slice(0, demoChatStep).map((msg, i) => (
-                                        <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                                            style={{ animation: i === demoChatStep - 1 ? 'bwMsgIn 0.25s ease-out' : 'none' }}>
-                                            {msg.role === 'system' && (
-                                                <div className="max-w-[85%] px-3 py-2 bg-indigo-50 border border-indigo-200">
-                                                    <p className="text-[11px] text-indigo-600 font-mono leading-relaxed">
-                                                        <span className="font-bold text-indigo-800">NSIL</span> &bull; {msg.text}
-                                                    </p>
-                                                </div>
-                                            )}
-                                            {msg.role === 'user' && (
-                                                <div className="max-w-[75%] px-4 py-3 bg-blue-600 text-white text-sm leading-relaxed">{msg.text}</div>
-                                            )}
-                                            {msg.role === 'assistant' && (
-                                                <div className="max-w-[85%] px-4 py-3 bg-white border border-stone-200 text-stone-900 shadow-sm text-sm leading-relaxed">
-                                                    <div className="flex items-center gap-1.5 mb-2">
-                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-                                                        <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">BW Consultant</span>
-                                                    </div>
-                                                    <p className="whitespace-pre-line text-stone-800">{msg.text}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-
-                                    {demoTyping && (
-                                        <div className="flex justify-start" style={{ animation: 'bwMsgIn 0.2s ease-out' }}>
-                                            <div className="px-4 py-3 bg-white border border-stone-200 shadow-sm">
-                                                <div className="flex items-center gap-1.5 mb-2">
-                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-                                                    <span className="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">BW Consultant</span>
-                                                </div>
-                                                <div className="flex items-center gap-1">
-                                                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay:'0ms' }} />
-                                                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay:'150ms' }} />
-                                                    <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay:'300ms' }} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {demoChatStep >= DEMO_MESSAGES.length && !demoTyping && (
-                                        <div className="flex items-center gap-3 pt-1" style={{ animation:'bwMsgIn 0.25s ease-out' }}>
-                                            <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                                                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                                                Session complete - 5 documents queued
-                                            </div>
-                                            <button onClick={() => { setDemoChatStep(0); setDemoTyping(false); }}
-                                                className="text-xs px-3 py-1.5 border border-stone-300 text-slate-600 hover:bg-stone-100 transition-colors">
-                                                Replay
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Input bar replica */}
-                                <div className="p-4 border-t border-stone-200 bg-white flex-shrink-0">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2.5 bg-stone-100 border border-stone-300">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-slate-500"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-                                        </div>
-                                        <div className="flex-1 border border-stone-300 px-4 py-2.5 text-sm text-slate-400 bg-stone-50 select-none">Type your response...</div>
-                                        <div className="px-5 py-2.5 bg-slate-200 text-slate-400 text-sm font-medium select-none flex items-center gap-2">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                            Send
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Right sidebar - white, w-80, exact match to BWConsultantOS */}
-                            <div className="w-80 border-l border-stone-200 bg-white flex flex-col flex-shrink-0 overflow-y-auto">
-                                {/* Case Summary header */}
-                                <div className="p-4 border-b border-stone-200 bg-slate-50 flex-shrink-0">
-                                    <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue-600"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
-                                        Case Summary
-                                    </h2>
-                                    {/* Policy Pack */}
-                                    <div className={`mt-2 text-[11px] px-2 py-1 border transition-all duration-500 ${demoChatStep >= 2 ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-slate-400 bg-slate-50 border-slate-200'}`}>
-                                        Policy Pack: {demoChatStep >= 2 ? 'Asia-Pacific Advisory' : '-'}
-                                    </div>
-                                    {/* Readiness + skill + pilot row */}
-                                    <div className="mt-2 flex items-center gap-2 text-[11px]">
-                                        <span className="px-2 py-1 bg-blue-100 text-blue-700 border border-blue-200 font-semibold transition-all duration-500">
-                                            Readiness: {Math.min(100, Math.round((demoChatStep / DEMO_MESSAGES.length) * 73) + 27)}%
-                                        </span>
-                                        <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200">Advanced</span>
-                                        <span className="px-2 py-1 bg-slate-100 text-slate-500 border border-slate-200">Pilot: Off</span>
-                                    </div>
-                                    {/* Consultant Gate */}
-                                    <div className="mt-2 border border-stone-200 bg-white px-2 py-1 text-[11px]">
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span className="font-semibold text-slate-700">Consultant Gate</span>
-                                            <span className={`px-1.5 py-0.5 border text-[10px] font-semibold transition-all duration-500 ${demoChatStep >= 4 ? 'bg-green-50 text-green-700 border-green-200' : 'bg-amber-50 text-amber-700 border-amber-200'}`}>
-                                                {demoChatStep >= 4 ? 'READY' : 'BLOCKED'}
-                                            </span>
-                                        </div>
-                                        {demoChatStep < 4 && (
-                                            <ul className="mt-1 space-y-0.5">
-                                                {['Developer identity unverified', 'Financial model required', 'Anchor tenant not confirmed'].slice(0, demoChatStep >= 2 ? 2 : 3).map((g) => (
-                                                    <li key={g} className="text-[10px] text-slate-600">• {g}</li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </div>
-                                    {/* Critical Gaps */}
-                                    <div className="mt-2 bg-white border border-stone-200 px-2 py-1 text-[11px]">
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span className={`font-semibold ${demoChatStep >= DEMO_MESSAGES.length ? 'text-green-700' : 'text-amber-700'}`}>
-                                                Critical Gaps: {Math.max(0, 6 - Math.floor((demoChatStep / DEMO_MESSAGES.length) * 6))}
-                                            </span>
-                                        </div>
-                                        {demoChatStep < DEMO_MESSAGES.length && (
-                                            <p className="mt-0.5 text-[10px] text-slate-600">
-                                                Next: HIGH - {demoChatStep < 2 ? 'Jurisdiction & sector' : demoChatStep < 4 ? 'Counterparty verification' : 'Anchor tenant evidence'}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Documents section */}
-                                <div className="p-4 border-b border-stone-200 flex-shrink-0">
-                                    <h3 className="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">Documents Queued</h3>
-                                    <div className="space-y-1.5">
-                                        {[
-                                            { name: 'NAIF Submission Brief', ready: demoChatStep >= 5 },
-                                            { name: 'Investment Prospectus', ready: demoChatStep >= 5 },
-                                            { name: 'Risk Register', ready: demoChatStep >= 5 },
-                                            { name: 'Stakeholder Plan', ready: demoChatStep >= 5 },
-                                            { name: 'LOI Template', ready: demoChatStep >= 5 },
-                                        ].map(({ name, ready }) => (
-                                            <div key={name} className={`flex items-center justify-between px-2 py-1 border text-[11px] transition-all duration-500 ${ready ? 'border-emerald-200 bg-emerald-50' : 'border-stone-200 bg-white'}`}>
-                                                <span className={ready ? 'text-emerald-700 font-medium' : 'text-slate-500'}>{name}</span>
-                                                <span className={`text-[9px] px-1.5 py-0.5 border ${ready ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-stone-100 text-stone-500 border-stone-200'}`}>
-                                                    {ready ? 'READY' : 'PENDING'}
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {demoChatStep >= DEMO_MESSAGES.length && (
-                                        <button onClick={() => termsAccepted && onEnterPlatform?.()}
-                                            className="mt-3 w-full px-4 py-2 bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition-colors">
-                                            Generate All Documents →
-                                        </button>
-                                    )}
-                                </div>
-
-                                {/* NSIL data signals */}
-                                <div className="p-4 flex-shrink-0">
-                                    <h3 className="text-xs font-bold text-slate-700 mb-2 uppercase tracking-wide">NSIL Signals Extracted</h3>
-                                    <div className="space-y-2">
-                                        {[
-                                            { label: 'Jurisdiction', value: 'Australia - Queensland', step: 2 },
-                                            { label: 'Sector', value: 'Cold-chain / Logistics', step: 2 },
-                                            { label: 'Policy Pack', value: 'Asia-Pacific Advisory', step: 2 },
-                                            { label: 'Counterparty', value: 'Developer (CIS pending)', step: 3 },
-                                            { label: 'Lead Funder', value: 'NAIF matched', step: 4 },
-                                        ].map(({ label, value, step }) => (
-                                            <div key={label} className={`px-2 py-1.5 border text-[11px] transition-all duration-500 ${demoChatStep >= step ? 'border-stone-200 bg-white' : 'border-stone-100 bg-stone-50 opacity-30'}`}>
-                                                <p className="text-[9px] text-slate-400 uppercase tracking-wide">{label}</p>
-                                                <p className="font-medium text-slate-700">{value}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-
             {/* Photo Banner  -  Document Intelligence */}
 
             {/* WHO THIS IS FOR */}
@@ -1039,17 +771,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <div className="mb-4">
                                     <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Who This Is For</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
+                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">You Don't Need to Be an Expert. The System Already Is.</h4>
                                 </div>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    The people who need this most are the ones who&rsquo;ve never had access to it. That&rsquo;s the point.
+                                    The people who need this most are the ones who've never had access to it. That's the point.
                                 </p>
 
                                 {/* Four User Types */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                                     <div className="border-l-2 border-blue-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-1">Regional Councils & Development Agencies</h5>
-                                        <p className="text-xs text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
+                                        <p className="text-xs text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn't stretch. This system gives you the same analytical depth — without the consulting invoice.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-1">Government Agencies & Investment Boards</h5>
@@ -1057,18 +789,18 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-1">Businesses Expanding Into New Regions</h5>
-                                        <p className="text-xs text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
+                                        <p className="text-xs text-slate-600">You don't know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-1">First-Time Exporters & Regional Entrepreneurs</h5>
-                                        <p className="text-xs text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
+                                        <p className="text-xs text-slate-600">You've never written an investment prospectus. That's fine — the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
                                     </div>
                                 </div>
 
                                 {/* Adaptive System Note */}
                                 <div className="mt-4 pt-4 border-t border-slate-200">
                                     <p className="text-xs text-slate-600 leading-relaxed">
-                                        <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs and guided intake. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, and adjustable Monte Carlo parameters. Same engine &mdash; different depth based on who&rsquo;s driving.
+                                        <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs and guided intake. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, and adjustable Monte Carlo parameters. Same engine — different depth based on who's driving.
                                     </p>
                                 </div>
                             </div>
@@ -1338,16 +1070,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* WHAT YOU GET  -  Detail Popup Modal                          */}
             {/* ----------------------------------------------------------- */}
             {showOutputDetails && (
-                <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowOutputDetails(false)}>
-                    <div className="relative w-full max-w-3xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
-                        <button onClick={() => setShowOutputDetails(false)} className="fixed top-4 right-4 z-20 w-10 h-10 bg-stone-800 border border-stone-600 rounded-full flex items-center justify-center hover:bg-stone-700 transition-colors shadow-lg">
-                            <X size={16} className="text-stone-300" />
-                        </button>
-                        <div className="bg-white rounded-sm shadow-2xl overflow-hidden">
-                        <section className="py-12 px-6 md:px-8 bg-slate-100">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4" onClick={() => setShowOutputDetails(false)}>
+                    <div className="bg-white border border-slate-200 shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+                        {/* Photo Header */}
+                        <div className="h-48 relative overflow-hidden flex-shrink-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=400&fit=crop&q=80"
+                                alt="Strategic deliverables"
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
+                            <button 
+                                onClick={() => setShowOutputDetails(false)} 
+                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center shadow-lg"
+                            >
+                                <X size={18} />
+                            </button>
+                            <div className="absolute bottom-4 left-6 right-6">
+                                <span className="inline-block px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider mb-2">Document Factory</span>
+                                <h2 className="text-xl font-bold text-white leading-snug">What You Get</h2>
+                                <p className="text-sm text-white/80 mt-1">The Full Picture &mdash; 247 Document Types Across 15 Categories</p>
+                            </div>
+                        </div>
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto px-6 py-6">
                             <div className="max-w-4xl mx-auto">
-                            <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-3 font-bold">WHAT YOU GET</p>
-                            <h2 className="text-2xl font-light text-slate-900 mb-6">The Full Picture</h2>
 
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
                                 This is where the system becomes practical. It takes what would normally live across spreadsheets, slide decks, consultant workstreams, and weeks of revisions &mdash; and assembles it into institutional-ready deliverables.
@@ -1776,10 +1523,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                             </div>
                             </div>
-                        </section>
 
                         {/* --- PROOF OF CAPABILITY --- */}
-                        <section id="proof" className="py-10 px-6 md:px-8 bg-white border-t border-slate-200">
+                        <div className="py-10 px-6 md:px-8 bg-white border-t border-slate-200">
                             <div className="max-w-4xl mx-auto">
                                 <p className="text-blue-600 uppercase tracking-[0.2em] text-sm mb-2 font-bold">PROOF OF CAPABILITY</p>
                                 <h3 className="text-xl font-semibold text-slate-900 mb-3">See the System in Action</h3>
@@ -1794,15 +1540,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     See the Proof &mdash; A Real System, A Real Report
                                 </button>
                             </div>
-                        </section>
-
-                        <div className="p-4 border-t border-slate-200 flex justify-end bg-slate-50 rounded-b-sm">
-                            <button 
-                                onClick={() => setShowOutputDetails(false)}
-                                className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors"
-                            >
-                                Close
-                            </button>
                         </div>
                         </div>
                     </div>
@@ -1813,12 +1550,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* TEN-STEP PROTOCOL  -  Detail Popup Modal  -  REDESIGNED      */}
             {/* ----------------------------------------------------------- */}
             {showProtocolDetails && (
-                <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/60 backdrop-blur-sm" onClick={() => setShowProtocolDetails(false)}>
-                    <div className="relative w-full max-w-5xl my-8 mx-4" onClick={(e) => e.stopPropagation()}>
-                        <button onClick={() => setShowProtocolDetails(false)} className="fixed top-4 right-4 z-20 w-10 h-10 bg-stone-800 border border-stone-600 rounded-full flex items-center justify-center hover:bg-stone-700 transition-colors shadow-lg">
-                            <X size={16} className="text-stone-300" />
-                        </button>
-                        <div className="bg-white rounded-sm shadow-2xl overflow-hidden">
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/50 backdrop-blur-sm p-4" onClick={() => setShowProtocolDetails(false)}>
+                    <div className="bg-white border border-slate-200 shadow-xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+                        {/* Photo Header */}
+                        <div className="h-52 relative overflow-hidden flex-shrink-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=400&fit=crop&q=80"
+                                alt="Systematic workflow"
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/40 to-transparent" />
+                            <button 
+                                onClick={() => setShowProtocolDetails(false)} 
+                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center shadow-lg"
+                            >
+                                <X size={18} />
+                            </button>
+                            <div className="absolute bottom-4 left-6 right-6">
+                                <span className="inline-block px-2.5 py-1 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider mb-2">The Process</span>
+                                <h2 className="text-xl font-bold text-white leading-snug">How The System Works</h2>
+                                <p className="text-sm text-white/80 mt-1">From First Input to Final Document &mdash; Three Stages, One Evidence Chain</p>
+                            </div>
+                        </div>
+                        {/* Scrollable Content */}
+                        <div className="flex-1 overflow-y-auto">
                         
                         {/* Header */}
                         <section className="py-10 px-6 md:px-8 bg-gradient-to-r from-slate-900 to-slate-800">
