@@ -378,7 +378,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* THE STORY OF REGIONAL CITIES — Why This Matters */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <p className="text-sm font-bold text-blue-600 uppercase tracking-wider mb-4 text-center">The Story of Regional Cities</p>
                     <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight text-center mb-10">
                         The Engine Rooms of Nations &mdash;<br />Overlooked by the Tools Built to Serve Them
                     </h2>
@@ -428,6 +427,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <h2 className="text-3xl md:text-4xl font-bold text-center leading-tight mb-4 text-slate-900">
                         One System. Zero Compromise.
                     </h2>
+                    <p className="text-center text-base md:text-lg font-light mb-6 max-w-3xl mx-auto text-slate-600">
+                        Regional investment intelligence is broken. Fund managers, trade agencies, and development banks still assemble fragmented reports from disconnected consultants &mdash; each working with different data, different frameworks, and no shared memory of what was learned last time. ChatGPT gives fluent guesses. Bloomberg covers major markets. Consulting firms charge six figures and take six months. None of them verify entities against live registries. None of them score Papua New Guinea with the same formula they use for the United States. None of them remember what you told them yesterday.
+                    </p>
                     <p className="text-center text-base md:text-lg font-light mb-12 max-w-3xl mx-auto text-slate-600">
                         General-purpose AI gives you one model, one pass, one perspective. It doesn&rsquo;t know who you are. It doesn&rsquo;t verify what it tells you. It treats every region the same way it treats silence &mdash; with a guess.
                         <span className="block mt-3 font-medium text-slate-800">This system was engineered from scratch to fix every one of those gaps.</span>
@@ -532,20 +534,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* Section Introduction */}
                     <div className="text-center mb-6">
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">Original Developments</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">What We Built</h2>
+                        <p className="text-lg text-slate-600 mt-4 max-w-2xl mx-auto">A reasoning system that argues with itself before it answers you.</p>
                     </div>
                     <div className="max-w-4xl mx-auto mb-14">
                         <p className="text-base text-slate-700 leading-relaxed text-justify mb-4">
-                            Every system below was built from scratch for this project. They are not wrappers around existing APIs, off-the-shelf libraries, or prompt templates. Each applies established theory from a named discipline &mdash; neuroscience, formal logic, post-structuralist philosophy, ecology, computational ethics &mdash; to problems in investment intelligence where that theory has never been applied before.
+                            Every query passes through a 10-layer pipeline &mdash; <strong className="text-slate-900">NSIL</strong> (Neuro-Symbolic Intelligence Layer) &mdash; that chains input validation, adversarial multi-persona debate, 38 quantitative scoring formulas, stress testing, cognition modelling, autonomous agent intelligence, self-monitoring, reflexive user analysis, compliance checking, and audience-adaptive output. In that order. Nothing skipped.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed text-justify mb-4">
-                            All of them are orchestrated through <strong className="text-slate-900">NSIL</strong> (Neuro-Symbolic Intelligence Layer) &mdash; a 10-layer pipeline that chains every engine in sequence. Every input passes through input validation, adversarial multi-persona debate, 38 quantitative formulas, stress testing, neuroscience-based cognition modelling, autonomous agent intelligence, proactive self-monitoring, reflexive analysis of the user, compliance checking, and audience-adaptive output &mdash; in that order &mdash; before a single result is produced. Nothing is optional. Nothing is skipped.
+                            The system queries <strong className="text-slate-900">15+ live data sources</strong> on every analysis: ACLED conflict data, OpenSanctions screening, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata, GLEIF legal entity identifiers, OpenCorporates, V-Dem governance scores, and more. A 7-source <strong className="text-slate-900">Entity Intelligence Pipeline</strong> verifies every company, partner, or government body mentioned. A <strong className="text-slate-900">Geopolitical Arbitrage Engine</strong> scans live global news for disruptions &mdash; wars, sanctions, trade fractures &mdash; and identifies where regional markets can capture displaced demand.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed text-justify mb-4">
-                            The system now connects to <strong className="text-slate-900">15+ live external data sources</strong> on every analysis &mdash; ACLED conflict data, OpenSanctions screening, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata knowledge graphs, <strong className="text-slate-900">GLEIF</strong> Legal Entity Identifiers, <strong className="text-slate-900">OpenCorporates</strong> corporate registry, <strong className="text-slate-900">Brave Search</strong> independent web index, <strong className="text-slate-900">V-Dem</strong> academic governance scores from the University of Gothenburg, and more. A full <strong className="text-slate-900">Entity Intelligence Pipeline</strong> orchestrates 7 verification sources in parallel for every entity mentioned. A <strong className="text-slate-900">Geopolitical Arbitrage Engine</strong> scans live global news for disruptions &mdash; wars, sanctions, trade fractures &mdash; and identifies where regional markets can capture displaced demand. A 22-engine parallel brain fires these alongside every internal engine via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code>, ensuring no single failure blocks the rest. The system learns from every interaction, tunes its own weights, and rolls back automatically if accuracy drifts.
+                            22 engines fire in parallel on every request. The system learns from every interaction, tunes its own weights, and rolls back automatically if accuracy drifts.
+                        </p>
+                        <p className="text-base text-slate-700 leading-relaxed text-justify mb-4">
+                            <strong className="text-slate-900">Why this didn&rsquo;t exist before:</strong> Each engine applies established theory &mdash; Hebbian learning, formal logic, ecological modelling, computational ethics &mdash; to investment intelligence for the first time. These aren&rsquo;t prompt templates or API wrappers. They&rsquo;re purpose-built reasoning architectures designed for decisions that shape regional economies.
                         </p>
                         <p className="text-base text-slate-700 leading-relaxed text-justify">
-                            The result is a system that reasons, argues with itself, queries live global intelligence, detects what you&rsquo;re not saying, checks whether its own conclusions are drifting, learns from every run, and adapts its language depending on who reads the output. Below is what was developed and why none of it existed before.
+                            The result: a system that verifies what it tells you, challenges its own conclusions, remembers your case, and produces documents a board can act on &mdash; not paragraphs you have to rewrite.
                         </p>
                     </div>
 
