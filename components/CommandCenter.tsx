@@ -671,11 +671,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 INTERSTITIAL CTA - Full-Width Break
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative py-16 px-4 overflow-hidden">
-                <div className="absolute inset-0">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&h=600&fit=crop&q=80" alt="Strategic Intelligence" className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 to-blue-900/80" />
-                </div>
+            <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-r from-blue-800 via-blue-700 to-slate-900">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_30%)]" />
                 <div className="relative max-w-4xl mx-auto text-center">
                     <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">&ldquo;You just describe your situation. The system figures out the rest.&rdquo;</h2>
                     <p className="text-lg text-slate-300 leading-relaxed text-justify max-w-3xl mx-auto">
