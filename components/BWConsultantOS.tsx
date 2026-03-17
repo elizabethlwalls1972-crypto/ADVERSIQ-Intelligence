@@ -1520,28 +1520,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   }, []);
 
   const hasUserEngaged = useMemo(() => {
-    const hasDraftInput = [
-      caseStudy.userName,
-      caseStudy.organizationName,
-      caseStudy.organizationType,
-      caseStudy.contactRole,
-      caseStudy.country,
-      caseStudy.jurisdiction,
-      caseStudy.organizationMandate,
-      caseStudy.targetAudience,
-      caseStudy.decisionDeadline,
-      caseStudy.situationType,
-      caseStudy.currentMatter,
-      caseStudy.objectives,
-      caseStudy.constraints,
-      caseStudy.timeline
-    ].some((value) => value.trim().length > 0);
-
     const hasUserMessage = messages.some((message) => message.role === 'user' && message.content.trim().length > 0);
     const hasUploads = caseStudy.uploadedDocuments.length > 0;
 
-    return hasDraftInput || hasUserMessage || hasUploads;
-  }, [caseStudy, messages]);
+    return hasUserMessage || hasUploads;
+  }, [caseStudy.uploadedDocuments.length, messages]);
 
   const toAgenticParams = useCallback((draft: CaseStudy, userQuery?: string) => ({
     organizationName: draft.organizationName,
@@ -7052,13 +7035,14 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
       caseStudy.objectives.trim()
     );
 
-    if (!hasMissionSignal) {
+    if (!hasUserEngaged || !hasMissionSignal) {
       setMissionSnapshot(null);
       return;
     }
 
     MissionGraphService.upsertFromCaseInput(missionCaseInput).then(setMissionSnapshot);
   }, [
+    hasUserEngaged,
     caseStudy.organizationName,
     caseStudy.currentMatter,
     caseStudy.objectives,
@@ -7088,24 +7072,6 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
       window.clearInterval(intervalId);
     };
   }, [showWorkspaceModal, consultantAuditAutoRefresh, loadConsultantAuditEvents]);
-
-  const handleRunAutonomyCycle = useCallback(() => {
-    MissionGraphService.runCycleFromCaseInput(missionCaseInput).then(setMissionSnapshot);
-  }, [missionCaseInput]);
-
-  const handleToggleAutonomyPause = useCallback(() => {
-    const snapshot = MissionGraphService.setAutonomyPaused(!(missionSnapshot?.autonomyPaused ?? false));
-    if (snapshot) {
-      setMissionSnapshot(snapshot);
-    }
-  }, [missionSnapshot?.autonomyPaused]);
-
-  const handleApproveManualMissionTasks = useCallback(() => {
-    const snapshot = MissionGraphService.approveManualTasks();
-    if (snapshot) {
-      setMissionSnapshot(snapshot);
-    }
-  }, []);
 
   const getRankGapKeys = useCallback((alternativeId: string) => {
     if (!primaryRecommendation) return [] as Array<'fit' | 'evidence' | 'urgency' | 'compliance'>;
@@ -7333,10 +7299,11 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
   }, [strictLearningImport]);
 
   return (
-    <div 
+    <div
       className={`${embedded ? '' : 'min-h-screen bg-white'}`}
-      style={{ fontFamily: "'Söhne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
+      style={{ fontFamily: "'Sohne', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
     >
+
       {/* Approval Gate Modal */}
       {approvalGateAction && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50">
@@ -7371,7 +7338,7 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
       )}
       <div className="h-screen flex flex-col">
         {/* Blue Banner Header */}
-        <div 
+        <div
           className="relative overflow-hidden"
           style={{
             backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
@@ -7441,16 +7408,16 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
                   {showToolsMenu && (
                     <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowToolsMenu(false)}>
                       {[
-                        { mode: 'documents',           icon: '', label: 'Document Generation Suite' },
-                        { mode: 'advanced-report',      icon: '', label: 'Advanced Report Generator' },
-                        { mode: 'exec-summary',         icon: '', label: 'Executive Summary' },
-                        { mode: 'letters',              icon: '', label: 'Letters & MOUs' },
+                        { mode: 'documents', icon: '', label: 'Document Generation Suite' },
+                        { mode: 'advanced-report', icon: '', label: 'Advanced Report Generator' },
+                        { mode: 'exec-summary', icon: '', label: 'Executive Summary' },
+                        { mode: 'letters', icon: '', label: 'Letters & MOUs' },
                         { mode: 'global-location-intel', icon: '', label: 'Location Intelligence' },
-                        { mode: 'matchmaking',          icon: '', label: 'Partner Matchmaking' },
-                        { mode: 'intake',               icon: '', label: 'Structured Intake Form' },
-                        { mode: 'admin',                icon: '', label: 'Admin Dashboard' },
-                        { mode: 'user-manual',          icon: '', label: 'User Manual' },
-                        { mode: 'command-center',       icon: '', label: 'Back to Command Center' },
+                        { mode: 'matchmaking', icon: '', label: 'Partner Matchmaking' },
+                        { mode: 'intake', icon: '', label: 'Structured Intake Form' },
+                        { mode: 'admin', icon: '', label: 'Admin Dashboard' },
+                        { mode: 'user-manual', icon: '', label: 'User Manual' },
+                        { mode: 'command-center', icon: '', label: 'Back to Command Center' },
                       ].map(item => (
                         <button
                           key={item.mode}
@@ -8199,159 +8166,6 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
                 )}
               </div>
             </div>
-
-            {missionSnapshot && (
-              <div className="p-4 border-b border-stone-200 bg-white">
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-sm font-bold text-slate-900">Mission Panel</h3>
-                  {missionSnapshot.autonomyPaused && (
-                    <span className="text-[10px] px-1.5 py-0.5 border bg-amber-50 text-amber-700 border-amber-200">
-                      PAUSED
-                    </span>
-                  )}
-                </div>
-                <div className="mb-2 flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={handleRunAutonomyCycle}
-                    className="text-[10px] px-2 py-1 border border-blue-300 bg-white text-blue-700 hover:bg-blue-50"
-                  >
-                    Run Cycle
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleToggleAutonomyPause}
-                    className="text-[10px] px-2 py-1 border border-stone-300 bg-white text-slate-700 hover:bg-stone-50"
-                  >
-                    {missionSnapshot.autonomyPaused ? 'Resume' : 'Pause'} Autonomy
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleApproveManualMissionTasks}
-                    disabled={!missionSnapshot.governanceDecisions.some((decision) => decision.decision === 'review-required')}
-                    className={`text-[10px] px-2 py-1 border ${
-                      !missionSnapshot.governanceDecisions.some((decision) => decision.decision === 'review-required')
-                        ? 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'
-                        : 'bg-white text-amber-700 border-amber-300 hover:bg-amber-50'
-                    }`}
-                  >
-                    Approve Manual Tasks
-                  </button>
-                </div>
-                <div className="text-[11px] space-y-1">
-                  <p className="text-slate-600">
-                    <span className="font-semibold text-slate-700">Status:</span>{' '}
-                    <span
-                      className={`px-1.5 py-0.5 border ${
-                        missionSnapshot.governanceStatus === 'green'
-                          ? 'bg-green-50 text-green-700 border-green-200'
-                          : missionSnapshot.governanceStatus === 'amber'
-                            ? 'bg-amber-50 text-amber-700 border-amber-200'
-                            : 'bg-red-50 text-red-700 border-red-200'
-                      }`}
-                    >
-                      {missionSnapshot.mission.status.toUpperCase()} • GOV {missionSnapshot.governanceStatus.toUpperCase()}
-                    </span>
-                  </p>
-                  <p className="text-slate-700">
-                    <span className="font-semibold">Objective:</span> {missionSnapshot.mission.objective}
-                  </p>
-                  <p className="text-slate-600">
-                    <span className="font-semibold">Horizon:</span> {missionSnapshot.mission.horizon || 'Current planning cycle'}
-                  </p>
-                  <p className="text-slate-600">
-                    <span className="font-semibold">Next review:</span>{' '}
-                    {new Date(missionSnapshot.nextReviewAt).toLocaleString()}
-                  </p>
-                  <p className="text-slate-600">
-                    <span className="font-semibold">Governance:</span>{' '}
-                    Approved {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'approved').length} •
-                    Review {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'review-required').length} •
-                    Rejected {missionSnapshot.governanceDecisions.filter((decision) => decision.decision === 'rejected').length}
-                  </p>
-                  <p className="text-slate-600">
-                    <span className="font-semibold">Executed:</span> {missionSnapshot.executionRecords.length} task run{missionSnapshot.executionRecords.length === 1 ? '' : 's'}
-                  </p>
-                  {missionSnapshot.verificationSummary && (
-                    <>
-                      <p className="text-slate-600">
-                        <span className="font-semibold">Adaptation score:</span>{' '}
-                        {Math.round(missionSnapshot.verificationSummary.adaptationScore)}%
-                      </p>
-                      <p className="text-slate-600">
-                        <span className="font-semibold">Replan:</span>{' '}
-                        {missionSnapshot.verificationSummary.requiresReplan ? 'Required' : 'Stable'}
-                      </p>
-                    </>
-                  )}
-                </div>
-
-                {missionSnapshot.verificationSummary && missionSnapshot.verificationSummary.replanSignals.length > 0 && (
-                  <div className="mt-2 border border-amber-200 bg-amber-50 px-2 py-1.5">
-                    <p className="text-[11px] font-semibold text-amber-800">Replan Signals</p>
-                    <ul className="mt-1 space-y-1">
-                      {missionSnapshot.verificationSummary.replanSignals.slice(0, 3).map((signal, index) => (
-                        <li key={`${signal}-${index}`} className="text-[10px] text-amber-700">
-                          • {signal}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div className="mt-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Top Goals</p>
-                  <ul className="mt-1 space-y-1">
-                    {missionSnapshot.goals.slice(0, 5).map((goal) => (
-                      <li key={goal.goalId} className="text-[10px] text-slate-600 border border-stone-200 bg-slate-50 px-2 py-1">
-                        {goal.description}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-[11px] font-semibold text-slate-700">Next Tasks</p>
-                  <ul className="mt-1 space-y-1">
-                    {missionSnapshot.activePlan.slice(0, 3).map((task) => (
-                      <li key={task.taskId} className="text-[10px] text-slate-600 border border-stone-200 bg-white px-2 py-1">
-                        <div>
-                          <span className="font-semibold text-slate-700">{task.type}</span> - {task.expectedOutcome}
-                        </div>
-                        <div className="mt-1 flex items-center gap-1.5">
-                          <span className={`text-[10px] px-1 py-0.5 border ${
-                            task.status === 'completed'
-                              ? 'bg-green-50 text-green-700 border-green-200'
-                              : task.status === 'failed'
-                                ? 'bg-red-50 text-red-700 border-red-200'
-                                : task.status === 'ready'
-                                  ? 'bg-blue-50 text-blue-700 border-blue-200'
-                                  : 'bg-slate-100 text-slate-600 border-slate-200'
-                          }`}>
-                            {task.status.toUpperCase()}
-                          </span>
-                          <span className="text-[10px] text-slate-500">Risk {task.riskScore}</span>
-                          {task.simulation && (
-                            <>
-                              <span className="text-[10px] text-slate-500">• Base {task.simulation.baseCase}%</span>
-                              <span
-                                className={`text-[10px] px-1 py-0.5 border ${
-                                  task.simulation.recommendedProceed
-                                    ? 'bg-green-50 text-green-700 border-green-200'
-                                    : 'bg-amber-50 text-amber-700 border-amber-200'
-                                }`}
-                              >
-                                {task.simulation.recommendedProceed ? 'Proceed Candidate' : 'Needs Review'}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
 
             {/* Document Recommendations */}
             {(currentPhase === 'recommendations' || currentPhase === 'generation' || recommendedDocs.length > 0) && (
