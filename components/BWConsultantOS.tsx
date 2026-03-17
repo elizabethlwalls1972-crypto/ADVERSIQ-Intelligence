@@ -1519,6 +1519,30 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     return Math.min(100, baseScore + evidenceBoost + contextBoost);
   }, []);
 
+  const hasUserEngaged = useMemo(() => {
+    const hasDraftInput = [
+      caseStudy.userName,
+      caseStudy.organizationName,
+      caseStudy.organizationType,
+      caseStudy.contactRole,
+      caseStudy.country,
+      caseStudy.jurisdiction,
+      caseStudy.organizationMandate,
+      caseStudy.targetAudience,
+      caseStudy.decisionDeadline,
+      caseStudy.situationType,
+      caseStudy.currentMatter,
+      caseStudy.objectives,
+      caseStudy.constraints,
+      caseStudy.timeline
+    ].some((value) => value.trim().length > 0);
+
+    const hasUserMessage = messages.some((message) => message.role === 'user' && message.content.trim().length > 0);
+    const hasUploads = caseStudy.uploadedDocuments.length > 0;
+
+    return hasDraftInput || hasUserMessage || hasUploads;
+  }, [caseStudy, messages]);
+
   const toAgenticParams = useCallback((draft: CaseStudy, userQuery?: string) => ({
     organizationName: draft.organizationName,
     organizationType: draft.organizationType,
@@ -1596,7 +1620,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     ].join('\n');
   }, [consultantCaseProfile]);
 
-  const liveDraftReadiness = useMemo(() => computeReadiness(caseStudy), [caseStudy, computeReadiness]);
+  const liveDraftReadiness = useMemo(() => {
+    if (!hasUserEngaged) return 0;
+    return computeReadiness(caseStudy);
+  }, [caseStudy, computeReadiness, hasUserEngaged]);
   const CASE_COMPLETION_THRESHOLD = 100;
   const isCaseStudyComplete = liveDraftReadiness >= CASE_COMPLETION_THRESHOLD;
 
@@ -8060,7 +8087,7 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
             <div className="p-4 border-b border-stone-200 bg-slate-50">
               <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <FileText size={16} className="text-blue-600" />
-                BW Ai - Live Case Study Workspace
+                BW Consultant - Live Case Study Workspace
               </h2>
               <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
                 <div className="flex flex-wrap items-center gap-2">
@@ -8077,7 +8104,7 @@ SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that
                 <div className="h-1.5 bg-stone-200 border border-stone-300 overflow-hidden">
                   <div
                     className="h-full bg-blue-500"
-                    style={{ width: `${Math.max(3, liveDraftReadiness)}%` }}
+                    style={{ width: `${liveDraftReadiness}%` }}
                   />
                 </div>
               </div>
