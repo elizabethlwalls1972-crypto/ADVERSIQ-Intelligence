@@ -4,6 +4,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
+import { AdaptiveControlLearning } from '../services/AdaptiveControlLearning.js';
+import {
+  deriveControlDecision,
+  type ControlProvider,
+  type RequestEnvelope,
+} from '../../shared/cognitiveControl.js';
 import {
   shouldRequireOutputClarification,
   buildOutputClarificationResponse
@@ -296,7 +302,7 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
   }
 };
 
-type ConsultantProvider = 'bedrock' | 'together' | 'openai';
+type ConsultantProvider = ControlProvider;
 
 interface ConsultantProviderAttempt {
   provider: ConsultantProvider;
@@ -568,6 +574,43 @@ const normalizeConsultantProvider = (value: unknown): ConsultantProvider | null 
   return null;
 };
 
+const normalizeRequestEnvelope = (
+  requestId: string,
+  message: string,
+  envelope: unknown,
+  taskType: ConsultantTaskType,
+  context: unknown
+): RequestEnvelope => {
+  const base: RequestEnvelope = {
+    requestId,
+    timestamp: new Date().toISOString(),
+    messageChars: Math.max(0, message.length),
+    readinessScore: 20,
+    hasAttachments: false,
+    sessionDepth: 1,
+    taskType,
+    retryCount: 0,
+  };
+
+  if (!envelope || typeof envelope !== 'object') {
+    return base;
+  }
+
+  const candidate = envelope as Partial<RequestEnvelope>;
+  const contextHasFiles = Boolean((context as Record<string, unknown> | null)?.uploadedFiles);
+
+  return {
+    requestId: typeof candidate.requestId === 'string' && candidate.requestId ? candidate.requestId : base.requestId,
+    timestamp: typeof candidate.timestamp === 'string' && candidate.timestamp ? candidate.timestamp : base.timestamp,
+    messageChars: Number.isFinite(Number(candidate.messageChars)) ? Number(candidate.messageChars) : base.messageChars,
+    readinessScore: Number.isFinite(Number(candidate.readinessScore)) ? Number(candidate.readinessScore) : base.readinessScore,
+    hasAttachments: typeof candidate.hasAttachments === 'boolean' ? candidate.hasAttachments : contextHasFiles,
+    sessionDepth: Number.isFinite(Number(candidate.sessionDepth)) ? Number(candidate.sessionDepth) : base.sessionDepth,
+    taskType: typeof candidate.taskType === 'string' && candidate.taskType ? candidate.taskType : base.taskType,
+    retryCount: Number.isFinite(Number(candidate.retryCount)) ? Number(candidate.retryCount) : base.retryCount,
+  };
+};
+
 const getReplayMetricCounts = (events: Record<string, unknown>[], provider?: ConsultantProvider): ReplayMetricCounts => {
   const scopedEvents = typeof provider === 'string'
     ? events.filter((event) => normalizeConsultantProvider(event.provider) === provider)
@@ -714,7 +757,8 @@ const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
 
 const runConsultantBroker = async (
   prompt: string,
-  order: ConsultantProvider[]
+  order: ConsultantProvider[],
+  timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS
 ): Promise<{ text: string; provider: ConsultantProvider; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
 
@@ -726,7 +770,7 @@ const runConsultantBroker = async (
         :                          invokeConsultantWithOpenAI(prompt);
       const text = await withTimeout(
         invoker,
-        CONSULTANT_PROVIDER_TIMEOUT_MS,
+        timeoutMs,
         `${provider} provider`
       );
 
@@ -823,13 +867,42 @@ router.get('/status', (_req: Request, res: Response) => {
   });
 });
 
+router.get('/control/status', async (_req: Request, res: Response) => {
+  const providers = {
+    bedrock: hasBedrockSignal(),
+    openai: Boolean(getOpenAIKey()),
+    together: Boolean(getTogetherKey())
+  };
+  const learningHint = await AdaptiveControlLearning.getHint();
+  const sample = deriveControlDecision(
+    {
+      requestId: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+      messageChars: 600,
+      readinessScore: 50,
+      hasAttachments: false,
+      sessionDepth: 5,
+      taskType: 'general_assist',
+      retryCount: 0
+    },
+    providers,
+    learningHint
+  );
+
+  res.json({
+    providers,
+    learningHint,
+    sampleDecision: sample
+  });
+});
+
 // Unified BW Consultant endpoint with model-broker fallback (Bedrock -> Gemini -> OpenAI)
 router.post('/consultant', async (req: Request, res: Response) => {
   const requestId = crypto.randomUUID();
   const start = Date.now();
 
   try {
-    const { message, context, systemPrompt, modelOrder, taskType } = req.body;
+    const { message, context, systemPrompt, modelOrder, taskType, envelope } = req.body;
 
     if (!message || typeof message !== 'string') {
       return res.status(400).json({ error: 'message is required' });
@@ -850,7 +923,30 @@ router.post('/consultant', async (req: Request, res: Response) => {
 
     const sanitizedContextResult = sanitizeConsultantContext(context);
 
-    const providerOrder = parseProviderOrder(modelOrder);
+    const requestEnvelope = normalizeRequestEnvelope(
+      requestId,
+      sanitizedMessage,
+      envelope,
+      normalizedTaskType,
+      sanitizedContextResult.context
+    );
+
+    const learningHint = await AdaptiveControlLearning.getHint();
+    const controlDecision = deriveControlDecision(
+      requestEnvelope,
+      {
+        bedrock: hasBedrockSignal(),
+        openai: Boolean(getOpenAIKey()),
+        together: Boolean(getTogetherKey()),
+      },
+      learningHint
+    );
+
+    const requestedProviderOrder = parseProviderOrder(modelOrder);
+    const providerOrder = Array.from(new Set([
+      ...requestedProviderOrder.filter((provider) => controlDecision.providerOrder.includes(provider)),
+      ...controlDecision.providerOrder,
+    ]));
     const replayPayload: ConsultantReplayPayload = {
       message: sanitizedMessage,
       context: sanitizedContextResult.context,
@@ -889,8 +985,20 @@ router.post('/consultant', async (req: Request, res: Response) => {
         perceptionRealityGap: overlookedIntelligence.perceptionRealityGap,
         strategicReadiness: strategicPipeline.readinessScore,
         replayHash,
-        replayStored: false
+        replayStored: false,
+        controlMode: controlDecision.mode,
+        controlScore: controlDecision.score,
+        controlTimeoutMs: controlDecision.timeoutMs
       });
+
+      void AdaptiveControlLearning.record({
+        requestId,
+        timestamp: new Date().toISOString(),
+        mode: controlDecision.mode,
+        success: true,
+        latencyMs: Date.now() - start,
+        provider: 'rule-engine',
+      }).catch(() => undefined);
 
       return res.json({
         requestId,
@@ -912,13 +1020,15 @@ router.post('/consultant', async (req: Request, res: Response) => {
         recommendedTools: recommendedAugmentedTools,
         overlookedIntelligence,
         strategicPipeline,
+        control: controlDecision,
+        learningHint,
         replayHash,
         replayAvailable: false
       });
     }
 
     const prompt = buildConsultantPrompt(sanitizedMessage, intent, sanitizedContextResult.context, systemPrompt);
-    const brokerResult = await runConsultantBroker(prompt, providerOrder);
+    const brokerResult = await runConsultantBroker(prompt, providerOrder, controlDecision.timeoutMs);
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 
     const replayRecord: ConsultantReplayRecord = {
@@ -955,8 +1065,20 @@ router.post('/consultant', async (req: Request, res: Response) => {
       perceptionRealityGap: overlookedIntelligence.perceptionRealityGap,
       strategicReadiness: strategicPipeline.readinessScore,
       replayHash,
-      replayStored: CONSULTANT_REPLAY_STORE_PAYLOAD
+      replayStored: CONSULTANT_REPLAY_STORE_PAYLOAD,
+      controlMode: controlDecision.mode,
+      controlScore: controlDecision.score,
+      controlTimeoutMs: controlDecision.timeoutMs
     });
+
+    void AdaptiveControlLearning.record({
+      requestId,
+      timestamp: new Date().toISOString(),
+      mode: controlDecision.mode,
+      success: true,
+      latencyMs: Date.now() - start,
+      provider: brokerResult.provider,
+    }).catch(() => undefined);
 
     return res.json({
       requestId,
@@ -978,12 +1100,22 @@ router.post('/consultant', async (req: Request, res: Response) => {
       recommendedTools: recommendedAugmentedTools,
       overlookedIntelligence,
       strategicPipeline,
+      control: controlDecision,
+      learningHint,
       replayHash,
       replayAvailable: CONSULTANT_REPLAY_STORE_PAYLOAD
     });
   } catch (error) {
     console.error('Consultant endpoint error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    void AdaptiveControlLearning.record({
+      requestId,
+      timestamp: new Date().toISOString(),
+      mode: 'reactive',
+      success: false,
+      latencyMs: Date.now() - start,
+      errorType: errorMessage,
+    }).catch(() => undefined);
     await logConsultantAuditEvent({
       event: 'consultant_error',
       requestId,

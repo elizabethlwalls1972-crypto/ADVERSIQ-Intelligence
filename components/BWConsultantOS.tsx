@@ -81,6 +81,7 @@ import { securityService } from '../services/SecurityHardeningService';
 import { gradientRankingEngine } from '../services/algorithms/GradientRankingEngine';
 import { FailureModeGovernanceService } from '../services/FailureModeGovernanceService';
 import type { ReportParameters } from '../types';
+import type { RequestEnvelope } from '../shared/cognitiveControl';
 
 type WindowWithRuntimeEnv = Window & {
   __ENV__?: {
@@ -3405,6 +3406,16 @@ ${agentRegistry.current.toManifest()}`;
           consultantGateReady,
           consultantGateMissing
         },
+        envelope: {
+          requestId: crypto.randomUUID(),
+          timestamp: new Date().toISOString(),
+          messageChars: userInput.length,
+          readinessScore: consultantGateReady ? 90 : Math.max(15, 90 - consultantGateMissing.length * 15),
+          hasAttachments: uploadedFileContentsRef.length > 0,
+          sessionDepth: Math.max(messages.length, 1),
+          taskType: classifyDeliverableIntent(userInput),
+          retryCount: 0,
+        } satisfies RequestEnvelope,
         systemPrompt
       });
 
@@ -3441,7 +3452,17 @@ ${agentRegistry.current.toManifest()}`;
       console.error('AI processing error:', error);
       return '';
     }
-  }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, captureAugmentedAIFromPayload]);
+  }, [
+    buildConsultantPrompt,
+    caseStudy,
+    consultantCaseBrief,
+    consultantGateReady,
+    consultantGateMissing,
+    captureAugmentedAIFromPayload,
+    classifyDeliverableIntent,
+    messages.length,
+    uploadedFileContentsRef.length,
+  ]);
 
   const processWithAIStream = useCallback(async (
     userInput: string,
@@ -3454,6 +3475,16 @@ ${agentRegistry.current.toManifest()}`;
       const reqBody = JSON.stringify({
         message: userInput,
         context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
+        envelope: {
+          requestId: crypto.randomUUID(),
+          timestamp: new Date().toISOString(),
+          messageChars: userInput.length,
+          readinessScore: consultantGateReady ? 90 : Math.max(15, 90 - consultantGateMissing.length * 15),
+          hasAttachments: uploadedFileContentsRef.length > 0,
+          sessionDepth: Math.max(messages.length, 1),
+          taskType: classifyDeliverableIntent(userInput),
+          retryCount: 0,
+        } satisfies RequestEnvelope,
         systemPrompt
       });
       let lastBackendError = '';
@@ -3510,7 +3541,17 @@ ${agentRegistry.current.toManifest()}`;
       onChunk(errorMsg);
       return errorMsg;
     }
-  }, [buildConsultantPrompt, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, captureAugmentedAIFromPayload]);
+  }, [
+    buildConsultantPrompt,
+    caseStudy,
+    consultantCaseBrief,
+    consultantGateReady,
+    consultantGateMissing,
+    captureAugmentedAIFromPayload,
+    classifyDeliverableIntent,
+    messages.length,
+    uploadedFileContentsRef.length,
+  ]);
 
   const getHighestValueFollowUp = useCallback((draft: CaseStudy) => {
     if (!draft.organizationName.trim()) return 'Which organization is the decision owner for this matter?';
