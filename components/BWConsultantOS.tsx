@@ -82,6 +82,28 @@ import { gradientRankingEngine } from '../services/algorithms/GradientRankingEng
 import { FailureModeGovernanceService } from '../services/FailureModeGovernanceService';
 import type { ReportParameters } from '../types';
 
+type WindowWithRuntimeEnv = Window & {
+  __ENV__?: {
+    VITE_API_BASE_URL?: string;
+  };
+};
+
+const getExplicitApiBaseUrl = (): string => {
+  const runtimeUrl = typeof window !== 'undefined'
+    ? (window as WindowWithRuntimeEnv).__ENV__?.VITE_API_BASE_URL
+    : '';
+  const buildUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+  return String(runtimeUrl || buildUrl || '').trim().replace(/\/$/, '');
+};
+
+const resolveApiUrl = (path: string): string => {
+  if (/^https?:\/\//i.test(path)) return path;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const explicitBase = getExplicitApiBaseUrl();
+  if (!explicitBase) return normalizedPath;
+  return `${explicitBase}${normalizedPath}`;
+};
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -2442,12 +2464,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       };
 
       const [overlookedRes, strategicRes] = await Promise.all([
-        fetch('/api/ai/consultant/overlooked-scan', {
+        fetch(resolveApiUrl('/api/ai/consultant/overlooked-scan'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, context: { caseStudy: contextCaseStudy } })
         }),
-        fetch('/api/ai/consultant/strategic-pipeline', {
+        fetch(resolveApiUrl('/api/ai/consultant/strategic-pipeline'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, context: { caseStudy: contextCaseStudy } })
@@ -3389,7 +3411,7 @@ ${agentRegistry.current.toManifest()}`;
       // Try backend up to 2 times — client-side AI providers are not available in the browser
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          const endpointResponse = await fetch('/api/ai/consultant', {
+          const endpointResponse = await fetch(resolveApiUrl('/api/ai/consultant'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: reqBody,
@@ -3439,7 +3461,7 @@ ${agentRegistry.current.toManifest()}`;
       // Try backend up to 2 times — the server handles Groq calls; client-side has no API keys
       for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          const endpointResponse = await fetch('/api/ai/consultant', {
+          const endpointResponse = await fetch(resolveApiUrl('/api/ai/consultant'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: reqBody,
@@ -6452,7 +6474,7 @@ CRITICAL RULES:
 
       if (consultantAuditWindowMode === '24h') {
         try {
-          const metricsResponse = await fetch('/api/ai/consultant/audit-metrics?hours=24');
+          const metricsResponse = await fetch(resolveApiUrl('/api/ai/consultant/audit-metrics?hours=24'));
           if (metricsResponse.ok) {
             const metrics = await metricsResponse.json();
             setConsultantAuditTrends(metrics as ConsultantAuditTrendMetrics);
@@ -6850,7 +6872,7 @@ CRITICAL RULES:
         setConsultantRetryReason(replayFallbackReason || 'Local context retry path used');
 
         try {
-          await fetch('/api/ai/consultant/replay/fallback', {
+          await fetch(resolveApiUrl('/api/ai/consultant/replay/fallback'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
