@@ -367,6 +367,29 @@ const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number, label: str
   }
 };
 
+const diagnoseBedrockCredentials = async (): Promise<{ ok: boolean; detail: string }> => {
+  try {
+    const credentialsCandidate = bedrockClient.config.credentials;
+    if (!credentialsCandidate) {
+      return { ok: false, detail: 'No Bedrock credential provider configured' };
+    }
+
+    const resolved = typeof credentialsCandidate === 'function'
+      ? await withTimeout(credentialsCandidate(), 2500, 'bedrock credential resolution')
+      : await withTimeout(Promise.resolve(credentialsCandidate), 2500, 'bedrock credential resolution');
+
+    const accessKeyId = (resolved as { accessKeyId?: string } | null)?.accessKeyId;
+    if (!accessKeyId) {
+      return { ok: false, detail: 'Bedrock credentials resolved without accessKeyId' };
+    }
+
+    return { ok: true, detail: 'Bedrock credentials resolved successfully' };
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : 'Unknown Bedrock credential resolution error';
+    return { ok: false, detail };
+  }
+};
+
 const sanitizeConsultantMessage = (message: string): string => {
   const normalized = message.split('\0').join('').trim();
   if (normalized.length > CONSULTANT_MAX_MESSAGE_CHARS) {
@@ -965,15 +988,22 @@ router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
 });
 
 // AI runtime status endpoint
-router.get('/status', (_req: Request, res: Response) => {
+router.get('/status', async (_req: Request, res: Response) => {
   const openaiKey = getOpenAIKey();
   const togetherKey = getTogetherKey();
-  const bedrockReady = hasBedrockSignal();
+  const bedrockConfigured = hasBedrockSignal();
+  const bedrockCredentials = bedrockConfigured
+    ? await diagnoseBedrockCredentials()
+    : { ok: false, detail: 'Bedrock not configured' };
 
   res.json({
-    aiAvailable: Boolean(bedrockReady || openaiKey || togetherKey),
+    aiAvailable: Boolean((bedrockConfigured && bedrockCredentials.ok) || openaiKey || togetherKey),
     providers: {
-      bedrock: bedrockReady,
+      bedrock: {
+        configured: bedrockConfigured,
+        credentialsResolved: bedrockCredentials.ok,
+        detail: bedrockCredentials.detail
+      },
       openai: Boolean(openaiKey),
       together: Boolean(togetherKey)
     }
@@ -1251,7 +1281,10 @@ router.post('/consultant', async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Consultant endpoint error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const rawErrorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage = /Could not load credentials from any providers/i.test(rawErrorMessage)
+      ? `${rawErrorMessage}. AWS Bedrock credentials are missing at runtime. Attach an IAM role to the service with bedrock:InvokeModel permission for ${BEDROCK_MODEL_ID} in ${BEDROCK_REGION}, or configure OPENAI_API_KEY / TOGETHER_API_KEY as fallback providers.`
+      : rawErrorMessage;
     void AdaptiveControlLearning.record({
       requestId,
       timestamp: new Date().toISOString(),

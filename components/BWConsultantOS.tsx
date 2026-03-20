@@ -3652,8 +3652,29 @@ ${agentRegistry.current.toManifest()}`;
       }
 
       // Both backend attempts failed — return clear error only for the primary streaming call
+      let runtimeHint = '';
+      if (!lastBackendError) {
+        try {
+          const healthResponse = await fetch(resolveApiUrl('/api/health'));
+          if (!healthResponse.ok) {
+            runtimeHint = ` Health endpoint returned ${healthResponse.status}.`;
+          } else {
+            const healthPayload = await healthResponse.json() as Record<string, unknown>;
+            const ai = healthPayload?.ai as Record<string, unknown> | undefined;
+            if (ai && ai.configured === false) {
+              runtimeHint = ' Backend AI provider is not configured.';
+            }
+          }
+        } catch {
+          runtimeHint = ' Backend API endpoint is unreachable from this client.';
+        }
+      }
+
+      const awsHint = /Could not load credentials from any providers/i.test(lastBackendError)
+        ? ' AWS Bedrock credentials were not resolved; ensure the runtime IAM role allows bedrock:InvokeModel.'
+        : '';
       const backendHint = lastBackendError ? ` Details: ${lastBackendError}` : '';
-      const errorMsg = `I was unable to generate a response.${backendHint} Please confirm the backend server is running, the AI provider key is valid, and outbound network access is allowed, then try again.`;
+      const errorMsg = `I was unable to generate a response.${backendHint}${runtimeHint}${awsHint} Please confirm the backend server is running, AI credentials are valid, and outbound network access is allowed, then try again.`;
       onChunk(errorMsg);
       return errorMsg;
 
