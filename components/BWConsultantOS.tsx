@@ -1507,6 +1507,39 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     if (parsedPerceptionDelta) setPerceptionDelta(parsedPerceptionDelta);
     if (parsedTribunal) setFiveEngineTribunal(parsedTribunal);
 
+    if (parsedTribunal) {
+      if (parsedTribunal.verdict === 'hold') {
+        queueAction({
+          id: 'tribunal-release-hold',
+          label: 'Resolve tribunal hold',
+          description: parsedTribunal.topControls?.[0] || 'Tribunal blocked release. Resolve contradictions and controls before proceeding.',
+          category: 'escalate'
+        });
+      } else if (parsedTribunal.verdict === 'proceed_with_controls') {
+        queueAction({
+          id: 'tribunal-controls-required',
+          label: 'Apply tribunal controls',
+          description: parsedTribunal.topControls?.[0] || 'Tribunal requires controls before release.',
+          category: 'submit'
+        });
+      } else {
+        setPendingActions((prev) => prev.filter((action) => action.id !== 'tribunal-release-hold' && action.id !== 'tribunal-controls-required'));
+      }
+    }
+
+    const runtimeWarnings: string[] = [];
+    if (parsedTribunal?.releaseGate === 'red') {
+      runtimeWarnings.push('Tribunal release gate is RED - do not proceed without remediation controls.');
+    } else if (parsedTribunal?.releaseGate === 'amber') {
+      runtimeWarnings.push('Tribunal release gate is AMBER - proceed only with explicit controls.');
+    }
+    if (parsedPerceptionDelta && Math.abs(parsedPerceptionDelta.deltaIndex) >= 20) {
+      runtimeWarnings.push(`Perception drift is elevated (delta ${parsedPerceptionDelta.deltaIndex}); validate assumptions before commitment.`);
+    }
+    if (runtimeWarnings.length > 0) {
+      setComplianceWarnings((prev) => Array.from(new Set([...prev, ...runtimeWarnings])));
+    }
+
     const topCriticalGap = unresolved.find((gap) => gap.severity === 'critical');
     if (topCriticalGap) {
       queueAction({
