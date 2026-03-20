@@ -23,6 +23,8 @@ import {
 import { buildOverlookedIntelligenceSnapshot } from './overlookedFirstEngine.js';
 import { runStrategicIntelligencePipeline } from './strategicIntelligencePipeline.js';
 import { buildBrainCoverageReport } from './brainCoverageAudit.js';
+import { buildPerceptionDeltaIndex } from '../services/PerceptionDeltaIndex.js';
+import { runFiveEngineTribunal } from '../services/FiveEngineTribunal.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -566,6 +568,117 @@ interface ReplayMetricCounts {
   replayError: number;
 }
 
+interface AdvancedRuntimeMetricCounts {
+  tribunal: {
+    verdicts: {
+      proceed: number;
+      proceedWithControls: number;
+      hold: number;
+    };
+    gates: {
+      green: number;
+      amber: number;
+      red: number;
+    };
+    contradictionAverage: number;
+  };
+  perceptionDelta: {
+    averageIndex: number;
+    averageConfidence: number;
+    underestimationRate: number;
+    overestimationRate: number;
+    alignmentRate: number;
+  };
+}
+
+const asFiniteNumber = (value: unknown): number | null => {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+};
+
+const getAdvancedRuntimeMetrics = (events: Record<string, unknown>[]): AdvancedRuntimeMetricCounts => {
+  const consultantRequests = events.filter((event) => event.event === 'consultant_request');
+
+  let proceed = 0;
+  let proceedWithControls = 0;
+  let hold = 0;
+  let gateGreen = 0;
+  let gateAmber = 0;
+  let gateRed = 0;
+  let contradictionTotal = 0;
+  let contradictionSamples = 0;
+
+  let deltaIndexTotal = 0;
+  let deltaIndexSamples = 0;
+  let deltaConfidenceTotal = 0;
+  let deltaConfidenceSamples = 0;
+  let underestimation = 0;
+  let overestimation = 0;
+  let aligned = 0;
+
+  for (const event of consultantRequests) {
+    const verdict = String(event.tribunalVerdict || '').toLowerCase();
+    if (verdict === 'proceed') proceed += 1;
+    if (verdict === 'proceed_with_controls') proceedWithControls += 1;
+    if (verdict === 'hold') hold += 1;
+
+    const gate = String(event.tribunalGate || '').toLowerCase();
+    if (gate === 'green') gateGreen += 1;
+    if (gate === 'amber') gateAmber += 1;
+    if (gate === 'red') gateRed += 1;
+
+    const contradictionCount = asFiniteNumber(event.tribunalContradictionCount);
+    if (contradictionCount !== null) {
+      contradictionTotal += contradictionCount;
+      contradictionSamples += 1;
+    }
+
+    const deltaIndex = asFiniteNumber(event.perceptionDeltaIndex);
+    if (deltaIndex !== null) {
+      deltaIndexTotal += deltaIndex;
+      deltaIndexSamples += 1;
+      if (deltaIndex >= 6) {
+        underestimation += 1;
+      } else if (deltaIndex <= -6) {
+        overestimation += 1;
+      } else {
+        aligned += 1;
+      }
+    }
+
+    const deltaConfidence = asFiniteNumber(event.perceptionDeltaConfidence);
+    if (deltaConfidence !== null) {
+      deltaConfidenceTotal += deltaConfidence;
+      deltaConfidenceSamples += 1;
+    }
+  }
+
+  const driftTotal = Math.max(1, underestimation + overestimation + aligned);
+
+  return {
+    tribunal: {
+      verdicts: {
+        proceed,
+        proceedWithControls,
+        hold,
+      },
+      gates: {
+        green: gateGreen,
+        amber: gateAmber,
+        red: gateRed,
+      },
+      contradictionAverage: contradictionSamples > 0 ? Number((contradictionTotal / contradictionSamples).toFixed(2)) : 0,
+    },
+    perceptionDelta: {
+      averageIndex: deltaIndexSamples > 0 ? Number((deltaIndexTotal / deltaIndexSamples).toFixed(2)) : 0,
+      averageConfidence: deltaConfidenceSamples > 0 ? Number((deltaConfidenceTotal / deltaConfidenceSamples).toFixed(2)) : 0,
+      underestimationRate: Number(((underestimation / driftTotal) * 100).toFixed(1)),
+      overestimationRate: Number(((overestimation / driftTotal) * 100).toFixed(1)),
+      alignmentRate: Number(((aligned / driftTotal) * 100).toFixed(1)),
+    },
+  };
+};
+
 const normalizeConsultantProvider = (value: unknown): ConsultantProvider | null => {
   const normalized = String(value || '').toLowerCase();
   if (normalized === 'bedrock' || normalized === 'together' || normalized === 'openai') {
@@ -962,6 +1075,23 @@ router.post('/consultant', async (req: Request, res: Response) => {
     const recommendedAugmentedTools = getRecommendedAugmentedToolsForMode(capabilityProfile.mode);
     const overlookedIntelligence = buildOverlookedIntelligenceSnapshot(sanitizedMessage, sanitizedContextResult.context);
     const strategicPipeline = runStrategicIntelligencePipeline(sanitizedMessage, sanitizedContextResult.context);
+    const perceptionDelta = buildPerceptionDeltaIndex(
+      sanitizedMessage,
+      sanitizedContextResult.context,
+      overlookedIntelligence,
+      strategicPipeline,
+      capabilityProfile.gaps.length
+    );
+    const tribunal = runFiveEngineTribunal({
+      message: sanitizedMessage,
+      taskType: normalizedTaskType,
+      intent,
+      controlMode: controlDecision.mode,
+      strategicReadiness: strategicPipeline.readinessScore,
+      evidenceCredibility: overlookedIntelligence.evidenceCredibility,
+      unresolvedGapCount: capabilityProfile.gaps.length,
+      perceptionDelta
+    });
     if (shouldRequireOutputClarification(sanitizedMessage, intent)) {
       const clarificationText = buildOutputClarificationResponse();
 
@@ -984,6 +1114,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
         evidenceCredibility: overlookedIntelligence.evidenceCredibility,
         perceptionRealityGap: overlookedIntelligence.perceptionRealityGap,
         strategicReadiness: strategicPipeline.readinessScore,
+        perceptionDeltaIndex: perceptionDelta.deltaIndex,
+        perceptionDeltaConfidence: perceptionDelta.confidence,
+        tribunalVerdict: tribunal.verdict,
+        tribunalGate: tribunal.releaseGate,
+        tribunalContradictionCount: tribunal.contradictions.length,
         replayHash,
         replayStored: false,
         controlMode: controlDecision.mode,
@@ -1020,6 +1155,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
         recommendedTools: recommendedAugmentedTools,
         overlookedIntelligence,
         strategicPipeline,
+        perceptionDelta,
+        tribunal,
         control: controlDecision,
         learningHint,
         replayHash,
@@ -1064,6 +1201,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
       evidenceCredibility: overlookedIntelligence.evidenceCredibility,
       perceptionRealityGap: overlookedIntelligence.perceptionRealityGap,
       strategicReadiness: strategicPipeline.readinessScore,
+      perceptionDeltaIndex: perceptionDelta.deltaIndex,
+      perceptionDeltaConfidence: perceptionDelta.confidence,
+      tribunalVerdict: tribunal.verdict,
+      tribunalGate: tribunal.releaseGate,
+      tribunalContradictionCount: tribunal.contradictions.length,
       replayHash,
       replayStored: CONSULTANT_REPLAY_STORE_PAYLOAD,
       controlMode: controlDecision.mode,
@@ -1100,6 +1242,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
       recommendedTools: recommendedAugmentedTools,
       overlookedIntelligence,
       strategicPipeline,
+      perceptionDelta,
+      tribunal,
       control: controlDecision,
       learningHint,
       replayHash,
@@ -1181,6 +1325,70 @@ router.post('/consultant/strategic-pipeline', (req: Request, res: Response) => {
   const strategicPipeline = runStrategicIntelligencePipeline(message, context);
   return res.json({
     strategicPipeline
+  });
+});
+
+router.post('/consultant/perception-delta', (req: Request, res: Response) => {
+  const { message, context } = req.body ?? {};
+  if (!message || typeof message !== 'string') {
+    return res.status(400).json({ error: 'message is required' });
+  }
+
+  const capabilityProfile = deriveConsultantCapabilityProfile(message, context);
+  const overlookedIntelligence = buildOverlookedIntelligenceSnapshot(message, context);
+  const strategicPipeline = runStrategicIntelligencePipeline(message, context);
+  const perceptionDelta = buildPerceptionDeltaIndex(
+    message,
+    context,
+    overlookedIntelligence,
+    strategicPipeline,
+    capabilityProfile.gaps.length
+  );
+
+  return res.json({
+    perceptionDelta,
+    supporting: {
+      overlookedIntelligence,
+      strategicPipeline
+    }
+  });
+});
+
+router.post('/consultant/tribunal', (req: Request, res: Response) => {
+  const { message, context, taskType } = req.body ?? {};
+  if (!message || typeof message !== 'string') {
+    return res.status(400).json({ error: 'message is required' });
+  }
+
+  const intent = detectConsultantIntent(message);
+  const capabilityProfile = deriveConsultantCapabilityProfile(message, context);
+  const overlookedIntelligence = buildOverlookedIntelligenceSnapshot(message, context);
+  const strategicPipeline = runStrategicIntelligencePipeline(message, context);
+  const perceptionDelta = buildPerceptionDeltaIndex(
+    message,
+    context,
+    overlookedIntelligence,
+    strategicPipeline,
+    capabilityProfile.gaps.length
+  );
+  const tribunal = runFiveEngineTribunal({
+    message,
+    taskType: typeof taskType === 'string' ? taskType : 'general_assist',
+    intent,
+    controlMode: 'reactive',
+    strategicReadiness: strategicPipeline.readinessScore,
+    evidenceCredibility: overlookedIntelligence.evidenceCredibility,
+    unresolvedGapCount: capabilityProfile.gaps.length,
+    perceptionDelta
+  });
+
+  return res.json({
+    tribunal,
+    perceptionDelta,
+    supporting: {
+      overlookedIntelligence,
+      strategicPipeline
+    }
   });
 });
 
@@ -1435,6 +1643,8 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
 
     const current = getReplayMetricCounts(currentWindowEvents);
     const previous = getReplayMetricCounts(previousWindowEvents);
+    const advancedCurrent = getAdvancedRuntimeMetrics(currentWindowEvents);
+    const advancedPrevious = getAdvancedRuntimeMetrics(previousWindowEvents);
 
     const providers: ConsultantProvider[] = ['bedrock', 'openai'];
     const providerMetrics = providers.reduce<Record<ConsultantProvider, {
@@ -1464,6 +1674,10 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
       windowHours,
       current,
       previous,
+      advanced: {
+        current: advancedCurrent,
+        previous: advancedPrevious
+      },
       providerMetrics,
       delta: {
         replaySuccess: current.replaySuccess - previous.replaySuccess,

@@ -212,6 +212,52 @@ interface ConsultantAuditTrendMetrics {
   current: { replaySuccess: number; replayFallback: number; replayError: number };
   previous: { replaySuccess: number; replayFallback: number; replayError: number };
   delta: { replaySuccess: number; replayFallback: number; replayError: number };
+  advanced?: {
+    current?: {
+      tribunal?: {
+        verdicts?: {
+          proceed?: number;
+          proceedWithControls?: number;
+          hold?: number;
+        };
+        gates?: {
+          green?: number;
+          amber?: number;
+          red?: number;
+        };
+        contradictionAverage?: number;
+      };
+      perceptionDelta?: {
+        averageIndex?: number;
+        averageConfidence?: number;
+        underestimationRate?: number;
+        overestimationRate?: number;
+        alignmentRate?: number;
+      };
+    };
+    previous?: {
+      tribunal?: {
+        verdicts?: {
+          proceed?: number;
+          proceedWithControls?: number;
+          hold?: number;
+        };
+        gates?: {
+          green?: number;
+          amber?: number;
+          red?: number;
+        };
+        contradictionAverage?: number;
+      };
+      perceptionDelta?: {
+        averageIndex?: number;
+        averageConfidence?: number;
+        underestimationRate?: number;
+        overestimationRate?: number;
+        alignmentRate?: number;
+      };
+    };
+  };
   providerMetrics?: {
     bedrock: {
       current: { replaySuccess: number; replayFallback: number; replayError: number };
@@ -368,6 +414,43 @@ interface StrategicPipeline {
     partnerLetterFocus?: string[];
     investorBriefFocus?: string[];
   };
+}
+
+interface PerceptionDeltaSignal {
+  dimension: string;
+  perceived: number;
+  observed: number;
+  delta: number;
+  weight: number;
+  note: string;
+}
+
+interface PerceptionDelta {
+  model: string;
+  deltaIndex: number;
+  driftDirection: 'underestimation' | 'overestimation' | 'aligned';
+  confidence: number;
+  correctionFactors: string[];
+  keySignals: PerceptionDeltaSignal[];
+  summary: string;
+}
+
+interface TribunalEngineResult {
+  engine: 'skeptic' | 'advocate' | 'accountant' | 'regulator' | 'operator';
+  score: number;
+  finding: string;
+  action: string;
+}
+
+interface FiveEngineTribunal {
+  model: string;
+  verdict: 'proceed' | 'proceed_with_controls' | 'hold';
+  releaseGate: 'green' | 'amber' | 'red';
+  confidence: number;
+  engines: TribunalEngineResult[];
+  contradictions: string[];
+  rationale: string[];
+  topControls: string[];
 }
 
 const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
@@ -1222,6 +1305,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [showAugmentedPanel, setShowAugmentedPanel] = useState(false);
   const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
   const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
+  const [perceptionDelta, setPerceptionDelta] = useState<PerceptionDelta | null>(null);
+  const [fiveEngineTribunal, setFiveEngineTribunal] = useState<FiveEngineTribunal | null>(null);
 
   // Refs
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1407,6 +1492,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       : [];
     const overlooked = payload?.overlookedIntelligence as OverlookedIntelligence | undefined;
     const strategic = payload?.strategicPipeline as StrategicPipeline | undefined;
+    const parsedPerceptionDelta = payload?.perceptionDelta as PerceptionDelta | undefined;
+    const parsedTribunal = payload?.tribunal as FiveEngineTribunal | undefined;
 
     if (snapshot) {
       setAugmentedAISnapshot(snapshot);
@@ -1417,6 +1504,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setAugmentedCapabilityTags(capabilityTags);
     if (overlooked) setOverlookedIntelligence(overlooked);
     if (strategic) setStrategicPipeline(strategic);
+    if (parsedPerceptionDelta) setPerceptionDelta(parsedPerceptionDelta);
+    if (parsedTribunal) setFiveEngineTribunal(parsedTribunal);
 
     const topCriticalGap = unresolved.find((gap) => gap.severity === 'critical');
     if (topCriticalGap) {
@@ -8173,11 +8262,41 @@ CRITICAL RULES:
                       </button>
                       {augmentedPanelExpanded && (
                         <div className="mt-1.5 max-h-48 overflow-y-auto">
-                          {(strategicPipeline || overlookedIntelligence) && (
+                          {(strategicPipeline || overlookedIntelligence || perceptionDelta || fiveEngineTribunal) && (
                             <p className="mt-1 text-[10px] text-emerald-800">
                               Strategic readiness: {typeof strategicPipeline?.readinessScore === 'number' ? `${strategicPipeline.readinessScore}%` : 'n/a'}
                               {overlookedIntelligence?.topRegionalOpportunities?.[0]?.place ? ` • Top regional target: ${overlookedIntelligence.topRegionalOpportunities[0].place}` : ''}
+                              {typeof perceptionDelta?.deltaIndex === 'number' ? ` • Perception delta: ${perceptionDelta.deltaIndex}` : ''}
+                              {fiveEngineTribunal?.releaseGate ? ` • Tribunal gate: ${fiveEngineTribunal.releaseGate.toUpperCase()}` : ''}
                             </p>
+                          )}
+                          {perceptionDelta && (
+                            <div className="mt-2 border border-sky-200 bg-sky-50 px-2 py-1">
+                              <p className="text-[10px] font-semibold text-sky-900">Perception Delta Index</p>
+                              <p className="mt-0.5 text-[10px] text-sky-800">
+                                Drift: {perceptionDelta.driftDirection} • Confidence: {perceptionDelta.confidence}% • Delta: {perceptionDelta.deltaIndex}
+                              </p>
+                              {perceptionDelta.correctionFactors.length > 0 && (
+                                <ul className="mt-0.5 space-y-0.5">
+                                  {perceptionDelta.correctionFactors.slice(0, 2).map((factor, index) => (
+                                    <li key={`perception-factor-${index}`} className="text-[10px] text-sky-800">• {factor}</li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          )}
+                          {fiveEngineTribunal && (
+                            <div className="mt-2 border border-violet-200 bg-violet-50 px-2 py-1">
+                              <p className="text-[10px] font-semibold text-violet-900">Five-Engine Tribunal</p>
+                              <p className="mt-0.5 text-[10px] text-violet-800">
+                                Verdict: {fiveEngineTribunal.verdict.replace(/_/g, ' ')} • Gate: {fiveEngineTribunal.releaseGate.toUpperCase()} • Confidence: {fiveEngineTribunal.confidence}%
+                              </p>
+                              {fiveEngineTribunal.contradictions.length > 0 && (
+                                <p className="mt-0.5 text-[10px] text-violet-800">
+                                  Contradictions: {fiveEngineTribunal.contradictions.slice(0, 2).join(' | ')}
+                                </p>
+                              )}
+                            </div>
                           )}
                           {augmentedCapabilityTags.length > 0 && (
                             <p className="mt-1 text-[10px] text-emerald-800">
@@ -9603,6 +9722,22 @@ CRITICAL RULES:
                     {consultantAuditWindowMode === '24h' && consultantAuditTrends && (
                       <div className="text-[10px] text-slate-600 mt-0.5">
                         Trend vs previous 24h • Replay OK: {renderTrend(consultantAuditTrends.delta.replaySuccess)} • Fallback: {renderTrend(consultantAuditTrends.delta.replayFallback, true)} • Status: {consultantRetryHealth?.detail || 'n/a'}
+                      </div>
+                    )}
+                    {consultantAuditWindowMode === '24h' && consultantAuditTrends?.advanced?.current && (
+                      <div className="text-[10px] text-slate-600 mt-0.5">
+                        Tribunal • Proceed: {consultantAuditTrends.advanced.current.tribunal?.verdicts?.proceed ?? 0}
+                        {' '}• Controls: {consultantAuditTrends.advanced.current.tribunal?.verdicts?.proceedWithControls ?? 0}
+                        {' '}• Hold: {consultantAuditTrends.advanced.current.tribunal?.verdicts?.hold ?? 0}
+                        {' '}• Gate G/A/R: {(consultantAuditTrends.advanced.current.tribunal?.gates?.green ?? 0)}/{(consultantAuditTrends.advanced.current.tribunal?.gates?.amber ?? 0)}/{(consultantAuditTrends.advanced.current.tribunal?.gates?.red ?? 0)}
+                        {' '}• Contradictions Avg: {typeof consultantAuditTrends.advanced.current.tribunal?.contradictionAverage === 'number' ? consultantAuditTrends.advanced.current.tribunal.contradictionAverage.toFixed(2) : '0.00'}
+                      </div>
+                    )}
+                    {consultantAuditWindowMode === '24h' && consultantAuditTrends?.advanced?.current?.perceptionDelta && (
+                      <div className="text-[10px] text-slate-600 mt-0.5">
+                        Perception Delta • Avg Index: {typeof consultantAuditTrends.advanced.current.perceptionDelta.averageIndex === 'number' ? consultantAuditTrends.advanced.current.perceptionDelta.averageIndex.toFixed(2) : '0.00'}
+                        {' '}• Confidence: {typeof consultantAuditTrends.advanced.current.perceptionDelta.averageConfidence === 'number' ? consultantAuditTrends.advanced.current.perceptionDelta.averageConfidence.toFixed(2) : '0.00'}%
+                        {' '}• Under/Over/Aligned: {typeof consultantAuditTrends.advanced.current.perceptionDelta.underestimationRate === 'number' ? consultantAuditTrends.advanced.current.perceptionDelta.underestimationRate.toFixed(1) : '0.0'}%/{typeof consultantAuditTrends.advanced.current.perceptionDelta.overestimationRate === 'number' ? consultantAuditTrends.advanced.current.perceptionDelta.overestimationRate.toFixed(1) : '0.0'}%/{typeof consultantAuditTrends.advanced.current.perceptionDelta.alignmentRate === 'number' ? consultantAuditTrends.advanced.current.perceptionDelta.alignmentRate.toFixed(1) : '0.0'}%
                       </div>
                     )}
                     {consultantAuditWindowMode === '24h' && consultantProviderTrendSummary.length > 0 && (
