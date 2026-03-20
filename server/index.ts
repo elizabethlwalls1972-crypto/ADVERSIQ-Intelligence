@@ -37,7 +37,7 @@ import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
 import autonomousRoutes from './routes/autonomous.js';
 import governanceRoutes from './routes/governance.js';
-import bedrockRoutes from './routes/bedrock.js';
+// bedrock placeholder route removed — inference handled by /api/ai routes
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
 
@@ -195,6 +195,8 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 });
 
 // Health check (before other routes for reliability)
+// NOTE: This only checks env-signal presence. For credential-resolved
+// availability use GET /api/ai/readiness which performs actual validation.
 app.get('/api/health', (_req: Request, res: Response) => {
   const hasBedrock = Boolean(
     String(process.env.AWS_REGION || '').trim() ||
@@ -212,10 +214,13 @@ app.get('/api/health', (_req: Request, res: Response) => {
     version: '1.0.0',
     ai: {
       configured: aiConfigured,
-      available: aiConfigured,
+      // available reflects env-signal presence only; use /api/ai/readiness
+      // for credential-resolved availability.
+      available: false,
+      readinessEndpoint: '/api/ai/readiness',
       provider: hasBedrock ? 'bedrock' : hasOpenAI ? 'openai' : hasTogether ? 'together' : null,
       message: aiConfigured
-        ? 'AI provider configured'
+        ? 'AI provider env vars detected — call /api/ai/readiness for live status'
         : 'Add AWS Bedrock credentials (or OPENAI_API_KEY / TOGETHER_API_KEY) to enable AI features'
     }
   });
@@ -227,7 +232,7 @@ app.use('/api/reports', reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);
 app.use('/api/governance', governanceRoutes);
-app.use('/api/bedrock', bedrockRoutes);
+// bedrock placeholder route removed — all AI inference goes through /api/ai
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
 

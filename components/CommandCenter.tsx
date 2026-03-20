@@ -95,13 +95,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'b': {
             title: 'Agentic & Autonomous Systems',
-            subtitle: 'Agent-assisted systems that plan research, run parallel analysis, query external data sources, and adapt runtime control modes from live outcomes.',
+            subtitle: 'Forty-four parallel engines orchestrated as a unified brain &mdash; planning research, running adversarial analysis, querying 15+ live external sources, spawning specialist agents, and adapting runtime control modes from live outcomes.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A multi-engine analysis pipeline runs across each query, combining model outputs, risk scoring, external-source lookups, and scenario analysis where data providers are available.',
+            summary: 'A 44-engine parallel brain fires on every query &mdash; formula indices, reactive intelligence, entity verification, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with graceful degradation and full audit trail.',
             full: (
                 <div className="space-y-6">
-                    <p className="text-sm text-slate-700 leading-relaxed">These systems provide guided autonomy for research and synthesis. They can plan analysis tasks, run parallel engines, and pull from configured external data providers. Output quality and freshness depend on provider availability, API configuration, and governance gates.</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">These systems provide goal-directed autonomy for research, synthesis, and live intelligence gathering. Forty-four engines fire in parallel on every query via the Brain Integration Service &mdash; each contributing a different analytical dimension. Specialist agents spawn on demand, external data providers are queried in real time, and governance gates (red/amber/green) enforce control at every step. Output quality and freshness depend on provider availability, API configuration, and release-gate verdicts.</p>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Multi-Agent Brain System</h4>
@@ -128,9 +128,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
-                        <h4 className="font-semibold text-slate-900 text-sm mb-1">Brain Integration Service &mdash; 22-Engine Parallel Brain</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">Every query fires 22+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code> &mdash; formula indices, regional development kernel, decision pipeline, domain agent synthesis, persona debate, derived indices, OSINT search, opportunity detection, risk monitoring, conflict analysis, sanctions screening, trade statistics, and deep web research. Results are unpacked, merged, and injected into a unified strategic prompt. Engines that fail gracefully degrade without blocking the rest.</p>
-                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: The runtime brain. Sits between your input and the AI response, ensuring every answer draws on the full weight of the system&rsquo;s intelligence.</p>
+                        <h4 className="font-semibold text-slate-900 text-sm mb-1">Brain Integration Service &mdash; 44-Engine Parallel Brain</h4>
+                        <p className="text-sm text-slate-600 leading-relaxed">Every query fires 44+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code> &mdash; adversarial reasoning, comprehensive indices, multi-agent orchestration, historical learning, NSIL intelligence hub, composite scoring, global compliance, case graph building, regional development, partner comparison, decision pipeline, document routing, IFC standards, pattern confidence, maturity scoring, problem-to-solution graphs, motivation detection, counterfactual analysis, narrative synthesis, historical parallel matching, partner intelligence, situation analysis, outcome tracking, self-learning, unbiased analysis, persona debate, derived indices, OSINT search, consultant gating, reactive intelligence, global issue resolution, self-improvement, ACLED conflict data, sanctions screening, trade statistics (UN Comtrade), deep web research (Tavily), intelligence quality gating, V-Dem governance, Research Ecosystem scoring (TAI/ICI/ERS), failure mode governance, and more. Results are unpacked, merged, and injected into a unified strategic prompt. Engines that fail gracefully degrade without blocking the rest.</p>
+                        <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: The runtime brain. Sits between your input and the AI response, ensuring every answer draws on the full weight of the system&rsquo;s 44+ parallel engines &mdash; the most comprehensive intelligence orchestration layer in any investment analysis platform.</p>
                     </div>
 
                     <div className="border-l-2 border-emerald-600 pl-4">
@@ -219,7 +219,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     <div className="border-l-2 border-violet-600 pl-4">
                         <h4 className="font-semibold text-slate-900 text-sm mb-1">Drift Detection & Backtesting</h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">All 38 proprietary formulas are backtested against 200+ real historical cases with known outcomes &mdash; Tesla Shanghai, Samsung Vietnam, PEZA Philippines, Rwanda IT Hub, the Marshall Plan. Drift detection uses Welch&rsquo;s t-test for three types of change: concept drift, data drift, and performance drift. When detected, the system automatically widens confidence intervals and triggers recalibration.</p>
+                        <p className="text-sm text-slate-600 leading-relaxed">All 46+ proprietary formulas are backtested against 200+ real historical cases with known outcomes &mdash; Tesla Shanghai, Samsung Vietnam, PEZA Philippines, Rwanda IT Hub, the Marshall Plan. Drift detection uses Welch&rsquo;s t-test for three types of change: concept drift, data drift, and performance drift. When detected, the system automatically widens confidence intervals and triggers recalibration.</p>
                         <p className="text-xs text-slate-500 mt-1 italic">Role in the OS: Runs continuously. The system knows its own accuracy per country, per sector, and per strategy type. This is how it stays honest over time.</p>
                     </div>
 
@@ -389,10 +389,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* RIGHT: 2 paragraphs — regional cities investment thesis */}
                         <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
                             <p>
-                                Regional cities are no longer peripheral to economic strategy—they are essential to national resilience. They produce export value, process resources, move critical freight, supply skilled labor, and host the infrastructure that keeps countries competitive in a world shaped by supply-chain volatility, geopolitical fragmentation, and climate uncertainty. From industrial corridors to logistics ports to agricultural belts, these places generate the diversification that crowded major hubs can no longer deliver. When regional city performance strengthens, national resilience, productivity, and fiscal stability strengthen with it.
+                                Regional cities keep countries running. They grow and process food, move freight through ports and rail corridors, produce export commodities, house the workforce that supports major industries, and generate the economic diversification that no single capital city can sustain alone. When a supply chain breaks, when a climate event hits, when geopolitical tension reshapes trade routes&mdash;it is regional cities that absorb the shock and keep national economies functioning. Yet governments, investors, and institutions consistently treat these places as an afterthought. Capital flows to the same tier-one metros because that is where the data is, where the advisory firms have offices, where the datasets are deepest, and where every screening tool was designed to look. Regional cities get overlooked not because they lack value, but because nobody built the tools to measure it.
                             </p>
                             <p>
-                                Yet capital still flows to tier-one metros because legacy investment tools were built to screen and evaluate major cities. Global datasets underrepresent regional markets, risk models apply urban assumptions that do not fit local realities, and capital allocation screens overlook places that are harder to classify in milliseconds. In today's uncertain world, this is a critical blind spot. BWGA AI is built 100% to solve it: we evaluate regional cities on their own terms, combining historical precedent, live data, governance context, workforce readiness, infrastructure conditions, and cross-border value to generate defensible investment positions. These markets hold far more strategic and financial value than they are given credit for, and we are ready to work with governments, investors, and institutions prepared to make them first-pick priorities.
+                                BWGA AI was built because these regions deserve the same quality of intelligence that capital cities take for granted. It is the first system 100% dedicated to regional development and investment intelligence&mdash;purpose-built so that governments, investors, and development agencies can finally make decisions about regional cities using verified data instead of guesswork.
                             </p>
                         </div>
                     </div>
@@ -409,115 +409,108 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-1 gap-8">
 
-                        {/* CARD 1: Why This Doesn't Exist + Status Quo (MERGED) */}
+                        {/* CARD 1: Why This Doesn't Exist — matches Card 2 / Who This Is For layout */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
-                            {/* Photo (LEFT) */}
+                            {/* Text Content (Left) */}
+                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
+                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Why This Doesn&rsquo;t Exist Yet</span>
+                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">How Regional Investment Decisions Are Actually Made Today &mdash; and Why They Keep Failing</h4>
+                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                                    Every week, regional councils, state agencies, developers, and fund managers make high-stakes decisions about where to invest, what to build, and who to back in regional cities. None of them have the tools they need.
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Advisory Firms</h5>
+                                        <p className="text-sm text-slate-600">Charge six figures for static PDFs built on the same public data everyone already has. Reports take months, are outdated on arrival, and are optimised for billable hours &mdash; not decision quality.</p>
+                                    </div>
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Government Portals</h5>
+                                        <p className="text-sm text-slate-600">Promote regions but cannot match live investor intent to local opportunity. They tell you the population and top exports &mdash; not whether the regulatory pathway is viable or the workforce can deliver.</p>
+                                    </div>
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">AI Chatbots</h5>
+                                        <p className="text-sm text-slate-600">Sound authoritative but never verify an entity, check a sanctions list, or flag a missing workforce. One answer from one model &mdash; no challenge, no second opinion, no audit trail.</p>
+                                    </div>
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">The System-Wide Gap</h5>
+                                        <p className="text-sm text-slate-600">Nobody tests whether the workforce, regulatory pathway, and funding timeline actually align. No tool challenges its own conclusions. Nothing produced is a document a board can act on without weeks of rework.</p>
+                                    </div>
+                                </div>
+                                <div className="pt-4 border-t border-slate-200">
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        <strong className="text-slate-900">Why now, more than ever.</strong> Supply chains are fracturing. Climate events are reshaping trade corridors. Geopolitical tensions are forcing governments to rethink where critical infrastructure sits. The regions that absorb these shocks &mdash; that grow the food, move the freight, and house the workforce &mdash; are being asked to do more with less visibility than ever. The old tools were already failing. The pace of change has made them irrelevant. Understanding these markets now requires a fundamentally different approach &mdash; one that is live, verified, stress-tested, and built for the speed at which conditions actually move.
+                                    </p>
+                                </div>
+                            </div>
+                            {/* Photo (Right) */}
                             <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80" alt="The gap in current AI tools" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
-                            
-                            {/* Text Content (RIGHT) */}
+                        </div>
+
+                        {/* CARD 2: What We Built — matches "Who This Is For" layout */}
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                            {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">Why This Doesn't Exist Yet</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Current AI Gives You Answers. This System Gives You Defensible Positions.</h4>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Ask ChatGPT whether to invest in a cold-chain hub in North Queensland and you'll get a polished paragraph. It won't check whether the developer is on a sanctions list. It won't tell you the NAIF funding window closes in eight weeks. It won't flag that there's no local cold-chain workforce. It will sound confident — and that's the problem.
+                                <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
+                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">So I Decided to Build Something That Doesn&rsquo;t Exist Yet</h4>
+                                <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
+                                    I watched regional councils get ignored by advisory firms, government portals collect dust, and AI chatbots confidently make things up about places they know nothing about. Nobody was building something that actually worked for these decisions. So I built it myself &mdash; from scratch, purpose-built for regional development and investment intelligence. Not adapted from a general-purpose platform. Not a chatbot with a new label. A full institutional-grade reasoning system designed around one question: can a regional decision-maker get the same quality of intelligence that a capital city takes for granted?
                                 </p>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Real decisions need more than fluency. They need <strong className="text-slate-900">structured adversarial reasoning</strong>, live data validation against real registries, and outputs that survive scrutiny from boards, regulators, and investors. That infrastructure doesn't exist in any general-purpose AI — because it was never designed to.
-                                </p>
-                                
-                                {/* Why AI Fails List */}
-                                <div className="space-y-2 mb-5">
-                                    {[
-                                        'No entity verification — cannot check sanctions lists, corporate registries, or ownership chains',
-                                        'Single perspective — one model, one answer, no internal challenge or second opinion',
-                                        'No audit trail — outputs cannot be traced back to data sources or reasoning steps',
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-start gap-2">
-                                            <span className="mt-0.5 w-4 h-4 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">×</span>
-                                            <p className="text-sm text-slate-600 leading-snug">{item}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                                
-                                {/* Status Quo Box */}
-                                <div className="bg-slate-100 border border-slate-200 rounded-lg p-4">
-                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">The Status Quo — Answer Machines</p>
-                                    <p className="text-xs text-slate-600 mb-3">One model. One response. Generated from memorised internet text with no live verification. It doesn't know your context, your constraints, or your jurisdiction. Cities it's heard of get thoughtful analysis. Everywhere else gets recycled generalisations dressed up as insight.</p>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        {[
-                                            'Gives advice without asking who you are or what you need',
-                                            'Cannot confirm whether a company, entity, or partner actually exists',
-                                            'Detailed on London and New York — vague on Cairns, Suva, and Vientiane',
-                                            'No competing perspective — never challenges its own conclusions',
-                                            'Loses all context the moment you close the tab',
-                                            'Produces paragraphs, not documents a board can act on',
-                                        ].map((item, i) => (
-                                            <div key={i} className="flex items-start gap-2">
-                                                <span className="mt-0.5 w-4 h-4 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center flex-shrink-0 text-[9px] font-bold">×</span>
-                                                <p className="text-xs text-slate-600 leading-snug">{item}</p>
-                                            </div>
-                                        ))}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                                    <div className="border-l-2 border-blue-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Five Engines That Argue With Each Other</h5>
+                                        <p className="text-sm text-slate-600">A chatbot gives you one answer from one model and moves on. This system runs five independent reasoning engines &mdash; a Skeptic, an Advocate, an Accountant, a Regulator, and an Operator &mdash; that debate the same evidence and challenge each other&rsquo;s conclusions before anything reaches you.</p>
+                                    </div>
+                                    <div className="border-l-2 border-emerald-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Verified Against Real Registries</h5>
+                                        <p className="text-sm text-slate-600">Every entity is checked in real time across 7 live sources &mdash; sanctions lists, corporate registries, ownership chains, global news, and governance indices. The system never guesses whether a company exists or a person is sanctioned. It checks.</p>
+                                    </div>
+                                    <div className="border-l-2 border-amber-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Not Reactive &mdash; Persistent</h5>
+                                        <p className="text-sm text-slate-600">This is not a system that waits for a prompt and forgets. It remembers your context, tracks how conditions change over time, monitors for drift in its own recommendations, and flags when something it told you last month may no longer hold.</p>
+                                    </div>
+                                    <div className="border-l-2 border-purple-500 pl-3">
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">A Verdict, Not a Summary</h5>
+                                        <p className="text-sm text-slate-600">The output is a defensible, source-traced position &mdash; proceed, proceed with controls, or hold. Every claim maps to its source. Every score breaks down into components. Anything the system can&rsquo;t verify, it tells you. Built so boards, regulators, and investors can act on it.</p>
                                     </div>
                                 </div>
+                                <div className="pt-4 border-t border-slate-200">
+                                    <p className="text-sm text-slate-600 leading-relaxed">
+                                        <strong className="text-slate-900">44+ engines run in parallel on every question.</strong> 15 strategic indices, 5,000 Monte Carlo scenarios, a contradiction solver that catches impossible assumptions before analysis begins, a Perception Delta Index that flags when narrative confidence exceeds evidence &mdash; and the entire reasoning chain is preserved as an audit trail. This is the analytical firepower of a multinational institution, built for the people who&rsquo;ve never had access to it.
+                                    </p>
+                                </div>
+                            </div>
+                            {/* Photo (Right) */}
+                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&h=600&q=80" alt="Regional city infrastructure and economic corridor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
 
-                        {/* CARD 2: What We Built + How It Works + What You Get (MERGED) */}
-                        {/* CARD 2: What We Built + Breakthrough Feature */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col">
-                            {/* Short banner photo at top */}
-                            <div className="h-56 w-full relative overflow-hidden flex-shrink-0">
-                                <img
-                                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&h=720&q=90"
-                                    alt="Regional city infrastructure and economic corridor"
-                                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 saturate-110 contrast-110"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/10 via-transparent to-transparent" />
-                            </div>
-
-                            {/* Text Content — full width */}
-                            <div className="p-6 md:p-10 flex flex-col">
-                                <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">The First Regional-First Investment Intelligence System</h4>
-                                <div className="grid md:grid-cols-3 gap-6 mb-5">
-                                    <p className="text-sm text-slate-600 leading-relaxed text-justify">
-                                        Most AI systems were built for general conversation and later adapted for enterprise workflows. Regional development was never their design center. As a result, they perform best where data is dense and standardized, and worst where decisions are most consequential: secondary cities, border economies, and undercapitalized regions.
-                                    </p>
-                                    <p className="text-sm text-slate-600 leading-relaxed text-justify">
-                                        BWGA AI was built in the opposite direction. The platform is purpose-built for regional development and investment intelligence worldwide. It does not treat regional locations as exceptions. It treats them as the mission. Every workflow, model, and recommendation is designed to answer one practical question: what will unlock investment, jobs, and long-term economic resilience in this place, under these constraints, right now?
-                                    </p>
-                                    <p className="text-sm text-slate-600 leading-relaxed text-justify">
-                                        Each engagement becomes a structured, persistent case file. Five independent reasoning engines &mdash; Skeptic, Advocate, Accountant, Regulator, and Operator &mdash; challenge every assumption before a recommendation is issued. Claims are tested against live authoritative sources. Anything unverifiable is explicitly marked unknown. Perception Delta Index and release-gate verdicts are attached to every recommendation so users can see whether to proceed, proceed with controls, or hold. The result is a defensible operating package with full traceability to evidence and reasoning.
+                        {/* The Actual Breakthrough — Blue Feature Block */}
+                        <div className="bg-blue-700 rounded-sm p-6 md:p-10">
+                            <div className="grid md:grid-cols-5 gap-8 items-start">
+                                <div className="md:col-span-2">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">The Actual Breakthrough</p>
+                                    <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                                        Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
+                                    </h3>
+                                    <button
+                                        onClick={() => setShowBreakthroughPopup(true)}
+                                        className="inline-flex items-center gap-2 px-4 py-2 border border-blue-300 text-blue-100 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors"
+                                    >
+                                        Read More
+                                        <ArrowRight size={14} />
+                                    </button>
+                                </div>
+                                <div className="md:col-span-3">
+                                    <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
+                                        The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
                                     </p>
                                 </div>
+                            </div>
+                        </div>
                     </div>
-                                {/* The Actual Breakthrough — Blue Feature Block */}
-                                <div className="bg-blue-700 rounded-sm p-6 md:p-10">
-                                    <div className="grid md:grid-cols-5 gap-8 items-start">
-                                        <div className="md:col-span-2">
-                                            <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">The Actual Breakthrough</p>
-                                            <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                                                Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
-                                            </h3>
-                                            <button
-                                                onClick={() => setShowBreakthroughPopup(true)}
-                                                className="inline-flex items-center gap-2 px-4 py-2 border border-blue-300 text-blue-100 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors"
-                                            >
-                                                Read More
-                                                <ArrowRight size={14} />
-                                            </button>
-                                        </div>
-                                        <div className="md:col-span-3">
-                                            <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
-                                                The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                 </div>
             </section>
 
@@ -527,31 +520,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
                         {/* Text Content (Left) */}
                         <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                            <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3 w-fit">Who This Is For</span>
-                            <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-5">
+                            <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Who This Is For</span>
+                            <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
+                            <p className="text-base text-slate-600 leading-relaxed mb-5">
                                 The people who need this most are the ones who&rsquo;ve never had access to it. That&rsquo;s the point.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                                 <div className="border-l-2 border-blue-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">Regional Councils &amp; Development Agencies</h5>
-                                    <p className="text-xs text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
+                                    <h5 className="text-base font-bold text-slate-900 mb-1">Regional Councils &amp; Development Agencies</h5>
+                                    <p className="text-sm text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
                                 </div>
                                 <div className="border-l-2 border-emerald-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">Government Agencies &amp; Investment Boards</h5>
-                                    <p className="text-xs text-slate-600">Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces documented rationale you can stand behind.</p>
+                                    <h5 className="text-base font-bold text-slate-900 mb-1">Government Agencies &amp; Investment Boards</h5>
+                                    <p className="text-sm text-slate-600">Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces documented rationale you can stand behind.</p>
                                 </div>
                                 <div className="border-l-2 border-amber-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">Businesses Expanding Into New Regions</h5>
-                                    <p className="text-xs text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
+                                    <h5 className="text-base font-bold text-slate-900 mb-1">Businesses Expanding Into New Regions</h5>
+                                    <p className="text-sm text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
                                 </div>
                                 <div className="border-l-2 border-purple-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">First-Time Exporters &amp; Regional Entrepreneurs</h5>
-                                    <p className="text-xs text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
+                                    <h5 className="text-base font-bold text-slate-900 mb-1">First-Time Exporters &amp; Regional Entrepreneurs</h5>
+                                    <p className="text-sm text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
                                 </div>
                             </div>
                             <div className="pt-4 border-t border-slate-200">
-                                <p className="text-xs text-slate-600 leading-relaxed">
+                                <p className="text-sm text-slate-600 leading-relaxed">
                                     <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs and guided intake. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, and adjustable Monte Carlo parameters. Same engine &mdash; different depth based on who&rsquo;s driving.
                                 </p>
                             </div>
@@ -610,7 +603,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center"><GitBranch size={14} /></span>
                                         <h3 className="text-base font-bold text-white leading-snug">The Intelligence Architecture</h3>
                                     </div>
-                                    <p className="text-xs text-white/80 leading-relaxed">The NSIL pipeline, 22-engine parallel brain, cognitive control plane, adaptive learning kernel, five-engine tribunal runtime, perception-delta indexing, live external intelligence layer, and Research Ecosystem Readiness scoring (TAI/ICI/ERS).</p>
+                                    <p className="text-xs text-white/80 leading-relaxed">The 10-layer NSIL pipeline, 44-engine parallel brain, cognitive control plane, adaptive learning kernel, Five Engine Tribunal runtime (proceed/proceed-with-controls/hold), Perception Delta Indexing, 15+ live external intelligence APIs, 7 reflexive intelligence engines, continuous self-monitoring with drift detection, and Research Ecosystem Readiness scoring (TAI/ICI/ERS).</p>
                                 </div>
                                 <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
                             </div>
@@ -1577,7 +1570,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             <span className="text-xs text-amber-600 uppercase tracking-wider font-bold">STAGE TWO</span>
                                         </div>
                                         <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-amber-700">Adversarial Analysis</h4>
-                                        <p className="text-xs text-slate-600">Stress-test with 5 personas, 38+ formulas, and Monte Carlo simulation</p>
+                                        <p className="text-xs text-slate-600">Stress-test with 5 personas, 46+ formulas, and Monte Carlo simulation</p>
                                         <p className="text-xs text-amber-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
                                     </button>
 
@@ -1665,7 +1658,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-amber-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">STAGE 2 &mdash; ADVERSARIAL ANALYSIS</p>
                                 <h3 className="text-xl font-semibold text-slate-900 mb-3">Every Claim Gets Stress-Tested</h3>
                                 <p className="text-sm text-slate-700 leading-relaxed mb-6">
-                                    Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies across your inputs. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 38+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show you the real distribution of outcomes, not just the optimistic case.
+                                    Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies across your inputs. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 46+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show you the real distribution of outcomes, not just the optimistic case.
                                 </p>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div className="bg-white border border-amber-200 rounded-lg p-5">
@@ -1676,7 +1669,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <ul className="space-y-2 text-xs text-slate-600">
                                             <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> Input contradictions via SAT Solver</li>
                                             <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> Five adversarial personas debate every angle</li>
-                                            <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> 38+ proprietary scoring formulas</li>
+                                            <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> 46+ proprietary scoring formulas</li>
                                             <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> Monte Carlo across 5,000 scenarios</li>
                                             <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> Regional Development Kernel with causal graphs</li>
                                             <li className="flex items-start gap-2"><CheckCircle2 size={12} className="text-amber-500 mt-0.5" /> Partner Intelligence Engine rankings</li>
@@ -1820,8 +1813,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             <div className="flex items-start gap-3 bg-white p-3 rounded border border-amber-100">
                                                 <span className="w-6 h-6 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</span>
                                                 <div>
-                                                    <p className="text-sm font-semibold text-slate-800">38+ Formula Engine</p>
-                                                    <p className="text-xs text-slate-600">DAG Scheduler executes SPI, RROI, SEAM, and 35+ more formulas across 5 dependency levels. Each produces bounded, auditable scores.</p>
+                                                    <p className="text-sm font-semibold text-slate-800">46+ Formula Engine</p>
+                                                    <p className="text-xs text-slate-600">DAG Scheduler executes SPI, RROI, SEAM, and 43+ more formulas across 5 dependency levels. Each produces bounded, auditable scores.</p>
                                                 </div>
                                             </div>
                                             <div className="flex items-start gap-3 bg-white p-3 rounded border border-amber-100">
@@ -2258,7 +2251,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Stage 2 &mdash; Adversarial Analysis</h4>
-                                    <p>Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies across your inputs. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 38+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show the real distribution of outcomes &mdash; not just the optimistic case. The Regional Development Kernel maps structural twin regions worldwide and builds a causal Problem-to-Solution Graph. The Partner Intelligence Engine ranks co-investors and delivery partners by fit, reliability, and local legitimacy.</p>
+                                    <p>Once intake is complete, the system stress-tests every claim. A SAT Contradiction Solver checks for logical inconsistencies across your inputs. Five adversarial personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; debate the opportunity using Bayesian inference. 46+ proprietary formulas calculate risk-adjusted returns, stakeholder alignment, and strategic positioning. Monte Carlo simulation runs 5,000 scenarios to show the real distribution of outcomes &mdash; not just the optimistic case. The Regional Development Kernel maps structural twin regions worldwide and builds a causal Problem-to-Solution Graph. The Partner Intelligence Engine ranks co-investors and delivery partners by fit, reliability, and local legitimacy.</p>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Stage 3 &mdash; Institutional Output</h4>
                                     <p>Every score, every debate conclusion, every simulation result flows into document generation. 247 document types across 15 categories. 156 letter templates for every stage of deal-making &mdash; LOIs to closing briefs. All populated with your actual data, exact scores, and traceable reasoning &mdash; not AI-generated placeholder text. The 15th category, Case Study Intelligence, lets you upload existing reports, proposals, or case studies and receive full NSIL analysis with scored sections, adversarial debate, historical parallels, and recommended documents.</p>
@@ -2525,7 +2518,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 It started with a frustration. I was watching regions with real potential  -  talent, resources, strategic location  -  get passed over because no tool existed to objectively prove their case. Investment decisions were being made on gut feel, biased reports, or whoever had the best pitch deck. I knew there had to be a better way. So I started building.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                The first thing I created was the formula engine  -  38+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
+                                The first thing I created was the formula engine  -  46+ proprietary formulas like SPI (Strategic Positioning Index), RROI (Risk-Adjusted Return on Investment), and SEAM (Strategic Ethical Alignment Matrix). Each one designed to quantify a dimension of investment intelligence that previously relied on subjective judgement. I built the <strong>DAG Scheduler</strong> to execute them in parallel across 5 dependency levels, so no formula runs before its inputs are ready. That was the foundation.
                             </p>
                             <p className="text-sm text-slate-700 leading-relaxed mb-3">
                                 Then I built the validation layer  -  a <strong>SAT Contradiction Solver</strong> that converts inputs into propositional logic and catches contradictions before anything else runs. If your assumptions conflict, the system tells you immediately. No more garbage-in-garbage-out.
@@ -2545,7 +2538,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <p className="text-xs text-slate-600">Core Algorithms</p>
                                 </div>
                                 <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
-                                    <p className="text-xl font-bold text-blue-600">38+</p>
+                                    <p className="text-xl font-bold text-blue-600">46+</p>
                                     <p className="text-xs text-slate-600">Formulas</p>
                                 </div>
                                 <div className="bg-blue-50 border border-blue-200 rounded-sm p-2 text-center">
@@ -2795,7 +2788,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-sm border border-slate-200">
                                         <span className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
                                         <div>
-                                            <p className="text-sm text-slate-800 font-semibold mb-1">38+ Formulas Ran Against the Validated Inputs</p>
+                                            <p className="text-sm text-slate-800 font-semibold mb-1">46+ Formulas Ran Against the Validated Inputs</p>
                                             <p className="text-sm text-slate-600">The DAG Scheduler executed all formulas across 5 dependency levels. SPI (Strategic Positioning Index) scored the proposal at 34%. RROI computed a risk-adjusted return of 38/100. SCF Impact calculated $680K. Activation timeline modelled at 24 months P50. Every formula drew from the council&rsquo;s own submission and the system&rsquo;s built-in regional benchmarks.</p>
                                         </div>
                                     </div>
@@ -3134,7 +3127,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         { file: 'services/PersonaEngine.ts', purpose: '5-persona adversarial debate engine.' },
                                         { file: 'services/ReportOrchestrator.ts', purpose: 'Full report assembly, all engines in parallel.' },
                                         { file: 'services/algorithms/DAGScheduler.ts', purpose: 'IVAS activation timeline. SCF composite scoring. Formula dependency graph.' },
-                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control  -  all 22 engines orchestrated.' },
+                                        { file: 'services/NSILIntelligenceHub.ts', purpose: 'Master control  -  all 44+ engines orchestrated.' },
                                     ].map((item, idx) => (
                                         <div key={idx} className="bg-slate-50 border border-slate-200 rounded-sm p-3">
                                             <p className="text-xs font-mono text-blue-600 mb-1">{item.file}</p>
@@ -3301,10 +3294,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                             </div>
 
-                            <p>The NSIL &mdash; <strong>Nexus Strategic Intelligence Layer</strong> &mdash; is a deterministic reasoning engine that combines <strong>46+ proprietary formulas</strong>, <strong>34+ intelligence engines</strong>, and <strong>12 core algorithms</strong> into a unified 10-layer pipeline, now extended with a <strong>Regional Development Kernel</strong>, <strong>Partner Intelligence Engine</strong>, <strong>Problem-to-Solution Graph</strong>, <strong>Global Data Fabric</strong>, <strong>Case Study Method Layer</strong>, and <strong>Outcome Learning Service</strong>. Implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span>, it runs every analysis through computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
+                            <p>The NSIL &mdash; <strong>Nexus Strategic Intelligence Layer</strong> &mdash; is a deterministic reasoning engine that combines <strong>46+ proprietary formulas</strong>, <strong>44+ intelligence engines</strong>, and <strong>12 core algorithms</strong> into a unified 10-layer pipeline, now extended with a <strong>Regional Development Kernel</strong>, <strong>Partner Intelligence Engine</strong>, <strong>Problem-to-Solution Graph</strong>, <strong>Global Data Fabric</strong>, <strong>Case Study Method Layer</strong>, and <strong>Outcome Learning Service</strong>. Implemented in <span className="font-mono text-sm bg-slate-100 px-1 rounded">services/NSILIntelligenceHub.ts</span>, it runs every analysis through computational layers in sequence, with parallelism inside each layer where dependencies allow. Same inputs, same outputs, every time. Here&rsquo;s every layer, every formula, every engine.</p>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layer 0 &mdash; The Laws (Knowledge Architecture)</h4>
-                            <p>Hard-coded economic truth that the AI cannot alter. 38+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (<span className="font-mono text-sm bg-slate-100 px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
+                            <p>Hard-coded economic truth that the AI cannot alter. 46+ proprietary formulas defined with fixed mathematical relationships and bounded outputs, managed by a DAG Scheduler (<span className="font-mono text-sm bg-slate-100 px-1 rounded">DAGScheduler.ts</span>). The scheduler maps every formula into a directed acyclic graph across 5 execution levels &mdash; Level 0 runs PRI, CRI, BARNA, and TCO in parallel; Level 1 feeds into SPI, RROI, NVI, RNI, CAP; Level 2 produces SEAM, IVAS, ESI, FRS, AGI, VCI; Level 3 creates the master Strategic Confidence Framework (SCF); Level 4 runs 8 autonomous intelligence indices. Results are memoised &mdash; no formula executes twice.</p>
 
                             <p>Three examples of what these formulas do: <strong>SPI</strong> (Strategic Positioning Index) quantifies market dominance by weighting political risk against country risk with growth-adjusted positioning. <strong>RROI</strong> (Risk-Adjusted Return on Investment) runs Monte Carlo propagation across probability-weighted scenarios &mdash; real-world variance, not a single optimistic projection. <strong>SEAM</strong> (Strategic Ethical Alignment Matrix) cross-references strategy against policy frameworks and stakeholder impact.</p>
 
@@ -3315,7 +3308,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p>Five adversarial personas &mdash; Skeptic (1.2x weight), Advocate, Regulator, Accountant, and Operator &mdash; conduct a structured Bayesian debate (<span className="font-mono text-sm bg-slate-100 px-1 rounded">BayesianDebateEngine.ts</span>). Each votes across four outcomes: proceed, pause, restructure, or reject. Beliefs update via Bayesian inference. Early stopping at 0.75 posterior probability or 0.02 belief delta. Disagreements resolved through Nash bargaining. Every persona&rsquo;s reasoning preserved in the audit trail.</p>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layer 3 &mdash; The Engine (Formula Scoring)</h4>
-                            <p>The DAG Scheduler executes the full 38+ formula suite with typed inputs, bounded outputs, component breakdowns, and execution timing. Results flow into a <span className="font-mono text-sm bg-slate-100 px-1 rounded">CompositeScoreService</span> that normalises raw data against region-specific baselines. Deterministic jitter from hash-based seeding ensures reproducibility.</p>
+                            <p>The DAG Scheduler executes the full 46+ formula suite with typed inputs, bounded outputs, component breakdowns, and execution timing. Results flow into a <span className="font-mono text-sm bg-slate-100 px-1 rounded">CompositeScoreService</span> that normalises raw data against region-specific baselines. Deterministic jitter from hash-based seeding ensures reproducibility.</p>
 
                             <h4 className="text-lg font-bold text-slate-900 pt-2">Layer 4 &mdash; Stress Testing (Scenario Simulation)</h4>
                             <p>The Scenario Simulation Engine (<span className="font-mono text-sm bg-slate-100 px-1 rounded">ScenarioSimulationEngine.ts</span>) builds causal graphs with feedback loops, runs Monte Carlo propagation through multi-step chains with non-linear dynamics, and simulates forward outcomes using Markov chain state transitions across economic, political, social, environmental, technological, and regulatory categories.</p>
@@ -3474,8 +3467,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-slate-700 mt-3">Every data point carries a <strong>freshness timestamp</strong> and <strong>confidence score</strong>. The Regional Development Kernel blocks output when data confidence drops below threshold. All sources are queried in parallel via the Brain Integration Service and Entity Intelligence Pipeline.</p>
                             </div>
 
-                            <h4 className="text-lg font-bold text-blue-800 pt-2">Brain Integration Service &mdash; 22-Engine Parallel Brain</h4>
-                            <p className="text-sm text-slate-700 mb-3">Every query fires 22+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code>. The Brain Integration Service is the runtime core that sits between your input and the AI response:</p>
+                            <h4 className="text-lg font-bold text-blue-800 pt-2">Brain Integration Service &mdash; 44-Engine Parallel Brain</h4>
+                            <p className="text-sm text-slate-700 mb-3">Every query fires 44+ engines simultaneously via <code className="text-xs bg-slate-100 px-1 rounded">Promise.allSettled</code>. The Brain Integration Service is the runtime core that sits between your input and the AI response:</p>
                             <div className="bg-blue-50/60 border border-blue-200 rounded-sm p-4 mb-4">
                                 <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600">
                                     <li><strong>Formula indices</strong> &mdash; All 46+ proprietary formulas via CompositeScoreService</li>
@@ -3564,7 +3557,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
 
-                            <h4 className="text-lg font-bold text-slate-900 pt-4">The 38+ Proprietary Formulas</h4>
+                            <h4 className="text-lg font-bold text-slate-900 pt-4">The 46+ Proprietary Formulas</h4>
                             <div className="grid md:grid-cols-3 gap-3 mt-2 mb-4">
                                 <div>
                                     <h5 className="text-sm font-semibold text-slate-900 mb-1">Strategic Core Indices</h5>
@@ -3667,12 +3660,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     NSIL current runtime is built on:
                                 </p>
                                 <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-700 mb-3">
-                                    <li><strong>34+ Specialized Intelligence Engines</strong> - Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus proactive and reflexive engines</li>
+                                    <li><strong>44+ Specialized Intelligence Engines</strong> - Input Shield, Persona Engine, Counterfactual Engine, Outcome Tracker, Unbiased Analysis, Creative Synthesis, Cross-Domain Transfer, Autonomous Goal, Ethical Reasoning, Self-Evolving Algorithm, Adaptive Learning, Emotional Intelligence, Scenario Simulation, plus proactive and reflexive engines</li>
                                     <li><strong>12 Core Algorithm Engines</strong> - From vector memory retrieval to frontier intelligence with negotiation simulation</li>
                                     <li><strong>10-Layer Deterministic Pipeline</strong> - Laws &rarr; Shield &rarr; Boardroom &rarr; Engine &rarr; Stress Test &rarr; Brain &rarr; Autonomous &rarr; Proactive &rarr; Output &rarr; Reflexive</li>
                                     <li><strong>46+ Proprietary Formulas</strong> - Strategic core indices, advanced evaluation matrices, structural assessments, risk models, financial metrics, operational scores, market analysis, governance frameworks, partner scoring, and Research Ecosystem formulas (TAI/ICI/ERS)</li>
                                     <li><strong>7 Neuroscience Models</strong> - Wilson-Cowan, Predictive Coding, Free Energy Principle, Attention, Emotional Processing, Global Workspace, Working Memory</li>
-                                    <li><strong>22-Engine Parallel Brain</strong> - BrainIntegrationService fires formula indices, regional kernel, decision pipeline, domain agents, persona debate, derived indices, ResearchEcosystemScoringService, OSINT, ReactiveIntelligence, GlobalIssueResolver, SelfImprovementEngine, ACLED, OpenSanctions, UN Comtrade, and Tavily simultaneously via Promise.allSettled</li>
+                                    <li><strong>44-Engine Parallel Brain</strong> - BrainIntegrationService fires adversarial reasoning, comprehensive indices, multi-agent orchestration, historical learning, NSIL hub, composite scoring, global compliance, case graphs, regional development, partner comparison, decision pipeline, document routing, IFC standards, pattern confidence, maturity scoring, problem-to-solution graphs, motivation detection, counterfactual analysis, narrative synthesis, historical parallel matching, partner intelligence, situation analysis, outcome tracking, self-learning, unbiased analysis, persona debate, derived indices, OSINT, consultant gating, reactive intelligence, global issue resolution, self-improvement, ACLED, sanctions screening, UN Comtrade, Tavily, intelligence quality gating, V-Dem governance, Research Ecosystem scoring, and failure mode governance simultaneously via Promise.allSettled</li>
                                     <li><strong>Entity Intelligence Pipeline</strong> - 7-source parallel entity verification: OpenSanctions screening, OpenCorporates registry, GLEIF LEI lookup, V-Dem governance scoring, Tavily deep research, Brave independent search, GDELT news sentiment. Produces composite risk ratings with source accountability</li>
                                     <li><strong>Groq Function Calling</strong> - 4 tool schemas (screen_entity, lookup_company, research_entity, compare_governance) enable the AI to autonomously invoke verification tools during conversation with up to 3 rounds of tool use</li>
                                     <li><strong>15+ Live External Data APIs</strong> - ACLED conflict data, OpenSanctions screening, OpenCorporates, GLEIF, V-Dem v14 governance, Brave Search, UN Comtrade trade statistics, GDELT global news, World Bank indicators, Wikidata SPARQL, Wikipedia, REST Countries, DuckDuckGo web search, Tavily deep research - every data point timestamped with confidence scoring</li>

@@ -27,7 +27,8 @@ const ENTRY_FILES = [
   'components/BWConsultantOS.tsx',
   'services/DecisionPipeline.ts',
   'services/ReportOrchestrator.ts',
-  'services/MasterAutonomousOrchestrator.ts'
+  'services/MasterAutonomousOrchestrator.ts',
+  'services/BrainIntegrationService.ts'
 ].map((relative) => path.resolve(ROOT, relative));
 
 const shouldIncludeAsEngine = (filename: string): boolean => {
