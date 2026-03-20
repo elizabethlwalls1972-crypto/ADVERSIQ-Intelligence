@@ -30,7 +30,7 @@ frontend:
 #   - In AWS Console → App Runner → Create Service
 #   - Source: GitHub repository (braydenmw/bwmetadata, branch master)
 #   - Configuration: Use apprunner.yaml in repository
-#   - Environment variables: GROQ_API_KEY=your-key
+#   - Environment variables: AWS_REGION, BEDROCK_CONSULTANT_MODEL_ID (and IAM role with bedrock:InvokeModel)
 #   - Port: 3000
 #   - The Express server serves the React frontend AND the API
 #
