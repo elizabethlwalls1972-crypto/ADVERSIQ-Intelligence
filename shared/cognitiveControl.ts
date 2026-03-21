@@ -1,6 +1,6 @@
 export type ControlMode = 'reactive' | 'agentic_lite' | 'agentic_full' | 'deliberative';
 
-export type ControlProvider = 'bedrock' | 'openai' | 'together';
+export type ControlProvider = 'bedrock' | 'openai' | 'groq' | 'together';
 
 export interface RequestEnvelope {
   requestId: string;
@@ -16,6 +16,7 @@ export interface RequestEnvelope {
 export interface ProviderAvailability {
   bedrock: boolean;
   openai: boolean;
+  groq: boolean;
   together: boolean;
 }
 
@@ -80,10 +81,11 @@ export const deriveControlDecision = (
   const liveOrder: ControlProvider[] = [
     providers.bedrock ? 'bedrock' : null,
     providers.openai ? 'openai' : null,
+    providers.groq ? 'groq' : null,
     providers.together ? 'together' : null,
   ].filter((p): p is ControlProvider => Boolean(p));
 
-  const fallbackOrder: ControlProvider[] = ['bedrock', 'openai', 'together'];
+  const fallbackOrder: ControlProvider[] = ['bedrock', 'openai', 'groq', 'together'];
   const providerOrder = uniqueProviders(liveOrder.length ? [...liveOrder, ...fallbackOrder] : fallbackOrder);
 
   const explain: string[] = [

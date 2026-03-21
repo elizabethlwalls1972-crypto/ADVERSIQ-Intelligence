@@ -36,6 +36,11 @@ const CONSULTANT_REPLAY_FILE = path.join(DATA_DIR, 'consultant-replay.jsonl');
 const TOGETHER_API_URL  = 'https://api.together.xyz/v1/chat/completions';
 const TOGETHER_MODEL_ID = process.env.TOGETHER_MODEL || 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
 const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
+
+// ─── Groq config ───────────────────────────────────────────────────────────────
+const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.1-70b-versatile';
+const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 const BEDROCK_REGION = process.env.AWS_REGION || 'us-east-1';
 const BEDROCK_MODEL_ID = process.env.BEDROCK_CONSULTANT_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0';
 const bedrockClient = new BedrockRuntimeClient({ region: BEDROCK_REGION });
@@ -95,14 +100,16 @@ const invokeBedrockMessages = async (messages: AIMessage[], systemInstruction?: 
 const _isAIAvailable = (): boolean => {
   if (hasBedrockSignal()) return true;
   if (getOpenAIKey()) return true;
+  if (getGroqKey()) return true;
   if (getTogetherKey()) return true;
   return false;
 };
 
 const generateWithAI = async (input: string | AIMessage[], systemInstruction?: string): Promise<string> => {
   const openaiKey = getOpenAIKey();
+  const groqKey = getGroqKey();
   const togetherKey = getTogetherKey();
-  const providerConfigured = Boolean(hasBedrockSignal() || openaiKey || togetherKey);
+  const providerConfigured = Boolean(hasBedrockSignal() || openaiKey || groqKey || togetherKey);
 
   const baseMessages: AIMessage[] = typeof input === 'string'
     ? [{ role: 'user', content: input }]
@@ -151,11 +158,39 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
         console.warn('[AI Routes] OpenAI error:', res.status);
       }
     } catch (openaiErr) {
-      console.warn('[AI Routes] OpenAI failed, trying Together:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
+      console.warn('[AI Routes] OpenAI failed, trying Groq:', openaiErr instanceof Error ? openaiErr.message : openaiErr);
     }
   }
 
-  // 3. Together.ai fallback
+  // 3. Groq fallback
+  if (groqKey) {
+    try {
+      const res = await fetch(GROQ_API_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${groqKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL_ID,
+          messages: fullMessages,
+          max_tokens: 4096,
+          temperature: 0.4,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = (data.choices?.[0]?.message?.content || '').trim();
+        if (text) return text;
+      } else {
+        console.warn('[AI Routes] Groq error:', res.status);
+      }
+    } catch (groqErr) {
+      console.warn('[AI Routes] Groq failed, trying Together:', groqErr instanceof Error ? groqErr.message : groqErr);
+    }
+  }
+
+  // 4. Together.ai fallback
   if (togetherKey) {
     try {
       const res = await fetch(TOGETHER_API_URL, {
@@ -185,10 +220,11 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
   console.error('[AI Routes] AI generation failed across configured providers', {
     hasBedrock: hasBedrockSignal(),
     hasOpenAI: Boolean(openaiKey),
+    hasGroq: Boolean(groqKey),
     hasTogether: Boolean(togetherKey),
   });
   if (!providerConfigured) {
-    throw new Error('No AI provider configured. Set AWS credentials/IAM role for Bedrock, or add OPENAI_API_KEY / TOGETHER_API_KEY.');
+    throw new Error('No AI provider configured. Set AWS credentials/IAM role for Bedrock, or add OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY.');
   }
   throw new Error('AI provider is configured, but upstream requests failed. Check provider key validity and outbound network access.');
 };
@@ -393,6 +429,7 @@ const diagnoseBedrockCredentials = async (): Promise<{ ok: boolean; detail: stri
 interface RuntimeProviderAvailability {
   bedrock: boolean;
   openai: boolean;
+  groq: boolean;
   together: boolean;
   bedrockConfigured: boolean;
   bedrockCredentialDetail: string;
@@ -400,6 +437,7 @@ interface RuntimeProviderAvailability {
 
 const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailability> => {
   const openai = Boolean(getOpenAIKey());
+  const groq = Boolean(getGroqKey());
   const together = Boolean(getTogetherKey());
   const bedrockConfigured = hasBedrockSignal();
   const bedrockCredentials = bedrockConfigured
@@ -409,6 +447,7 @@ const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailabi
   return {
     bedrock: bedrockConfigured && bedrockCredentials.ok,
     openai,
+    groq,
     together,
     bedrockConfigured,
     bedrockCredentialDetail: bedrockCredentials.detail,
@@ -795,10 +834,10 @@ const logConsultantAuditEvent = async (event: Record<string, unknown>) => {
 };
 
 const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
-  const defaultOrder: ConsultantProvider[] = ['bedrock', 'openai', 'together'];
+  const defaultOrder: ConsultantProvider[] = ['bedrock', 'openai', 'groq', 'together'];
   if (!Array.isArray(input)) return defaultOrder;
 
-  const VALID_PROVIDERS = new Set<ConsultantProvider>(['bedrock', 'together', 'openai']);
+  const VALID_PROVIDERS = new Set<ConsultantProvider>(['bedrock', 'openai', 'groq', 'together']);
   const normalized = input
     .map((value) => String(value).toLowerCase())
     .filter((value): value is ConsultantProvider => VALID_PROVIDERS.has(value as ConsultantProvider));
@@ -869,6 +908,41 @@ const invokeConsultantWithTogether = async (prompt: string): Promise<string> => 
   return text;
 };
 
+const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
+  const key = getGroqKey();
+  if (!key) {
+    throw new Error('Groq unavailable: GROQ_API_KEY missing');
+  }
+
+  const response = await fetch(GROQ_API_URL, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: GROQ_MODEL_ID,
+      messages: [
+        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'user', content: prompt },
+      ],
+      max_tokens: 1800,
+      temperature: 0.4,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Groq request failed: ${response.status}`);
+  }
+
+  const data2 = await response.json();
+  const text2 = (data2.choices?.[0]?.message?.content || '').trim();
+  if (!text2) {
+    throw new Error('Groq returned empty response');
+  }
+  return text2;
+};
+
 const invokeConsultantWithBedrock = async (prompt: string): Promise<string> => {
   return invokeBedrockMessages([
     { role: 'user', content: prompt }
@@ -933,6 +1007,7 @@ const runConsultantBroker = async (
     try {
       const invoker =
         provider === 'bedrock'   ? invokeConsultantWithBedrock(prompt)
+        : provider === 'groq'    ? invokeConsultantWithGroq(prompt)
         : provider === 'together' ? invokeConsultantWithTogether(prompt)
         :                          invokeConsultantWithOpenAI(prompt);
       const text = await withTimeout(
@@ -1023,7 +1098,7 @@ router.get('/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean(availability.bedrock || availability.openai || availability.together),
+    aiAvailable: Boolean(availability.bedrock || availability.openai || availability.groq || availability.together),
     providers: {
       bedrock: {
         configured: availability.bedrockConfigured,
@@ -1031,6 +1106,7 @@ router.get('/status', async (_req: Request, res: Response) => {
         detail: availability.bedrockCredentialDetail
       },
       openai: availability.openai,
+      groq: availability.groq,
       together: availability.together
     }
   });
@@ -1038,13 +1114,14 @@ router.get('/status', async (_req: Request, res: Response) => {
 
 router.get('/readiness', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
-  const ready = availability.bedrock || availability.openai || availability.together;
+  const ready = availability.bedrock || availability.openai || availability.groq || availability.together;
 
   const reasons: string[] = [];
   if (!availability.bedrock && availability.bedrockConfigured) {
     reasons.push(`bedrock_not_ready: ${availability.bedrockCredentialDetail}`);
   }
   if (!availability.openai) reasons.push('openai_not_configured');
+  if (!availability.groq) reasons.push('groq_not_configured');
   if (!availability.together) reasons.push('together_not_configured');
   if (ready && reasons.length === 0) reasons.push('ai_runtime_ready');
 
@@ -1060,6 +1137,9 @@ router.get('/readiness', async (_req: Request, res: Response) => {
       openai: {
         ready: availability.openai
       },
+      groq: {
+        ready: availability.groq
+      },
       together: {
         ready: availability.together
       }
@@ -1072,6 +1152,7 @@ router.get('/control/status', async (_req: Request, res: Response) => {
   const providers = {
     bedrock: availability.bedrock,
     openai: availability.openai,
+    groq: availability.groq,
     together: availability.together
   };
   const learningHint = await AdaptiveControlLearning.getHint();
@@ -1139,6 +1220,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       {
         bedrock: providerAvailability.bedrock,
         openai: providerAvailability.openai,
+        groq: providerAvailability.groq,
         together: providerAvailability.together,
       },
       learningHint
@@ -1261,6 +1343,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       {
         bedrock: providerAvailability.bedrock,
         openai: providerAvailability.openai,
+        groq: providerAvailability.groq,
         together: providerAvailability.together,
       }
     );
@@ -1574,6 +1657,7 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       {
         bedrock: providerAvailability.bedrock,
         openai: providerAvailability.openai,
+        groq: providerAvailability.groq,
         together: providerAvailability.together,
       }
     );
