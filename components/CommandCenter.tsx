@@ -476,7 +476,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
                                 <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">An Automated Due-Diligence &amp; Intelligence Engine</h4>
                                 <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
-                                    I built a software platform that digitises and replaces the entire advisory supply chain. It isn&rsquo;t just a chatbot wrapper. It is a complex intelligence architecture connected directly to live global data feeds. When you input an idea, the system acts as a computational steering committee. It runs your concept through 46+ proprietary financial formulas, stress-tests it using risk simulations, and assigns specialised AI agents to attack and defend the viability of your project. Instead of just giving you a polite summary, it structurally compiles the winning arguments into institutional-grade, board-ready documents.
+                                    I built a software platform that digitises and replaces the entire advisory supply chain. It isn&rsquo;t just a chatbot wrapper. It is a complex, one-of-a-kind intelligence architecture connected directly to live global data feeds. When you input an idea, the system acts as a computational steering committee. It runs your concept through 46+ proprietary financial formulas, stress-tests it using risk simulations, and assigns specialised AI agents to attack and defend the viability of your project. Instead of just giving you a polite summary, it structurally compiles the winning arguments into institutional-grade, board-ready documents.
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                                     <div className="border-l-2 border-blue-500 pl-3">
@@ -501,7 +501,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         This system wasn&rsquo;t built in a boardroom. It was built from a regional city&mdash;the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
                                     </p>
                                     <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                        Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own&mdash;to make people rethink the places that decades ago were just small regional cities, and to prove that institutional-grade intelligence doesn&rsquo;t have to come with an institutional price tag.
+                                        Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own&mdash;to prove that institutional-grade intelligence doesn&rsquo;t have to come with an institutional price tag.
                                     </p>
                                 </div>
                             </div>
