@@ -500,11 +500,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                 </div>
                                 <div className="pt-4 border-t border-slate-200">
-                                    <p className="text-sm text-slate-700 leading-relaxed font-medium mb-3">
-                                        This system wasn&rsquo;t built in a boardroom. It was built from a regional city&mdash;the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
-                                    </p>
                                     <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                        Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own&mdash;to prove that institutional-grade intelligence doesn&rsquo;t have to come with an institutional price tag.
+                                        I built a software platform that digitises and replaces the entire advisory supply chain. It isn&rsquo;t just a chatbot wrapper. It is a complex, one-of-a-kind intelligence architecture connected directly to live global data feeds. When you input an idea, the system acts as a computational steering committee. It runs your concept through 46+ proprietary financial formulas, stress-tests it using risk simulations, and assigns specialised AI agents to attack and defend the viability of your project. Instead of just giving you a polite summary, it structurally compiles the winning arguments into institutional-grade, board-ready documents.
                                     </p>
                                 </div>
                             </div>
