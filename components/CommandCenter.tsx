@@ -325,7 +325,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <button onClick={() => scrollToSection('brain')} className="hover:text-blue-600 transition-colors">The Brain</button>
                         <button onClick={() => { setUnifiedActiveTab('proof'); setShowUnifiedSystemOverview(true); }} className="hover:text-blue-600 transition-colors">Proof</button>
                         <button onClick={() => scrollToSection('partnerships')} className="hover:text-blue-600 transition-colors">Partnerships</button>
-                        <button onClick={() => onEnterPlatform?.()} className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Launch Consultant</button>
+                        <button onClick={() => scrollToSection('launch-platform')} className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Launch Consultant</button>
                     </div>
                 </div>
             </nav>
@@ -887,7 +887,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* FOOTER INFO SECTION */}
-            <section id="footer-info" className="py-20 px-4 bg-white">
+            <section id="launch-platform" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid md:grid-cols-1 gap-8">
 
