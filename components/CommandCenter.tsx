@@ -445,6 +445,30 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
+                        {/* The Actual Breakthrough — Blue Feature Block */}
+                        <div className="bg-blue-700 rounded-sm p-6 md:p-10">
+                            <div className="grid md:grid-cols-5 gap-8 items-start">
+                                <div className="md:col-span-2">
+                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">The Actual Breakthrough</p>
+                                    <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
+                                        Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
+                                    </h3>
+                                    <button
+                                        onClick={() => setShowBreakthroughPopup(true)}
+                                        className="inline-flex items-center gap-2 px-4 py-2 border border-blue-300 text-blue-100 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors"
+                                    >
+                                        Read More
+                                        <ArrowRight size={14} />
+                                    </button>
+                                </div>
+                                <div className="md:col-span-3">
+                                    <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
+                                        The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* CARD 2: What We Built — matches "Who This Is For" layout */}
                         <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
                             {/* Text Content (Left) */}
@@ -484,30 +508,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Photo (Right) */}
                             <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&h=600&q=80" alt="Regional city infrastructure and economic corridor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
-                        </div>
-
-                        {/* The Actual Breakthrough — Blue Feature Block */}
-                        <div className="bg-blue-700 rounded-sm p-6 md:p-10">
-                            <div className="grid md:grid-cols-5 gap-8 items-start">
-                                <div className="md:col-span-2">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-4">The Actual Breakthrough</p>
-                                    <h3 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">
-                                        Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
-                                    </h3>
-                                    <button
-                                        onClick={() => setShowBreakthroughPopup(true)}
-                                        className="inline-flex items-center gap-2 px-4 py-2 border border-blue-300 text-blue-100 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors"
-                                    >
-                                        Read More
-                                        <ArrowRight size={14} />
-                                    </button>
-                                </div>
-                                <div className="md:col-span-3">
-                                    <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
-                                        The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </div>
