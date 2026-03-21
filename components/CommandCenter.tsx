@@ -386,16 +386,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* RIGHT: 2 paragraphs — regional cities investment thesis */}
+                        {/* RIGHT: regional cities investment thesis */}
                         <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
                             <p>
-                                The world runs on regional cities&mdash;and barely notices. These are the places that feed nations, move freight, power exports, and hold together the supply chains that capital cities depend on but never think about. They are home to the people, the knowledge, and the infrastructure that keep entire economies functioning. Yet somewhere along the way, the world stopped paying attention. Investment flows to the same tier-one metros because that is where the data lives, where the advisory firms sit, where the algorithms were trained to look. Everyone follows the same signals, chases the same markets, and calls it strategy. Regional cities don&rsquo;t get overlooked because they lack value. They get overlooked because the system was never built to see them.
+                                Forty percent of the world&rsquo;s urban population lives in regional cities. They grow the food, move the freight, train the workforce, and absorb the shocks that capital cities never have to think about. They are the fastest-growing urban areas on earth&mdash;and the least understood. Not because they lack value, but because every tool, every dataset, and every advisory firm was built to look somewhere else. So everyone follows the same signals to the same places, calls it strategy, and wonders why the outcomes never change.
                             </p>
                             <p>
-                                But these places matter more now than they ever have. When supply chains fracture, when climate reshapes coastlines, when geopolitics rewrites trade routes overnight&mdash;it is regional cities that absorb the shock. The people in these places carry generational knowledge, untapped capability, and a connection to local economies that no spreadsheet can replicate. The global economy doesn&rsquo;t just benefit from regional cities. It depends on them. And yet the tools, the capital, and the attention keep flowing to the places that already have everything.
+                                Meanwhile, the people in these regions carry knowledge, capability, and economic potential that no algorithm was ever trained to measure. The global economy doesn&rsquo;t just benefit from these places. It depends on them. And right now, nobody is building the intelligence to prove it.
                             </p>
                             <p className="text-slate-900 font-semibold">
-                                So I built something to change that.
+                                Until now.
                             </p>
                         </div>
                     </div>
@@ -456,37 +456,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
-                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">Not a Chatbot. Not a Dashboard. A Multi-Hybrid Intelligence System.</h4>
+                                <h4 className="text-2xl font-bold text-slate-900 leading-snug mb-4">You Talk. It Thinks. You Get a Verdict.</h4>
                                 <p className="text-base text-slate-600 leading-relaxed text-justify mb-5">
-                                    Most AI tools give you one answer from one model and move on. This system fuses five different types of intelligence &mdash; adversarial debate, mathematical simulation, live data verification, neuroscience-based reasoning, and autonomous learning &mdash; into a single decision engine that runs them all simultaneously on every query. You describe your opportunity in plain language &mdash; no forms, no dashboards. The system builds the structured case brief behind the scenes, debates it, stress-tests it, verifies it against live sanctions lists, corporate registries, and World Bank data, finds what you missed, and delivers a board-ready verdict with full transparency. In seconds.
+                                    You describe a regional opportunity in your own words&mdash;an investment, a policy, a development project. The system turns that conversation into a structured case, runs it through five independent AI minds that argue over whether it holds up, stress-tests the numbers across thousands of scenarios, checks it against live global data, and hands you a board-ready verdict with documents you can act on. No forms. No waiting. No guesswork.
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                                     <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">Five Minds That Fight For The Truth</h5>
-                                        <p className="text-sm text-slate-600">Before you see a single word, five independent reasoning engines have already argued over your opportunity. A Skeptic looking for deal-killers. An Advocate finding hidden upside. An Accountant stress-testing the money. A Regulator checking sanctions and legal risk. An Operator asking if it can actually be built. They challenge each other &mdash; and only what survives the debate reaches you. One model agreeing with itself is not intelligence. Five minds fighting is.</p>
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Five AI Minds Argue Before You See a Word</h5>
+                                        <p className="text-sm text-slate-600">A Skeptic hunts for deal-killers. An Advocate finds hidden upside. An Accountant stress-tests the money. A Regulator checks sanctions and legal risk. An Operator asks if it can actually be built. Only what survives the debate reaches you.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">It Knows What You&rsquo;re Not Saying</h5>
-                                        <p className="text-sm text-slate-600">The system catches contradictions in your own thinking before it begins. It detects where your assumptions diverge from evidence. It reads what you keep repeating, what you&rsquo;re avoiding, and where your priorities are hiding. Then it asks you the questions you should have been asking yourself. No other system does this.</p>
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">It Catches What You Missed</h5>
+                                        <p className="text-sm text-slate-600">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. You mention a small port in passing&mdash;it recognises it as an irreplaceable asset and shows you where ports like that created transformative value worldwide.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-base font-bold text-slate-900 mb-1">Real Numbers. Not Confident Guesswork.</h5>
-                                        <p className="text-sm text-slate-600">46+ proprietary formulas and thousands of simulated scenarios produce real probabilistic outcomes &mdash; the actual probability of loss, the risk-adjusted return, the cost of doing nothing, and a full picture of what could happen. Every number traces to a formula. Every formula traces to your inputs. Nothing is invented. Nothing is hallucinated.</p>
+                                        <h5 className="text-base font-bold text-slate-900 mb-1">Real Math. Not Confident Guesswork.</h5>
+                                        <p className="text-sm text-slate-600">46+ proprietary formulas run thousands of simulated scenarios&mdash;probability of loss, risk-adjusted return, cost of doing nothing. Every number traces to a formula. Every formula traces to your inputs. Nothing is invented.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
                                         <h5 className="text-base font-bold text-slate-900 mb-1">Boardroom Documents. Not Chat Transcripts.</h5>
-                                        <p className="text-sm text-slate-600">The output isn&rsquo;t a conversation &mdash; it&rsquo;s Letters of Intent, term sheets, policy briefs, MOUs, board packages, and 247+ document types populated with your actual scores and traceable reasoning. A governance tribunal reviews every output and issues a verdict: proceed, proceed with controls, or hold. Walk into the boardroom ready to defend every claim.</p>
+                                        <p className="text-sm text-slate-600">The output is Letters of Intent, term sheets, policy briefs, board packages&mdash;247+ document types with your actual scores and traceable reasoning. A governance tribunal reviews every output and issues a verdict: proceed, proceed with controls, or hold.</p>
                                     </div>
                                 </div>
                                 <div className="pt-4 border-t border-slate-200">
-                                    <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                        You mention a small port in passing &mdash; the system recognises it as an irreplaceable asset and shows you where ports like that created transformative value worldwide. You describe your region &mdash; it finds structural twins that overcame the same constraints and succeeded. It ranks potential partners by reliability and local legitimacy. It maps your problem to a solution through causal reasoning, not keyword matching. Drop in a 90-page report, proposal, or government mandate and the system reads it, scores it, debates it, and diagnoses it &mdash; so you don&rsquo;t have to. <strong className="text-slate-900">It doesn&rsquo;t just answer your question. It finds what you didn&rsquo;t know you had and tells you exactly how to use it.</strong>
-                                    </p>
-                                    <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                        And it doesn&rsquo;t forget. It remembers your context across sessions. It tracks how conditions change. It monitors its own recommendations for drift and flags when something it told you last month may no longer hold. It learns from outcomes and gets sharper with every case. Everything runs on live data &mdash; not last year&rsquo;s report. This is not a tool you prompt and walk away from. It&rsquo;s a system that works alongside you.
-                                    </p>
                                     <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                        Advisory firms charge millions and deliver in months. AI chatbots deliver in seconds and get it wrong. This system delivers institutional-grade intelligence in seconds &mdash; with the depth of a firm, the speed of a machine, and full transparency on every claim. Built from scratch for the people who were never supposed to have access to this level of insight.
+                                        It remembers your context. It learns from outcomes. It runs on live data, not last year&rsquo;s report. Advisory firms charge millions and take months. Chatbots take seconds and get it wrong. This system delivers institutional-grade intelligence in seconds&mdash;built from scratch for the regions that were never supposed to have access to it.
                                     </p>
                                 </div>
                             </div>
