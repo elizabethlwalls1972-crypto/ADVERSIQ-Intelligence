@@ -8,11 +8,17 @@ interface ErrorBoundaryState {
 }
 
 function isChunkLoadError(error: Error): boolean {
+  const msg = (error.message ?? '').toLowerCase();
   return (
     error.name === 'ChunkLoadError' ||
-    /failed to fetch dynamically imported module/i.test(error.message) ||
-    /loading chunk \d+ failed/i.test(error.message) ||
-    /loading css chunk \d+ failed/i.test(error.message)
+    msg.includes('dynamically imported module') ||
+    msg.includes('loading chunk') ||
+    msg.includes('loading css chunk') ||
+    msg.includes('importing a module script failed') ||
+    // Firefox: 'error loading dynamically imported module'
+    // Chrome:  'failed to fetch dynamically imported module: URL'
+    // Safari:  'importing a module script failed'
+    (error instanceof TypeError && msg.includes('module'))
   );
 }
 

@@ -9,18 +9,39 @@ import {
 } from './types';
 import { INITIAL_PARAMETERS } from './constants';
 import ErrorBoundary from './components/ErrorBoundary';
-const NSILWorkspace = lazy(() => import('./components/NSILWorkspace'));
-const UserManual = lazy(() => import('./components/UserManual'));
-const CommandCenter = lazy(() => import('./components/CommandCenter'));
-const BWConsultantOS = lazy(() => import('./components/BWConsultantOS'));
-const GlobalLocationIntelligence = lazy(() => import('./components/GlobalLocationIntelligence'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const Gateway = lazy(() => import('./components/Gateway').then(module => ({ default: module.Gateway })));
-const MatchmakingEngine = lazy(() => import('./components/MatchmakingEngine'));
-const DocumentGenerationSuite = lazy(() => import('./components/DocumentGenerationSuite'));
-const AdvancedReportGenerator = lazy(() => import('./components/AdvancedReportGenerator'));
-const ExecutiveSummaryGenerator = lazy(() => import('./components/ExecutiveSummaryGenerator'));
-const LettersCatalogModal = lazy(() => import('./components/LettersCatalogModal'));
+
+// Wraps lazy() so a failed chunk fetch auto-reloads the page (picks up new
+// index.html + chunk hashes after an Amplify redeploy). sessionStorage guard
+// prevents an infinite reload loop if the chunk is genuinely missing.
+const CHUNK_RELOAD_KEY = 'bw_chunk_reload_at';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function lazyWithReload<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+): React.LazyExoticComponent<T> {
+  return lazy(() =>
+    factory().catch(() => {
+      const last = Number(sessionStorage.getItem(CHUNK_RELOAD_KEY) ?? 0);
+      if (Date.now() - last > 15_000) {
+        sessionStorage.setItem(CHUNK_RELOAD_KEY, String(Date.now()));
+        window.location.reload();
+      }
+      return new Promise<{ default: T }>(() => {});
+    })
+  );
+}
+
+const NSILWorkspace = lazyWithReload(() => import('./components/NSILWorkspace'));
+const UserManual = lazyWithReload(() => import('./components/UserManual'));
+const CommandCenter = lazyWithReload(() => import('./components/CommandCenter'));
+const BWConsultantOS = lazyWithReload(() => import('./components/BWConsultantOS'));
+const GlobalLocationIntelligence = lazyWithReload(() => import('./components/GlobalLocationIntelligence'));
+const AdminDashboard = lazyWithReload(() => import('./components/AdminDashboard'));
+const Gateway = lazyWithReload(() => import('./components/Gateway').then(module => ({ default: module.Gateway })));
+const MatchmakingEngine = lazyWithReload(() => import('./components/MatchmakingEngine'));
+const DocumentGenerationSuite = lazyWithReload(() => import('./components/DocumentGenerationSuite'));
+const AdvancedReportGenerator = lazyWithReload(() => import('./components/AdvancedReportGenerator'));
+const ExecutiveSummaryGenerator = lazyWithReload(() => import('./components/ExecutiveSummaryGenerator'));
+const LettersCatalogModal = lazyWithReload(() => import('./components/LettersCatalogModal'));
 import useEscapeKey from './hooks/useEscapeKey';
 import type { AgenticRun } from './services/agenticWorker';
 import type { ConsultantInsight } from './services/BWConsultantAgenticAI';
