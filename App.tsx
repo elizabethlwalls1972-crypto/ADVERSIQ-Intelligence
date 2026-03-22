@@ -8,6 +8,7 @@ import {
   ReportPayload
 } from './types';
 import { INITIAL_PARAMETERS } from './constants';
+import ErrorBoundary from './components/ErrorBoundary';
 const NSILWorkspace = lazy(() => import('./components/NSILWorkspace'));
 const UserManual = lazy(() => import('./components/UserManual'));
 const CommandCenter = lazy(() => import('./components/CommandCenter'));
@@ -793,9 +794,11 @@ const App: React.FC = () => {
 
     return (
         <div className="h-screen w-full bg-stone-50 font-sans text-stone-900 flex flex-col overflow-hidden">
-            <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-sm text-stone-500">Loading workspace...</div>}>
-                {renderContent()}
-            </Suspense>
+            <ErrorBoundary>
+                <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-sm text-stone-500">Loading workspace...</div>}>
+                    {renderContent()}
+                </Suspense>
+            </ErrorBoundary>
         </div>
     );
 };

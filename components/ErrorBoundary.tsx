@@ -2,28 +2,51 @@ import React from 'react';
 
 interface ErrorBoundaryState {
   hasError: boolean;
+  isChunkError: boolean;
   error?: Error | null;
   info?: React.ErrorInfo | null;
+}
+
+function isChunkLoadError(error: Error): boolean {
+  return (
+    error.name === 'ChunkLoadError' ||
+    /failed to fetch dynamically imported module/i.test(error.message) ||
+    /loading chunk \d+ failed/i.test(error.message) ||
+    /loading css chunk \d+ failed/i.test(error.message)
+  );
 }
 
 export default class ErrorBoundary extends React.Component<React.PropsWithChildren<{}>, ErrorBoundaryState> {
   constructor(props: React.PropsWithChildren<{}>) {
     super(props);
-    this.state = { hasError: false, error: null, info: null };
+    this.state = { hasError: false, isChunkError: false, error: null, info: null };
   }
 
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error } as ErrorBoundaryState;
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, isChunkError: isChunkLoadError(error), error, info: null };
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    this.setState({ error, info });
-    // Also log to console for dev
+    this.setState({ info });
     console.error('ErrorBoundary caught an error:', error, info);
+
+    // Chunk load errors mean the deployed build changed — force a full reload
+    // to pick up the new index.html and chunk hashes.
+    if (isChunkLoadError(error)) {
+      window.location.reload();
+    }
   }
 
   render() {
     if (this.state.hasError) {
+      if (this.state.isChunkError) {
+        return (
+          <div style={{ padding: 24, fontFamily: 'Inter, sans-serif', textAlign: 'center' }}>
+            <p style={{ color: '#555' }}>A new version was deployed. Reloading&hellip;</p>
+          </div>
+        );
+      }
+
       return (
         <div style={{ padding: 24, fontFamily: 'Inter, sans-serif' }}>
           <h2 style={{ color: '#9b1c1c' }}>An application error occurred</h2>
