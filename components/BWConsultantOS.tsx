@@ -94,7 +94,18 @@ const getExplicitApiBaseUrl = (): string => {
     ? (window as WindowWithRuntimeEnv).__ENV__?.VITE_API_BASE_URL
     : '';
   const buildUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
-  return String(runtimeUrl || buildUrl || '').trim().replace(/\/$/, '');
+  const resolved = String(runtimeUrl || buildUrl || '').trim().replace(/\/$/, '');
+  // If the build baked a localhost URL but we're running on a different host (e.g. AWS),
+  // fall back to relative paths so the request goes to the same origin as the page.
+  if (
+    resolved.includes('localhost') &&
+    typeof window !== 'undefined' &&
+    !window.location.hostname.includes('localhost') &&
+    window.location.hostname !== '127.0.0.1'
+  ) {
+    return '';
+  }
+  return resolved;
 };
 
 const resolveApiUrl = (path: string): string => {
