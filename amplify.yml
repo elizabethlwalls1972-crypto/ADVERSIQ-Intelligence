@@ -31,6 +31,9 @@ frontend:
 # Backend (Express API) build configuration
 backend:
   phases:
+    preBuild:
+      commands:
+        - npm ci
     build:
       commands:
         - echo "Building backend for AWS Lambda..."
