@@ -12,24 +12,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables - check multiple possible locations
+// Priority: local overrides first, then project root envs.
 const envPaths = [
-  path.resolve(__dirname, '.env'),           // Same directory
-  path.resolve(__dirname, '..', '.env'),     // Parent directory (dev)
-  path.resolve(__dirname, '..', '..', '.env'), // Two levels up (production bundled)
-  path.resolve(process.cwd(), '.env'),       // Current working directory
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(__dirname, '.env'),
+  path.resolve(__dirname, '..', '.env'),
+  path.resolve(__dirname, '..', '..', '.env'),
+  path.resolve(process.cwd(), '.env.local'),
+  path.resolve(__dirname, '.env.local'),
 ];
 
 for (const envPath of envPaths) {
   const result = dotenv.config({ path: envPath, override: true });
   if (!result.error) {
-    console.log('Loaded .env from:', envPath);
-    break;
+    console.log('Loaded env vars from:', envPath);
   }
 }
 
 // Debug: Check which AI providers are configured
-console.log('[Server] Clean environment - API keys optional');
-console.log('[Server] Add keys to .env when ready to enable AI features');
+console.log('[Server] Env loaded');
+console.log('[Server] OPENAI_API_KEY present:', Boolean(process.env.OPENAI_API_KEY && String(process.env.OPENAI_API_KEY).trim()));
+console.log('[Server] GROQ_API_KEY present:', Boolean(process.env.GROQ_API_KEY && String(process.env.GROQ_API_KEY).trim()));
+console.log('[Server] TOGETHER_API_KEY present:', Boolean(process.env.TOGETHER_API_KEY && String(process.env.TOGETHER_API_KEY).trim()));
+console.log('[Server] ANTHROPIC_API_KEY present:', Boolean(process.env.ANTHROPIC_API_KEY && String(process.env.ANTHROPIC_API_KEY).trim()));
 
 // Import routes
 import aiRoutes from './routes/ai.js';
