@@ -130,7 +130,7 @@ It solves the institutional translation problem through:
 - **Backend:** Express.js 4.21.0, modular service structure, 7 API route groups, no persistent database (yet), all state in browser/localStorage.
 - **Core Services:**
   - 10-layer NSIL pipeline (input validation, adversarial debate, DAG scoring, stress testing, human cognition, autonomous/reflexive/proactive engines, output synthesis, IFC compliance).
-  - Multi-provider AI fallback (AWS Bedrock, Google Gemini).
+  - Multi-provider AI fallback (Google Gemini).
   - Modular algorithm suite: HumanCognitionEngine, BayesianDebateEngine, DAGScheduler, SATContradictionSolver, OptimizedAgenticBrain, VectorMemoryIndex, etc.
 - **Type System:** 1,641 lines of shared type definitions (types.ts).
 - **DevOps:** Docker, Docker Compose, Playwright for e2e (planned), no CI/CD yet.
@@ -150,7 +150,7 @@ It solves the institutional translation problem through:
 
 - **Languages:** TypeScript, JavaScript, Python (planned for future modules).
 - **Frameworks:** React, Express.js, Vite, Tailwind CSS.
-- **AI Providers:** AWS Bedrock, Google Gemini (modular fallback).
+- **AI Providers:** Google Gemini (modular fallback).
 - **Utilities:** mathjs, docx, Playwright (planned), Docker.
 - **Planned:** PostgreSQL, Redis, CI/CD pipeline, persistent user auth.
 

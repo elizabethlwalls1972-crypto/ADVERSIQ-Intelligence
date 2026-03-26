@@ -38,7 +38,7 @@ This document is written as a **technical brief + audit-style system description
 12. Report Orchestration & Document Generation
 13. Security, Privacy, and Governance Controls (Audit View)
 14. Reliability, Observability, and Operational Readiness
-15. Deployment & Environments (Local, Docker, Railway, Netlify)
+15. Deployment & Environments (Local, Docker, Netlify)
 16. Testing, Verification, and Quality Controls
 17. Risks, Gaps, and Recommendations (Audit Findings)
 18. Partnership & Integration Model
@@ -441,7 +441,7 @@ Suggested service-level objectives for a production deployment:
 
 Audit note: the Dockerfile starts `server/index.js` directly; the repository also contains an esbuild server build output path (`dist-server/server/index.js`). Aligning these is recommended for consistent production deployment.
 
-### Railway
+
 - Nixpacks builder and `/api/health` healthcheck
 
 ### Netlify
@@ -622,7 +622,7 @@ This section documents APIs as they exist in the repository.
 `GET /api/health`
 - Purpose: basic liveness endpoint
 - Output: JSON `{ status, timestamp, version }`
-- Audit value: allows load balancers and platforms (Railway/Docker) to confirm service health
+- Audit value: allows load balancers and platforms (Docker) to confirm service health
 
 ### A2.2 AI endpoints (`/api/ai`)
 The AI routes use Gemini when `GEMINI_API_KEY` is present. The server lazily initializes the Gemini client to avoid startup failures.

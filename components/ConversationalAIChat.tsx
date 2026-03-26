@@ -160,7 +160,7 @@ ${currentContext?.organizationName ? `I see you're working on **${currentContext
           confidence: data.confidence || 85,
           reasoning: data.reasoning,
           sources: data.sources,
-          agentId: data.agentId || 'gemini-flash'
+          agentId: data.agentId || ''
         };
         return [...filtered, assistantMessage];
       });

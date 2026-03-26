@@ -107,7 +107,7 @@ export const FOURTEEN_CATEGORY_DEFINITIONS: CategoryDefinition[] = [
     name: '1. Foundation & Legal Documents',
     shortName: 'Foundation & Legal',
     description: 'Letters of Intent (LOI), Non-Disclosure Agreements (NDA), Term Sheets, Memorandums of Understanding (MOU)',
-    purpose: 'Establishing the legal bedrock for deals',
+    purpose: 'Establishing the legal foundation for deals',
     derivedFrom: 'Core Foundation',
     phase: 'deal',
     documentExamples: ['Letter of Intent', 'NDA', 'Term Sheet', 'MOU', 'Expression of Interest', 'Pre-Qualification'],
@@ -893,7 +893,7 @@ export function getDocumentCount(): number {
 // Category metadata for UI - Extended to include all 14 global categories
 export const CATEGORY_METADATA: Record<DocumentCategory, { label: string; description: string; icon: string; phase?: string }> = {
   // ===== THE 14 GLOBAL CATEGORIES =====
-  'foundation-legal': { label: '1. Foundation & Legal', description: 'LOI, NDA, Term Sheets, MOU - Establishing the legal bedrock for deals', icon: 'FileText', phase: 'deal' },
+  'foundation-legal': { label: '1. Foundation & Legal', description: 'LOI, NDA, Term Sheets, MOU - Establishing the legal foundation for deals', icon: 'FileText', phase: 'deal' },
   'strategic-intelligence': { label: '2. Strategic Intelligence', description: 'Business Cases, Feasibility Studies, White Papers - The "what" and "why"', icon: 'Brain', phase: 'entry' },
   'financial-investment': { label: '3. Financial & Investment', description: 'PPM, Financial Models, Valuation - The Accountant Persona', icon: 'DollarSign', phase: 'deal' },
   'risk-due-diligence': { label: '4. Risk & Due Diligence', description: 'DD Reports, AML/KYC, Sanctions - The Skeptic Persona', icon: 'AlertTriangle', phase: 'safety' },

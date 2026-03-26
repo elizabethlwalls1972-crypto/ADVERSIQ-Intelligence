@@ -11,7 +11,7 @@ import { INITIAL_PARAMETERS } from './constants';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Wraps lazy() so a failed chunk fetch auto-reloads the page (picks up new
-// index.html + chunk hashes after an Amplify redeploy). sessionStorage guard
+// index.html + chunk hashes after a redeploy. sessionStorage guard
 // prevents an infinite reload loop if the chunk is genuinely missing.
 const CHUNK_RELOAD_KEY = 'bw_chunk_reload_at';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

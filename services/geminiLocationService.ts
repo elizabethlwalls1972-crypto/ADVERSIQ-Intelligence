@@ -1,13 +1,9 @@
 ﻿/**
- * 
- * AWS BEDROCK LOCATION INTELLIGENCE SERVICE
- * 
- * 
- * PRODUCTION-READY - AWS BEDROCK ONLY
- * - Uses AWS Bedrock (Claude) for all AI operations
- * - No external API dependencies
- * - No rate limits when properly configured on AWS
- * - Multi-agent capable through AWS
+ *
+ * Location Intelligence Service Logic
+ *
+ * PRODUCTION-READY
+ * This file previously contained AWS Bedrock location intelligence logic. All AWS-specific code has been removed.
  */
 
 import { type CityProfile } from '../data/globalLocationProfiles';
@@ -24,99 +20,6 @@ export interface LocationResult {
 }
 
 export interface ResearchProgress {
-  stage: string;
-  progress: number;
-  message: string;
-}
-
-// ==================== UTILITIES ====================
-
-async function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  timeoutMessage: string
-): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) =>
-      setTimeout(() => reject(new Error(timeoutMessage)), timeoutMs)
-    )
-  ]);
-}
-
-// ==================== SERVER FALLBACK ====================
-
-async function fetchLocationIntelligenceFromServer(
-  query: string,
-  onProgress?: (progress: ResearchProgress) => void
-): Promise<LocationResult | null> {
-  try {
-    onProgress?.({ stage: 'Fallback', progress: 15, message: 'Connecting to intelligence server...' });
-
-    const response = await fetch(`${API_BASE}/api/search/location-intelligence`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ location: query })
-    });
-
-    if (!response.ok) {
-      throw new Error(`Server intelligence error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const geo = data.geocoding || {};
-    const ai = data.aiIntelligence || data.freeApiData || {};
-    const countryInfo = data.countryData || {};
-
-    onProgress?.({ stage: 'Processing', progress: 60, message: 'Processing intelligence data...' });
-
-    // Extract population from various sources
-    const getPopulation = () => {
-      if (ai?.demographics?.population) return ai.demographics.population;
-      if (countryInfo?.population) return countryInfo.population.toLocaleString();
-      if (data.worldBank?.['Population']?.value) return Math.round(data.worldBank['Population'].value).toLocaleString();
-      return 'N/A';
-    };
-
-    // Extract GDP from various sources  
-    const getGDP = () => {
-      if (ai?.economy?.gdp) return ai.economy.gdp;
-      if (data.worldBank?.['GDP (current US$)']?.value) {
-        const gdp = data.worldBank['GDP (current US$)'].value;
-        if (gdp >= 1e12) return `$${(gdp / 1e12).toFixed(2)} trillion`;
-        if (gdp >= 1e9) return `$${(gdp / 1e9).toFixed(2)} billion`;
-        return `$${(gdp / 1e6).toFixed(2)} million`;
-      }
-      return 'N/A';
-    };
-
-    const profile: CityProfile = {
-      id: `server-${Date.now()}`,
-      country: geo.country || countryInfo?.name?.common || 'Unknown',
-      region: geo.state || ai?.government?.region || ai?.overview?.administrativeLevel || 'Unknown',
-      city: ai?.overview?.displayName || query,
-      entityType: 'location',
-      entityName: query,
-      established: ai?.overview?.established || 'Unknown',
-      knownFor: ai?.competitiveAdvantages || [],
-      strategicAdvantages: ai?.competitiveAdvantages || [],
-      investmentPrograms: ai?.investment?.incentives || [],
-      keySectors: Array.isArray(ai?.economy?.mainIndustries) 
-        ? ai.economy.mainIndustries.map((i: { name?: string } | string) => typeof i === 'string' ? i : i?.name).filter(Boolean)
-        : [],
-      foreignCompanies: ai?.economy?.majorEmployers || [],
-      departments: ai?.governance?.departments || [],
-      easeOfDoingBusiness: ai?.investment?.easeOfBusiness || 'See World Bank rankings',
-      globalMarketAccess: 'Regional access',
-      latitude: typeof geo.lat === 'number' ? geo.lat : 0,
-      longitude: typeof geo.lon === 'number' ? geo.lon : 0,
-      infrastructureScore: ai?.scores?.infrastructure || 50,
-      regulatoryFriction: 50,
-      politicalStability: ai?.scores?.politicalStability || 50,
-      laborPool: ai?.scores?.laborPool || 50,
-      costOfDoing: ai?.scores?.costCompetitiveness || 50,
-      investmentMomentum: ai?.scores?.investmentMomentum || 50,
-      engagementScore: 50,
       overlookedScore: 50,
       leaders: ai?.governance?.leader ? [{
         id: `leader-${Date.now()}`,
@@ -127,99 +30,7 @@ async function fetchLocationIntelligenceFromServer(
         rating: 0,
         internationalEngagementFocus: false
       }] : [],
-      economics: {
-        gdpLocal: getGDP(),
-        gdpGrowthRate: ai?.economy?.gdpGrowth || 
-          (data.worldBank?.['GDP Growth (annual %)']?.value 
-            ? `${data.worldBank['GDP Growth (annual %)'].value.toFixed(2)}%` 
-            : 'N/A'),
-        employmentRate: ai?.economy?.unemploymentRate || ai?.economy?.unemployment || 
-          (data.worldBank?.['Unemployment Rate']?.value 
-            ? `${data.worldBank['Unemployment Rate'].value.toFixed(1)}% unemployment` 
-            : 'N/A'),
-        avgIncome: ai?.economy?.gdpPerCapita || ai?.economy?.averageIncome || 
-          (data.worldBank?.['GDP per capita']?.value 
-            ? `$${Math.round(data.worldBank['GDP per capita'].value).toLocaleString()} per capita` 
-            : 'N/A'),
-        majorIndustries: Array.isArray(ai?.economy?.mainIndustries) 
-          ? ai.economy.mainIndustries.map((i: { name?: string } | string) => typeof i === 'string' ? i : i?.name).filter(Boolean)
-          : [],
-        tradePartners: ai?.economy?.tradePartners || [],
-      },
-      demographics: {
-        population: getPopulation(),
-        populationGrowth: ai?.demographics?.populationGrowth || ai?.demographics?.populationYear || 'N/A',
-        medianAge: ai?.demographics?.medianAge || 'N/A',
-        literacyRate: ai?.demographics?.literacyRate || 'N/A',
-        languages: ai?.demographics?.languages || 
-          (countryInfo?.languages ? Object.values(countryInfo.languages) : [])
-      },
-      infrastructure: {
-        airports: ai?.infrastructure?.airports || [],
-        seaports: ai?.infrastructure?.seaports || [],
-        powerCapacity: ai?.infrastructure?.powerCapacity || 'N/A',
-        internetPenetration: ai?.infrastructure?.internetUsers || ai?.infrastructure?.internetPenetration || 
-          (data.worldBank?.['Internet Users (%)']?.value 
-            ? `${data.worldBank['Internet Users (%)'].value.toFixed(1)}% of population` 
-            : 'N/A'),
-        specialEconomicZones: ai?.economy?.economicZones || []
-      },
-      timezone: countryInfo?.timezones?.[0] || ai?.geography?.timezone || 'UTC',
-      currency: countryInfo?.currencies 
-        ? Object.values(countryInfo.currencies as Record<string, { name: string; symbol: string }>)
-            .map(c => `${c.name} (${c.symbol})`).join(', ')
-        : ai?.economy?.currency || 'USD',
-      climate: ai?.geography?.climate || 'Varies by season',
-      areaSize: countryInfo?.area 
-        ? `${countryInfo.area.toLocaleString()} km²` 
-        : ai?.geography?.area || 'Unknown',
-      businessHours: '9:00 AM - 5:00 PM',
-      _rawWikiExtract: data.wikipedia || undefined
-    };
 
-    onProgress?.({ stage: 'Complete', progress: 100, message: 'Research complete!' });
-
-    return {
-      profile,
-      sources: data.sources || ['OpenStreetMap', 'Wikipedia', 'World Bank', 'REST Countries'],
-      summary: ai?.overview?.significance || ai?.overview?.description || `Intelligence report for ${query}.`,
-      dataQuality: ai?.dataQuality?.completeness || data.dataQuality?.completeness || 70
-    };
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('[Location Service] Server fallback failed:', errorMessage);
-    onProgress?.({ stage: 'Error', progress: 0, message: 'Server connection failed - please try again' });
-    return null;
-  }
-}
-
-// ==================== OPENAI ENHANCED FALLBACK ====================
-
-async function fetchLocationIntelligenceWithOpenAI(
-  query: string,
-  onProgress?: (progress: ResearchProgress) => void
-): Promise<LocationResult | null> {
-  try {
-    onProgress?.({ stage: 'AI Research', progress: 10, message: 'Generating intelligence with OpenAI...' });
-
-    // Import OpenAI service dynamically to avoid issues if not configured
-    const { generateLocationIntelligence } = await import('./openaiClientService');
-
-    const intelligence = await generateLocationIntelligence(query);
-
-    onProgress?.({ stage: 'Processing', progress: 70, message: 'Processing AI intelligence data...' });
-
-    // Convert OpenAI intelligence to CityProfile format
-    const profile: CityProfile = {
-      id: `openai-${Date.now()}`,
-      country: query, // Will be refined by AI
-      region: 'Intelligence Analysis',
-      city: intelligence.overview.displayName,
-      entityType: 'location',
-      entityName: query,
-      established: intelligence.overview.established,
-      knownFor: intelligence.competitiveAdvantages,
-      strategicAdvantages: intelligence.competitiveAdvantages,
       investmentPrograms: intelligence.investment.incentives,
       keySectors: intelligence.economy.mainIndustries,
       foreignCompanies: intelligence.economy.tradePartners,

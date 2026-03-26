@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleGenAI } from '@google/genai';
+// Gemini/Google AI logic removed
 import { TrendingUp, BrainCircuit, Loader2 } from 'lucide-react';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Gemini/Google AI logic removed
 
 const generateThinkingContent = async (prompt: string) => {
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            // Gemini model removed
             contents: prompt,
         });
         return response.text;
@@ -96,7 +96,7 @@ const PredictiveGrowthModel: React.FC<PredictiveGrowthModelProps> = ({ location,
                 {thinking && (
                     <div className="flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold border border-purple-200">
                         <BrainCircuit className="w-3 h-3 animate-pulse" />
-                        Thinking (Gemini 2.5)
+                        // Gemini reference removed
                     </div>
                 )}
             </div>

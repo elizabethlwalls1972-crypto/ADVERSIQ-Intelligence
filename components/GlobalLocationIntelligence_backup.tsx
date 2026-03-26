@@ -253,7 +253,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
     setResearchProgress({ stage: 'Initializing', progress: 0, message: 'Starting multi-source research...' });
     
     try {
-      // Use multi-source research - GOOGLE, WORLD BANK, GOVERNMENT SOURCES
+      // Use multi-source research - WORLD BANK, GOVERNMENT SOURCES
       const result = await multiSourceResearch(trimmedQuery, (progress) => {
         setResearchProgress(progress);
       });
@@ -2815,7 +2815,7 @@ th { background: #f1f5f9; }
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400">2.</span>
-                      <span><strong>AI Synthesis:</strong> Gemini AI processes and synthesizes data from multiple sources</span>
+                      <span><strong>AI Synthesis:</strong> AI processes and synthesizes data from multiple sources</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-blue-400">3.</span>

@@ -1,3 +1,4 @@
+// This file has been removed as part of the cleanup process.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * ═══════════════════════════════════════════════════════════════════════════════

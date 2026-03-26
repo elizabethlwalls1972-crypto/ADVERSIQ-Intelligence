@@ -98,7 +98,7 @@ export const BACKEND_ARCHITECTURE = {
         },
         {
           name: 'Document Store',
-          technology: 'Elasticsearch + S3',
+          technology: 'Elasticsearch',
           purpose: 'Government documents, corporate filings, research papers',
           updateFrequency: 'As available'
         }
@@ -255,7 +255,7 @@ export const BACKEND_ARCHITECTURE = {
 
   DEPLOYMENT: {
     CLOUD_INFRASTRUCTURE: {
-      primary: 'AWS / Google Cloud / Azure',
+      primary: 'Google Cloud / Azure',
       regions: 'Multi-region (Asia-Pacific primary)',
       scalability: 'Auto-scaling based on request volume'
     },

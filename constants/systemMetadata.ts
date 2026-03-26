@@ -190,12 +190,12 @@ export const FIELD_DESCRIPTIONS = {
     short: 'Your technical foundation',
     detailed: 'The key technologies, platforms, and tools your organization uses.',
     why: 'Shows technical capability and potential for integration with partners',
-    example: 'Cloud: AWS. Languages: Python, Go. Frameworks: React, Node.js. Database: PostgreSQL',
+    example: 'Cloud: Azure. Languages: Python, Go. Frameworks: React, Node.js. Database: PostgreSQL',
     helpBeginners: [
       'List main categories: Cloud platform, Programming languages, Frameworks, Databases',
       'Only include technologies critical to your business',
       'Shows whether you can integrate with partners\' systems',
-      'Example: "AWS + Python + PostgreSQL + React"'
+      'Example: "Azure + Python + PostgreSQL + React"'
     ]
   },
   
@@ -290,7 +290,7 @@ export const FIELD_DESCRIPTIONS = {
     short: 'Key collaborators',
     detailed: 'Current or planned strategic partners, integrations, or alliances that strengthen your offering.',
     why: 'Shows ecosystem support and integrated value proposition',
-    example: 'Partnerships with Salesforce, AWS, or industry leaders. Distribution agreements.',
+    example: 'Partnerships with Salesforce or industry leaders. Distribution agreements.',
     helpBeginners: [
       'List 1-3 key partners or partner types',
       'Or describe what partnerships you\'re seeking',

@@ -1050,7 +1050,7 @@ Sequential Fraction: ~40% (Levels 3-4)
 - Deploy multiple Node.js instances behind load balancer
 - Redis queue for job distribution
 - Estimated capacity: 10 servers Ã— 30 reports/hour = 300 reports/hour
-- Cost: $500/month (AWS c6i.xlarge instances)
+- Cost: $500/month (cloud c6i.xlarge instances)
 
 **Scaling Strategy 2: Microservices Decomposition**
 - Extract CPU-intensive modules (Wilson-Cowan, Monte Carlo) to separate services
@@ -2193,18 +2193,18 @@ class DistributedDAGScheduler {
 **Current (Single Server):**
 - 20-30 reports/hour
 - 5-10 concurrent users
-- $100/month (AWS t3.medium)
+- $100/month (cloud t3.medium)
 
 **Optimized (Single Server):**
 - 200-400 reports/hour (+10-13x)
 - 50-100 concurrent users
-- $200/month (AWS c6i.xlarge with GPU)
+- $200/month (cloud c6i.xlarge with GPU)
 - Development: $120,000
 
 **Distributed (10-Node Cluster):**
 - 2,000-4,000 reports/hour (+66-133x)
 - 500-1,000 concurrent users
-- $1,500/month (AWS ECS cluster)
+- $1,500/month (cloud ECS cluster)
 - Development: $200,000
 
 **Enterprise (Auto-Scaling):**
@@ -2558,7 +2558,7 @@ class DistributedDAGScheduler {
 - Bloomberg (financial data)
 - Morningstar (investment research)
 - S&P Global (analytics)
-- Microsoft/Google/AWS (AI platforms)
+- Microsoft/Google (AI platforms)
 
 ---
 

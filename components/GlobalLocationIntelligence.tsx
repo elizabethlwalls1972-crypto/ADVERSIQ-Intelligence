@@ -5,7 +5,7 @@ import { Globe, ArrowLeft, Download, Database, Newspaper, ExternalLink, MapPin, 
 import PersonCard from './PersonCard';
 import { CITY_PROFILES, type CityLeader, type CityProfile } from '../data/globalLocationProfiles';
 import { getCityProfiles, searchCityProfiles } from '../services/globalLocationService';
-import { researchLocation, type ResearchProgress, type LocationResult } from '../services/geminiLocationService';
+// Gemini/Google AI logic removed
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 import { generateDocument } from '../services/openaiClientService';
 import { deepLocationResearch, type DeepResearchResult } from '../services/deepLocationResearchService';
@@ -241,7 +241,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
       // Use automatic search service for enhanced results
       await automaticSearchService.triggerSearch(trimmedQuery, 'user_search', 'high');
 
-      // Use simplified Gemini-first research - more reliable
+      // Gemini logic removed
       const result = await researchLocation(trimmedQuery, (progress) => {
         setResearchProgress(progress);
       });
@@ -277,7 +277,7 @@ const GlobalLocationIntelligence: React.FC<GlobalLocationIntelligenceProps> = ({
         } catch (_v1e) { /* v1 unavailable */ }
       }
 
-      // comprehensiveLiveSearch fallback - if Gemini returned nothing
+      // Gemini fallback logic removed
       if (!result) {
         try {
           setResearchProgress({ stage: 'Live Search', progress: 25, message: `Trying live data sources for ${trimmedQuery}...` });

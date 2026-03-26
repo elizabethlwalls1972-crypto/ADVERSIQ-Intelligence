@@ -162,7 +162,7 @@ export const testScenarios: TestScenario[] = [
                 { name: "GIC Private Limited", role: "Co-Investor", contact: "Technology Investments Group", priority: "High" },
                 { name: "DBS Bank", role: "Anchor Customer & Distribution Partner", contact: "Chief Data Office", priority: "Critical" },
                 { name: "Vertex Ventures SEA", role: "VC Lead", contact: "FinTech Practice", priority: "High" },
-                { name: "AWS Singapore", role: "Cloud Infrastructure Partner", contact: "Financial Services Solutions", priority: "Medium" }
+                { name: "Cloud Singapore", role: "Cloud Infrastructure Partner", contact: "Financial Services Solutions", priority: "Medium" }
             ],
             nextReport: "Technology Assessment & Competitive Positioning Analysis",
             estimatedTimeline: "Initial engagement: 1-2 weeks | Due diligence: 4-6 weeks | Term sheet: 8-10 weeks"
@@ -278,7 +278,7 @@ export const testScenarios: TestScenario[] = [
             ],
             recommendedPartners: [
                 { name: "Prologis", role: "Development JV Partner", contact: "Southern California Industrial Team", priority: "Critical" },
-                { name: "BNSF Railway", role: "Rail Infrastructure Partner", contact: "Real Estate & Industrial Development", priority: "Critical" },
+                { name: "Rail Infrastructure Partner", role: "Rail Infrastructure Partner", contact: "Real Estate & Industrial Development", priority: "Critical" },
                 { name: "Amazon Logistics", role: "Anchor Tenant", contact: "Real Estate Acquisitions West", priority: "High" },
                 { name: "CBRE Investment Management", role: "Equity Co-Investor", contact: "US Industrial Fund", priority: "High" },
                 { name: "JP Morgan Asset Management", role: "CMBS Arranger", contact: "Real Estate Debt Strategies", priority: "Medium" },

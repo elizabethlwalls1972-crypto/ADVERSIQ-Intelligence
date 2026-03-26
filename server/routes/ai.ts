@@ -3,7 +3,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
-import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import { AdaptiveControlLearning } from '../services/AdaptiveControlLearning.js';
 import {
   deriveControlDecision,
@@ -41,9 +40,6 @@ const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim(
 const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
-const BEDROCK_REGION = process.env.AWS_REGION || 'us-east-1';
-const BEDROCK_MODEL_ID = process.env.BEDROCK_CONSULTANT_MODEL_ID || 'anthropic.claude-3-5-sonnet-20241022-v2:0';
-const bedrockClient = new BedrockRuntimeClient({ region: BEDROCK_REGION });
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -52,53 +48,9 @@ interface AIMessage {
 
 // ─── Unified AI helper: Bedrock → OpenAI → Together ──
 const getOpenAIKey = () => String(process.env.OPENAI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
-const hasBedrockSignal = () => Boolean(process.env.AWS_REGION || process.env.BEDROCK_CONSULTANT_MODEL_ID || process.env.AWS_ACCESS_KEY_ID || process.env.AWS_PROFILE);
-
-const invokeBedrockMessages = async (messages: AIMessage[], systemInstruction?: string): Promise<string> => {
-  const normalizedMessages = messages
-    .filter((m) => m && typeof m?.content === 'string' && (m.role === 'user' || m.role === 'assistant'))
-    .map((m) => ({
-      role: m.role,
-      content: [{ type: 'text', text: String(m.content) }]
-    }));
-
-  if (normalizedMessages.length === 0) {
-    throw new Error('Bedrock request has no valid messages');
-  }
-
-  const payload = {
-    anthropic_version: 'bedrock-2023-05-31',
-    max_tokens: 1800,
-    temperature: 0.4,
-    ...(systemInstruction ? { system: systemInstruction } : {}),
-    messages: normalizedMessages,
-  };
-
-  const command = new InvokeModelCommand({
-    modelId: BEDROCK_MODEL_ID,
-    contentType: 'application/json',
-    accept: 'application/json',
-    body: JSON.stringify(payload),
-  });
-
-  const response = await bedrockClient.send(command);
-  const raw = new TextDecoder().decode(response.body);
-  const data = JSON.parse(raw) as { content?: Array<{ type?: string; text?: string }> };
-  const text = (data.content || [])
-    .filter((part) => part?.type === 'text' && typeof part?.text === 'string')
-    .map((part) => part.text)
-    .join('\n')
-    .trim();
-
-  if (!text) {
-    throw new Error('Bedrock returned empty response');
-  }
-
-  return text;
-};
 
 const _isAIAvailable = (): boolean => {
-  if (hasBedrockSignal()) return true;
+  // Bedrock removed
   if (getOpenAIKey()) return true;
   if (getGroqKey()) return true;
   if (getTogetherKey()) return true;
@@ -109,7 +61,7 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
   const openaiKey = getOpenAIKey();
   const groqKey = getGroqKey();
   const togetherKey = getTogetherKey();
-  const providerConfigured = Boolean(hasBedrockSignal() || openaiKey || groqKey || togetherKey);
+  const providerConfigured = Boolean(openaiKey || groqKey || togetherKey);
 
   const baseMessages: AIMessage[] = typeof input === 'string'
     ? [{ role: 'user', content: input }]
@@ -125,14 +77,7 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
     : baseMessages;
 
   // 1. AWS Bedrock (primary for AWS live deployments)
-  if (hasBedrockSignal()) {
-    try {
-      const text = await invokeBedrockMessages(fullMessages, systemInstruction);
-      if (text) return text;
-    } catch (bedrockErr) {
-      console.warn('[AI Routes] Bedrock failed, trying OpenAI:', bedrockErr instanceof Error ? bedrockErr.message : bedrockErr);
-    }
-  }
+  // Bedrock removed
 
   // 2. OpenAI fallback
   if (openaiKey) {
@@ -218,13 +163,12 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
     }
   }
   console.error('[AI Routes] AI generation failed across configured providers', {
-    hasBedrock: hasBedrockSignal(),
     hasOpenAI: Boolean(openaiKey),
     hasGroq: Boolean(groqKey),
     hasTogether: Boolean(togetherKey),
   });
   if (!providerConfigured) {
-    throw new Error('No AI provider configured. Set AWS credentials/IAM role for Bedrock, or add OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY.');
+    throw new Error('No AI provider configured. Set OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY.');
   }
   throw new Error('AI provider is configured, but upstream requests failed. Check provider key validity and outbound network access.');
 };
@@ -403,31 +347,9 @@ const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number, label: str
   }
 };
 
-const diagnoseBedrockCredentials = async (): Promise<{ ok: boolean; detail: string }> => {
-  try {
-    const credentialsCandidate = bedrockClient.config.credentials;
-    if (!credentialsCandidate) {
-      return { ok: false, detail: 'No Bedrock credential provider configured' };
-    }
 
-    const resolved = typeof credentialsCandidate === 'function'
-      ? await withTimeout(credentialsCandidate(), 2500, 'bedrock credential resolution')
-      : await withTimeout(Promise.resolve(credentialsCandidate), 2500, 'bedrock credential resolution');
-
-    const accessKeyId = (resolved as { accessKeyId?: string } | null)?.accessKeyId;
-    if (!accessKeyId) {
-      return { ok: false, detail: 'Bedrock credentials resolved without accessKeyId' };
-    }
-
-    return { ok: true, detail: 'Bedrock credentials resolved successfully' };
-  } catch (error) {
-    const detail = error instanceof Error ? error.message : 'Unknown Bedrock credential resolution error';
-    return { ok: false, detail };
-  }
-};
 
 interface RuntimeProviderAvailability {
-  bedrock: boolean;
   openai: boolean;
   groq: boolean;
   together: boolean;
@@ -439,18 +361,13 @@ const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailabi
   const openai = Boolean(getOpenAIKey());
   const groq = Boolean(getGroqKey());
   const together = Boolean(getTogetherKey());
-  const bedrockConfigured = hasBedrockSignal();
-  const bedrockCredentials = bedrockConfigured
-    ? await diagnoseBedrockCredentials()
-    : { ok: false, detail: 'Bedrock not configured' };
-
+  // Bedrock removed
   return {
-    bedrock: bedrockConfigured && bedrockCredentials.ok,
     openai,
     groq,
     together,
-    bedrockConfigured,
-    bedrockCredentialDetail: bedrockCredentials.detail,
+    bedrockConfigured: false,
+    bedrockCredentialDetail: 'Bedrock removed',
   };
 };
 
@@ -768,7 +685,7 @@ const getAdvancedRuntimeMetrics = (events: Record<string, unknown>[]): AdvancedR
 
 const normalizeConsultantProvider = (value: unknown): ConsultantProvider | null => {
   const normalized = String(value || '').toLowerCase();
-  if (normalized === 'bedrock' || normalized === 'together' || normalized === 'openai') {
+  if (normalized === 'together' || normalized === 'openai' || normalized === 'groq') {
     return normalized;
   }
   return null;
@@ -834,10 +751,10 @@ const logConsultantAuditEvent = async (event: Record<string, unknown>) => {
 };
 
 const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
-  const defaultOrder: ConsultantProvider[] = ['bedrock', 'openai', 'groq', 'together'];
+  const defaultOrder: ConsultantProvider[] = ['openai', 'groq', 'together'];
   if (!Array.isArray(input)) return defaultOrder;
 
-  const VALID_PROVIDERS = new Set<ConsultantProvider>(['bedrock', 'openai', 'groq', 'together']);
+  const VALID_PROVIDERS = new Set<ConsultantProvider>(['openai', 'groq', 'together']);
   const normalized = input
     .map((value) => String(value).toLowerCase())
     .filter((value): value is ConsultantProvider => VALID_PROVIDERS.has(value as ConsultantProvider));
@@ -944,11 +861,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
   return text2;
 };
 
-const invokeConsultantWithBedrock = async (prompt: string): Promise<string> => {
-  return invokeBedrockMessages([
-    { role: 'user', content: prompt }
-  ], CONSULTANT_SYSTEM_INSTRUCTION);
-};
+
 
 const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -1007,8 +920,7 @@ const runConsultantBroker = async (
 
     try {
       const invoker =
-        provider === 'bedrock'   ? invokeConsultantWithBedrock(prompt)
-        : provider === 'groq'    ? invokeConsultantWithGroq(prompt)
+        provider === 'groq'    ? invokeConsultantWithGroq(prompt)
         : provider === 'together' ? invokeConsultantWithTogether(prompt)
         :                          invokeConsultantWithOpenAI(prompt);
       const text = await withTimeout(
@@ -1099,13 +1011,9 @@ router.get('/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean(availability.bedrock || availability.openai || availability.groq || availability.together),
+    aiAvailable: Boolean(availability.openai || availability.groq || availability.together),
     providers: {
-      bedrock: {
-        configured: availability.bedrockConfigured,
-        credentialsResolved: availability.bedrock,
-        detail: availability.bedrockCredentialDetail
-      },
+      // Bedrock removed
       openai: availability.openai,
       groq: availability.groq,
       together: availability.together
@@ -1115,12 +1023,10 @@ router.get('/status', async (_req: Request, res: Response) => {
 
 router.get('/readiness', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
-  const ready = availability.bedrock || availability.openai || availability.groq || availability.together;
+  const ready = availability.openai || availability.groq || availability.together;
 
   const reasons: string[] = [];
-  if (!availability.bedrock && availability.bedrockConfigured) {
-    reasons.push(`bedrock_not_ready: ${availability.bedrockCredentialDetail}`);
-  }
+  // Bedrock removed
   if (!availability.openai) reasons.push('openai_not_configured');
   if (!availability.groq) reasons.push('groq_not_configured');
   if (!availability.together) reasons.push('together_not_configured');
@@ -1130,11 +1036,7 @@ router.get('/readiness', async (_req: Request, res: Response) => {
     ready,
     reasons,
     providers: {
-      bedrock: {
-        configured: availability.bedrockConfigured,
-        ready: availability.bedrock,
-        detail: availability.bedrockCredentialDetail
-      },
+      // Bedrock removed
       openai: {
         ready: availability.openai
       },
@@ -1151,26 +1053,30 @@ router.get('/readiness', async (_req: Request, res: Response) => {
 router.get('/control/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
   const providers = {
-    bedrock: availability.bedrock,
+    // Bedrock removed
     openai: availability.openai,
     groq: availability.groq,
     together: availability.together
   };
   const learningHint = await AdaptiveControlLearning.getHint();
-  const sample = deriveControlDecision(
-    {
-      requestId: crypto.randomUUID(),
-      timestamp: new Date().toISOString(),
-      messageChars: 600,
-      readinessScore: 50,
-      hasAttachments: false,
-      sessionDepth: 5,
-      taskType: 'general_assist',
-      retryCount: 0
-    },
-    providers,
-    learningHint
-  );
+    const sample = deriveControlDecision(
+      {
+        requestId: crypto.randomUUID(),
+        timestamp: new Date().toISOString(),
+        messageChars: 600,
+        readinessScore: 50,
+        hasAttachments: false,
+        sessionDepth: 5,
+        taskType: 'general_assist',
+        retryCount: 0
+      },
+      {
+        openai: providers.openai,
+        groq: providers.groq,
+        together: providers.together,
+      },
+      learningHint
+    );
 
   res.json({
     providers,
@@ -1220,7 +1126,6 @@ router.post('/consultant', async (req: Request, res: Response) => {
     // Early-return when no AI provider is configured — return 200 so the
     // frontend shows a helpful setup message instead of an error.
     const noProviderAvailable =
-      !providerAvailability.bedrock &&
       !providerAvailability.openai &&
       !providerAvailability.groq &&
       !providerAvailability.together;
@@ -1239,7 +1144,6 @@ router.post('/consultant', async (req: Request, res: Response) => {
     const controlDecision = deriveControlDecision(
       requestEnvelope,
       {
-        bedrock: providerAvailability.bedrock,
         openai: providerAvailability.openai,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
@@ -1362,7 +1266,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       providerOrder,
       controlDecision.timeoutMs,
       {
-        bedrock: providerAvailability.bedrock,
+        // Bedrock removed
         openai: providerAvailability.openai,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
@@ -1454,9 +1358,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Consultant endpoint error:', error);
     const rawErrorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const errorMessage = /Could not load credentials from any providers/i.test(rawErrorMessage)
-      ? `${rawErrorMessage}. AWS Bedrock credentials are missing at runtime. Attach an IAM role to the service with bedrock:InvokeModel permission for ${BEDROCK_MODEL_ID} in ${BEDROCK_REGION}, or configure OPENAI_API_KEY / TOGETHER_API_KEY as fallback providers.`
-      : rawErrorMessage;
+    const errorMessage = rawErrorMessage;
     void AdaptiveControlLearning.record({
       requestId,
       timestamp: new Date().toISOString(),
@@ -1676,7 +1578,7 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       payload.modelOrder,
       CONSULTANT_PROVIDER_TIMEOUT_MS,
       {
-        bedrock: providerAvailability.bedrock,
+        // Bedrock removed
         openai: providerAvailability.openai,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
@@ -2200,47 +2102,9 @@ Return structured JSON response with:
 `;
     
     // Priority: Use available AI provider
-    const bedrockReady = hasBedrockSignal();
     const openaiKey = getOpenAIKey();
     const togetherKey = getTogetherKey();
 
-    // Try Bedrock first
-    if (bedrockReady) {
-      try {
-        console.log('[Multi-Agent] Using AWS Bedrock (Primary)...');
-        const bedrockText = await invokeBedrockMessages(
-          [{ role: 'user', content: enrichedPrompt }],
-          systemInstruction || MULTI_AGENT_SYSTEM_INSTRUCTION
-        );
-
-        if (bedrockText) {
-          try {
-            const jsonMatch = bedrockText.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              const parsed = JSON.parse(jsonMatch[0]);
-              return res.json({
-                ...parsed,
-                agentId: 'bedrock-claude',
-                model: 'bedrock'
-              });
-            }
-          } catch {
-            // Return as plain text response
-          }
-
-          return res.json({
-            text: bedrockText,
-            confidence: 0.92,
-            reasoning: ['AWS Bedrock analysis completed'],
-            agentId: 'bedrock-claude',
-            model: 'bedrock'
-          });
-        }
-      } catch (bedrockError) {
-        console.warn('[Multi-Agent] Bedrock error:', bedrockError instanceof Error ? bedrockError.message : 'Unknown error');
-      }
-    }
-    
     // Try OpenAI first
     if (openaiKey) {
       try {
