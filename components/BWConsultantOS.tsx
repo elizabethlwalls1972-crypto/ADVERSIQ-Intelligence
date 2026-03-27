@@ -3688,7 +3688,7 @@ ${agentRegistry.current.toManifest()}`;
             runtimeHint = ' The backend API endpoint is unreachable from this client. Confirm the backend URL and network access, then check /api/health and /api/ai/readiness.';
           } else {
             const status = statusResponse.value;
-            const health = healthResponse.value;
+            // const health = healthResponse.value; // intentionally retained for future runtime diagnostics
 
             if (status.status === 404) {
               runtimeHint = ' The backend server is not running or reachable at the configured URL. Start the backend with \'npm run server\' (local) or verify your deployment is running on AWS/Railway (ECS/Fargate, App Runner, or-Amplify).';
@@ -6175,6 +6175,7 @@ CRITICAL RULES:
   }, []);
 
   const downloadSingleDocAsDocx = useCallback(async (doc: {title: string; content: string; category: 'report' | 'letter'}) => {
+    const isLetter = doc.category === 'letter';
     const meta: DocxDocumentMeta = {
       title: doc.title,
       subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
@@ -6182,13 +6183,16 @@ CRITICAL RULES:
       preparedBy: 'BW Global Advisory - NEXUS AI',
       date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
       reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-      classification: 'CONFIDENTIAL',
+      classification: isLetter ? 'DRAFT' : 'CONFIDENTIAL',
       jurisdiction: caseStudy.jurisdiction || caseStudy.country,
-      strategicReadiness: strategicPipeline?.readinessScore,
-      evidenceCredibility: overlookedIntelligence?.evidenceCredibility,
-      perceptionRealityGap: overlookedIntelligence?.perceptionRealityGap,
-      topRegionalOpportunities: overlookedIntelligence?.topRegionalOpportunities,
-      engagementDraftHints: strategicPipeline?.engagementDraftHints
+      strategicReadiness: isLetter ? undefined : strategicPipeline?.readinessScore,
+      evidenceCredibility: isLetter ? undefined : overlookedIntelligence?.evidenceCredibility,
+      perceptionRealityGap: isLetter ? undefined : overlookedIntelligence?.perceptionRealityGap,
+      topRegionalOpportunities: isLetter ? undefined : overlookedIntelligence?.topRegionalOpportunities,
+      engagementDraftHints: isLetter ? undefined : strategicPipeline?.engagementDraftHints,
+      includeStrategicAppendix: false,
+      includeConfidentialStatement: false,
+      includeFooterMetadata: true,
     };
     await downloadAsDocx(doc.content, meta);
   }, [caseStudy, strategicPipeline, overlookedIntelligence]);
@@ -6221,19 +6225,21 @@ CRITICAL RULES:
     // Helper: wrap AI content + case metadata into a ProfessionalDocument
     const buildProfDoc = (content: string, doc: DocumentOption): ProfessionalDocument => {
       const sections = parseMarkdown(content);
-      return {
+      const isLetter = doc.category === 'letter';
+    return {
         title: doc.title.toUpperCase(),
         subtitle: `${caseStudy.organizationName || 'Client'} - ${caseStudy.country || 'Global'}`,
-        classification: 'CONFIDENTIAL',
+        classification: isLetter ? 'PUBLIC' : 'CONFIDENTIAL',
         preparedFor: caseStudy.organizationName || 'Client',
         preparedBy: 'BW Global Advisory - NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
-        reportId: `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        reportId: isLetter ? undefined : `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         version: '1.0',
         sections: sections.length > 0 ? sections : [{ title: doc.title, content, type: 'paragraph' }],
+        appendices: isLetter ? [] : undefined,
         footer: {
           company: 'BW Global Advisory',
-          disclaimer: `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential - do not distribute without prior written authorisation.`
+          disclaimer: isLetter ? `Draft letter prepared for ${caseStudy.organizationName || 'the recipient'}.` : `Prepared exclusively for ${caseStudy.organizationName || 'the named recipient'}. Confidential - do not distribute without prior written authorisation.`
         }
       };
     };
@@ -8438,8 +8444,8 @@ CRITICAL RULES:
                 </div>
               )}
               {/* Pending Actions no longer rendered here — moved inside Runtime panel above */}
-              {/* Compliance Warning Strip */}
-              {complianceWarnings.length > 0 && (
+              {/* Compliance Warning Strip (only visible when runtime panel is shown) */}
+              {showAugmentedPanel && complianceWarnings.length > 0 && (
                 <div className="max-w-4xl mx-auto mt-2 border border-red-200 bg-red-50 px-3 py-2">
                   <p className="text-[11px] font-semibold text-red-800 flex items-center gap-1">
                     <AlertTriangle size={11} className="text-red-600" />
@@ -9375,20 +9381,20 @@ CRITICAL RULES:
 
       {/* Final Report Modal */}
       {showFinalReport && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-0 md:p-4">
-          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-4xl max-h-[92vh]'} flex flex-col overflow-hidden`} style={{ background: '#0f1923', border: isMobile ? 'none' : '1px solid #2a3a4a' }}>
+        <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center p-2 md:p-4">
+          <div className={`w-full ${isMobile ? 'h-full' : 'max-w-4xl max-h-[92vh]'} flex flex-col overflow-hidden shadow-2xl`} style={{ background: '#ffffff', border: isMobile ? 'none' : '1px solid #d1d5db' }}>
 
             {/* ── Header ── */}
-            <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#1e3248', background: 'linear-gradient(135deg, #0f1923 0%, #1a2d40 100%)' }}>
+            <div className="flex-none px-7 py-5 border-b flex items-start justify-between" style={{ borderColor: '#e5e7eb', background: '#ffffff' }}>
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#b48228' }}>
+                  <div className="w-5 h-5 rounded-sm flex items-center justify-center" style={{ background: '#1070ca' }}>
                     <FileText size={11} className="text-white" />
                   </div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#b48228' }}>BW Global Advisory</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: '#1f2937' }}>BW Global Advisory</span>
                 </div>
-                <h2 className="text-xl font-bold text-white">NEXUS AI - Document Intelligence</h2>
-                <p className="text-xs mt-1" style={{ color: '#7a9ab8' }}>
+                <h2 className="text-xl font-bold text-slate-800">NEXUS AI - Document Intelligence</h2>
+                <p className="text-xs mt-1 font-medium" style={{ color: '#4b5563' }}>
                   {generatedDocuments.length > 0
                     ? `${generatedDocuments.length} document${generatedDocuments.length !== 1 ? 's' : ''} ready - analysis complete`
                     : 'Awaiting document analysis or report generation'}
@@ -9406,13 +9412,13 @@ CRITICAL RULES:
             <div className="flex-1 overflow-y-auto p-6 space-y-5">
               {generatedDocuments.length > 0 ? (
                 generatedDocuments.map((doc) => (
-                  <div key={doc.id} className="overflow-hidden" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                  <div key={doc.id} className="overflow-hidden" style={{ border: '1px solid #d1d5db', background: '#ffffff' }}>
 
                     {/* Doc header strip */}
-                    <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#16263a', borderBottom: '1px solid #1e3248' }}>
+                    <div className="px-5 py-3 flex items-center justify-between" style={{ background: '#f8fafc', borderBottom: '1px solid #e5e7eb' }}>
                       <div>
-                        <p className="text-sm font-bold text-white">{doc.title}</p>
-                        <p className="text-[10px] mt-0.5" style={{ color: '#7a9ab8' }}>
+                        <p className="text-sm font-bold text-slate-900">{doc.title}</p>
+                        <p className="text-[10px] mt-0.5" style={{ color: '#6b7280' }}>
                           {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} &nbsp;·&nbsp; {caseStudy.country || 'Global'} &nbsp;·&nbsp; BW Global Advisory
                         </p>
                       </div>
@@ -9422,14 +9428,14 @@ CRITICAL RULES:
                     </div>
 
                     {/* Content preview */}
-                    <div className="px-5 py-4">
-                      <div className="text-xs leading-relaxed whitespace-pre-wrap font-mono" style={{ color: '#a8c0d6', maxHeight: '300px', overflowY: 'auto' }}>
+                    <div className="px-5 py-4" style={{ background: '#ffffff' }}>
+                      <div className="text-sm leading-relaxed whitespace-pre-wrap" style={{ color: '#334155', maxHeight: '300px', overflowY: 'auto', fontFamily: 'Calibri, Arial, sans-serif' }}>
                         {doc.content.slice(0, 2000)}{doc.content.length > 2000 ? '\n\n[…continued in full export]' : ''}
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="px-5 py-3 flex flex-wrap gap-2 border-t" style={{ borderColor: '#1e3248', background: '#0d1821' }}>
+                    <div className="px-5 py-3 flex flex-wrap gap-2 border-t" style={{ borderColor: '#e5e7eb', background: '#f9fafb' }}>
                       <button
                         onClick={() => {
                           const win = window.open('', '_blank');
@@ -9502,17 +9508,17 @@ CRITICAL RULES:
               ) : (
                 <div className="space-y-4">
                   {/* Empty state */}
-                  <div className="px-5 py-6 text-center" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
-                    <div className="w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: '#16263a' }}>
-                      <FileText size={20} style={{ color: '#7a9ab8' }} />
+                  <div className="px-5 py-6 text-center" style={{ border: '1px solid #d1d5db', background: '#fafafa' }}>
+                    <div className="w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ background: '#e5e7eb' }}>
+                      <FileText size={20} style={{ color: '#374151' }} />
                     </div>
-                    <p className="text-sm font-semibold text-white mb-1">No documents generated yet</p>
-                    <p className="text-xs leading-relaxed" style={{ color: '#7a9ab8' }}>
+                    <p className="text-sm font-semibold text-slate-900 mb-1">No documents generated yet</p>
+                    <p className="text-xs leading-relaxed" style={{ color: '#4b5563' }}>
                       Upload a document or have a consultation session with the OS. Once the NEXUS AI analyses your document, it will appear here ready for export.
                     </p>
                   </div>
                   {messages.filter(m => m.role !== 'system').length > 2 && (
-                    <div className="px-5 py-4" style={{ border: '1px solid #1e3248', background: '#111e2b' }}>
+                    <div className="px-5 py-4" style={{ border: '1px solid #d1d5db', background: '#ffffff' }}>
                       <p className="text-sm font-semibold text-white mb-1">Generate from current session</p>
                       <p className="text-xs mb-3" style={{ color: '#7a9ab8' }}>
                         The NEXUS AI will synthesise your consultation into a structured advisory brief.
@@ -9534,12 +9540,12 @@ CRITICAL RULES:
             </div>
 
             {/* ── Footer ── */}
-            <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #1e3248', background: '#0d1821' }}>
-              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#3a5a7a' }}>BW Global Advisory - NEXUS AI Agentic Runtime - Confidential</p>
+            <div className="flex-none px-6 py-3 flex items-center justify-between" style={{ borderTop: '1px solid #e5e7eb', background: '#f8fafc' }}>
+              <p className="text-[10px] uppercase tracking-wider" style={{ color: '#475569' }}>BW Global Advisory - NEXUS AI Agentic Runtime - Confidential</p>
               <button
                 onClick={() => setShowFinalReport(false)}
                 className="px-4 py-1.5 text-xs font-medium transition-all hover:opacity-90"
-                style={{ background: '#1e3248', color: '#a8c0d6', border: '1px solid #2a3a4a' }}
+                style={{ background: '#1d4ed8', color: '#ffffff', border: '1px solid #1e40af' }}
               >
                 Close
               </button>

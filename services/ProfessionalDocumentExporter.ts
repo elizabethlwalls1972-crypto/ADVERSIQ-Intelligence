@@ -335,7 +335,7 @@ export class ProfessionalDocumentExporter {
   static exportToHTML(doc: ProfessionalDocument, options: Partial<ExportOptions> = {}): string {
     const opts: ExportOptions = {
       format: 'html',
-      includeTableOfContents: true,
+      includeTableOfContents: doc.classification === 'CONFIDENTIAL',
       includePageNumbers: true,
       includeWatermark: doc.classification === 'CONFIDENTIAL',
       paperSize: 'A4',
@@ -631,7 +631,7 @@ export class ProfessionalDocumentExporter {
     
     <!-- Cover Page -->
     <div class="cover-page">
-        <div class="classification-banner">${doc.classification}</div>
+        ${opts.includeWatermark ? `<div class="classification-banner">${doc.classification}</div>` : ''}
         <div class="cover-title">${doc.title}</div>
         <div class="cover-subtitle">${doc.subtitle || ''}</div>
         <div class="cover-meta">
@@ -639,8 +639,8 @@ export class ProfessionalDocumentExporter {
                 <tr><td>Prepared For:</td><td>${doc.preparedFor}</td></tr>
                 <tr><td>Prepared By:</td><td>${doc.preparedBy}</td></tr>
                 <tr><td>Date:</td><td>${doc.date}</td></tr>
-                <tr><td>Report ID:</td><td>${doc.reportId}</td></tr>
-                <tr><td>Version:</td><td>${doc.version}</td></tr>
+                ${doc.reportId ? `<tr><td>Report ID:</td><td>${doc.reportId}</td></tr>` : ''}
+                ${doc.version ? `<tr><td>Version:</td><td>${doc.version}</td></tr>` : ''}
             </table>
         </div>
     </div>

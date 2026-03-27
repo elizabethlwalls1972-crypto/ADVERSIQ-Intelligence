@@ -390,6 +390,34 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
                     </button>
                   </div>
                 </div>
+
+                {/* External Search Signals */}
+                {reportPayload.computedIntelligence.externalSearchSignals?.length > 0 && (
+                  <div className="bg-white rounded-lg border border-stone-200 p-6">
+                    <h3 className="font-semibold text-stone-900 mb-4">External Search Signals</h3>
+                    <div className="space-y-4">
+                      {reportPayload.computedIntelligence.externalSearchSignals.map((signal, idx) => (
+                        <div key={idx} className="p-3 rounded-md border border-stone-200 bg-slate-50">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-stone-900">{signal.source.toUpperCase()}</span>
+                            <span className={`text-xs font-semibold ${(signal.status === 'ok') ? 'text-green-700' : 'text-red-700'}`}>
+                              {signal.status.toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="text-xs text-stone-600 mt-1">Query: {signal.query || 'n/a'}</div>
+                          {signal.error && <div className="text-xs text-red-600 mt-1">Error: {signal.error}</div>}
+                          <ul className="mt-2 space-y-1">
+                            {signal.results.slice(0, 3).map((item, resultIdx) => (
+                              <li key={resultIdx} className="text-xs text-stone-700">
+                                • <a href={item.url} target="_blank" rel="noreferrer" className="underline text-blue-600">{item.title || item.url}</a> — {item.snippet.slice(0, 80)}...
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

@@ -565,8 +565,8 @@ export class EthicalReasoningEngine {
   /**
    * Quick ethical check - returns pass/fail with top concern.
    */
-  static quickCheck(ctx: EthicalContext): { pass: boolean; score: number; topConcern: string } {
-    const result = this.assess(ctx);
+  static async quickCheck(ctx: EthicalContext): Promise<{ pass: boolean; score: number; topConcern: string }> {
+    const result = await this.assess(ctx);
     return {
       pass: result.recommendation === 'proceed' || result.recommendation === 'proceed-with-conditions',
       score: result.overallEthicsScore,

@@ -993,6 +993,16 @@ export interface ReportData {
         adversarialConfidence?: AdversarialConfidenceResult;
         agenticBrain?: AgenticBrainSnapshot;
         frontierIntelligence?: FrontierIntelligenceResult;
+        codebaseAudit?: {
+            totalFiles: number;
+            filesReviewed: number;
+            matchedFiles: number;
+            coveragePct: number;
+            verdict: 'pass' | 'partial' | 'review';
+            findings: string[];
+            evidence: Array<{ filePath: string; relevanceScore: number; matchedInContext: boolean; basis: string }>;
+        };
+        externalSearchSignals?: Array<{ query: string; results: Array<{ title: string; snippet: string; url: string; source: string; publishedAt?: string }>; source: string; status: 'ok' | 'failed'; error?: string }>;
     };
 }
 export interface ReportPayload {

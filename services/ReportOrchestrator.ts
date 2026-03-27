@@ -15,6 +15,8 @@ import { masterAutonomousOrchestrator } from './MasterAutonomousOrchestrator';
 import { proactiveOrchestrator } from './proactive/ProactiveOrchestrator';
 import { NSILIntelligenceHub } from './NSILIntelligenceHub';
 import { SituationAnalysisEngine } from './SituationAnalysisEngine';
+import { evaluateCodebaseCoverage } from './CodebaseReferenceCheck';
+import { aggregateGlobalSearch } from './externalDataIntegrations';
 import { HistoricalParallelMatcher } from './HistoricalParallelMatcher';
 import { ConsultantGateService } from './ConsultantGateService';
 import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrator';
@@ -42,6 +44,10 @@ export class ReportOrchestrator {
     if (caseMethodGaps.length > 0) {
       throw new Error(`Case Method Layer blocked payload assembly: ${caseMethodGaps.join('; ')}`);
     }
+
+    const codebaseAudit = evaluateCodebaseCoverage(params as unknown as Record<string, unknown>);
+    const searchQuery = [params.problemStatement, params.reportName, params.organizationName, params.country].filter(Boolean).join(' ').slice(0, 280);
+    const externalSearchSignals = await aggregateGlobalSearch(searchQuery || 'global development');
 
     const regionalKernel = RegionalDevelopmentOrchestrator.run({
       regionProfile: params.region || params.organizationType || params.problemStatement || '',
@@ -219,7 +225,9 @@ export class ReportOrchestrator {
             jurisdiction: regionalKernel.dataFabric.jurisdiction
           },
           notes: regionalKernel.notes
-        }
+        },
+        codebaseAudit: codebaseAudit,
+        externalSearchSignals: externalSearchSignals
       }
     };
 

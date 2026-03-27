@@ -142,10 +142,150 @@ export async function fetchOpenCorporatesCompany(companyName: string): Promise<O
   return null;
 }
 
+export interface SearchResultItem {
+  title: string;
+  snippet: string;
+  url: string;
+  source: string;
+  publishedAt?: string;
+}
+
+export interface SearchResultBatch {
+  query: string;
+  results: SearchResultItem[];
+  source: 'duckduckgo' | 'gnews' | 'contextualweb' | 'bing';
+  status: 'ok' | 'failed';
+  error?: string;
+}
+
+const searchLimiter = new RateLimiter(10, 60_000);
+
+export async function fetchDuckDuckGoSearch(query: string): Promise<SearchResultBatch> {
+  if (!searchLimiter.take()) {
+    return { query, results: [], source: 'duckduckgo', status: 'failed', error: 'rate_limit' };
+  }
+
+  const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1&no_html=1`; // instant answer
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const snippet = data?.AbstractText || data?.RelatedTopics?.[0]?.Text || '';
+    const results: SearchResultItem[] = [];
+
+    if (snippet) {
+      results.push({ title: data.Heading || query, snippet, url: data?.AbstractURL || '', source: 'duckduckgo' });
+    }
+
+    return { query, results, source: 'duckduckgo', status: 'ok' };
+  } catch (err) {
+    return { query, results: [], source: 'duckduckgo', status: 'failed', error: String(err) };
+  }
+}
+
+type GNewsArticle = { title?: string; description?: string; content?: string; url?: string; publishedAt?: string };
+
+export async function fetchGNewsSearch(query: string): Promise<SearchResultBatch> {
+  if (!searchLimiter.take()) {
+    return { query, results: [], source: 'gnews', status: 'failed', error: 'rate_limit' };
+  }
+  const token = import.meta.env.VITE_GNEWS_API_KEY || process.env?.GNEWS_API_KEY;
+  if (!token) {
+    return { query, results: [], source: 'gnews', status: 'failed', error: 'no_key' };
+  }
+
+  const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&max=10&token=${token}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const results: SearchResultItem[] = ((data.articles as GNewsArticle[]) || []).map((a) => ({
+      title: a.title || '',
+      snippet: a.description || a.content || '',
+      url: a.url || '',
+      source: 'gnews',
+      publishedAt: a.publishedAt
+    }));
+    return { query, results, source: 'gnews', status: 'ok' };
+  } catch (err) {
+    return { query, results: [], source: 'gnews', status: 'failed', error: String(err) };
+  }
+}
+
+export async function fetchContextualWebSearch(query: string): Promise<SearchResultBatch> {
+  if (!searchLimiter.take()) {
+    return { query, results: [], source: 'contextualweb', status: 'failed', error: 'rate_limit' };
+  }
+  const key = import.meta.env.VITE_CONTEXTUALWEB_API_KEY || process.env?.CONTEXTUALWEB_API_KEY;
+  if (!key) {
+    return { query, results: [], source: 'contextualweb', status: 'failed', error: 'no_key' };
+  }
+
+  const url = `https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI?q=${encodeURIComponent(query)}&pageNumber=1&pageSize=10&autoCorrect=true`;
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': key,
+        'X-RapidAPI-Host': 'contextualwebsearch-websearch-v1.p.rapidapi.com'
+      }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    type ContextualItem = { title?: string; description?: string; url?: string; datePublished?: string };
+    const results: SearchResultItem[] = ((data.value as ContextualItem[]) || []).map((item) => ({
+      title: item.title || '',
+      snippet: item.description || '',
+      url: item.url || '',
+      source: 'contextualweb',
+      publishedAt: item.datePublished
+    }));
+    return { query, results, source: 'contextualweb', status: 'ok' };
+  } catch (err) {
+    return { query, results: [], source: 'contextualweb', status: 'failed', error: String(err) };
+  }
+}
+
+export async function fetchBingSearch(query: string): Promise<SearchResultBatch> {
+  if (!searchLimiter.take()) {
+    return { query, results: [], source: 'bing', status: 'failed', error: 'rate_limit' };
+  }
+  const key = import.meta.env.VITE_BING_SEARCH_API_KEY || process.env?.BING_SEARCH_API_KEY;
+  if (!key) {
+    return { query, results: [], source: 'bing', status: 'failed', error: 'no_key' };
+  }
+
+  const url = `https://api.bing.microsoft.com/v7.0/search?q=${encodeURIComponent(query)}&count=10`;
+  try {
+    const res = await fetch(url, { headers: { 'Ocp-Apim-Subscription-Key': key } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    type BingWebResult = { name?: string; snippet?: string; url?: string; dateLastCrawled?: string };
+    const results: SearchResultItem[] = ((data.webPages?.value as BingWebResult[]) || []).map((item) => ({
+      title: item.name || '',
+      snippet: item.snippet || '',
+      url: item.url || '',
+      source: 'bing',
+      publishedAt: item.dateLastCrawled
+    }));
+    return { query, results, source: 'bing', status: 'ok' };
+  } catch (err) {
+    return { query, results: [], source: 'bing', status: 'failed', error: String(err) };
+  }
+}
+
+export async function aggregateGlobalSearch(query: string): Promise<SearchResultBatch[]> {
+  const results: SearchResultBatch[] = [];
+  results.push(await fetchDuckDuckGoSearch(query));
+  results.push(await fetchGNewsSearch(query));
+  results.push(await fetchContextualWebSearch(query));
+  results.push(await fetchBingSearch(query));
+  return results;
+}
+
 export async function fetchMarineTrafficPortActivity(_portNameOrCountry: string): Promise<Record<string, unknown> | null> {
   if (!marineLimiter.take()) return null;
-
-  // MarineTraffic requires an API key/contract; return null when unavailable.
   return null;
 }
 

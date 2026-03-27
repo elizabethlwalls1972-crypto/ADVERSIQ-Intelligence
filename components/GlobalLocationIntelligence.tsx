@@ -8,6 +8,7 @@ import { getCityProfiles, searchCityProfiles } from '../services/globalLocationS
 // Gemini/Google AI logic removed
 import { fetchGovernmentLeaders, getRegionalComparisons, type GovernmentLeader, type RegionalComparisonSet } from '../services/governmentDataService';
 import { generateDocument } from '../services/openaiClientService';
+import { researchLocation, type LocationResult, type ResearchProgress } from '../services/geminiLocationService';
 import { deepLocationResearch, type DeepResearchResult } from '../services/deepLocationResearchService';
 // Automatic Search Integration
 import { automaticSearchService } from '../services/AutomaticSearchService';

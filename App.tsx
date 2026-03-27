@@ -108,6 +108,18 @@ const App: React.FC = () => {
     // AUTONOMOUS CAPABILITIES STATE
     const [autonomousMode] = useState(true); // DEFAULT ON
     const [autonomousInsights, setAutonomousInsights] = useState<CopilotInsight[]>([]);
+    const [isOnline, setIsOnline] = useState<boolean>(typeof navigator !== 'undefined' ? navigator.onLine : true);
+
+    useEffect(() => {
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, []);
     const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
     const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
     // FULLY AUTONOMOUS SYSTEM STATE
@@ -812,6 +824,18 @@ const App: React.FC = () => {
             </div>
         );
     };
+
+    if (!isOnline) {
+        return (
+            <div className="h-screen w-full bg-slate-950 text-white flex items-center justify-center p-6">
+                <div className="max-w-md text-center border border-white/20 rounded-lg p-8 bg-black/60 shadow-lg">
+                    <h1 className="text-2xl font-bold mb-4">No Internet Connection</h1>
+                    <p className="text-sm mb-4">You are currently offline. Please reconnect to the internet to use BW Consultant features.</p>
+                    <p className="text-xs text-slate-300">The app is available here once your network is restored.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="h-screen w-full bg-stone-50 font-sans text-stone-900 flex flex-col overflow-hidden">

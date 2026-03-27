@@ -53,6 +53,9 @@ export interface DocxDocumentMeta {
     partnerLetterFocus?: string[];
     investorBriefFocus?: string[];
   };
+  includeStrategicAppendix?: boolean;
+  includeConfidentialStatement?: boolean;
+  includeFooterMetadata?: boolean;
 }
 
 // ── Inline formatting parser ──────────────────────────────────────────────────
@@ -228,24 +231,25 @@ function parsePipeTable(lines: string[]): Table | null {
 // ── Cover page ───────────────────────────────────────────────────────────────
 
 function buildCoverPage(meta: DocxDocumentMeta): Paragraph[] {
-  return [
-    new Paragraph({ text: '', spacing: { before: 0, after: 800 } }),
-    new Paragraph({
-      children: [new TextRun({ text: meta.classification, bold: true, size: 20, color: 'CC0000' })],
-      alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 200 },
-    }),
+  const cover: Paragraph[] = [
+    new Paragraph({ text: '', spacing: { before: 0, after: 600 } }),
     new Paragraph({
       children: [new TextRun({ text: meta.title, bold: true, size: 52, color: '1a365d' })],
       alignment: AlignmentType.CENTER,
-      spacing: { before: 400, after: 200 },
+      spacing: { before: 0, after: 200 },
     }),
-    ...(meta.subtitle ? [new Paragraph({
+  ];
+
+  if (meta.subtitle) {
+    cover.push(new Paragraph({
       children: [new TextRun({ text: meta.subtitle, size: 32, color: '2c5282' })],
       alignment: AlignmentType.CENTER,
-      spacing: { before: 0, after: 600 },
-    })] : []),
-    new Paragraph({ text: '', spacing: { before: 400, after: 0 } }),
+      spacing: { before: 0, after: 400 },
+    }));
+  }
+
+  cover.push(
+    new Paragraph({ text: '', spacing: { before: 0, after: 0 } }),
     new Paragraph({
       children: [new TextRun({ text: `Prepared for: `, bold: true, size: 22 }), new TextRun({ text: meta.preparedFor, size: 22 })],
       alignment: AlignmentType.CENTER,
@@ -260,18 +264,27 @@ function buildCoverPage(meta: DocxDocumentMeta): Paragraph[] {
       children: [new TextRun({ text: `Date: `, bold: true, size: 22 }), new TextRun({ text: meta.date, size: 22 })],
       alignment: AlignmentType.CENTER,
       spacing: { before: 40, after: 40 },
-    }),
-    new Paragraph({
+    })
+  );
+
+  if (meta.reportId) {
+    cover.push(new Paragraph({
       children: [new TextRun({ text: `Reference: `, bold: true, size: 20, color: '666666' }), new TextRun({ text: meta.reportId, size: 20, color: '666666' })],
       alignment: AlignmentType.CENTER,
       spacing: { before: 40, after: 40 },
-    }),
-    new Paragraph({
-      children: [new TextRun({ text: `CONFIDENTIAL - Not for distribution without prior written authorisation. Prepared exclusively for the named recipient.`, size: 16, color: '888888', italics: true })],
+    }));
+  }
+
+  const showConfidential = meta.includeConfidentialStatement !== false;
+  if (showConfidential && meta.classification) {
+    cover.push(new Paragraph({
+      children: [new TextRun({ text: `${meta.classification} - Not for distribution without prior written authorisation.`, size: 16, color: '888888', italics: true })],
       alignment: AlignmentType.CENTER,
       spacing: { before: 600, after: 0 },
-    }),
-  ];
+    }));
+  }
+
+  return cover;
 }
 
 function buildStrategicIntelligenceAppendix(meta: DocxDocumentMeta): Paragraph[] {
@@ -346,7 +359,7 @@ export async function exportToDocx(
   meta: DocxDocumentMeta
 ): Promise<Blob> {
   const contentBlocks = parseMarkdownToBlocks(markdown);
-  const strategicAppendix = buildStrategicIntelligenceAppendix(meta);
+  const strategicAppendix = meta.includeStrategicAppendix === false ? [] : buildStrategicIntelligenceAppendix(meta);
 
   const headerPara = new Paragraph({
     children: [
@@ -355,9 +368,13 @@ export async function exportToDocx(
     alignment: AlignmentType.RIGHT,
   });
 
+  const footerText = meta.includeFooterMetadata === false
+    ? `${meta.preparedFor}`
+    : `${meta.classification || ''} ${meta.classification ? '|' : ''} ${meta.reportId || ''} ${meta.reportId ? '|' : ''} ${meta.preparedBy || ''}`.replace(/\s*\|\s*\|?/g, '').trim();
+
   const footerPara = new Paragraph({
     children: [
-      new TextRun({ text: `${meta.classification} | ${meta.reportId} | ${meta.preparedBy}`, size: 16, color: '888888' }),
+      new TextRun({ text: footerText, size: 16, color: '888888' }),
     ],
     alignment: AlignmentType.CENTER,
   });
