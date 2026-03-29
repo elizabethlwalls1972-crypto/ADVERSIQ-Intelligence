@@ -89,7 +89,7 @@ export const features = {
 
   getApiEndpoint: (endpoint: string): string | null => {
     if (config.useRealBackend) {
-      return `${config.apiBaseUrl}${endpoint}`.replace(/([^:])[\/]{2,}/g, '$1/');
+      return `${config.apiBaseUrl}${endpoint}`.replace(/([^:])[/]{2,}/g, '$1/');
     }
     return null;
   },

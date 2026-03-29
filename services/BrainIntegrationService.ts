@@ -757,13 +757,15 @@ export class BrainIntegrationService {
     const relocationPathway = (() => {
       try {
         if (readiness < 30 || !country) return null;
+        const headcount = (params as any).employeeCount || 50;
         return RelocationPathwayEngine.generate({
-          companyName: orgName || 'Client',
           originCountry: 'AU',
-          destinationCountry: country === 'Australia' ? 'PH' : country.substring(0, 2).toUpperCase(),
-          sector: (params as any).sector || params.organizationType || 'general',
-          employeeCount: (params as any).employeeCount || 50,
-          budgetUSD: (params as any).budgetUSD || 500000,
+          targetCountry: country === 'Australia' ? 'PH' : country.substring(0, 2).toUpperCase(),
+          companySize: headcount > 200 ? 'enterprise' : headcount > 20 ? 'sme' : 'startup',
+          industry: (params as any).sector || params.organizationType || 'general',
+          functionsToRelocate: [(params as any).sector || 'operations'],
+          headcountTarget: headcount,
+          urgency: 'standard',
         });
       } catch { return null; }
     })();
@@ -814,8 +816,7 @@ export class BrainIntegrationService {
         if (!country) return null;
         const profile = WorkforceIntelligenceEngine.getProfile(country);
         return profile || WorkforceIntelligenceEngine.compare(
-          ['Cebu', 'Davao', 'Townsville'],
-          (params as any).sector || 'general'
+          ['Cebu', 'Davao', 'Townsville']
         );
       } catch { return null; }
     })();
@@ -851,9 +852,9 @@ export class BrainIntegrationService {
     // ── Tier-1 Extraction Engine ──────────────────────────────────────────────
     const tier1Extraction = (() => {
       try {
-        return Tier1ExtractionEngine.extract(
+        return Tier1ExtractionEngine.scanCity(
           country,
-          (params as any).sector || params.organizationType || 'general'
+          [(params as any).sector || params.organizationType || 'general']
         );
       } catch { return null; }
     })();
@@ -862,10 +863,7 @@ export class BrainIntegrationService {
     const governmentIncentives = (() => {
       try {
         if (!country) return null;
-        return GovernmentIncentiveVault.search({
-          country,
-          sector: (params as any).sector || params.organizationType || undefined,
-        });
+        return GovernmentIncentiveVault.searchByCountry(country);
       } catch { return null; }
     })();
 
@@ -873,17 +871,11 @@ export class BrainIntegrationService {
     const quantumMonteCarlo = (() => {
       try {
         if (readiness < 25) return null;
-        return QuantumMonteCarlo.quickSimulate({
-          scenarioName: `${country || 'Global'} ${(params as any).sector || 'Investment'} Risk`,
-          variables: [
-            { name: 'political_stability', min: 0.3, max: 0.9, distribution: 'normal' as const },
-            { name: 'market_growth', min: -0.05, max: 0.15, distribution: 'normal' as const },
-            { name: 'regulatory_risk', min: 0.1, max: 0.6, distribution: 'uniform' as const },
-            { name: 'currency_volatility', min: 0.02, max: 0.2, distribution: 'normal' as const },
-          ],
-          iterations: 5000,
-          successThreshold: 0.5,
-        });
+        return QuantumMonteCarlo.quickSimulate(
+          country || 'Cebu',
+          (params as any).employeeCount || 50,
+          (params as any).avgSalaryUSD || 30000
+        );
       } catch { return null; }
     })();
 
@@ -891,13 +883,11 @@ export class BrainIntegrationService {
     const quantumPatterns = (() => {
       try {
         if (readiness < 20) return null;
-        return QuantumPatternMatcher.findPatterns({
-          country: country || 'Unknown',
-          sector: (params as any).sector || params.organizationType || 'general',
-          investmentSizeM: (params as any).investmentSizeM || 10,
-          employeeCount: (params as any).employeeCount || 50,
-          yearsInMarket: (params as any).yearsInMarket || 0,
-        });
+        return QuantumPatternMatcher.findPatterns(
+          (params as any).sector || params.organizationType || 'general',
+          (params as any).employeeCount || 50,
+          [country || 'Unknown']
+        );
       } catch { return null; }
     })();
 
@@ -905,21 +895,11 @@ export class BrainIntegrationService {
     const quantumCognition = (() => {
       try {
         if (readiness < 25) return null;
-        return QuantumCognitionBridge.quickModel({
-          decisionLabel: `${orgName || 'Client'} → ${country || 'Target'} Engagement`,
-          options: [
-            { id: 'proceed', label: 'Proceed with engagement', baseUtility: 0.7 },
-            { id: 'defer', label: 'Defer 6 months', baseUtility: 0.5 },
-            { id: 'alternative', label: 'Explore alternative markets', baseUtility: 0.6 },
-          ],
-          contextFactors: {
-            timePresure: readiness > 60 ? 0.7 : 0.3,
-            informationOverload: readiness > 80 ? 0.6 : 0.3,
-            emotionalValence: 0.5,
-            socialInfluence: 0.4,
-            priorCommitment: readiness > 50 ? 0.6 : 0.2,
-          },
-        });
+        return QuantumCognitionBridge.quickModel([
+          { name: 'Proceed with engagement', rationalScore: 0.7 },
+          { name: 'Defer 6 months', rationalScore: 0.5 },
+          { name: 'Explore alternative markets', rationalScore: 0.6 },
+        ]);
       } catch { return null; }
     })();
 
@@ -1591,7 +1571,15 @@ export class BrainIntegrationService {
     // ── Relocation Pathway Engine ─────────────────────────────────────────────
     if (relocationPathway) {
       try {
-        const summary = RelocationPathwayEngine.summarizeForPrompt(relocationPathway);
+        const summary = RelocationPathwayEngine.summarizeForPrompt({
+          originCountry: 'AU',
+          targetCountry: country === 'Australia' ? 'PH' : (country || 'PH').substring(0, 2).toUpperCase(),
+          companySize: ((params as any).employeeCount || 50) > 200 ? 'enterprise' as const : ((params as any).employeeCount || 50) > 20 ? 'sme' as const : 'startup' as const,
+          industry: (params as any).sector || params.organizationType || 'general',
+          functionsToRelocate: [(params as any).sector || 'operations'],
+          headcountTarget: (params as any).employeeCount || 50,
+          urgency: 'standard' as const,
+        });
         if (summary) promptParts.push(`\n### ── RELOCATION PATHWAY (90-Day Plan) ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1600,7 +1588,7 @@ export class BrainIntegrationService {
     if (globalCityIndex) {
       try {
         const summary = GlobalCityIndex.summarizeForPrompt(
-          Array.isArray(globalCityIndex) ? globalCityIndex : [globalCityIndex]
+          (params as any).sector || params.organizationType
         );
         if (summary) promptParts.push(`\n### ── GLOBAL CITY INDEX ──\n${summary}`);
       } catch { /* non-critical */ }
@@ -1609,9 +1597,7 @@ export class BrainIntegrationService {
     // ── Relocation Outcome Tracker ────────────────────────────────────────────
     if (relocationOutcomes) {
       try {
-        const summary = RelocationOutcomeTracker.summarizeForPrompt(
-          Array.isArray(relocationOutcomes) ? relocationOutcomes : [relocationOutcomes]
-        );
+        const summary = RelocationOutcomeTracker.summarizeForPrompt(country);
         if (summary) promptParts.push(`\n### ── RELOCATION OUTCOMES (Historical) ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1619,7 +1605,7 @@ export class BrainIntegrationService {
     // ── Supply Chain Ecosystem ────────────────────────────────────────────────
     if (supplyChainMap) {
       try {
-        const summary = SupplyChainEcosystemMapper.summarizeForPrompt(supplyChainMap);
+        const summary = SupplyChainEcosystemMapper.summarizeForPrompt(country || 'Cebu');
         if (summary) promptParts.push(`\n### ── SUPPLY CHAIN ECOSYSTEM ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1627,9 +1613,7 @@ export class BrainIntegrationService {
     // ── Workforce Intelligence ────────────────────────────────────────────────
     if (workforceIntelligence) {
       try {
-        const summary = WorkforceIntelligenceEngine.summarizeForPrompt(
-          Array.isArray(workforceIntelligence) ? workforceIntelligence : [workforceIntelligence]
-        );
+        const summary = WorkforceIntelligenceEngine.summarizeForPrompt(country || 'Cebu');
         if (summary) promptParts.push(`\n### ── WORKFORCE INTELLIGENCE ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1637,7 +1621,7 @@ export class BrainIntegrationService {
     // ── Function-Level Splitter ───────────────────────────────────────────────
     if (functionSplit) {
       try {
-        const summary = FunctionLevelSplitter.summarizeForPrompt(functionSplit);
+        const summary = FunctionLevelSplitter.summarizeForPrompt(orgName || 'Client', country || 'Cebu City');
         if (summary) promptParts.push(`\n### ── FUNCTION-LEVEL SPLIT ANALYSIS ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1645,8 +1629,7 @@ export class BrainIntegrationService {
     // ── ESG & Climate Resilience ──────────────────────────────────────────────
     if (esgClimate) {
       try {
-        const items = Array.isArray(esgClimate) ? esgClimate : [esgClimate];
-        const summary = ESGClimateScorer.summarizeForPrompt(items);
+        const summary = ESGClimateScorer.summarizeForPrompt(country || 'Cebu');
         if (summary) promptParts.push(`\n### ── ESG & CLIMATE RESILIENCE ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1654,8 +1637,7 @@ export class BrainIntegrationService {
     // ── Network Effect Engine ─────────────────────────────────────────────────
     if (networkEffects) {
       try {
-        const items = Array.isArray(networkEffects) ? networkEffects : [networkEffects];
-        const summary = NetworkEffectEngine.summarizeForPrompt(items);
+        const summary = NetworkEffectEngine.summarizeForPrompt(country || 'Cebu');
         if (summary) promptParts.push(`\n### ── NETWORK EFFECTS & CLUSTER DENSITY ──\n${summary}`);
       } catch { /* non-critical */ }
     }
@@ -1680,24 +1662,33 @@ export class BrainIntegrationService {
     // ── Quantum Monte Carlo Risk Simulation ───────────────────────────────────
     if (quantumMonteCarlo) {
       try {
-        const summary = QuantumMonteCarlo.summarizeForPrompt(quantumMonteCarlo);
-        if (summary) promptParts.push(`\n### ── QUANTUM MONTE CARLO RISK SIM ──\n${summary}`);
+        const resolved = await quantumMonteCarlo;
+        if (resolved) {
+          const summary = QuantumMonteCarlo.summarizeForPrompt(resolved);
+          if (summary) promptParts.push(`\n### ── QUANTUM MONTE CARLO RISK SIM ──\n${summary}`);
+        }
       } catch { /* non-critical */ }
     }
 
     // ── Quantum Pattern Matcher ───────────────────────────────────────────────
     if (quantumPatterns) {
       try {
-        const summary = QuantumPatternMatcher.summarizeForPrompt(quantumPatterns);
-        if (summary) promptParts.push(`\n### ── QUANTUM PATTERN INTELLIGENCE ──\n${summary}`);
+        const resolved = await quantumPatterns;
+        if (resolved) {
+          const summary = QuantumPatternMatcher.summarizeForPrompt(resolved);
+          if (summary) promptParts.push(`\n### ── QUANTUM PATTERN INTELLIGENCE ──\n${summary}`);
+        }
       } catch { /* non-critical */ }
     }
 
     // ── Quantum Cognition Bridge ──────────────────────────────────────────────
     if (quantumCognition) {
       try {
-        const summary = QuantumCognitionBridge.summarizeForPrompt(quantumCognition);
-        if (summary) promptParts.push(`\n### ── QUANTUM COGNITION (Decision Bias Model) ──\n${summary}`);
+        const resolved = await quantumCognition;
+        if (resolved) {
+          const summary = QuantumCognitionBridge.summarizeForPrompt(resolved);
+          if (summary) promptParts.push(`\n### ── QUANTUM COGNITION (Decision Bias Model) ──\n${summary}`);
+        }
       } catch { /* non-critical */ }
     }
 

@@ -1,6 +1,6 @@
 export type ControlMode = 'reactive' | 'agentic_lite' | 'agentic_full' | 'deliberative';
 
-export type ControlProvider = 'bedrock' | 'openai' | 'groq' | 'together';
+export type ControlProvider = 'bedrock' | 'openai' | 'anthropic' | 'groq' | 'together';
 
 export interface RequestEnvelope {
   requestId: string;
@@ -14,8 +14,9 @@ export interface RequestEnvelope {
 }
 
 export interface ProviderAvailability {
-  bedrock: boolean;
+  bedrock?: boolean;
   openai: boolean;
+  anthropic?: boolean;
   groq: boolean;
   together: boolean;
 }

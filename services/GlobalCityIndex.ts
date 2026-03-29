@@ -168,7 +168,7 @@ export class GlobalCityIndex {
     top.forEach((c, i) => {
       lines.push(`**#${i + 1} ${c.city}, ${c.country}** â€" Score: ${c.compositeScore} | Tier: ${c.tier.toUpperCase()}`);
       lines.push(`  Eco:${c.dimensions.economic} Tal:${c.dimensions.talent} Infra:${c.dimensions.infrastructure} Gov:${c.dimensions.governance} Life:${c.dimensions.lifestyle} Innov:${c.dimensions.innovation} Cost:${c.dimensions.cost}`);
-      lines.push(`  âœ… ${c.highlights[0]} | âš ï¸ ${c.risks[0]}`);
+      lines.push(`  Pass: ${c.highlights[0]} | Warn: ${c.risks[0]}`);
     });
     return lines.join('\n');
   }

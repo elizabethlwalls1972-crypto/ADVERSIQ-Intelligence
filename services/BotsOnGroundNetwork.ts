@@ -259,7 +259,7 @@ export class BotsOnGroundNetwork {
     for (const [key, val] of Object.entries(r.groundTruth)) {
       const cat = val as GroundTruthCategory;
       lines.push(`**${key}** (${cat.score}/100): ${cat.reality.substring(0, 120)}`);
-      if (cat.risk) lines.push(`  âš  Risk: ${cat.risk.substring(0, 100)}`);
+      if (cat.risk) lines.push(`  Warning Risk: ${cat.risk.substring(0, 100)}`);
     }
     if (r.localContacts.length) {
       lines.push(`**Local Contacts:** ${r.localContacts.map(c => `${c.organization} (${c.canHelpWith.slice(0, 2).join(', ')})`).join(' | ')}`);

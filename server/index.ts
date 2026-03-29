@@ -376,18 +376,18 @@ process.on('unhandledRejection', (reason) => {
 });
 
 // Graceful shutdown
-const gracefulShutdown = (signal: string) => {
+const gracefulShutdown = async (signal: string) => {
   console.log(`${signal} received, shutting down gracefully`);
   server.close(() => {
     console.log('Server closed');
-    // Attempt to drain DB pools
-    try {
-      const { getPool } = require('./db.js');
-      const pool = getPool();
-      if (pool) pool.end().catch(() => {});
-    } catch { /* db module may not be loaded */ }
     process.exit(0);
   });
+  // Attempt to drain DB pools
+  try {
+    const { getPool } = await import('./db.js');
+    const pool = getPool();
+    if (pool) pool.end().catch(() => {});
+  } catch { /* db module may not be loaded */ }
   // Force exit after 10s if graceful shutdown hangs
   setTimeout(() => {
     console.error('Graceful shutdown timed out, forcing exit');

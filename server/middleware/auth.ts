@@ -10,7 +10,10 @@ if (!JWT_SECRET) {
   console.warn('[AUTH] WARNING: JWT_SECRET not set — using insecure dev-only fallback. Set JWT_SECRET before deploying.');
 }
 const EFFECTIVE_JWT_SECRET = JWT_SECRET || 'INSECURE-DEV-ONLY-DO-NOT-DEPLOY';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const JWT_EXPIRES_IN: any = process.env.JWT_EXPIRES_IN || '24h';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const REFRESH_EXPIRES_IN: any = '7d';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -23,6 +26,7 @@ export interface AuthUser {
 
 // Extend Express Request
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: AuthUser;
@@ -44,7 +48,7 @@ export function generateRefreshToken(user: AuthUser): string {
   return jwt.sign(
     { id: user.id, type: 'refresh' },
     EFFECTIVE_JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: REFRESH_EXPIRES_IN }
   );
 }
 

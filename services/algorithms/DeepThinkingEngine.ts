@@ -623,7 +623,7 @@ export class DeepThinkingEngine {
     cot: ChainOfThought,
     tot: ThoughtNode,
     reflection: SelfReflection,
-    existingInsights: CopilotInsight[]
+    _existingInsights: CopilotInsight[]
   ): Promise<CopilotInsight[]> {
     const insights: CopilotInsight[] = [];
     
@@ -708,7 +708,7 @@ export class DeepThinkingEngine {
       : 'Limited context available - recommend gathering more information';
   }
 
-  private generateHypotheses(params: ReportParameters, reportData: ReportData): string {
+  private generateHypotheses(params: ReportParameters, _reportData: ReportData): string {
     const hypotheses = [];
     
     if (params.strategicIntent?.includes('market-entry')) {

@@ -110,8 +110,8 @@ const CAPABILITY_CATEGORIES: CapabilityCategory[] = [
       { id: 'trade-data', description: 'Bilateral trade statistics from UN Comtrade', engineIds: ['unComtradeService'], dataSource: 'live-api', confidence: 'high' },
       { id: 'cost-of-living', description: 'Cost of living and crime indices from Numbeo', engineIds: ['externalDataIntegrations'], dataSource: 'live-api', confidence: 'medium' },
       { id: 'company-records', description: 'Company registration data from OpenCorporates', engineIds: ['externalDataIntegrations'], dataSource: 'live-api', confidence: 'medium' },
-      { id: 'web-research', description: 'Deep web research synthesis via Tavily search', engineIds: ['tavilySearchService'], dataSource: 'real-time-search', confidence: 'variable' },
-      { id: 'osint', description: 'Open-source intelligence search across government, news, and business sources', engineIds: ['osintSearchService'], dataSource: 'real-time-search', confidence: 'variable' },
+      { id: 'web-research', description: 'Deep web research synthesis via Tavily search', engineIds: ['tavilySearchService'], dataSource: 'live-api', confidence: 'variable' },
+      { id: 'osint', description: 'Open-source intelligence search across government, news, and business sources', engineIds: ['osintSearchService'], dataSource: 'live-api', confidence: 'variable' },
     ],
   },
   {

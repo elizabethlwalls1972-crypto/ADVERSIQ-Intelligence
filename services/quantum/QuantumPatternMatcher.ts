@@ -89,7 +89,7 @@ const KNOWN_PATTERNS: DiscoveredPattern[] = [
     correlationStrength: 0.90,
     confidence: 0.93,
     applicableTo: ['Singapore', 'Cebu City'],
-    actionableInsight: 'For urgent timelines, prioritize network-dense cities. Cebu \and Singapore offer the fastest path to operational.',
+    actionableInsight: 'For urgent timelines, prioritize network-dense cities. Cebu and Singapore offer the fastest path to operational.',
   },
   {
     id: 'pat-006',
