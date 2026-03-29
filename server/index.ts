@@ -173,7 +173,7 @@ app.use('/api/', apiLimiter);
 // Stricter limit for AI endpoints (expensive calls)
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 20,
+  max: 120,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'AI request rate limit exceeded. Please wait before trying again.' },
