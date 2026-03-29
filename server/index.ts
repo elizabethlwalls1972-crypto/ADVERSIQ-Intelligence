@@ -7,6 +7,9 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import { requestLogger } from './middleware/logger.js';
+import { requestIdMiddleware, globalErrorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { aiUserLimiter, reportUserLimiter, authUserLimiter } from './middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,6 +51,10 @@ import reportsRoutes from './routes/reports.js';
 import searchRoutes from './routes/search.js';
 import autonomousRoutes from './routes/autonomous.js';
 import governanceRoutes from './routes/governance.js';
+import authRoutes from './routes/auth.js';
+import learningRoutes from './routes/learning.js';
+import { optionalAuth } from './middleware/auth.js';
+import { sanitizeBody } from './middleware/validate.js';
 // bedrock placeholder route removed — inference handled by /api/ai routes
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
@@ -209,14 +216,16 @@ app.use(cors({
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
+// Global sanitization and optional auth in request pipeline
+app.use(sanitizeBody);
+app.use(optionalAuth);
+
 // Compression
 app.use(compression());
 
-// Request logging
-app.use((req: Request, _res: Response, next: NextFunction) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
-  next();
-});
+// Request ID and structured logging middleware
+app.use(requestIdMiddleware);
+app.use(requestLogger);
 
 // Health check (before other routes for reliability)
 // NOTE: This only checks env-signal presence. For credential-resolved
@@ -260,11 +269,13 @@ app.get('/api/health', (_req: Request, res: Response) => {
 });
 
 // API Routes
-app.use('/api/ai', aiRoutes);
-app.use('/api/reports', reportsRoutes);
+app.use('/api/auth', authUserLimiter, authRoutes);
+app.use('/api/ai', aiUserLimiter, aiRoutes);
+app.use('/api/reports', reportUserLimiter, reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);
 app.use('/api/governance', governanceRoutes);
+app.use('/api/learning', learningRoutes);
 // bedrock placeholder route removed — all AI inference goes through /api/ai
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
@@ -308,15 +319,11 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// Error handling
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-  void _next;
-  console.error('Server error:', err);
-  res.status(500).json({ 
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
-  });
-});
+// Not found handler for unmatched routes
+app.use(notFoundHandler);
+
+// Global error handler
+app.use(globalErrorHandler);
 
 // Start server
 const server = app.listen(PORT, '0.0.0.0', () => {

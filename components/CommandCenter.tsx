@@ -406,7 +406,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-1 gap-8">
 
                         {/* CARD 1: Why This Doesn't Exist — matches Card 2 / Who This Is For layout */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-1 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">The Problem</span>
@@ -440,7 +440,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80" alt="The gap in current AI tools" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
@@ -470,7 +470,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* CARD 2: What We Built — matches "Who This Is For" layout */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">What We Built</span>
@@ -506,7 +506,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                             </div>
                             {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&h=600&q=80" alt="Regional city infrastructure and economic corridor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
@@ -517,7 +517,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* WHO THIS IS FOR */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                    <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                         {/* Text Content (Left) */}
                         <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                             <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Who This Is For</span>
@@ -550,7 +550,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
                         {/* Photo (Right) */}
-                        <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                        <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop&q=80" alt="Regional council meeting" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         </div>
                     </div>
@@ -679,15 +679,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* What You Walk Away With - Photo + Script Card */}
                     <div className="mb-16">
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-                            <div className="h-56 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=500&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-                                <div className="absolute bottom-5 left-6">
-                                    <h2 className="text-2xl md:text-3xl font-bold text-white">What You Walk Away With</h2>
-                                </div>
-                            </div>
-                            <div className="p-6 md:p-8">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
+                            {/* Text Content (Left) */}
+                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
+                                <span className="inline-block px-2.5 py-1 bg-slate-800/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Deliverables</span>
+                                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">What You Walk Away With</h2>
                                 <p className="text-base text-slate-700 leading-relaxed text-justify mb-6">
                                     You leave with a <strong>complete operating position</strong> &mdash; not a pitch deck requiring interpretation, but a defensible strategy built from live evidence, adversarial challenge, confidence scoring, and sequenced execution logic. BWGA AI compresses what typically requires months of fragmented advisory work into outputs ready for board presentations, investor conversations, regulator submissions, stakeholder engagement, and partnership negotiation on day one.
                                 </p>
@@ -707,6 +703,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <Info size={16} /> View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
                                 </button>
                             </div>
+                            {/* Photo (Right) */}
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -718,7 +718,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-1 gap-8">
 
                         {/* SINGLE CONSOLIDATED GLOBAL STANDARDS CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <div className="mb-4">
@@ -766,7 +766,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
 
                             {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop&q=80" alt="Global standards compliance" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
@@ -781,7 +781,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-1 gap-8">
 
                         {/* SINGLE CONSOLIDATED PARTNERSHIP CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <div className="mb-4">
@@ -813,7 +813,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
 
                             {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>
@@ -892,7 +892,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid md:grid-cols-1 gap-8">
 
                         {/* SINGLE CONSOLIDATED FOOTER CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col md:flex-row">
+                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
                             {/* Text Content (Left) */}
                             <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
                                 <div className="mb-4">
@@ -970,7 +970,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                             
                             {/* Photo (Right) */}
-                            <div className="h-64 md:h-auto md:w-1/3 flex-shrink-0 relative overflow-hidden">
+                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80" alt="Intelligence platform interface" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             </div>
                         </div>

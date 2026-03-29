@@ -24,6 +24,7 @@ import { runStrategicIntelligencePipeline } from './strategicIntelligencePipelin
 import { buildBrainCoverageReport } from './brainCoverageAudit.js';
 import { buildPerceptionDeltaIndex } from '../services/PerceptionDeltaIndex.js';
 import { runFiveEngineTribunal } from '../services/FiveEngineTribunal.js';
+import { validateBody, aiValidation } from '../middleware/validate.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -2098,7 +2099,7 @@ router.post('/copilot-analysis', requireApiKey, async (req: Request, res: Respon
     if (jsonMatch) {
       return res.json(JSON.parse(jsonMatch[0]));
     }
-    
+
     res.json({
       summary: `Analysis of "${query}" suggests focusing on strategic opportunities.`,
       options: [
@@ -2108,7 +2109,107 @@ router.post('/copilot-analysis', requireApiKey, async (req: Request, res: Respon
     });
   } catch (error) {
     console.error('Copilot analysis error:', error);
-    res.status(500).json({ error: 'Analysis failed' });
+    res.status(500).json({ error: 'Failed to run copilot analysis' });
+  }
+});
+
+// ─── Monte Carlo Simulation Endpoint ─────────────────────────────────────────
+router.post('/monte-carlo', validateBody(aiValidation.monteCarlo), (req: Request, res: Response) => {
+  try {
+    const { inputs, trials = 200 } = req.body;
+
+    if (!Array.isArray(inputs) || inputs.length === 0) {
+      return res.status(400).json({ error: 'inputs array is required' });
+    }
+
+    if (trials > 10000) {
+      return res.status(400).json({ error: 'Maximum 10,000 trials allowed' });
+    }
+
+    const results = inputs.map((input: {
+      label: string;
+      baseValue: number;
+      distribution: 'uniform' | 'triangular' | 'normal';
+      min?: number;
+      max?: number;
+      mode?: number;
+      stdDev?: number;
+    }) => {
+      const samples: number[] = [];
+
+      for (let i = 0; i < trials; i++) {
+        let value: number;
+        switch (input.distribution) {
+          case 'uniform':
+            value = (input.min ?? input.baseValue * 0.7) + Math.random() * ((input.max ?? input.baseValue * 1.3) - (input.min ?? input.baseValue * 0.7));
+            break;
+          case 'triangular': {
+            const min = input.min ?? input.baseValue * 0.7;
+            const max = input.max ?? input.baseValue * 1.3;
+            const mode = input.mode ?? input.baseValue;
+            const u = Math.random();
+            const fc = (mode - min) / (max - min);
+            value = u < fc
+              ? min + Math.sqrt(u * (max - min) * (mode - min))
+              : max - Math.sqrt((1 - u) * (max - min) * (max - mode));
+            break;
+          }
+          case 'normal': {
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+            value = input.baseValue + z * (input.stdDev ?? input.baseValue * 0.15);
+            break;
+          }
+          default:
+            value = input.baseValue;
+        }
+        samples.push(value);
+      }
+
+      samples.sort((a, b) => a - b);
+
+      const mean = samples.reduce((s, v) => s + v, 0) / samples.length;
+      const percentile = (p: number) => {
+        const idx = (samples.length - 1) * p;
+        const lo = Math.floor(idx);
+        const hi = Math.ceil(idx);
+        return lo === hi ? samples[lo] : samples[lo] + (samples[hi] - samples[lo]) * (idx - lo);
+      };
+
+      const stdDev = Math.sqrt(samples.reduce((s, v) => s + (v - mean) ** 2, 0) / samples.length);
+
+      return {
+        label: input.label,
+        mean: parseFloat(mean.toFixed(2)),
+        median: parseFloat(percentile(0.5).toFixed(2)),
+        stdDev: parseFloat(stdDev.toFixed(2)),
+        p10: parseFloat(percentile(0.1).toFixed(2)),
+        p50: parseFloat(percentile(0.5).toFixed(2)),
+        p90: parseFloat(percentile(0.9).toFixed(2)),
+        min: parseFloat(samples[0].toFixed(2)),
+        max: parseFloat(samples[samples.length - 1].toFixed(2)),
+        trials,
+      };
+    });
+
+    const compositeP10 = results.reduce((s: number, r: { p10: number }) => s + r.p10, 0);
+    const compositeP50 = results.reduce((s: number, r: { p50: number }) => s + r.p50, 0);
+    const compositeP90 = results.reduce((s: number, r: { p90: number }) => s + r.p90, 0);
+
+    res.json({
+      results,
+      composite: {
+        p10: parseFloat(compositeP10.toFixed(2)),
+        p50: parseFloat(compositeP50.toFixed(2)),
+        p90: parseFloat(compositeP90.toFixed(2)),
+      },
+      trials,
+      generatedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error('Monte Carlo error:', error);
+    res.status(500).json({ error: 'Simulation failed' });
   }
 });
 

@@ -562,7 +562,7 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
       if (!lastRef.current) lastRef.current = ts;
       const elapsed = ts - lastRef.current;
       if (elapsed >= speed) {
-        const chars = Math.min(Math.floor(elapsed / speed), 5);
+        const chars = Math.floor(elapsed / speed);
         const nextIdx = Math.min(indexRef.current + chars, text.length);
         indexRef.current = nextIdx;
         setDisplayed(text.slice(0, nextIdx));
@@ -5335,6 +5335,8 @@ CRITICAL RULES:
         setMessages(prev => prev.map((msg) => (
           msg.id === assistantMessageId ? { ...msg, content: responseContent } : msg
         )));
+        // Mark as already displayed so TypewriterText doesn't re-type streamed content
+        displayedMsgIds.current.add(assistantMessageId);
         setExecutionTaskStatus('response', 'completed', 'Primary response delivered');
         // ── SAVE TURN TO PERSISTENT MEMORY ──
         memoryRef.current.remember('consultant-turns', {
@@ -7927,8 +7929,8 @@ CRITICAL RULES:
                           </div>
                         )}
                         <div className={`whitespace-pre-wrap ${msg.role === 'assistant' ? 'text-[13px] leading-[1.7] text-slate-800' : ''}`}>
-                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && msgIdx > 0 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
-                            <TypewriterText text={msg.content} speed={25}
+                          {msg.role === 'assistant' && msgIdx === messages.length - 1 && !isLoading && !displayedMsgIds.current.has(msg.id) ? (
+                            <TypewriterText text={msg.content} speed={voiceEnabled ? ttsService.getTypingSpeedMs() : 25}
                               onComplete={() => {
                                 displayedMsgIds.current.add(msg.id);
                               }}

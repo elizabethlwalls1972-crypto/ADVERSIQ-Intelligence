@@ -1,7 +1,7 @@
-﻿// Feature flags and configuration for demo/production modes
-// V6.0 - Nexus Intelligence OS - ALL LIVE DATA BY DEFAULT
+// Feature flags and configuration for demo/production modes
 // Uses an explicit public env allowlist so secret VITE_* values are not
 // accidentally pulled into the browser bundle.
+
 type PublicEnv = Partial<Record<
   'VITE_USE_REAL_AI' |
   'VITE_USE_REAL_DATA' |
@@ -38,25 +38,35 @@ const _env = (key: keyof PublicEnv, fallback = ''): string =>
   (typeof process !== 'undefined' ? process.env?.[key] ?? '' : '') ||
   fallback;
 
+// Robust boolean parser � handles 'true'/'false', '1'/'0', 'yes'/'no', 'on'/'off'
+function parseBoolean(value: string | boolean | undefined, fallback: boolean): boolean {
+  if (typeof value === 'boolean') return value;
+  if (typeof value !== 'string') return fallback;
+  const normalized = value.trim().toLowerCase();
+  if (['false', '0', 'no', 'off', ''].includes(normalized)) return false;
+  if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+  return fallback;
+}
+
 export const config = {
-  // AI & Backend Features - ENABLED BY DEFAULT FOR LIVE SYSTEM
-  useRealAI:      _env('VITE_USE_REAL_AI',      'true') !== 'false',
-  useRealData:    _env('VITE_USE_REAL_DATA',    'true') !== 'false',
-  useRealBackend: _env('VITE_USE_REAL_BACKEND', 'true') !== 'false',
+  // AI & Backend Features
+  useRealAI:         parseBoolean(_env('VITE_USE_REAL_AI'), true),
+  useRealData:       parseBoolean(_env('VITE_USE_REAL_DATA'), true),
+  useRealBackend:    parseBoolean(_env('VITE_USE_REAL_BACKEND'), true),
 
   // UI Features
-  showDemoIndicators: _env('VITE_SHOW_DEMO_INDICATORS') === 'true',
-  enableAnalytics:    _env('VITE_ENABLE_ANALYTICS')     === 'true',
-  enableAuth:         _env('VITE_ENABLE_AUTH')           === 'true',
+  showDemoIndicators: parseBoolean(_env('VITE_SHOW_DEMO_INDICATORS'), false),
+  enableAnalytics:    parseBoolean(_env('VITE_ENABLE_ANALYTICS'), false),
+  enableAuth:         parseBoolean(_env('VITE_ENABLE_AUTH'), false),
 
-  // API Configuration — empty default = relative paths (same-origin on App Runner)
+  // API Configuration
   apiBaseUrl: _env('VITE_API_BASE_URL', '/api'),
 
   // Development flags
   isDevelopment: _env('NODE_ENV') === 'development' || Boolean(publicImportMetaEnv.DEV),
   isProduction:  _env('NODE_ENV') === 'production'  || Boolean(publicImportMetaEnv.PROD),
-  
-  // Multi-Agent Brain System v6.0 (Nexus Intelligence OS)
+
+  // Multi-Agent Brain System
   enableMultiAgent: true,
   enableHistoricalLearning: true,
   enableRegionalCityEngine: true,
@@ -66,26 +76,21 @@ export const config = {
 
 // Helper functions for feature detection
 export const features = {
-  // Check if a feature should use real implementation
   shouldUseReal: (feature: keyof typeof config): boolean => {
     return config[feature] as boolean;
   },
 
-  // Check if we're in demo mode
   isDemoMode: (): boolean => {
     return !config.useRealAI || !config.useRealData || !config.useRealBackend;
   },
 
-  // Get API endpoint with fallback
   getApiEndpoint: (endpoint: string): string | null => {
     if (config.useRealBackend) {
-      return `${config.apiBaseUrl}${endpoint}`;
+      return `${config.apiBaseUrl}${endpoint}`.replace(/([^:])[\/]{2,}/g, '$1/');
     }
-    // Fallback to local processing when backend unavailable
     return null;
   },
 
-  // Check if we should show demo indicators
   shouldShowDemoIndicator: (): boolean => {
     return config.showDemoIndicators && features.isDemoMode();
   },
@@ -93,13 +98,12 @@ export const features = {
 
 // System status messages
 export const systemMessages = {
-  aiResponse: "AI analysis powered by Together.ai (Llama 3.1 70B) with NSIL intelligence engines.",
-  dataSource: "Processing with live data integration and intelligent caching.",
-  analysis: "Analysis complete using NSIL Intelligence Hub with 5-persona reasoning.",
-  generation: "Document generated with professional formatting and export options.",
+  aiResponse: 'AI analysis powered by configured provider with NSIL intelligence engines.',
+  dataSource: 'Processing with live data integration and intelligent caching.',
+  analysis: 'Analysis complete using NSIL Intelligence Hub with multi-persona reasoning.',
+  generation: 'Document generated with professional formatting and export options.',
 };
 
-// Legacy alias for backward compatibility
 export const demoMessages = systemMessages;
 
 export default config;

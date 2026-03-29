@@ -213,6 +213,34 @@ if (successRate < 0.8) improvementAreas.push('Improve success rate (currently ' 
     return this.performanceHistory[this.performanceHistory.length - 1] || null;
   }
 
+  // Get SPI weights from the last learning cycle
+  getSPIWeights(): Record<'ER'|'SP'|'PS'|'PR'|'EA'|'CA'|'UT', number> {
+    const defaultWeights = {
+      ER: 0.25,
+      SP: 0.20,
+      PS: 0.15,
+      PR: 0.15,
+      EA: 0.10,
+      CA: 0.10,
+      UT: 0.05,
+    };
+
+    const latest = this.getCurrentMetrics();
+    if (!latest) return defaultWeights;
+
+    // Simple adaptation: adjust using success rate and common errors
+    const adjustment = Math.min(0.1, Math.max(-0.1, (latest.successRate - 0.75) * 0.2));
+    return {
+      ER: Math.max(0.02, Math.min(0.5, defaultWeights.ER + adjustment * 0.2)),
+      SP: Math.max(0.02, Math.min(0.5, defaultWeights.SP + adjustment * 0.2)),
+      PS: Math.max(0.02, Math.min(0.5, defaultWeights.PS + adjustment * 0.3)),
+      PR: Math.max(0.02, Math.min(0.5, defaultWeights.PR + adjustment * 0.2)),
+      EA: Math.max(0.02, Math.min(0.5, defaultWeights.EA + adjustment * 0.1)),
+      CA: Math.max(0.02, Math.min(0.5, defaultWeights.CA + adjustment * 0.1)),
+      UT: Math.max(0.02, Math.min(0.5, defaultWeights.UT + adjustment * 0.0)),
+    };
+  }
+
   // Export learning data for analysis
   exportLearningData(): string {
     return JSON.stringify({

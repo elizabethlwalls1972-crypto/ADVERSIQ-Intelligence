@@ -18,6 +18,7 @@
 } from '../types';
 import { GLOBAL_CITY_DATABASE } from '../constants';
 import CompositeScoreService from './CompositeScoreService';
+import { selfLearningEngine } from './selfLearningEngine';
 import { HistoricalLearningEngine, RegionalCityOpportunityEngine } from './MultiAgentBrainSystem';
 
 // --- 1. MARKET DIVERSIFICATION ENGINE ---
@@ -173,8 +174,18 @@ const normalizeWeightProfile = (weights: Record<SPIWeightKey, number>): Record<S
 };
 
 const buildContextualSPIWeights = (params: ReportParameters, composite: CompositeScoreResult): Record<SPIWeightKey, number> => {
+  const learned = selfLearningEngine.getSPIWeights?.();
+  let weights: Record<SPIWeightKey, number> = {
+    ER: learned?.ER ?? BASE_SPI_WEIGHTS.ER,
+    SP: learned?.SP ?? BASE_SPI_WEIGHTS.SP,
+    PS: learned?.PS ?? BASE_SPI_WEIGHTS.PS,
+    PR: learned?.PR ?? BASE_SPI_WEIGHTS.PR,
+    EA: learned?.EA ?? BASE_SPI_WEIGHTS.EA,
+    CA: learned?.CA ?? BASE_SPI_WEIGHTS.CA,
+    UT: learned?.UT ?? BASE_SPI_WEIGHTS.UT,
+  };
+
   const archetype = resolveIndustryArchetype(params.industry?.[0]);
-  let weights = { ...BASE_SPI_WEIGHTS };
   const industryOverrides = INDUSTRY_SPI_WEIGHTS[archetype];
   if (industryOverrides) {
     weights = { ...weights, ...industryOverrides };

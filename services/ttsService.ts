@@ -83,6 +83,19 @@ class TTSService {
     if (!val) this.stop();
   }
 
+  /**
+   * Returns the per-character delay (ms) that makes TypewriterText
+   * finish at roughly the same time as the TTS voice finishes speaking.
+   *
+   * OpenAI nova ≈ 190 WPM, browser Web Speech at rate 0.93 ≈ 160 WPM.
+   * Average word ≈ 5.5 chars (including trailing space).
+   */
+  getTypingSpeedMs(): number {
+    const wpm = this._usePremium ? 190 : 160;
+    const charsPerSec = (wpm * 5.5) / 60;
+    return Math.round(1000 / charsPerSec);   // ≈ 53 ms (premium) or ≈ 68 ms (browser)
+  }
+
   async speak(text: string): Promise<void> {
     if (!this._enabled) return;
     const clean = stripMarkdown(text);

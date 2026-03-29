@@ -248,7 +248,7 @@ const App: React.FC = () => {
         }, 1500);
 
         return () => clearTimeout(timer);
-    }, [copilotKey, insights.length]);
+    }, [copilotKey, params, viewMode, insights.length]);
 
     // AUTONOMOUS CAPABILITIES EFFECTS
 
@@ -300,7 +300,7 @@ const App: React.FC = () => {
         }, 3000);
 
         return () => clearTimeout(timer);
-    }, [agenticKey, autonomousMode]);
+    }, [agenticKey, autonomousMode, params]);
 
     // BW Consultant AI - Proactive guidance and automatic search
     useEffect(() => {
@@ -390,7 +390,7 @@ const App: React.FC = () => {
             cancelled = true;
             clearTimeout(timer);
         };
-    }, [autonomousMode, params.organizationName, params.country]);
+    }, [autonomousMode, params]);
 
     // --- ACTIONS ---
     const handleEscape = useCallback(() => {

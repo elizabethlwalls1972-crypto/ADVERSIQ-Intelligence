@@ -122,11 +122,9 @@ export const getChatSession = (): {
 } => {
   return {
     sendMessage: async (msg) => {
-      // 1. Backend
       const data = await apiPost('/ai/chat', { message: msg.message, sessionId: _sessionId, systemInstruction: SYSTEM_INSTRUCTION });
       if (data?.text) { _sessionId = data.sessionId ?? _sessionId; return { text: data.text }; }
 
-      // 2. Together.ai / Bedrock
       try {
         const text = await ai(msg.message);
         return { text };
@@ -164,13 +162,11 @@ export const getChatSession = (): {
         }
       } catch { /* fall through */ }
 
-      // 2. Together.ai streaming (SSE), wrapped as async iterable
+      // 2. Together.ai streaming — accumulate FULL text, not just last token
       if (isTogetherConfigured()) {
         try {
-          const chunks: string[] = [];
-          await aiStream(msg.message, SYSTEM_INSTRUCTION, (tok) => chunks.push(tok));
-          // Emit the full text in one chunk (Together delivers full delta accumulation)
-          const fullText = chunks[chunks.length - 1] || '';
+          let fullText = '';
+          await aiStream(msg.message, SYSTEM_INSTRUCTION, (tok) => { fullText += tok; });
           let yielded = false;
           return {
             [Symbol.asyncIterator]: () => ({
@@ -186,7 +182,7 @@ export const getChatSession = (): {
         }
       }
 
-      return { [Symbol.asyncIterator]: () => ({ async next() { return { done: true as const, value: undefined }; } }) };
+      return { [Symbol.asyncIterator]: () => ({ async next() { return { done: true as const, value: undefined }; } }) } as AsyncIterable<{ text: string }>;
     },
   };
 };
@@ -461,11 +457,10 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     return `[${file.name}] - File too large for extraction (${(file.size / 1024 / 1024).toFixed(1)} MB). Please reduce to under 18 MB.`;
   }
 
-  // 1. Client-side PDF text extraction (browser-native, no credentials needed)
+  // 1. Client-side PDF text extraction
   if (lowerName.endsWith('.pdf')) {
     try {
       const pdfjsLib = await import('pdfjs-dist');
-      // Point the worker at the bundled file in pdfjs-dist - Vite resolves this at build time
       pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
         'pdfjs-dist/build/pdf.worker.min.mjs',
         import.meta.url
@@ -491,10 +486,10 @@ export const extractFileTextViaAI = async (file: File): Promise<string> => {
     }
   }
 
-  // 3. Plain text fallback (txt, md, csv, xml - anything readable as text)
-  const isTextLike = ['.txt', '.md', '.csv', '.xml', '.json', '.html', '.htm', '.log'].some(e => lowerName.endsWith(e));
-  const ext = Object.keys(SUPPORTED_MIME_TYPES).find(e => lowerName.endsWith(e));
-  if (isTextLike || (ext && SUPPORTED_MIME_TYPES[ext]?.startsWith('text/'))) {
+  // 2. Plain text fallback
+  const textExtensions = ['.txt', '.md', '.csv', '.xml', '.json', '.html', '.htm', '.log'];
+  const isTextLike = textExtensions.some(e => lowerName.endsWith(e));
+  if (isTextLike) {
     try {
       const raw = await file.text();
       if (raw.trim().length > 20) {
