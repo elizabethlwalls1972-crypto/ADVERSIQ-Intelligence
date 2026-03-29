@@ -24,6 +24,8 @@ import { runStrategicIntelligencePipeline } from './strategicIntelligencePipelin
 import { buildBrainCoverageReport } from './brainCoverageAudit.js';
 import { buildPerceptionDeltaIndex } from '../services/PerceptionDeltaIndex.js';
 import { runFiveEngineTribunal } from '../services/FiveEngineTribunal.js';
+import { BrainIntegrationService, type BrainContext } from '../../services/BrainIntegrationService.js';
+import { NSILIntelligenceHub } from '../../services/NSILIntelligenceHub.js';
 import { validateBody, aiValidation } from '../middleware/validate.js';
 
 const router = Router();
@@ -799,9 +801,81 @@ const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
   return normalized.length > 0 ? Array.from(new Set(normalized)) : defaultOrder;
 };
 
-const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string) => `
-${deriveConsultantCapabilityProfile(message, context).brief}
+// ── Extract Partial<ReportParameters> from consultant context for Brain / NSIL ──
+const extractReportParamsFromContext = (message: string, context?: unknown): Record<string, unknown> => {
+  const params: Record<string, unknown> = {};
+  if (context && typeof context === 'object') {
+    const ctx = context as Record<string, unknown>;
+    // Map known context fields to ReportParameters keys
+    if (ctx.country) params.country = String(ctx.country);
+    if (ctx.city) params.userCity = String(ctx.city);
+    if (ctx.region) params.region = String(ctx.region);
+    if (ctx.organization || ctx.org || ctx.organizationName) params.organizationName = String(ctx.organization || ctx.org || ctx.organizationName);
+    if (ctx.industry) params.industry = Array.isArray(ctx.industry) ? ctx.industry : [String(ctx.industry)];
+    if (ctx.sector) params.industry = [String(ctx.sector)];
+    if (ctx.objectives) params.strategicObjectives = Array.isArray(ctx.objectives) ? ctx.objectives : [String(ctx.objectives)];
+    if (ctx.problemStatement) params.problemStatement = String(ctx.problemStatement);
+    if (ctx.investmentSize || ctx.totalInvestment) params.totalInvestment = String(ctx.investmentSize || ctx.totalInvestment);
+    if (ctx.riskTolerance) params.riskTolerance = String(ctx.riskTolerance);
+    if (ctx.targetPartner) params.targetPartner = String(ctx.targetPartner);
+    if (ctx.tier) params.tier = Array.isArray(ctx.tier) ? ctx.tier : [String(ctx.tier)];
+    // Spread any additional params the frontend may have passed
+    if (ctx.reportParams && typeof ctx.reportParams === 'object') {
+      Object.assign(params, ctx.reportParams);
+    }
+  }
+  // Ensure there's at least something from the message for engines to work with
+  if (!params.problemStatement && message) {
+    params.problemStatement = message.substring(0, 500);
+  }
+  return params;
+};
 
+// ── Summarise NSIL IntelligenceReport for prompt injection ──
+const summariseNSILReport = (report: Record<string, unknown>): string => {
+  const parts: string[] = [];
+  const rec = report.recommendation as Record<string, unknown> | undefined;
+  if (rec) {
+    parts.push(`**NSIL Verdict:** ${rec.action} (${rec.confidence}% confidence)`);
+    if (rec.summary) parts.push(`**Summary:** ${String(rec.summary).substring(0, 400)}`);
+    if (Array.isArray(rec.criticalActions) && rec.criticalActions.length) parts.push(`**Critical Actions:** ${(rec.criticalActions as string[]).slice(0, 5).join('; ')}`);
+    if (Array.isArray(rec.keyRisks) && rec.keyRisks.length) parts.push(`**Key Risks:** ${(rec.keyRisks as string[]).slice(0, 5).join('; ')}`);
+    if (Array.isArray(rec.keyOpportunities) && rec.keyOpportunities.length) parts.push(`**Key Opportunities:** ${(rec.keyOpportunities as string[]).slice(0, 5).join('; ')}`);
+    if (rec.ethicalGate) parts.push(`**Ethical Gate:** ${JSON.stringify(rec.ethicalGate)}`);
+  }
+  const reflexive = report.reflexive as Record<string, unknown> | undefined;
+  if (reflexive) {
+    parts.push(`\n### ── REFLEXIVE INTELLIGENCE (Layer 9) ──`);
+    for (const [engine, result] of Object.entries(reflexive)) {
+      if (result && typeof result === 'object') {
+        const r = result as Record<string, unknown>;
+        const summary = r.summary || r.headline || r.topInsight || r.result || JSON.stringify(r).substring(0, 200);
+        parts.push(`**${engine}:** ${String(summary).substring(0, 300)}`);
+      }
+    }
+  }
+  const autonomous = report.autonomous as Record<string, unknown> | undefined;
+  if (autonomous) {
+    parts.push(`\n### ── AUTONOMOUS INTELLIGENCE (Layer 6) ──`);
+    for (const [engine, result] of Object.entries(autonomous)) {
+      if (result && typeof result === 'object') {
+        const r = result as Record<string, unknown>;
+        const summary = r.summary || r.headline || r.topInsight || JSON.stringify(r).substring(0, 200);
+        parts.push(`**${engine}:** ${String(summary).substring(0, 300)}`);
+      }
+    }
+  }
+  if (Array.isArray(report.applicableInsights) && report.applicableInsights.length) {
+    parts.push(`\n**Learning Insights:** ${(report.applicableInsights as {insight?: string}[]).slice(0, 3).map(i => i.insight || JSON.stringify(i)).join('; ')}`);
+  }
+  parts.push(`**Components Run:** ${Array.isArray(report.componentsRun) ? (report.componentsRun as string[]).join(', ') : 'N/A'}`);
+  return parts.join('\n');
+};
+
+const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string) => `
+${deriveConsultantCapabilityProfile(message, context).brief}
+${brainPromptBlock ? `\n═══ FULL BRAIN INTELLIGENCE (44-Engine Analysis) ═══\n${brainPromptBlock}\n═══ END BRAIN INTELLIGENCE ═══\n` : ''}
+${nsilSummary ? `\n═══ NSIL 10-LAYER ANALYSIS ═══\n${nsilSummary}\n═══ END NSIL ═══\n` : ''}
 OVERLOOKED-FIRST INTELLIGENCE:
 ${JSON.stringify(buildOverlookedIntelligenceSnapshot(message, context), null, 2)}
 
@@ -1232,6 +1306,38 @@ router.post('/consultant', async (req: Request, res: Response) => {
       unresolvedGapCount: capabilityProfile.gaps.length,
       perceptionDelta
     });
+
+    // ═══ FULL BRAIN + NSIL WIRING ═══════════════════════════════════════════
+    // Run the 44-engine Brain and NSIL 10-layer pipeline in parallel.
+    // Both are wrapped in try/catch with timeouts so the consultant never stalls.
+    const reportParams = extractReportParamsFromContext(sanitizedMessage, sanitizedContextResult.context);
+    const readinessEstimate = strategicPipeline.readinessScore ?? 50;
+
+    let brainContext: BrainContext | null = null;
+    let nsilReport: Record<string, unknown> | null = null;
+
+    const BRAIN_TIMEOUT_MS = 12000;
+
+    try {
+      const [brainResult, nsilResult] = await Promise.allSettled([
+        Promise.race([
+          BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
+        ]),
+        Promise.race([
+          NSILIntelligenceHub.runFullAnalysis(reportParams),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
+        ]),
+      ]);
+      if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
+      else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
+      if (nsilResult.status === 'fulfilled') nsilReport = nsilResult.value as unknown as Record<string, unknown>;
+      else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
+    } catch (brainErr) {
+      console.warn('[Consultant] Brain/NSIL parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
+    }
+    // ═══ END BRAIN + NSIL WIRING ════════════════════════════════════════════
+
     if (shouldRequireOutputClarification(sanitizedMessage, intent)) {
       const clarificationText = buildOutputClarificationResponse();
 
@@ -1304,7 +1410,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
       });
     }
 
-    const prompt = buildConsultantPrompt(sanitizedMessage, intent, sanitizedContextResult.context, systemPrompt);
+    const prompt = buildConsultantPrompt(
+      sanitizedMessage,
+      intent,
+      sanitizedContextResult.context,
+      systemPrompt,
+      brainContext?.promptBlock ?? undefined,
+      nsilReport ? summariseNSILReport(nsilReport) : undefined
+    );
     const brokerResult = await runConsultantBroker(
       prompt,
       providerOrder,
@@ -1395,6 +1508,36 @@ router.post('/consultant', async (req: Request, res: Response) => {
       strategicPipeline,
       perceptionDelta,
       tribunal,
+      brainIntelligence: brainContext ? {
+        indices: brainContext.indices,
+        adversarial: brainContext.adversarial,
+        agentConsensus: brainContext.agentConsensus,
+        nsilAssessment: brainContext.nsilAssessment,
+        compositeScore: brainContext.compositeScore,
+        compliance: brainContext.compliance,
+        ifcAssessment: brainContext.ifcAssessment,
+        situationAnalysis: brainContext.situationAnalysis,
+        personaAnalysis: brainContext.personaAnalysis,
+        motivationAnalysis: brainContext.motivationAnalysis,
+        counterfactualAnalysis: brainContext.counterfactualAnalysis,
+        historicalParallels: brainContext.historicalParallels,
+        rankedPartners: brainContext.rankedPartners,
+        derivedIndices: brainContext.derivedIndices,
+        gateStatus: brainContext.gateStatus,
+        reactiveOpportunities: brainContext.reactiveOpportunities,
+        reactiveRisks: brainContext.reactiveRisks,
+        qualityGate: brainContext.qualityGate,
+        researchEcosystem: brainContext.researchEcosystem,
+        failureModeGovernance: brainContext.failureModeGovernance,
+        readiness: brainContext.readiness,
+        computedAt: brainContext.computedAt,
+      } : null,
+      nsilAnalysis: nsilReport ? {
+        recommendation: (nsilReport as Record<string, unknown>).recommendation,
+        componentsRun: (nsilReport as Record<string, unknown>).componentsRun,
+        reflexive: (nsilReport as Record<string, unknown>).reflexive ?? null,
+        autonomous: (nsilReport as Record<string, unknown>).autonomous ?? null,
+      } : null,
       control: controlDecision,
       learningHint,
       replayHash,
