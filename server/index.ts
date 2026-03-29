@@ -204,7 +204,11 @@ const isAllowedOrigin = (origin: string | undefined): boolean => {
   // In development, allow common managed hosting platforms
   if (isProduction) {
     const extraOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
-    return extraOrigins.some(allowed => origin === allowed || hostname === allowed);
+    if (extraOrigins.some(allowed => origin === allowed || hostname === allowed)) return true;
+    // Allow Railway and common PaaS domains in production
+    if (/\.railway\.app$/i.test(hostname)) return true;
+    if (/\.onrender\.com$/i.test(hostname)) return true;
+    return false;
   }
   // Dev-only: allow managed hosting platforms
   if (/\.(amazonaws|amplifyapp|elasticbeanstalk|awsapprunner)\.com$/i.test(hostname)) return true;
