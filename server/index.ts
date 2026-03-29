@@ -313,34 +313,42 @@ if (process.env.NODE_ENV === 'production') {
     path.join(process.cwd(), 'dist'),           // From project root
   ];
   
-  let distPath = possibleDistPaths[0];
+  console.log('[Static] __dirname:', __dirname);
+  console.log('[Static] cwd:', process.cwd());
+  console.log('[Static] Searching for dist/index.html in:', possibleDistPaths.map(p => p + '/index.html'));
+  
+  let distPath: string | null = null;
   for (const p of possibleDistPaths) {
-    if (fs.existsSync(path.join(p, 'index.html'))) {
+    const indexPath = path.join(p, 'index.html');
+    const exists = fs.existsSync(indexPath);
+    console.log(`[Static]   ${indexPath} -> ${exists ? 'FOUND' : 'missing'}`);
+    if (exists && !distPath) {
       distPath = p;
-      console.log('Serving static files from:', distPath);
-      break;
     }
   }
   
-  // DEBUG: optionally log static asset lookups (set DEBUG_STATIC=true in env to enable)
-  if (process.env.DEBUG_STATIC === 'true') {
-    app.use((req: Request, _res: Response, next: NextFunction) => {
-      if (req.path.startsWith('/assets') || req.path === '/' || req.path.endsWith('.js') || req.path.endsWith('.css') || req.path.endsWith('index.html')) {
-        const filePath = path.join(distPath, req.path === '/' ? 'index.html' : req.path);
-        const exists = fs.existsSync(filePath);
-        const stat = exists ? fs.statSync(filePath) : null;
-        console.log(`[STATIC DEBUG] ${req.method} ${req.path} -> ${filePath} exists=${exists} size=${stat ? stat.size : 0}`);
-      }
-      next();
+  if (distPath) {
+    console.log('[Static] Serving static files from:', distPath);
+    
+    app.use(express.static(distPath));
+    
+    // SPA fallback - serve index.html for all non-API routes
+    app.get('*', (_req: Request, res: Response) => {
+      res.sendFile(path.join(distPath!, 'index.html'));
     });
+  } else {
+    console.error('[Static] WARNING: dist/index.html not found in any expected location!');
+    console.error('[Static] The frontend will not be served. Run "npm run build:client" to create it.');
+    // List what IS in the expected directories for debugging
+    for (const p of possibleDistPaths) {
+      try {
+        const parent = path.dirname(p);
+        if (fs.existsSync(parent)) {
+          console.error(`[Static] Contents of ${parent}:`, fs.readdirSync(parent));
+        }
+      } catch { /* ignore */ }
+    }
   }
-  
-  app.use(express.static(distPath));
-  
-  // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
 }
 
 // Not found handler for unmatched routes
