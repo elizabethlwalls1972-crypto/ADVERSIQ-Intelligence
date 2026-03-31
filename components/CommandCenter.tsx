@@ -471,10 +471,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
                                 <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">An Automated Due-Diligence &amp; Intelligence Engine</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    This system wasn&rsquo;t built in a boardroom. It was built from a regional city&mdash;the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
+                                    This system wasn’t built in a boardroom. It was built from a regional city—the kind of place that gets overlooked, underestimated, and left off every shortlist. Advisory firms charge millions. AI platforms give you confident answers that fall apart when it matters. Neither speaks to what directly matters to the person sitting in the room, making the decision, carrying the risk.
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own&mdash;to prove that institutional-grade intelligence doesn&rsquo;t have to come with an institutional price tag.
+                                    Everyone is chasing the same thing: growth, resilience, a future that holds. So I built this on my own—to prove that institutional-grade intelligence doesn’t have to come with an institutional price tag.
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                     <div className="border-l-2 border-blue-500 pl-3">
@@ -482,24 +482,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <p className="text-xs text-slate-600 leading-relaxed">A Skeptic hunts for deal-killers. An Advocate finds hidden upside. An Accountant stress-tests the money. A Regulator checks sanctions and legal risk. An Operator asks if it can actually be built. Only what survives the debate reaches you.</p>
                                     </div>
                                     <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">It Catches What You Missed&mdash;Then Predicts What You&rsquo;ll Need Next</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. An anticipatory layer predicts follow-up needs before you ask&mdash;you mention a port in passing and it pre-loads supply chain risk, trade corridor data, and counterparty integrity checks automatically.</p>
+                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">It Catches What You Missed—Then Predicts What You’ll Need Next</h5>
+                                        <p className="text-xs text-slate-600 leading-relaxed">The system detects contradictions in your assumptions, spots what you keep avoiding, and surfaces the questions you should have been asking. An anticipatory layer predicts follow-up needs before you ask—you mention a port in passing and it pre-loads supply chain risk, trade corridor data, and counterparty integrity checks automatically.</p>
                                     </div>
                                     <div className="border-l-2 border-amber-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-0.5">Real Math. Not Confident Guesswork.</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">54+ proprietary formulas run thousands of simulated scenarios&mdash;probability of loss, risk-adjusted return, cost of doing nothing, partnership viability, and ecosystem shock resilience. A Cognitive Reasoning Engine strips every problem to its core truth. Every number traces to a formula. Every formula traces to your inputs.</p>
+                                        <p className="text-xs text-slate-600 leading-relaxed">54+ proprietary formulas run thousands of simulated scenarios—probability of loss, risk-adjusted return, cost of doing nothing, partnership viability, and ecosystem shock resilience. A Cognitive Reasoning Engine strips every problem to its core truth. Every number traces to a formula. Every formula traces to your inputs.</p>
                                     </div>
                                     <div className="border-l-2 border-purple-500 pl-3">
                                         <h5 className="text-sm font-bold text-slate-900 mb-0.5">Boardroom Documents. Not Chat Transcripts.</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Letters of Intent, term sheets, policy briefs, board packages&mdash;247+ document types with your actual scores and traceable reasoning. A governance tribunal issues a verdict: proceed, proceed with controls, or hold.</p>
+                                        <p className="text-xs text-slate-600 leading-relaxed">Letters of Intent, term sheets, policy briefs, board packages—247+ document types with your actual scores and traceable reasoning. A governance tribunal issues a verdict: proceed, proceed with controls, or hold.</p>
                                     </div>
                                 </div>
                                 <div className="pt-3 border-t border-slate-200">
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
-                                        <strong>What We Actually Built:</strong> A hybrid intelligence system that combines computational finance, adversarial reasoning, autonomous agents, quantum-inspired simulation, human cognitive modeling, and live global data infrastructure. One input triggers 50+ specialized engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modeling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives.
+                                        <strong>What We Actually Built:</strong> A hybrid intelligence system that combines computational finance, adversarial reasoning, autonomous agents, quantum-inspired simulation, human cognitive modeling, and live global data infrastructure. One input triggers 50+ specialized engines simultaneously—including quantum Monte Carlo risk simulation, Newton-Raphson financial modeling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives.
                                     </p>
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                        Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. This NSIL pipeline doesn&rsquo;t exist anywhere else.
+                                        Every claim is attacked before it’s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents—not summaries, not slides, not chat transcripts. This NSIL pipeline doesn’t exist anywhere else.
                                     </p>
                                 </div>
                             </div>
