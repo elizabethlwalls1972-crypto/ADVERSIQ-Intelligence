@@ -495,8 +495,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                 </div>
                                 <div className="pt-3 border-t border-slate-200">
+                                    <p className="text-xs text-slate-700 leading-relaxed font-medium mb-2">
+                                        <strong>What We Actually Built:</strong> A hybrid intelligence system that combines computational finance, adversarial reasoning, autonomous agents, quantum-inspired simulation, human cognitive modeling, and live global data infrastructure. One input triggers 50+ specialized engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modeling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives.
+                                    </p>
                                     <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                        People call it AI. It isn&rsquo;t&mdash;not in the way you think. It&rsquo;s a hybrid system: computational finance, adversarial reasoning, autonomous intelligence, quantum-inspired simulation, human cognitive modelling, and live-data infrastructure stitched into a single NSIL pipeline&mdash;ten layered gates from input validation to audience-adaptive output. One input triggers 50+ engines simultaneously&mdash;including quantum Monte Carlo risk simulation, Newton-Raphson financial modelling, cognitive bias quantification, and a 12-layer Cognitive Reasoning Engine that extracts core truths, reads emotional signals, runs pre-mortems, and rotates perspectives. Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. That pipeline does not exist anywhere else&hellip;
+                                        Every claim is attacked before it&rsquo;s defended. Every number traces to a formula. The surviving logic compiles itself into institutional documents&mdash;not summaries, not slides, not chat transcripts. This NSIL pipeline doesn&rsquo;t exist anywhere else.
                                     </p>
                                 </div>
                             </div>
