@@ -476,7 +476,43 @@ function findHistoricalParallels(text: string, country: string, sector: string):
 // DOCUMENT & LETTER RECOMMENDATIONS
 // ============================================================================
 
-function recommendDocuments(scores: CaseStudyAnalysis['scores'], sector: string): { documents: string[]; letters: string[] } {
+/**
+ * Only recommend documents/letters if userConfirmedDrafting is true.
+ * This prevents premature surfacing of draft/report options.
+ */
+
+/**
+ * Agentic recommendation logic:
+ * - If userConfirmedDrafting is true, return recommendations.
+ * - If agenticTrigger is true (system detects readiness), return a prompt to the user.
+ * - Otherwise, return nothing.
+ */
+function recommendDocuments(
+  scores: CaseStudyAnalysis['scores'],
+  sector: string,
+  userConfirmedDrafting: boolean = false,
+  agenticTrigger: boolean = false
+): { documents: string[]; letters: string[]; agenticPrompt?: string } {
+  // Agentic trigger: system detects readiness (e.g., high scores or workflow milestone)
+  const systemReady = (
+    scores.partnerMatchReadiness > 60 ||
+    scores.overallViability > 65 ||
+    scores.implementationReadiness > 60
+  );
+
+  if (!userConfirmedDrafting) {
+    if (agenticTrigger && systemReady) {
+      // System proactively prompts user
+      return {
+        documents: [],
+        letters: [],
+        agenticPrompt: 'Based on the analysis, would you like to draft a letter or report now? The system has identified sufficient readiness.'
+      };
+    }
+    // Do not recommend any documents or letters until user confirms or system triggers
+    return { documents: [], letters: [] };
+  }
+
   const documents: string[] = ['Executive Brief', 'Case Study Rewrite'];
 
   if (scores.financialViability > 30) documents.push('Financial Feasibility Summary');
