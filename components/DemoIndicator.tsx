@@ -9,7 +9,7 @@ interface DemoIndicatorProps {
 }
 
 const DemoIndicator: React.FC<DemoIndicatorProps> = ({
-  message = "Demo Mode - Real features coming soon",
+  message = "ADVOS Intelligence Platform — API key required for live AI",
   className = "",
   showIcon = true
 }) => {

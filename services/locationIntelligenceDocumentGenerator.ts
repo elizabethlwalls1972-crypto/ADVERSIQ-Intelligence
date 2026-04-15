@@ -282,13 +282,13 @@ class LocationIntelligenceDocumentGenerator {
     const econSection: DocumentSection = {
       title: 'Economic Profile & Analysis',
       level: 1,
-      content: narratives.economy.paragraphs[0]?.text || 'Economic data in progress...',
+      content: narratives.economy.paragraphs[0]?.text || 'Economic analysis derived from available regional data sources.',
       subsections: [
         {
           title: 'GDP & Growth',
           level: 2,
-          content: `GDP: ${profile.economics?.gdpLocal || 'Data verification in progress'} | ` +
-            `Growth Rate: ${profile.economics?.gdpGrowthRate || 'Data verification in progress'}`
+          content: `GDP: ${profile.economics?.gdpLocal || 'Not available for this location'} | ` +
+            `Growth Rate: ${profile.economics?.gdpGrowthRate || 'Not available for this location'}`
         },
         {
           title: 'Major Industries',
@@ -299,9 +299,9 @@ class LocationIntelligenceDocumentGenerator {
         {
           title: 'Employment & Labor',
           level: 2,
-          content: `Employment Rate: ${profile.economics?.employmentRate || 'Data pending'} | ` +
+          content: `Employment Rate: ${profile.economics?.employmentRate || 'Insufficient data'} | ` +
             `Labor Pool Score: ${profile.laborPool}/100 | ` +
-            `Population: ${profile.demographics?.population || 'Data verification in progress'}`
+            `Population: ${profile.demographics?.population || 'Not available for this location'}`
         },
         {
           title: 'Trade & Exports',
@@ -313,11 +313,11 @@ class LocationIntelligenceDocumentGenerator {
       dataTable: {
         headers: ['Economic Indicator', 'Value', 'Data Freshness'],
         rows: [
-          ['GDP', profile.economics?.gdpLocal || 'Pending', 'Current Year'],
-          ['Growth Rate', profile.economics?.gdpGrowthRate || 'Pending', 'Current Year'],
-          ['Employment', profile.economics?.employmentRate || 'Pending', 'Verification in Progress'],
-          ['Average Income', profile.economics?.avgIncome || 'Pending', 'Pending'],
-          ['Export Volume', profile.economics?.exportVolume || 'Pending', 'Recent Data']
+          ['GDP', profile.economics?.gdpLocal || 'N/A', 'Current Year'],
+          ['Growth Rate', profile.economics?.gdpGrowthRate || 'N/A', 'Current Year'],
+          ['Employment', profile.economics?.employmentRate || 'N/A', 'Latest Available'],
+          ['Average Income', profile.economics?.avgIncome || 'N/A', 'Latest Available'],
+          ['Export Volume', profile.economics?.exportVolume || 'N/A', 'Recent Data']
         ]
       }
     };
@@ -373,8 +373,8 @@ class LocationIntelligenceDocumentGenerator {
         {
           title: 'Transportation',
           level: 2,
-          content: `Airports: ${profile.infrastructure?.airports?.[0]?.name || 'Research in progress'} | ` +
-            `Seaports: ${profile.infrastructure?.seaports?.[0]?.name || 'Research in progress'} | ` +
+          content: `Airports: ${profile.infrastructure?.airports?.[0]?.name || 'No data available'} | ` +
+            `Seaports: ${profile.infrastructure?.seaports?.[0]?.name || 'No data available'} | ` +
             `Infrastructure Score: ${profile.infrastructureScore}/100`
         },
         {
@@ -386,7 +386,7 @@ class LocationIntelligenceDocumentGenerator {
         {
           title: 'Digital Infrastructure',
           level: 2,
-          content: `Internet Penetration: ${profile.infrastructure?.internetPenetration || 'Data pending'} | ` +
+          content: `Internet Penetration: ${profile.infrastructure?.internetPenetration || 'Not reported'} | ` +
             `Broadband Availability: Verify with telecom providers | ` +
             `Technology Support: Assess through business development organizations`
         }
@@ -394,10 +394,10 @@ class LocationIntelligenceDocumentGenerator {
       dataTable: {
         headers: ['Infrastructure Type', 'Status', 'Capacity/Quality'],
         rows: [
-          ['Airports', profile.infrastructure?.airports?.[0]?.name || 'Data unavailable', 'Regional'],
-          ['Seaports', profile.infrastructure?.seaports?.[0]?.name || 'Data unavailable', 'Regional'],
-          ['Power', profile.infrastructure?.powerCapacity || 'Data unavailable', 'Assessment required'],
-          ['Internet', profile.infrastructure?.internetPenetration || 'Data unavailable', 'Coverage expanding'],
+          ['Airports', profile.infrastructure?.airports?.[0]?.name || 'Not reported', 'Regional'],
+          ['Seaports', profile.infrastructure?.seaports?.[0]?.name || 'Not reported', 'Regional'],
+          ['Power', profile.infrastructure?.powerCapacity || 'Not reported', 'See utility provider'],
+          ['Internet', profile.infrastructure?.internetPenetration || 'Not reported', 'Coverage expanding'],
           ['Roads/Transit', 'City network', 'Varies by area']
         ]
       }

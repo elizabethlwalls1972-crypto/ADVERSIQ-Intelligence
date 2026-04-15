@@ -312,7 +312,7 @@ export class IntelligentDocumentGenerator {
 **${recommendation}**
 
 ### Autonomous AI Insight
-${topInsight ? `> "${topInsight.description}" - Confidence: ${topInsight.confidence || 'N/A'}%` : 'AI analysis in progress...'}
+${topInsight ? `> "${topInsight.description}" - Confidence: ${topInsight.confidence || 'N/A'}%` : 'No autonomous insights generated for this analysis scope. Additional data sources may yield deeper findings.'}
 
 ### Data Provenance
 - Composite scores derived from: World Bank GDP/FDI data, Exchange Rate API, REST Countries demographic data, regional baselines
@@ -335,7 +335,7 @@ ${topInsight ? `> "${topInsight.description}" - Confidence: ${topInsight.confide
     
     return `## Key Findings
 
-${findings || 'Analysis in progress. Key findings will be populated as data becomes available.'}
+${findings || 'No significant findings identified within the current data scope. Consider expanding input parameters or data sources for deeper analysis.'}
 
 ### Confidence Metrics
 - Economic Readiness: ${reportData.confidenceScores?.economicReadiness || 'Pending'}%
@@ -387,12 +387,12 @@ ${insights.filter(i => i.type === 'warning' || i.type === 'risk').slice(0, 3).ma
 |--------------|-------|------------------|
 | Political/Regulatory | ${reportData.confidenceScores?.politicalStability && reportData.confidenceScores.politicalStability < 50 ? '⚠️ High' : '✅ Moderate'} | Action Required |
 | Economic | ${reportData.confidenceScores?.economicReadiness && reportData.confidenceScores.economicReadiness < 50 ? '⚠️ High' : '✅ Moderate'} | Monitoring |
-| Operational | ⚠️ To Be Assessed | Pending |
-| Financial | ⚠️ To Be Assessed | Pending |
+| Operational | ⚠️ Requires Field Assessment | Review Needed |
+| Financial | ⚠️ Requires Financial Modeling | Review Needed |
 | Reputational | ✅ Low | Addressed |
 
 ### Key Risk Factors
-${reportData.risks?.content || 'Risk assessment in progress. Detailed risk factors will be populated upon completion of analysis.'}
+${reportData.risks?.content || 'Detailed risk factors were not identified within the available data. A dedicated risk assessment with local market intelligence is recommended.'}
 
 ### Recommended Risk Mitigation
 1. Establish local advisory board for political/regulatory guidance
@@ -1066,7 +1066,7 @@ No synthetic or randomly generated data is used in scoring.`;
 
 Content for this section is being generated based on available data.
 
-*This section will be enhanced as more information becomes available.*`;
+*Expand input parameters or data sources to enrich this section with deeper analysis.*`;
   }
 
   // ═══════════════════════════════════════════════════════════════════════════════
@@ -1097,7 +1097,7 @@ Content for this section is being generated based on available data.
       return {
         type: 'depth',
         original: section.content,
-        enhanced: section.content + '\n\n*Additional analysis and context would strengthen this section. Consider adding specific examples, data points, and actionable recommendations.*',
+        enhanced: section.content + '\n\n*This section would benefit from additional data points, specific examples, and actionable recommendations to support executive decision-making.*',
         reason: 'Section lacks sufficient depth for executive decision-making',
         impact: 25
       };
