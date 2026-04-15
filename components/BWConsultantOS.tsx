@@ -7875,37 +7875,26 @@ CRITICAL RULES:
         </div>
       )}
       <div className="h-screen flex flex-col">
-        {/* Blue Banner Header */}
-        <div
-          className="relative overflow-hidden"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&h=300&fit=crop&q=80)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-blue-900/90 to-slate-900/95" />
+        {/* Clean Header */}
+        <div className="bg-white border-b border-slate-200">
 
           {/* Top Row: Brand + Utility Controls */}
-          <div className="relative z-10 px-4 md:px-6 pt-3 md:pt-4 pb-2 flex items-center justify-between">
-            <div className="flex items-center gap-2 md:gap-3 min-w-0">
-              <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-white/15 backdrop-blur flex items-center justify-center border border-white/20 flex-shrink-0">
-                <Bot size={isMobile ? 16 : 20} className="text-white" />
-              </div>
+          <div className="px-4 md:px-8 pt-4 md:pt-5 pb-3 flex items-center justify-between">
+            <div className="flex items-center gap-3 min-w-0">
               <div className="min-w-0">
-                <h1 className="text-base md:text-lg font-semibold text-white tracking-wide leading-tight truncate">BW Consultant</h1>
-                <span className="text-blue-300/70 text-[9px] md:text-[10px] font-medium uppercase tracking-widest hidden sm:inline">NSIL Agentic Runtime &bull; Case Study Builder</span>
+                <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em]">ADVOS</p>
+                <h1 className="text-lg md:text-xl font-light text-slate-900 tracking-wide leading-tight truncate">Decision Verification System</h1>
               </div>
             </div>
 
             <div className="flex items-center gap-1.5 md:gap-2">
               {/* Language Selector */}
-              <div className="flex items-center gap-1 px-2 py-1.5 md:px-2.5 rounded-md bg-white/10 border border-white/15 backdrop-blur">
-                <Languages size={13} className="text-blue-200/70" />
+              <div className="flex items-center gap-1 px-2.5 py-1.5 border border-slate-200 bg-white">
+                <Languages size={13} className="text-slate-400" />
                 <select
                   value={locale}
                   onChange={(e) => setLocale(e.target.value)}
-                  className="bg-transparent text-white text-xs font-medium focus:outline-none cursor-pointer"
+                  className="bg-transparent text-slate-700 text-xs font-medium focus:outline-none cursor-pointer"
                   title="Output locale / language"
                 >
                   {LOCALES.map((l) => (
@@ -7917,7 +7906,7 @@ CRITICAL RULES:
               {/* Live Research */}
               <button
                 onClick={() => setShowPilotWindow((prev) => !prev)}
-                className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
               >
                 <Globe size={13} />
                 <span className="hidden sm:inline">{showPilotWindow ? 'Close Research' : 'Live Research'}</span>
@@ -7927,7 +7916,7 @@ CRITICAL RULES:
               {isMobile && (
                 <button
                   onClick={() => setShowMobileSidebar(prev => !prev)}
-                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                  className="flex items-center gap-1.5 px-2 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
                 >
                   <FileText size={13} />
                 </button>
@@ -7938,7 +7927,7 @@ CRITICAL RULES:
                 <div className="relative z-20">
                   <button
                     onClick={() => setShowToolsMenu(prev => !prev)}
-                    className="flex items-center gap-1.5 px-2 md:px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-medium border border-white/15 backdrop-blur transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
                   >
                     <Briefcase size={13} />
                     <span className="hidden sm:inline">Tools</span>
@@ -7973,28 +7962,28 @@ CRITICAL RULES:
           </div>
 
           {/* Bottom Row: Phase Steps + Final Report */}
-          <div className="relative z-10 px-4 md:px-6 pb-3 pt-1 flex items-center justify-between">
-            <div className="hidden md:flex items-center gap-0.5 bg-black/20 rounded-lg p-1 backdrop-blur">
+          <div className="px-4 md:px-8 pb-3 pt-1 flex items-center justify-between">
+            <div className="hidden md:flex items-center gap-0.5 border border-slate-200 p-1">
               {Object.entries(phaseLabels).map(([phase, info], idx) => {
                 const isActive = currentPhase === phase;
                 const isCompleted = Object.keys(phaseLabels).indexOf(currentPhase) > idx;
                 return (
                   <div
                     key={phase}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-default ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-all cursor-default ${
                       isActive
-                        ? 'bg-white text-blue-900 shadow-sm'
+                        ? 'bg-slate-900 text-white'
                         : isCompleted
-                          ? 'text-blue-200 bg-white/10'
-                          : 'text-blue-400/50'
+                          ? 'text-slate-600 bg-slate-50'
+                          : 'text-slate-400'
                     }`}
                   >
-                    <span className={`w-4.5 h-4.5 text-[10px] font-bold rounded-full inline-flex items-center justify-center ${
+                    <span className={`w-4.5 h-4.5 text-[10px] font-bold inline-flex items-center justify-center ${
                       isActive
                         ? 'bg-blue-600 text-white'
                         : isCompleted
-                          ? 'bg-blue-400/30 text-blue-200'
-                          : 'bg-white/10 text-blue-400/40'
+                          ? 'bg-slate-300 text-slate-600'
+                          : 'bg-slate-200 text-slate-400'
                     }`}>
                       {idx + 1}
                     </span>
@@ -8006,7 +7995,7 @@ CRITICAL RULES:
 
             <button
               onClick={() => setShowFinalReport(true)}
-              className={`flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-md text-white text-xs font-semibold shadow-lg border transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold border transition-all ${
                 generatedDocuments.length > 0
                   ? 'bg-green-600/90 hover:bg-green-500 shadow-green-900/20 border-green-400/50 animate-pulse'
                   : 'bg-amber-500/90 hover:bg-amber-400 shadow-amber-900/20 border-amber-400/50'
@@ -8021,26 +8010,25 @@ CRITICAL RULES:
             {/* Mobile phase indicator */}
             {isMobile && (
               <div className="flex items-center gap-1 md:hidden">
-                <span className="text-[10px] text-blue-200 font-medium uppercase">{phaseLabels[currentPhase]?.label || currentPhase}</span>
-                <span className="text-[9px] text-blue-400/50">({Object.keys(phaseLabels).indexOf(currentPhase) + 1}/{Object.keys(phaseLabels).length})</span>
+                <span className="text-[10px] text-slate-500 font-medium uppercase">{phaseLabels[currentPhase]?.label || currentPhase}</span>
+                <span className="text-[9px] text-slate-400">({Object.keys(phaseLabels).indexOf(currentPhase) + 1}/{Object.keys(phaseLabels).length})</span>
               </div>
             )}
           </div>
 
-          {/* Subtle bottom border glow */}
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent z-10" />
+          <div className="border-b border-slate-200" />
         </div>
 
         {/* Main Content */}
         <div className="flex-1 flex overflow-hidden relative">
           {/* Chat Panel */}
-          <div className="flex-1 flex flex-col bg-stone-50 min-w-0">
+          <div className="flex-1 flex flex-col bg-white min-w-0">
             {/* Messages */}
-            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 md:p-6 space-y-3 md:space-y-4">
+            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-4 md:space-y-6">
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-center">
-                  <Bot size={40} className="text-blue-200 mb-4" />
-                  <h3 className="text-lg font-semibold text-slate-700 mb-2">How can I help you today?</h3>
+                  <Bot size={40} className="text-slate-300 mb-4" />
+                  <h3 className="text-lg font-light text-slate-900 mb-2">How can I help you today?</h3>
                   <p className="text-sm text-slate-500 max-w-md leading-relaxed mb-6">
                     I'll guide you through building a comprehensive case study and generate the professional documents you need.
                   </p>
@@ -8055,9 +8043,9 @@ CRITICAL RULES:
                         key={idx}
                         type="button"
                         onClick={() => setInputValue(hint.example)}
-                        className="text-left px-4 py-3 bg-white border border-stone-200 hover:border-blue-400 hover:shadow transition-all group"
+                        className="text-left px-4 py-3 bg-white border border-slate-200 hover:border-blue-600 transition-all group"
                       >
-                        <p className="text-sm font-medium text-slate-700 group-hover:text-blue-700">{hint.label}</p>
+                        <p className="text-sm font-medium text-slate-900 group-hover:text-blue-700">{hint.label}</p>
                         <p className="text-xs text-slate-400">{hint.example}</p>
                       </button>
                     ))}
@@ -8073,14 +8061,14 @@ CRITICAL RULES:
                       <div
                         className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
                           msg.role === 'user'
-                            ? 'bg-blue-600 text-white rounded-lg'
-                            : 'bg-white border border-stone-200 text-slate-900 rounded-lg shadow-sm'
+                            ? 'bg-slate-900 text-white'
+                            : 'bg-slate-50 border border-slate-200 text-slate-900'
                         }`}
                       >
                         {msg.role === 'assistant' && (
                           <div className="flex items-center gap-1.5 mb-2">
-                            <span className="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                            <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">BW Consultant</span>
+                            <span className="inline-block w-1.5 h-1.5 bg-blue-600" />
+                            <span className="text-blue-600 text-xs font-bold uppercase tracking-[0.15em]">ADVOS</span>
                           </div>
                         )}
                         <div className={`whitespace-pre-wrap ${msg.role === 'assistant' ? 'text-[13px] leading-[1.7] text-slate-800' : ''}`}>
@@ -8156,13 +8144,13 @@ CRITICAL RULES:
                   
                   {isLoading && (
                     <div className="flex justify-start">
-                      <div className="px-5 py-4 bg-white border border-stone-200 rounded-lg shadow-sm flex items-center gap-4">
+                      <div className="px-5 py-4 bg-slate-50 border border-slate-200 flex items-center gap-4">
                         <ThinkingOrb />
                         <div className="flex flex-col">
                           <span className="text-[13px] font-medium text-slate-700">
                             {isStreamingResponse ? 'Streaming response...' : currentPhase === 'generation' ? 'Generating documents...' : 'Processing...'}
                           </span>
-                          <span className="text-[11px] text-slate-400 mt-0.5">BW Consultant is thinking</span>
+                          <span className="text-[11px] text-slate-400 mt-0.5">ADVOS is thinking</span>
                         </div>
                       </div>
                     </div>
@@ -8263,11 +8251,11 @@ CRITICAL RULES:
 
             {/* Uploaded Files Preview */}
             {uploadedFiles.length > 0 && (
-              <div className="px-6 py-2 border-t border-stone-200 bg-white">
+              <div className="px-8 py-2 border-t border-slate-200 bg-white">
                 <p className="text-xs text-slate-500 mb-1">Attached files:</p>
                 <div className="flex flex-wrap gap-2">
                   {uploadedFiles.map((file, i) => (
-                    <span key={i} className="text-xs bg-blue-50 text-blue-700 px-2 py-1 border border-blue-200 flex items-center gap-1">
+                    <span key={i} className="text-xs bg-slate-50 text-slate-700 px-2 py-1 border border-slate-200 flex items-center gap-1">
                       <Paperclip size={12} />
                       {file.name}
                       <button 
@@ -8283,11 +8271,11 @@ CRITICAL RULES:
             )}
 
             {/* Input Area */}
-            <div className="px-3 py-2 border-t border-stone-200 bg-white">
+            <div className="px-4 md:px-8 py-3 border-t border-slate-200 bg-white">
               <div className="flex items-end gap-2 max-w-4xl mx-auto">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-3 bg-stone-100 hover:bg-stone-200 text-slate-600 border border-stone-300 transition-all"
+                  className="p-3 bg-slate-50 hover:bg-slate-100 text-slate-600 border border-slate-200 transition-colors"
                   title="Upload documents"
                 >
                   <Paperclip size={20} />
@@ -8305,10 +8293,10 @@ CRITICAL RULES:
                   type="button"
                   onClick={toggleVoiceInput}
                   title={isListening ? 'Stop listening' : 'Speak your message'}
-                  className={`p-3 border transition-all flex-shrink-0 ${
+                  className={`p-3 border transition-colors flex-shrink-0 ${
                     isListening
                       ? 'bg-red-500 text-white border-red-600 animate-pulse'
-                      : 'bg-stone-100 hover:bg-stone-200 text-slate-600 border-stone-300'
+                      : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'
                   }`}
                 >
                   {isListening ? <MicOff size={20} /> : <Mic size={20} />}
@@ -8322,10 +8310,10 @@ CRITICAL RULES:
                     setVoiceEnabled(next);
                     ttsService.setEnabled(next);
                   }}
-                  className={`p-3 border transition-all flex-shrink-0 flex items-center gap-1 ${
+                  className={`p-3 border transition-colors flex-shrink-0 flex items-center gap-1 ${
                     voiceEnabled
-                      ? 'bg-blue-50 text-blue-600 border-blue-300 hover:bg-blue-100'
-                      : 'bg-stone-100 text-slate-400 border-stone-300 hover:bg-stone-200'
+                      ? 'bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100'
+                      : 'bg-slate-50 text-slate-400 border-slate-200 hover:bg-slate-100'
                   }`}
                 >
                   {voiceEnabled ? (
@@ -8356,17 +8344,17 @@ CRITICAL RULES:
                         ? "Select documents or describe what you need..."
                         : "Share more details or ask questions..."
                   }
-                  className="flex-1 resize-none border border-stone-300 rounded-lg px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[40px] max-h-[120px] leading-normal"
+                  className="flex-1 resize-none border border-slate-200 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 min-h-[44px] max-h-[120px] leading-normal"
                   rows={1}
                 />
                 <button
                   data-send-btn
                   onClick={handleSend}
                   disabled={(!inputValue.trim() && uploadedFiles.length === 0) || isLoading}
-                  className={`px-4 md:px-6 py-3 text-sm font-medium transition-all flex items-center gap-2 ${
+                  className={`px-6 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
                     (!inputValue.trim() && uploadedFiles.length === 0) || isLoading
-                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
+                      : 'bg-slate-900 text-white hover:bg-slate-800'
                   }`}
                 >
                   {isLoading ? (
@@ -8624,9 +8612,9 @@ CRITICAL RULES:
             </div>
 
             {/* NSIL Footer */}
-            <div className="px-4 py-2 bg-blue-50 border-t border-blue-200 text-[10px] text-blue-700 flex items-center justify-between">
+            <div className="px-4 md:px-8 py-2.5 bg-white border-t border-slate-200 text-[10px] text-slate-500 flex items-center justify-between">
               <span>
-                <strong>NSIL Agentic Runtime</strong> - Sovereign-grade intelligence • Real-time analysis • Locale: {locale.toUpperCase()}
+                <strong className="text-slate-700">ADVOS</strong> &mdash; Adversarial Decision Verification OS &bull; Locale: {locale.toUpperCase()}
               </span>
               <span className="text-[10px] text-slate-400">
                 Learning: {OutcomeLearningService.getState().records.length} sessions logged
@@ -8642,16 +8630,16 @@ CRITICAL RULES:
             isMobile
               ? `fixed top-0 right-0 z-30 h-full w-[85vw] max-w-[384px] shadow-2xl transition-transform duration-300 ${showMobileSidebar ? 'translate-x-0' : 'translate-x-full'}`
               : 'w-96'
-          } border-l border-stone-200 bg-white flex flex-col overflow-y-auto`}>
+          } border-l border-slate-200 bg-white flex flex-col overflow-y-auto`}>
             {isMobile && (
               <button onClick={() => setShowMobileSidebar(false)} className="absolute top-3 right-3 z-10 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600">
                 <X size={16} />
               </button>
             )}
-            <div className="p-4 border-b border-stone-200 bg-slate-50">
-              <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <FileText size={16} className="text-blue-600" />
-                BW Consultant - Live Case Study Workspace
+            <div className="p-4 border-b border-slate-200 bg-white">
+              <h2 className="text-xs font-bold text-blue-600 uppercase tracking-[0.15em] flex items-center gap-2">
+                <FileText size={14} className="text-blue-600" />
+                Live Case Study Workspace
               </h2>
               <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
                 <div className="flex flex-wrap items-center gap-2">
