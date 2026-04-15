@@ -190,6 +190,9 @@ export interface CapabilityAssessment {
 }
 
 export interface ReportParameters {
+  // Domain Mode
+  domainMode?: 'regional-development' | 'corporate-strategy' | 'legal-advisory' | 'product-strategy' | 'financial-analysis' | 'policy-governance' | 'general-intelligence';
+
   // Identity
   reportName: string;
   userName: string;

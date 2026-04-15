@@ -28,6 +28,7 @@ import { BrainIntegrationService, type BrainContext } from '../../services/Brain
 import { NSILIntelligenceHub } from '../../services/NSILIntelligenceHub.js';
 import { validateBody, aiValidation } from '../middleware/validate.js';
 import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
+import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -87,8 +88,9 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
 
   return result.text;
 };
-// System instruction for the AI
-const SYSTEM_INSTRUCTION = `
+// System instruction for the AI — domain-switchable
+// Legacy default kept for backward compatibility; active instruction resolved via domainMode.
+const SYSTEM_INSTRUCTION_DEFAULT = `
 You are "BWGA Intelligence AI" (NEXUS_OS_v4.1), the world's premier Economic Intelligence Operating System.
 You are NOT a standard chatbot. You are a deterministic economic modeling engine.
 
@@ -123,8 +125,15 @@ CONTEXT:
 - You operate to close the "100-Year Confidence Gap".
 - Your output should feel like a high-level intelligence dossier backed by real data.
 `;
+const SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_DEFAULT;
 
-const CONSULTANT_SYSTEM_INSTRUCTION = `
+/** Resolve the system instruction for a given domain mode */
+const _getSystemInstructionForDomain = (domainMode?: DomainMode): string => {
+  if (!domainMode || domainMode === 'regional-development') return SYSTEM_INSTRUCTION_DEFAULT;
+  return getDomainSystemInstruction(domainMode);
+};
+
+const CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT = `
 You are BW Consultant AI for Nexus Intelligence OS v7.0.
 
 Operating mode:
@@ -151,12 +160,23 @@ Response quality rules:
 - If context is incomplete, state assumptions briefly.
 - Preserve professional tone suitable for executive and government stakeholders.
 `;
+const CONSULTANT_SYSTEM_INSTRUCTION = CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT;
+
+/** Resolve the consultant system instruction for a given domain mode */
+const getConsultantInstructionForDomain = (domainMode?: DomainMode): string => {
+  if (!domainMode || domainMode === 'regional-development') return CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT;
+  return getDomainConsultantInstruction(domainMode);
+};
 
 type ConsultantIntent =
   | 'report_build'
   | 'information_lookup'
   | 'strategy_advice'
   | 'risk_assessment'
+  | 'financial_analysis'
+  | 'legal_analysis'
+  | 'product_analysis'
+  | 'policy_analysis'
   | 'clarification'
   | 'general';
 
@@ -168,6 +188,18 @@ const detectConsultantIntent = (message: string): ConsultantIntent => {
   }
   if (/\bfind\b|\bsearch\b|\bsource\b|\bevidence\b|\bcitation\b|\bdata\b/.test(text)) {
     return 'information_lookup';
+  }
+  if (/\bvaluation\b|\bdcf\b|\birr\b|\bnpv\b|\bportfolio\b|\blbo\b|\bwacc\b|\bfinancial model\b|\bbalance sheet\b/.test(text)) {
+    return 'financial_analysis';
+  }
+  if (/\blegal\b|\bjurisdiction\b|\bcourt\b|\blitigation\b|\bcontract\b|\bclause\b|\bprecedent\b|\bstatute\b/.test(text)) {
+    return 'legal_analysis';
+  }
+  if (/\bproduct[\s-]market fit\b|\bgo[\s-]to[\s-]market\b|\bpricing\b|\buser segment\b|\bfeature\b|\blaunch\b|\bsaas\b|\bchurn\b|\bretention\b/.test(text)) {
+    return 'product_analysis';
+  }
+  if (/\bpolicy\b|\bgovernance\b|\binstitutional\b|\breform\b|\bstakeholder.*map\b|\bconstituency\b|\blegislat\b/.test(text)) {
+    return 'policy_analysis';
   }
   if (/\brisk\b|\bthreat\b|\bcompliance\b|\bregulator\b|\baudit\b/.test(text)) {
     return 'risk_assessment';
@@ -192,6 +224,14 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
       return 'Focus on risk exposure, controls, assumptions, and mitigation sequence.';
     case 'strategy_advice':
       return 'Focus on decision options, trade-offs, and a recommended path with rationale.';
+    case 'financial_analysis':
+      return 'Focus on quantitative financial analysis: valuation, cash flow modelling, risk-return metrics, and scenario outputs.';
+    case 'legal_analysis':
+      return 'Focus on structured legal analysis: elements, jurisdictional considerations, precedent patterns, and compliance gaps.';
+    case 'product_analysis':
+      return 'Focus on product-market dynamics: fit scoring, competitive positioning, pricing elasticity, and go-to-market options.';
+    case 'policy_analysis':
+      return 'Focus on policy impact assessment: stakeholder mapping, institutional readiness, implementation feasibility, and distributional effects.';
     case 'clarification':
       return 'Use plain language to clarify user intent and ask one concise clarifying question if needed.';
     default:
@@ -799,7 +839,7 @@ OUTPUT FORMAT:
   return truncateToTokenBudget(raw, MAX_PROMPT_TOKENS);
 };
 
-const invokeConsultantWithTogether = async (prompt: string): Promise<string> => {
+const invokeConsultantWithTogether = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const key = getTogetherKey();
   if (!key) {
     throw new Error('Together.ai unavailable: TOGETHER_API_KEY missing');
@@ -814,7 +854,7 @@ const invokeConsultantWithTogether = async (prompt: string): Promise<string> => 
     body: JSON.stringify({
       model: TOGETHER_MODEL_ID,
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
       max_tokens: 1800,
@@ -834,7 +874,7 @@ const invokeConsultantWithTogether = async (prompt: string): Promise<string> => 
   return text;
 };
 
-const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
+const invokeConsultantWithGroq = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const key = getGroqKey();
   if (!key) {
     throw new Error('Groq unavailable: GROQ_API_KEY missing');
@@ -849,7 +889,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
     body: JSON.stringify({
       model: GROQ_MODEL_ID,
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
       max_tokens: 1800,
@@ -872,7 +912,7 @@ const invokeConsultantWithGroq = async (prompt: string): Promise<string> => {
 
 
 
-const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
+const invokeConsultantWithOpenAI = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
     throw new Error('OpenAI unavailable: OPENAI_API_KEY missing');
@@ -891,7 +931,7 @@ const invokeConsultantWithOpenAI = async (prompt: string): Promise<string> => {
     body: JSON.stringify({
       model: 'gpt-4.1-mini',
       messages: [
-        { role: 'system', content: CONSULTANT_SYSTEM_INSTRUCTION },
+        { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt }
       ],
       temperature: 0.4,
@@ -917,7 +957,8 @@ const runConsultantBroker = async (
   prompt: string,
   order: ConsultantProvider[],
   timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS,
-  providerAvailability?: Partial<Record<ConsultantProvider, boolean>>
+  providerAvailability?: Partial<Record<ConsultantProvider, boolean>>,
+  consultantInstruction?: string
 ): Promise<{ text: string; provider: ConsultantProvider; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
 
@@ -929,9 +970,9 @@ const runConsultantBroker = async (
 
     try {
       const invoker =
-        provider === 'groq'    ? invokeConsultantWithGroq(prompt)
-        : provider === 'together' ? invokeConsultantWithTogether(prompt)
-        :                          invokeConsultantWithOpenAI(prompt);
+        provider === 'groq'    ? invokeConsultantWithGroq(prompt, consultantInstruction)
+        : provider === 'together' ? invokeConsultantWithTogether(prompt, consultantInstruction)
+        :                          invokeConsultantWithOpenAI(prompt, consultantInstruction);
       const text = await withTimeout(
         invoker,
         timeoutMs,
@@ -1125,6 +1166,14 @@ router.post('/consultant', async (req: Request, res: Response) => {
     if (!message || typeof message !== 'string') {
       return res.status(400).json({ error: 'message is required' });
     }
+
+    // Extract domain mode from context (set by Gateway intake) or request body
+    const rawDomainMode = (context && typeof context === 'object' && (context as Record<string, unknown>).domainMode)
+      || req.body.domainMode;
+    const domainMode: DomainMode | undefined = typeof rawDomainMode === 'string'
+      ? rawDomainMode as DomainMode
+      : undefined;
+    const activeDomainInstruction = getConsultantInstructionForDomain(domainMode);
 
     const normalizedTaskType: ConsultantTaskType = (typeof taskType === 'string' ? taskType : 'general_assist') as ConsultantTaskType;
     if (!CONSULTANT_ALLOWED_TASK_TYPES.has(normalizedTaskType)) {
@@ -1340,7 +1389,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
         anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
-      }
+      },
+      activeDomainInstruction
     );
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 

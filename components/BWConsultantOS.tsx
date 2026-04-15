@@ -178,6 +178,7 @@ interface CaseStudy {
   additionalContext: string[];
   uploadedDocuments: string[];
   aiInsights: string[];
+  domainMode?: string;
 }
 
 type CasePhase = 'intake' | 'discovery' | 'analysis' | 'recommendations' | 'generation';
@@ -935,9 +936,11 @@ interface BWConsultantOSProps {
     research?: object | null;
   } | null;
   onInitialContextHandled?: () => void;
+  /** Active intelligence domain mode — passed from Gateway intake */
+  domainMode?: string;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -1017,6 +1020,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     uploadedDocuments: [],
     aiInsights: []
   });
+
+  // Sync domainMode from Gateway params into caseStudy
+  useEffect(() => {
+    if (propDomainMode) {
+      setCaseStudy(prev => ({ ...prev, domainMode: propDomainMode }));
+    }
+  }, [propDomainMode]);
 
   // Preload browser voices (Chrome loads them async) and sync ttsService on unmount
   useEffect(() => {
@@ -3671,7 +3681,8 @@ ${agentRegistry.current.toManifest()}`;
           caseStudy,
           consultantCaseBrief,
           consultantGateReady,
-          consultantGateMissing
+          consultantGateMissing,
+          domainMode: caseStudy.domainMode || 'regional-development'
         },
         envelope: {
           requestId: crypto.randomUUID(),
@@ -3741,7 +3752,7 @@ ${agentRegistry.current.toManifest()}`;
       const systemPrompt = buildConsultantPrompt(userInput, context);
       const reqBody = JSON.stringify({
         message: userInput,
-        context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing },
+        context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, domainMode: caseStudy.domainMode || 'regional-development' },
         envelope: {
           requestId: crypto.randomUUID(),
           timestamp: new Date().toISOString(),

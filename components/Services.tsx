@@ -108,28 +108,28 @@ export const Services: React.FC = () => {
                 {/* The Narrative */}
                 <div className="order-1 lg:order-2">
                     <h2 className="text-4xl md:text-5xl font-serif font-bold text-bw-navy mb-6 leading-tight">
-                        Connecting the <br/>
-                        <span className="text-stone-400">Unconnected.</span>
+                        Verifying the <br/>
+                        <span className="text-stone-400">Unverified.</span>
                     </h2>
                     
                     <div className="prose prose-lg text-stone-600 leading-[1.85] space-y-7 text-base md:text-lg">
                         <p>
-                            Regional economies face a critical visibility crisis. They hold immense value - latent assets, skilled labor, and rapid growth potential - but lack the structured data to prove it to the world.
+                            There are trillions of dollars in economic potential locked away in overlooked places &mdash; regions, industries, and markets that global capital consistently misprices because their reality has never been formally verified. The problem was never the markets. It was the intelligence layer.
                         </p>
                         <p>
-                            This system was built from the field up. Over 16 months of boots-on-the-ground observation and synthesis, we traced the repeating failure modes of regional development through 200 years of global business and growth - then converted those lessons into a machine-operable intelligence layer.
+                            This system was built from the field up. Over 16 months of boots-on-the-ground observation and synthesis, we traced the repeating failure modes across 200 years of global business and growth - then converted those lessons into a machine-operable intelligence layer.
                         </p>
                         <p>
-                            We built the <strong>Regional Intelligence Core</strong> to solve this specific inequity. It is not a tool for extraction; it is an engine for connection. By translating local reality into global metrics, we ensure that no viable opportunity is lost to translation errors.
+                            We built the <strong>Nexus Strategic Intelligence Layer (NSIL)</strong> to solve this specific inequity. It is not a tool for extraction; it is an engine for connection. By translating complex reality into structured, auditable intelligence, we ensure that no viable opportunity is lost to translation errors.
                         </p>
                         <p>
                             Most systems only see the bee and the flower - the visible transaction. This architecture is designed to see the entire meadow: the ecosystem context, the execution constraints, and the hidden connections that determine whether a strategy survives contact with reality.
                         </p>
                         <p>
-                            This system is <strong>100% dedicated to regional development</strong>. It provides the same level of analytical rigor found in global financial centers, but is purpose-built to navigate the complexities of regional economic growth.
+                            This system is the world&rsquo;s first <strong>Adversarial Decision Verification OS</strong>. Five independent AI minds argue every claim. A SAT solver catches contradictions. Monte Carlo simulations stress-test every projection. It provides the same level of analytical rigour found in elite consulting firms, but is purpose-built to formally verify decisions across any domain &mdash; from regional development to corporate strategy, legal advisory, financial analysis, and beyond.
                         </p>
                         <p>
-                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPI-driven Matchmaking</strong>, <strong>Document Suite</strong> generation, <strong>Scenario Simulation</strong>, <strong>Early-Warning Risk Alerts</strong>, <strong>Due Diligence Intelligence</strong>, <strong>Relocation & TCO Comparison</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
+                            Operational capabilities include <strong>Partner Discovery</strong>, <strong>SPI-driven Matchmaking</strong>, <strong>240+ Document Types</strong>, <strong>Monte Carlo Simulation</strong>, <strong>Adversarial Debate</strong>, <strong>Causal Reasoning</strong>, <strong>Due Diligence Intelligence</strong>, and <strong>NSIL/API Export</strong> for downstream workflows.
                         </p>
                     </div>
 
@@ -145,16 +145,16 @@ export const Services: React.FC = () => {
                             </span>
                         </div>
                         <p className="text-xs text-stone-500 leading-relaxed italic mb-4">
-                            "We architected this system to serve the 'blind spots' of the global economy. It is explicitly designed to calculate value in high-complexity, high-growth regional markets where standard tools fail."
+                            "We architected this system to formally verify decisions in the 'blind spots' of the global economy. Five AI minds argue. A SAT solver catches contradictions. Nothing reaches you until it has been stress-tested, debated, and proven &mdash; across any domain, any market, any decision."
                         </p>
                         <div className="flex gap-6 pt-3 border-t border-stone-200">
                             <div>
                                 <span className="block text-[10px] font-bold text-stone-400 uppercase">Target Markets</span>
-                                <span className="text-xs font-bold text-bw-navy">Emerging & Regional</span>
+                                <span className="text-xs font-bold text-bw-navy">All Domains & Markets</span>
                             </div>
                             <div>
                                 <span className="block text-[10px] font-bold text-stone-400 uppercase">Mission</span>
-                                <span className="text-xs font-bold text-bw-navy">Visibility & Growth</span>
+                                <span className="text-xs font-bold text-bw-navy">Adversarial Verification</span>
                             </div>
                         </div>
                     </div>
@@ -213,7 +213,7 @@ export const Services: React.FC = () => {
                             <div className="p-6 border-l-2 border-bw-gold bg-bw-gold/5">
                                 <h5 className="font-bold text-bw-gold uppercase text-xs tracking-widest mb-3">Verification of Origin</h5>
                                 <p className="text-sm text-stone-300 italic leading-relaxed">
-                                    "We built this because the tools didn't exist. Standard consulting models are priced for the Fortune 500 and designed for stability. We built The Core for the rest of the world - to operate in chaos, at a cost that democratizes intelligence."
+                                    "We built this because the tools didn't exist. Standard consulting models are priced for the Fortune 500 and designed for stability. We built The Core for everyone else - to operate in complexity, at a cost that democratizes intelligence."
                                 </p>
                             </div>
                         </div>

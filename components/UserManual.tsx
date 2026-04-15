@@ -75,11 +75,13 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           <div className="max-w-3xl">
             <p className="text-slate-300 uppercase tracking-widest text-sm mb-6">BRAYDEN WALLS GLOBAL ADVISORY</p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-light mb-8 leading-tight tracking-tight">
-              Regional communities are the backbone of every nation.<br/>
-              <span className="font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">They deserve to be seen.</span>
+              Every satisfying answer<br/>deserves to be verified.
             </h1>
-            <p className="text-xl text-slate-200 leading-relaxed max-w-xl">
-              Built from firsthand experience in regional communities. One purpose: bridging the gap between overlooked regions and global opportunity - giving every community the tools to tell their story, attract investment, and grow.
+            <p className="text-xl text-slate-200 leading-relaxed max-w-xl mb-4">
+              The world&rsquo;s first Adversarial Decision Verification OS &mdash; institutional-grade intelligence that formally verifies every conclusion through adversarial debate, contradiction detection, and stress-testing before any output reaches you.
+            </p>
+            <p className="text-lg text-slate-400 leading-relaxed max-w-xl">
+              Built from regional development. Architected for every high-stakes decision.
             </p>
           </div>
         </div>
@@ -93,15 +95,15 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             <div className="lg:col-span-3">
               <p className="text-slate-500 uppercase tracking-widest text-xs mb-3">OUR MISSION</p>
               <p className="text-lg text-slate-700 leading-relaxed mb-5 text-justify">
-                <strong className="text-slate-900">Strong nations are built on strong regions.</strong> The communities that feed nations, power industries, and drive real economic activity are often the last to receive the resources they need to grow. Capital cities have teams, budgets, and connections. Regional areas have determination - but rarely the tools to match it.
+                <strong className="text-slate-900">Every satisfying answer deserves to be verified.</strong> The decisions that shape economies, partnerships, and policy are too often made on unverified assumptions. Five independent AI minds now argue every claim, a SAT solver catches contradictions, and Monte Carlo simulations stress-test every projection &mdash; so what reaches you has already survived adversarial scrutiny.
               </p>
 
               <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                Every nation depends on its regions - for food, resources, industry, and resilience. But when it comes to competing for investment and partnerships, regional communities are expected to play the same game with a fraction of the resources. Outside the major cities, there are people building real industries, solving real problems, and creating real opportunity. But without access to institutional-grade tools, their stories go untold and their potential stays hidden.
+                That problem isn&rsquo;t unique to regions. Every high-stakes decision &mdash; investment, policy, partnership, expansion &mdash; suffers the same failure: unverified assumptions passed off as analysis. Five independent AI minds now argue every claim. A SAT solver catches contradictions. Monte Carlo simulations stress-test projections. The result is institutional-grade intelligence that has already survived scrutiny before it reaches you.
               </p>
 
               <p className="text-base text-slate-600 leading-relaxed mb-5 text-justify">
-                If you've ever watched a regional community work twice as hard for half the recognition, you understand the problem. The capability exists. The potential is real. What's missing are the tools to translate that into the language investors and partners expect.
+                This system was built from regional development &mdash; where the cost of a wrong decision is highest and the margin for error is thinnest. It is now architected for every decision that matters.
               </p>
             </div>
             
@@ -110,7 +112,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
               <div className="bg-white p-6 shadow-xl border-4 border-black text-center">
                 <p className="text-slate-500 uppercase tracking-widest text-xs mb-4 font-semibold">WHY THIS PLATFORM EXISTS</p>
                 <p className="text-slate-900 text-base leading-relaxed font-bold mb-4">
-                  We built this platform to change that. Every formula, every document template, every intelligence layer was crafted with one goal: giving regional communities the same strategic firepower that multinational corporations use - so their efforts are seen, their innovation gets global attention, and untapped potential is finally discovered.
+                  We built this platform to change that. Every formula, every adversarial engine, every verification layer was crafted with one goal: giving every decision-maker the same institutional-grade intelligence that was once reserved for elite firms &mdash; so verified decisions replace unverified assumptions.
                 </p>
                 <p className="text-xl text-slate-800 font-medium italic" style={{ fontFamily: "'Dancing Script', cursive" }}>
                   - Brayden Walls, Founder

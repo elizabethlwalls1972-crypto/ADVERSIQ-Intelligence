@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { ReportParameters, SkillLevel } from '../types';
 import { ORGANIZATION_TYPES, ORGANIZATION_SUBTYPES, REGIONS_AND_COUNTRIES, INDUSTRIES, STRATEGIC_OBJECTIVES, STRATEGIC_LENSES, INDUSTRY_NICHES, INTELLIGENCE_CATEGORIES, GLOBAL_DEPARTMENTS, GLOBAL_ROLES } from '../constants';
+import { DOMAIN_MODE_OPTIONS, type DomainMode } from '../services/DomainModeService';
 import { Zap, BrainCircuit, CheckCircle, Globe, X, Network, ShieldCheck, Users, FileText, MapPin, Target, TrendingUp, AlertTriangle, Shield } from 'lucide-react';
 import { ManualInputModal } from './ManualInputModal';
 import { MissionCalibrationStep } from './MissionCalibrationStep';
@@ -690,6 +691,30 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
                                         <button key={level.id} onClick={() => update('skillLevel', level.id as SkillLevel)} className={`p-4 rounded-xl border-2 text-left transition-all break-words ${params.skillLevel === level.id ? 'border-stone-800 bg-white shadow-md ring-1 ring-stone-800' : 'border-stone-200 hover:border-stone-400 text-stone-600 bg-white'}`}>
                                             <div className={`font-bold text-base mb-1 break-words ${params.skillLevel === level.id ? 'text-stone-900' : 'text-stone-800'}`}>{level.label}</div>
                                             <div className="text-xs text-stone-500 break-words">{level.desc}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* DOMAIN MODE SELECTOR */}
+                            <div className="bg-gradient-to-br from-stone-50 to-blue-50 p-6 rounded-xl border border-stone-200">
+                                <label className="block text-sm font-bold text-stone-900 mb-2 uppercase tracking-wide">Intelligence Domain</label>
+                                <p className="text-xs text-stone-500 mb-4">Select the domain that best matches your analysis. This configures the AI personas, scoring vocabulary, and analytical framework.</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                                    {DOMAIN_MODE_OPTIONS.map((domain) => (
+                                        <button
+                                            key={domain.id}
+                                            onClick={() => update('domainMode', domain.id as DomainMode)}
+                                            className={`p-3 rounded-lg border-2 text-left transition-all ${
+                                                (params.domainMode || 'regional-development') === domain.id
+                                                    ? 'border-blue-600 bg-white shadow-md ring-1 ring-blue-600'
+                                                    : 'border-stone-200 hover:border-stone-400 bg-white'
+                                            }`}
+                                        >
+                                            <div className={`font-bold text-sm mb-0.5 ${
+                                                (params.domainMode || 'regional-development') === domain.id ? 'text-blue-800' : 'text-stone-800'
+                                            }`}>{domain.label}</div>
+                                            <div className="text-[11px] text-stone-500 leading-tight">{domain.description}</div>
                                         </button>
                                     ))}
                                 </div>

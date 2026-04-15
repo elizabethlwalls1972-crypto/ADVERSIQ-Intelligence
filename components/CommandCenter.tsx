@@ -330,25 +330,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* OUR MISSION  -  Header with photo banner background */}
             <section id="mission" className="relative pt-36 pb-20 px-4 overflow-hidden">
                 <img 
-                    src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=80" 
-                    alt="Regional landscape" 
+                    src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1920&h=1080&fit=crop&q=80" 
+                    alt="Adversarial Decision Verification" 
                     className="absolute inset-0 w-full h-full object-cover" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/50 to-slate-900/80" />
                 <div className="relative z-10 max-w-5xl mx-auto text-center">
                     <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight mb-8 text-white">
-                        Strong nations are built<br />on strong regions.
+                        Every satisfying answer<br />deserves to be verified.
                     </h1>
                     <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
-                        Institutional-grade advisory for regional investment, trade, and development &mdash; verified intelligence, unbiased methodology, execution-ready output.
+                        The world&rsquo;s first Adversarial Decision Verification OS &mdash; institutional-grade intelligence that formally verifies every conclusion through adversarial debate, contradiction detection, and stress-testing before any output reaches you.
                     </p>
                     <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                        A digital boardroom built for the decisions that shape regional economies.
+                        Built from regional development. Architected for every high-stakes decision.
                     </p>
                 </div>
             </section>
 
-            {/* THE STORY OF REGIONAL CITIES — Why This Matters */}
+            {/* THE STORY — Why This Matters */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
 
@@ -357,27 +357,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* LEFT: Header + Founder statement */}
                         <div className="md:col-span-2 md:sticky md:top-24">
-                            <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4">Regional Cities &middot; Global Impact</p>
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4">Adversarial Decision Verification</p>
                             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-5">
-                                The Engine Rooms<br />of Nations
+                                The Engine Room<br />of Decisions
                             </h2>
                             <p className="text-lg text-slate-400 font-medium leading-snug mb-8">
-                                Overlooked by the Tools<br />Built to Serve Them
+                                Built for Complexity<br />Accessible to All
                             </p>
 
-                            {/* Founder statement — blue panel */}
+                            {/* Blue accent panel */}
                             <div className="bg-blue-700 rounded-sm p-6">
-                                <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-2">Regional Focus</p>
-                                <p className="text-sm text-blue-100 leading-relaxed">
-                                    Regional cities and corridors are where logistics, industry, workforce, and infrastructure converge to drive national growth.
-                                </p>
                             </div>
                         </div>
 
-                        {/* RIGHT: regional cities investment thesis */}
+                        {/* RIGHT: investment thesis */}
                         <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
                             <p>
-                                Regional cities power every national economy&mdash;they house the workforce, feed the population, run the factories, and route the supply chains&mdash;yet the tools that decide where global capital flows have never been built to see them. Capital followed the indices, the indices only measured tier-one cities, and everywhere else was written off as &ldquo;emerging&rdquo; or &ldquo;high-risk.&rdquo; The problem was never the regions. It was the intelligence layer&mdash;and until now, a purpose-built, affordable solution has never existed.
+                                Every organisation on earth that uses AI to make high-stakes decisions has the same problem: <strong className="text-slate-900">How do you trust the output?</strong> LLMs hallucinate. Dashboards show data without argument. Consultants give opinions. Nobody formally verifies decisions before they&rsquo;re made.
+                            </p>
+                            <p>
+                                There are trillions of dollars in economic potential locked away in overlooked places&mdash;markets, industries, and opportunities that decision-makers consistently misprice because their reality is hard to translate into structured proof. Capital followed the indices, the indices only measured what was easy to measure, and everything else was written off as &ldquo;emerging&rdquo; or &ldquo;high-risk.&rdquo; The problem was never the markets. It was the intelligence layer.
                             </p>
                             <p className="text-slate-900 font-semibold text-xl mt-4">
                                 Until now.
@@ -402,31 +401,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Text Content (Left) */}
                             <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
                                 <span className="inline-block px-2.5 py-0.5 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">The Problem</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">The Tools Don&rsquo;t Exist. So the Decisions Stay Broken.</h4>
+                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">The Intelligence Layer Doesn&rsquo;t Exist Yet.</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Every day, investment decisions worth billions are made using recycled data, generic frameworks, and gut instinct dressed up as analysis. Advisory firms charge millions to deliver what a competent team with the right tools could produce in hours. Governments plan with fragmented portals and outdated census figures. Banks inflate risk premiums on anything outside a tier-one CBD because their models were never built to evaluate anything else.
+                                    High-stakes decisions &mdash; where to invest, what to build, which markets to enter &mdash; still depend on tools that were never designed for the complexity involved. The data exists but sits fragmented across portals, reports, and spreadsheets. The analysis exists but arrives months late, built on macro-level assumptions that miss local reality. Capital flows to the same saturated markets while regional hubs, logistics corridors, and industrial centres remain consistently undervalued.
                                 </p>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    The result is predictable: capital flows to the same saturated markets while the places that actually drive an economy&mdash;regional hubs, logistics corridors, agricultural centres, industrial heartlands&mdash;are chronically overlooked. Not because they lack returns, but because no tool existed to prove it. Trillions in locked regional value sits untouched because the intelligence to surface it was never built.
+                                    The problem isn&rsquo;t a lack of effort. It&rsquo;s a structural gap: no single system existed that could ingest local evidence, verify it adversarially, stress-test it across scenarios, and deliver a defensible position &mdash; all in the time frame decisions actually require.
                                 </p>
                                 <div className="pt-3 border-t border-slate-200">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-3">The Way It Works Today is Broken</h5>
+                                    <h5 className="text-sm font-bold text-slate-900 mb-3">Where Current Approaches Fall Short</h5>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Advisory Firms Use</h5>
-                                            <p className="text-xs text-slate-600">They charge hundreds of thousands of dollars to deliver a 100-page PDF three months later. They recycle macro-level tier-one data and apply generic frameworks that completely miss the local nuance of regional projects.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Traditional Advisory</h5>
+                                            <p className="text-xs text-slate-600">Deep expertise, but delivery timelines measured in months and costs that limit access. Macro-level frameworks often miss the local nuance that determines whether a regional project succeeds or fails.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Governments Use</h5>
-                                            <p className="text-xs text-slate-600">They rely on scattered portals and outdated census data. Planning decisions are disjointed across departments, forcing the project sponsor to carry the entire burden of piecing together regulatory alignment.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Government Planning Tools</h5>
+                                            <p className="text-xs text-slate-600">Valuable data scattered across departments and portals, updated on long cycles. Project sponsors are left to manually piece together regulatory alignment, zoning, and compliance across disconnected systems.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What Business & Banking Use</h5>
-                                            <p className="text-xs text-slate-600">They run backward-looking Excel models built for standard CBD assets. They arbitrarily inflate risk premiums for regions because their rigid formulas can't quantify localized logistics, workforce, or resilience.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Financial Modelling</h5>
+                                            <p className="text-xs text-slate-600">Built for standardised asset classes in established markets. Struggles to quantify localized advantages &mdash; workforce depth, supply chain proximity, infrastructure resilience &mdash; that define regional opportunity.</p>
                                         </div>
                                         <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">What General-Purpose AI Uses</h5>
-                                            <p className="text-xs text-slate-600">It hallucinates regulations and invents financial math. It produces simple summaries—not the defensible, traceable fiduciary logic required to survive a real boardroom tribunal.</p>
+                                            <h5 className="text-sm font-bold text-slate-900 mb-1">General-Purpose AI</h5>
+                                            <p className="text-xs text-slate-600">Fast and accessible, but generates summaries without verification. Lacks the adversarial logic, evidence tracing, and fiduciary rigour required for decisions that face real scrutiny.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -455,7 +454,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </div>
                                 <div className="md:col-span-3">
                                     <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
-                                        The decision to overlook a regional city is rarely made on evidence. It is made on perception — shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction.
+                                        The decision to overlook an opportunity is rarely made on evidence. It is made on perception &mdash; shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction. This system was built to catch them.
                                     </p>
                                 </div>
                             </div>
@@ -468,49 +467,53 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
                                 <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">What the BW Consultant Is Designed to Do</h4>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    At its core, the BW Consultant is built to help anyone&mdash;whether you&rsquo;re an investor, a business owner, a government planner, or a consultant&mdash;explore and understand new economic markets worldwide. It focuses on &ldquo;places&rdquo; (like cities, regions, or countries) and reveals their true economic value and potential, which is often hidden or misunderstood. For example:
-                                </p>
-                                <ul className="text-sm text-slate-600 leading-relaxed mb-3 list-disc pl-5 space-y-1">
-                                    <li>It looks at local economies, supply chains, workforce strengths, and growth opportunities that traditional tools miss.</li>
-                                    <li>It helps you see beyond the obvious &ldquo;big city&rdquo; investments to find real opportunities in regional hubs, agricultural areas, industrial zones, or emerging markets.</li>
-                                    <li>It provides a complete picture of a place&rsquo;s worth, including risks, opportunities, and how it fits into the global economy, so you can make decisions based on facts, not guesswork.</li>
-                                </ul>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    The big idea is that trillions of dollars in economic potential are locked away in overlooked places because no tool existed to properly analyze them. BW Consultant changes that by giving you the intelligence to surface and prove that value.
+                                    Trillions of dollars in economic potential sit locked in overlooked places &mdash; regional hubs, industrial zones, agricultural corridors, emerging markets &mdash; because no tool existed to surface, verify, and defend that value. BW Consultant does. It analyzes any place on earth &mdash; city, region, or country &mdash; and reveals hidden supply chains, workforce strengths, and growth opportunities that traditional tools miss, then subjects every finding to adversarial verification so you make decisions based on proof, not perception.
                                 </p>
 
-                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">What&rsquo;s Actually Inside the System</h5>
+                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">The Five Core Engines &mdash; <span className="text-blue-600">With Extra Intelligence</span></h5>
                                 <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    This isn&rsquo;t a concept or a prototype. It&rsquo;s a fully built, production-ready intelligence platform. Here&rsquo;s what powers it:
+                                    Five specialized reasoning engines work in sequence on every analysis. Each brings a different perspective, each can challenge the others, and each contributes to explicit verdict, gate, and contradiction telemetry.
                                 </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                    <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Five Independent AI Minds</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Every analysis is processed by five specialized reasoning engines&mdash;each with a different perspective. They challenge each other, flag contradictions, and only present conclusions that survive adversarial debate. You never see unchecked output.</p>
-                                    </div>
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">54+ Proprietary Formulas</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Purpose-built calculations for regional economics that don&rsquo;t exist anywhere else&mdash;covering logistics efficiency, workforce resilience, supply chain depth, regulatory friction, and true location-adjusted risk. No borrowed spreadsheets.</p>
-                                    </div>
-                                    <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">240+ Document Types</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">From investor prospectuses and government submissions to risk assessments and feasibility studies&mdash;generated automatically with full audit trails. These are boardroom-ready documents, not chat summaries.</p>
-                                    </div>
-                                    <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">20+ Real-Time Data Sources</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Live connections to global economic databases, trade statistics, demographic feeds, and regulatory registries. Every data point is sourced, timestamped, and traceable&mdash;nothing is fabricated or assumed.</p>
-                                    </div>
-                                </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                    <div className="border-l-2 border-indigo-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Monte Carlo Stress Testing</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">Every projection is stress-tested across thousands of simulated scenarios&mdash;varying interest rates, demand shifts, regulatory changes, and supply disruptions&mdash;so you see the full range of outcomes, not just the optimistic one.</p>
-                                    </div>
-                                    <div className="border-l-2 border-rose-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-0.5">Guided 10-Step Intake</h5>
-                                        <p className="text-xs text-slate-600 leading-relaxed">You don&rsquo;t need to know what to ask. The system walks you through a structured intake process that captures exactly what the AI engines need to deliver a complete analysis&mdash;from first-time users to experienced analysts.</p>
-                                    </div>
+                                    {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
+                                        const cat = categoryDetails[key];
+                                        return (
+                                            <button
+                                                key={key}
+                                                onClick={() => setExpandedEngine(key)}
+                                                className={`group relative bg-gradient-to-r ${cat.color} p-3 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left`}
+                                            >
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-0.5">
+                                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center">{cat.icon}</span>
+                                                            <h5 className="text-sm font-bold text-white leading-snug">{cat.title}</h5>
+                                                        </div>
+                                                        <p className="text-[11px] text-white/80 leading-relaxed">{cat.subtitle}</p>
+                                                    </div>
+                                                    <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-xs font-semibold">&rarr;</span>
+                                                </div>
+                                            </button>
+                                        );
+                                    })}
+
+                                    {/* The Intelligence Architecture */}
+                                    <button
+                                        onClick={() => setShowFormulas(true)}
+                                        className="group relative bg-gradient-to-r from-slate-900 to-blue-900 p-3 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left"
+                                    >
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2 mb-0.5">
+                                                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center"><GitBranch size={12} /></span>
+                                                    <h5 className="text-sm font-bold text-white leading-snug">The Intelligence Architecture</h5>
+                                                </div>
+                                                <p className="text-[11px] text-white/80 leading-relaxed">10-layer NSIL pipeline, 50+ engine parallel brain, 12-layer Cognitive Reasoning Engine, Five Engine Tribunal runtime, 20+ live external APIs, multi-provider AI orchestration, anticipatory thinking, 3 quantum-inspired engines, production-grade financial modelling, drift detection, and Research Ecosystem scoring.</p>
+                                            </div>
+                                            <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-xs font-semibold">&rarr;</span>
+                                        </div>
+                                    </button>
                                 </div>
 
                                 <div className="pt-3 border-t border-slate-200">
@@ -567,61 +570,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
                             <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop&q=80" alt="Regional council meeting" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════════════════════════════════════════════════════
-                TIER 3: THE FIVE CORE ENGINES
-            ═══════════════════════════════════════════════════════════════ */}
-            <section className="py-8 px-4 bg-slate-50">
-                <div className="max-w-6xl mx-auto">
-                    {/* Section Divider + Header for Architecture Cards */}
-                    <div className="max-w-4xl mx-auto mb-8 text-center">
-                        <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">The Five Core Engines <span className="text-blue-600">&mdash; With Extra Intelligence</span></h3>
-                        <p className="text-sm text-slate-600 leading-relaxed">Five specialized reasoning engines work in sequence on every analysis. Each brings a different perspective, each can challenge the others, and each contributes to explicit verdict, gate, and contradiction telemetry.</p>
-                    </div>
-
-                    {/* Six Equal Category Cards (A-E + Architecture) */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-                        {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
-                            const cat = categoryDetails[key];
-                            return (
-                                <button
-                                    key={key}
-                                    onClick={() => setExpandedEngine(key)}
-                                    className={`group relative bg-gradient-to-r ${cat.color} p-4 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left`}
-                                >
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">{cat.icon}</span>
-                                                <h3 className="text-base font-bold text-white leading-snug">{cat.title}</h3>
-                                            </div>
-                                            <p className="text-xs text-white/80 leading-relaxed">{cat.subtitle}</p>
-                                        </div>
-                                        <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
-                                    </div>
-                                </button>
-                            );
-                        })}
-
-                        {/* 6th Card - The Intelligence Architecture */}
-                        <button
-                            onClick={() => setShowFormulas(true)}
-                            className="group relative bg-gradient-to-r from-slate-900 to-blue-900 p-4 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left"
-                        >
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center"><GitBranch size={14} /></span>
-                                        <h3 className="text-base font-bold text-white leading-snug">The Intelligence Architecture</h3>
-                                    </div>
-                                    <p className="text-xs text-white/80 leading-relaxed">10-layer NSIL pipeline, 50+ engine parallel brain, 12-layer Cognitive Reasoning Engine, Five Engine Tribunal runtime, 20+ live external APIs, multi-provider AI orchestration, anticipatory thinking, 3 quantum-inspired engines, production-grade financial modelling, drift detection, and Research Ecosystem scoring.</p>
-                                </div>
-                                <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-sm font-semibold">→</span>
-                            </div>
-                        </button>
                     </div>
                 </div>
             </section>
@@ -699,17 +647,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="inline-block px-2.5 py-1 bg-slate-800/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Deliverables</span>
                                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">What You Walk Away With</h2>
                                 <p className="text-base text-slate-700 leading-relaxed text-justify mb-6">
-                                    You leave with a <strong>complete operating position</strong> &mdash; not a pitch deck requiring interpretation, but a defensible strategy built from live evidence, adversarial challenge, confidence scoring, and sequenced execution logic. BWGA AI compresses what typically requires months of fragmented advisory work into outputs ready for board presentations, investor conversations, regulator submissions, stakeholder engagement, and partnership negotiation on day one.
+                                    You leave with a <strong>verified operating position</strong> &mdash; not a generated summary, but a defensible strategy that has survived five competing reasoning engines, SAT contradiction detection, confidence scoring on every claim, and DAG-sequenced execution logic. What typically takes months of advisory work arrives ready for board presentations, investor conversations, and regulator submissions on day one.
                                 </p>
 
                                 {/* Updated Capability Framing */}
                                 <div className="border-t border-slate-200 pt-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-3">Institutional Intelligence, Not Generic AI Output</h3>
-                                    <p className="text-sm text-slate-700 leading-relaxed text-justify mb-3">
-                                        The system does more than generate a recommendation. It builds a persistent case file, runs five adversarial reasoning engines, validates claims against live registries and market intelligence, stress-tests scenarios across policy, financing, partner, and market volatility, and marks every material claim as proven, assumed, or unknown. What emerges is a position that can survive scrutiny, not a response that depends on trust alone.
-                                    </p>
+                                    <h3 className="text-lg font-bold text-slate-900 mb-3">Verified Intelligence, Not Generated Output</h3>
                                     <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                        It also reads the user, the mandate, and the evidence environment at the same time. Reflexive engines identify recurring priorities, hidden assets, unspoken constraints, and decision friction. Case Study Intelligence ingests reports, proposals, mandates, and prior deal material, converts them into structured sections, scores them across governance, financial viability, evidence strength, and replication potential, and debates the findings across adversarial perspectives. The output is then translated into board-ready briefs, submissions, letters, and stakeholder-specific messaging grounded in the actual case rather than template language.
+                                        The system builds a persistent case file, then attacks it: five reasoning personas debate via Bayesian inference and Nash bargaining, a SAT solver flags contradictions, Monte Carlo simulations stress-test across policy and market volatility, and every claim is scored with explicit confidence levels. Reflexive engines then model the user&rsquo;s own decision patterns &mdash; surfacing hidden priorities, constraints, and friction. The output is translated into board-ready briefs, submissions, and stakeholder messaging grounded in verified evidence, not template language.
                                     </p>
                                 </div>
 
@@ -862,11 +807,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="relative max-w-4xl mx-auto text-center">
                     <p className="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 font-bold">SOLVING REAL PROBLEMS</p>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-white mb-6 leading-relaxed">
-                        This platform exists to help capital, partnerships, and capability reach places that are too often overlooked &mdash; despite holding extraordinary, investable potential.
+                        This platform exists to formally verify decisions before capital moves &mdash; so overlooked markets, complex strategies, and high-stakes opportunities get the same rigour that was once reserved for elite firms.
                     </h2>
                     <div className="w-20 h-0.5 bg-white/40 mx-auto mb-6" />
                     <p className="text-lg text-white/90 leading-relaxed mb-6 max-w-3xl mx-auto">
-                        During this beta phase and in future subscriptions, <strong className="text-white font-bold">10% of every paid transaction</strong> goes back into initiatives that support regional development.
+                        During this beta phase and in future subscriptions, <strong className="text-white font-bold">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto mb-6 text-left">
                         <div className="bg-white/10 border border-white/20 p-4">

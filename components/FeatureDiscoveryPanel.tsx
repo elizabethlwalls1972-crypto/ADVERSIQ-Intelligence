@@ -33,7 +33,7 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
     {
       id: 'intelligence-library',
       title: 'Intelligence Library',
-      description: '5+ years of reference deals, learn from proven patterns',
+      description: 'Deep reference library of patterns, precedents, and proven strategies across domains',
       icon: <Database className="w-5 h-5" />,
       category: 'intelligence',
       badge: 'HIGH VALUE',
@@ -41,17 +41,17 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
     },
     {
       id: 'deep-reasoning',
-      title: 'Deep Reasoning Engine',
-      description: 'Multi-step scenario analysis with cause-effect tracing',
+      title: 'Five Independent AI Minds',
+      description: 'Skeptic, Advocate, Regulator, Accountant, Operator - five personas debate every conclusion',
       icon: <Brain className="w-5 h-5" />,
       category: 'intelligence',
-      badge: 'PREMIUM',
+      badge: 'CORE',
       available: true
     },
     {
       id: 'cultural-intelligence',
-      title: 'Cultural Intelligence',
-      description: 'Business norms, negotiation tactics by country',
+      title: '54+ Proprietary Formulas',
+      description: 'Every dimension scored by proprietary indices: SPI, IVAS, SCF, RROI, SEAM, and more',
       icon: <Globe className="w-5 h-5" />,
       category: 'intelligence',
       available: true
@@ -84,11 +84,11 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
     // Strategy Features
     {
       id: 'scenario-planning',
-      title: 'Scenario Planning',
-      description: 'Create best/worst/likely scenarios with Monte Carlo simulation',
+      title: 'Monte Carlo Stress Testing',
+      description: '10,000-iteration simulations producing probabilistic outcome distributions with VaR and regret analysis',
       icon: <TrendingUp className="w-5 h-5" />,
       category: 'strategy',
-      badge: 'NEW',
+      badge: 'CORE',
       available: true
     },
     {
@@ -111,8 +111,8 @@ export const FeatureDiscoveryPanel: React.FC<FeatureDiscoveryPanelProps> = ({
     // Document Features
     {
       id: 'document-suite',
-      title: 'Advanced Document Suite',
-      description: '20+ document types: LOI, MOU, NDA, SLA, Term Sheets',
+      title: '240+ Document Types',
+      description: 'LOI, MOU, NDA, SLA, Term Sheets, proposals, mandates, and 230+ more generated on demand',
       icon: <FileText className="w-5 h-5" />,
       category: 'documents',
       available: true

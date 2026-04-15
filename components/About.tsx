@@ -13,7 +13,7 @@ export const About: React.FC = () => {
                 <div className="mb-12">
                     <h2 className="text-bw-gold font-bold uppercase tracking-widest text-xs mb-3">System Philosophy</h2>
                     <h3 className="text-4xl md:text-5xl font-serif font-bold text-bw-navy leading-tight mb-6">
-                    The Interface Between <br/>Global Capital and Regional Reality.
+                    Adversarial Decision Verification.<br/>Trust the Output.
                     </h3>
                 </div>
 
@@ -23,13 +23,13 @@ export const About: React.FC = () => {
                         <div className="absolute -left-[9px] top-0 bg-white py-1 transition-transform group-hover:scale-110">
                             <Globe className="w-4 h-4 text-bw-gold" />
                         </div>
-                        <h4 className="text-xl font-bold text-bw-navy mb-3">Our Global Mandate</h4>
-                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Fairness, Calculated.</h5>
+                        <h4 className="text-xl font-bold text-bw-navy mb-3">The Problem We Solve</h4>
+                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Decision Trust, Verified.</h5>
                         <p className="leading-[1.85] text-[15px] md:text-base text-[#1C1C1C]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            Global capital sees some markets in high resolution and others as a blur. Our mandate is to correct that imbalance by giving regional cities a signal that is as legible and disciplined as anything coming out of a major hub.
+                            Every organisation using AI to make high-stakes decisions has the same problem: how do you trust the output? LLMs hallucinate. Dashboards show data without argument. Consultants give opinions. Nobody formally verifies decisions before they're made.
                         </p>
                         <p className="leading-[1.85] text-[15px] md:text-base mt-4 text-[#808080]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            When the math is clear, perception has less room to distort reality. This system exists so regional leaders can walk into any room with evidence, not anecdotes.
+                            This system does. Every conclusion is adversarially debated, logically validated, stress-tested across thousands of scenarios, and traced to its source — the kind of defensible logic that regulators, boards, and fiduciary committees require.
                         </p>
                     </div>
 
@@ -39,12 +39,12 @@ export const About: React.FC = () => {
                             <Cpu className="w-4 h-4 text-bw-gold" />
                         </div>
                         <h4 className="text-xl font-bold text-bw-navy mb-3">Deterministic Intelligence</h4>
-                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Calculated, Not Curated.</h5>
+                        <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Verified, Not Generated.</h5>
                         <p className="leading-[1.85] text-[15px] md:text-base text-[#1C1C1C]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            This is not a consultancy that sells subjective advice. It is an <strong>Intelligence Operating System</strong> built to run in high-complexity, high-uncertainty environments.
+                            This is not a chatbot that generates plausible text. It is an <strong>Adversarial Decision Verification OS</strong> — five independent AI minds debate every conclusion, a SAT solver catches logical impossibilities, and nothing reaches you without surviving formal adversarial scrutiny.
                         </p>
                         <p className="leading-[1.85] text-[15px] md:text-base mt-4 text-[#808080]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            It ingests your strategic intent and stress-tests it against a century of economic precedent, replacing "expert opinion" with calculated probability. We don't guess if a strategy will work; we calculate the specific ways it might fail - and how to correct for them.
+                            It ingests your strategic intent and stress-tests it using 54+ proprietary formulas, Monte Carlo simulation, Bayesian belief updating, and causal reasoning. We don't guess if a strategy will work; we calculate the specific ways it might fail — and how to correct for them.
                         </p>
                     </div>
 
@@ -56,10 +56,10 @@ export const About: React.FC = () => {
                         <h4 className="text-xl font-bold text-bw-navy mb-3">NSIL: The Live Data Spine</h4>
                         <h5 className="text-sm font-bold text-stone-900 uppercase tracking-wide mb-2">Provenance Anchored.</h5>
                         <p className="leading-[1.85] text-[15px] md:text-base text-[#1C1C1C]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            NSIL - Nexus Strategic Intelligence Layer - standardises regional signals and feeds the engines with live data. Each calculation is anchored to sources like World Bank indicators, sanctions ledgers, exchange rates, and our Composite Score Engine v2.
+                            NSIL - Nexus Strategic Intelligence Layer - is the 10-layer pipeline that powers everything. It standardises signals from 20+ real-time data sources into a coherent, machine-readable format that feeds every engine.
                         </p>
                         <p className="leading-[1.85] text-[15px] md:text-base mt-4 text-[#808080]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                            Outputs like <strong>SPI</strong>, <strong>IVAS</strong>, <strong>SCF</strong>, <strong>RROI</strong>, and <strong>SEAM</strong> stay explainable and auditable: the same logic that scores a mandate is what shapes the narrative, the dossier, and the Workbench guidance.
+                            Outputs like <strong>SPI</strong>, <strong>IVAS</strong>, <strong>SCF</strong>, <strong>RROI</strong>, and <strong>SEAM</strong> stay explainable and auditable: every calculation traces back to its source data, and every claim can be verified independently.
                         </p>
                     </div>
                 </div>
@@ -97,10 +97,10 @@ export const About: React.FC = () => {
         {/* Stats Strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-black/10 pt-12">
             {[
-                { val: '21', label: 'Proprietary Engines', icon: <Layers className="w-4 h-4 mb-2 text-bw-gold" /> },
-                { val: '100y', label: 'Economic Cycles Indexed', icon: <Activity className="w-4 h-4 mb-2 text-bw-gold" /> },
-                { val: '9+', label: 'Autonomous Agent Nodes', icon: <Cpu className="w-4 h-4 mb-2 text-bw-gold" /> },
-                { val: '195', label: 'Jurisdictions Mapped', icon: <Globe className="w-4 h-4 mb-2 text-bw-gold" /> },
+                { val: '54+', label: 'Proprietary Formulas', icon: <Layers className="w-4 h-4 mb-2 text-bw-gold" /> },
+                { val: '240+', label: 'Document Types', icon: <Activity className="w-4 h-4 mb-2 text-bw-gold" /> },
+                { val: '20+', label: 'Real-Time Data Sources', icon: <Cpu className="w-4 h-4 mb-2 text-bw-gold" /> },
+                { val: '5', label: 'Independent AI Minds', icon: <Globe className="w-4 h-4 mb-2 text-bw-gold" /> },
             ].map((stat, i) => (
                 <div key={i} className="text-center md:text-left group cursor-default">
                     {stat.icon}
@@ -116,7 +116,7 @@ export const About: React.FC = () => {
                 <Radio className="w-5 h-5 animate-pulse" /> The Core Mandate
             </h3>
             <p className="text-lg leading-relaxed relative z-10 font-serif text-[#1C1C1C]" style={{fontFamily:'Inter, Arial, sans-serif'}}>
-                "We don't guess. We calculate. By giving regional markets a standardized data language, we give them a fair chance to compete for global capital."
+                "We don't guess. We verify. Five AI minds argue every conclusion. A SAT solver catches contradictions. Monte Carlo runs thousands of scenarios. Every claim traces to its source — so decisions survive scrutiny before capital moves."
             </p>
         </div>
 

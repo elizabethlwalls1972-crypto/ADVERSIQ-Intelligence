@@ -40,54 +40,54 @@ export const Hero: React.FC = () => {
                             <div className="inline-flex items-center gap-3">
                                 <span className="h-px w-10 bg-bw-gold/70" aria-hidden="true" />
                                 <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-bw-navy/70">
-                                    Built boots-on-the-ground * 16 months * 200 years decoded * NSIL Brain
+                                    Adversarial Decision Verification * 5 Independent AI Minds * 54+ Formulas * 240+ Documents
                                 </span>
                             </div>
 
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-bw-navy leading-[1.05]">
                                 Beyond Data. Beyond Consulting.
-                                <span className="block mt-3 text-bw-gold">The Physics of Invisible Economies.</span>
+                                <span className="block mt-3 text-bw-gold">The World's First Adversarial Decision Verification OS.</span>
                             </h1>
 
                             <div className="space-y-5 max-w-3xl text-[15px] sm:text-lg text-slate-700 leading-[1.85]">
                                 <p>
-                                    Regional cities carry real assets, real labor, and compounding growth - but they are consistently misread as risk because their reality is hard to translate into global-grade proof.
+                                    Every organisation on earth that uses AI to make high-stakes decisions has the same problem: <strong className="text-bw-navy">How do you trust the output?</strong> LLMs hallucinate. Dashboards show data without argument. Consultants give opinions. Nobody formally verifies decisions before they're made.
                                 </p>
                                 <p className="text-bw-navy font-medium">
-                                    Regional markets are not chaotic; they are simply complex. They operate on a different frequency than global capitals, driven by relationships and informal networks.
+                                    This system does. Whether you're an investor, a business owner, a government planner, or a consultant — the BW Consultant formally verifies every decision through adversarial debate, contradiction detection, Monte Carlo stress-testing, and full audit trail before any output reaches you.
                                 </p>
                                 <p>
-                                    We architected the <strong className="text-bw-navy">Regional Intelligence Core</strong> to decode this frequency. It is not a passive consultancy tool; it is a deterministic engine designed to translate the specific "blind spots" of regional expansion into the language of global capital.
+                                    We architected the <strong className="text-bw-navy">Nexus Strategic Intelligence Layer (NSIL)</strong> — a 10-layer deterministic pipeline where five independent AI minds argue every conclusion, a SAT solver catches logical impossibilities, and 54+ proprietary formulas score every dimension. Nothing is guessed. Everything is auditable.
                                 </p>
                                 <p>
-                                    The mission is straightforward: reduce the high cost of trust, remove outside influence, and give every region the same level of analytical rigor that global hubs take for granted - at a cost that makes intelligence accessible.
+                                    Built from the ground up because trillions of dollars in economic potential sit locked in overlooked places — and no tool existed to surface, prove, and defend that value. This system was born in regional development. Its architecture solves the universal problem of decision trust.
                                 </p>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="p-5 bg-white/70 border border-black/5 rounded-xl">
-                                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Built To Execute</div>
+                                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Decision Verification</div>
                                     <div className="text-sm text-slate-700 leading-relaxed">
-                                        Partner Discovery, Symbiotic Matchmaking (SPI), Document Suite (LoI, MoU, Proposal), Multia'Scenario Simulation.
+                                        SAT Contradiction Detection, 5-Persona Adversarial Debate, Monte Carlo Stress-Testing, Bayesian Belief Updating.
                                     </div>
                                 </div>
                                 <div className="p-5 bg-white/70 border border-black/5 rounded-xl">
-                                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Always-On Guardrails</div>
+                                    <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-bw-navy/60 mb-2">Institutional Output</div>
                                     <div className="text-sm text-slate-700 leading-relaxed">
-                                        Earlya'Warning Alerts, Due Diligence Intelligence, Relocation & TCO, NSIL/API Export.
+                                        240+ Document Types, Full Audit Trail, Traceable Reasoning Chain, Boardroom-Ready Intelligence.
                                     </div>
                                 </div>
                             </div>
 
                             <div className="flex flex-wrap gap-3 pt-2">
                                 <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-bw-navy text-white rounded-full border border-bw-navy/20 text-[11px] font-bold uppercase tracking-widest">
-                                    <Users className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Partner Discovery
+                                    <Users className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Adversarial Debate
                                 </span>
                                 <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-bw-navy text-white rounded-full border border-bw-navy/20 text-[11px] font-bold uppercase tracking-widest">
-                                    <Activity className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Simulation
+                                    <Activity className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Monte Carlo
                                 </span>
                                 <span className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-bw-navy text-white rounded-full border border-bw-navy/20 text-[11px] font-bold uppercase tracking-widest">
-                                    <AlertTriangle className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> Earlya'Warning
+                                    <AlertTriangle className="w-3.5 h-3.5 text-bw-gold" aria-hidden="true" /> SAT Verification
                                 </span>
                             </div>
                         </motion.div>
@@ -107,7 +107,7 @@ export const Hero: React.FC = () => {
                                         <ScanLine className="w-4 h-4 text-bw-gold" />
                                         <span className="text-xs font-bold uppercase tracking-[0.3em] text-bw-navy/70">Signal Panel</span>
                                     </div>
-                                    <span className="text-[10px] font-mono text-bw-navy/60">Parsing Economic Physics...</span>
+                                    <span className="text-[10px] font-mono text-bw-navy/60">Verifying Decision Logic...</span>
                                 </div>
 
                                 <div className="relative p-6 bg-bw-navy text-white">
@@ -128,8 +128,8 @@ export const Hero: React.FC = () => {
 
                                         <div className="mt-5 grid grid-cols-2 gap-4">
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                                                <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Translation</div>
-                                                <div className="mt-1 text-sm text-white/90">Local reality a' Global metrics</div>
+                                                <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Verification</div>
+                                                <div className="mt-1 text-sm text-white/90">SAT + Adversarial + Monte Carlo</div>
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                                                 <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Rigour</div>
@@ -137,11 +137,11 @@ export const Hero: React.FC = () => {
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                                                 <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Coverage</div>
-                                                <div className="mt-1 text-sm text-white/90">Engines + dossiers + workbench</div>
+                                                <div className="mt-1 text-sm text-white/90">50+ engines + 240+ documents</div>
                                             </div>
                                             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                                                 <div className="text-[10px] uppercase tracking-[0.3em] text-white/60">Purpose</div>
-                                                <div className="mt-1 text-sm text-white/90">Regional development only</div>
+                                                <div className="mt-1 text-sm text-white/90">Adversarial decision verification</div>
                                             </div>
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@ export const Hero: React.FC = () => {
                                     <Radio className="w-4 h-4" /> The Core Mandate
                                 </h3>
                                 <p className="text-bw-navy text-sm leading-relaxed">
-                                    "We don't guess. We calculate. By giving regional markets a standardized data language, we give them a fair chance to compete for global capital."
+                                    "We don't guess. We verify. Five AI minds argue every conclusion. A SAT solver catches contradictions. Monte Carlo runs thousands of scenarios. Every claim traces to its source — so decisions survive scrutiny before capital moves."
                                 </p>
                             </div>
                         </motion.div>

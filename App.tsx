@@ -681,6 +681,7 @@ const App: React.FC = () => {
                             setViewMode('main');
                         }}
                         onNavigate={(mode) => setViewMode(mode as ViewMode)}
+                        domainMode={params.domainMode}
                     />
                 </div>
             );

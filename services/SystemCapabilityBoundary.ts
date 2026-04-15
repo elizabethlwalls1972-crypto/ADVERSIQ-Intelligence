@@ -259,12 +259,19 @@ export class SystemCapabilityBoundary {
   }
 
   /** Generate prompt-ready capability summary for the brain context */
-  static summarizeForPrompt(): string {
+  static summarizeForPrompt(domainMode?: string): string {
     const snap = this.getSnapshot();
     const lines: string[] = [];
 
-    lines.push(`\n### -- SYSTEM CAPABILITY BOUNDARIES --`);
+    const domainLabel = domainMode && domainMode !== 'regional-development'
+      ? ` (Domain: ${domainMode})`
+      : '';
+
+    lines.push(`\n### -- SYSTEM CAPABILITY BOUNDARIES${domainLabel} --`);
     lines.push(`**Active Engines:** ${snap.totalEngines} | **Capabilities:** ${snap.totalCapabilities} | **Data Sources:** ${snap.dataSources.length}`);
+    if (domainMode && domainMode !== 'regional-development') {
+      lines.push(`**Domain Mode:** ${domainMode} — All engines are domain-agnostic; scoring labels and personas are adapted to match the active domain.`);
+    }
 
     lines.push(`\n**WHAT THIS SYSTEM DOES:**`);
     for (const cat of snap.categories) {
