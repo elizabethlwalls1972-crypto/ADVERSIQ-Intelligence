@@ -265,7 +265,8 @@ app.get('/api/health', (_req: Request, res: Response) => {
   const hasOpenAI = Boolean(String(process.env.OPENAI_API_KEY || '').trim());
   const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
   const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
-  const aiConfigured = hasBedrock || hasOpenAI || hasGroq || hasTogether;
+  const hasGemma = Boolean(String(process.env.GOOGLE_AI_API_KEY || '').trim());
+  const aiConfigured = hasBedrock || hasOpenAI || hasGroq || hasTogether || hasGemma;
   const frontendUrlOrApi = frontEndUrl || 'not configured';
 
   res.json({ 
@@ -285,10 +286,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
       // for credential-resolved availability.
       available: false,
       readinessEndpoint: '/api/ai/readiness',
-      provider: hasBedrock ? 'bedrock' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
+      provider: hasBedrock ? 'bedrock' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : hasGemma ? 'gemma' : null,
       message: aiConfigured
         ? 'AI provider env vars detected — call /api/ai/readiness for live status'
-        : 'Add AWS Bedrock credentials (or OPENAI_API_KEY / GROQ_API_KEY / TOGETHER_API_KEY) to enable AI features'
+        : 'Add GOOGLE_AI_API_KEY (free at aistudio.google.com/apikey), OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY to enable AI features'
     }
   });
 });

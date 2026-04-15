@@ -51,6 +51,11 @@ const GROQ_API_URL  = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL_ID = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
 const getGroqKey    = () => String(process.env.GROQ_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 const getAnthropicKey = () => String(process.env.ANTHROPIC_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
+
+// ─── Google AI (Gemma) config ──────────────────────────────────────────────────
+const GEMMA_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
+const GEMMA_MODEL_ID = process.env.GEMMA_MODEL || 'gemma-4-26b-a4b-it';
+const getGoogleAIKey = () => String(process.env.GOOGLE_AI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -314,6 +319,7 @@ interface RuntimeProviderAvailability {
   anthropic: boolean;
   groq: boolean;
   together: boolean;
+  gemma: boolean;
   bedrockConfigured: boolean;
   bedrockCredentialDetail: string;
 }
@@ -323,11 +329,13 @@ const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailabi
   const anthropic = Boolean(getAnthropicKey());
   const groq = Boolean(getGroqKey());
   const together = Boolean(getTogetherKey());
+  const gemma = Boolean(getGoogleAIKey());
   return {
     openai,
     anthropic,
     groq,
     together,
+    gemma,
     bedrockConfigured: false,
     bedrockCredentialDetail: 'Bedrock removed',
   };
@@ -1012,7 +1020,7 @@ const invokeConsultantWithGroq = async (prompt: string, consultantInstruction?: 
       model: GROQ_MODEL_ID,
       messages: [
         { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
-        { role: 'user', content: prompt },
+        { role: 'user', content: prompt.slice(0, 8000) },
       ],
       max_tokens: 1800,
       temperature: 0.4,
@@ -1075,6 +1083,151 @@ const invokeConsultantWithOpenAI = async (prompt: string, consultantInstruction?
   return text;
 };
 
+// ─── Gemma (Google AI) consultant invoker ──────────────────────────────────────
+const invokeConsultantWithGemma = async (prompt: string, consultantInstruction?: string): Promise<string> => {
+  const key = getGoogleAIKey();
+  if (!key) {
+    throw new Error('Gemma unavailable: GOOGLE_AI_API_KEY missing');
+  }
+
+  const systemText = consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION;
+  const response = await fetch(
+    `${GEMMA_API_BASE}/${GEMMA_MODEL_ID}:generateContent?key=${encodeURIComponent(key)}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemText }] },
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          maxOutputTokens: 8192,
+          temperature: 0.4,
+          topP: 0.9,
+        },
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const errBody = await response.text().catch(() => '');
+    throw new Error(`Gemma request failed: ${response.status} ${errBody}`);
+  }
+
+  const gData = await response.json();
+  const text = gData?.candidates?.[0]?.content?.parts?.map((p: { text: string }) => p.text).join('') || '';
+  if (!text) {
+    throw new Error('Gemma returned empty response');
+  }
+  return text;
+};
+
+// ─── Local Intelligence Fallback ───────────────────────────────────────────────
+// When ALL external providers fail, synthesize a response from the 44-engine
+// Brain, NSIL pipeline, Five-Engine Tribunal, and strategic analysis that are
+// already computed locally before the broker call. No API keys required.
+const synthesizeLocalFallbackResponse = (
+  userMessage: string,
+  brainContext: BrainContext | null,
+  nsilReport: Record<string, unknown> | null,
+  tribunal: { verdict: string; releaseGate: string; contradictions: string[]; engines: { engine: string; score: number; finding: string; action: string }[] },
+  strategicPipeline: { readinessScore: number; stages: { stage: string; detail: string; score?: number }[]; recommendedPath: { targetRegion: string; strategy: string; rationale: string[] } },
+  overlookedIntelligence: { evidenceCredibility: number; perceptionRealityGap: number; topRegionalOpportunities: { place: string; score: number; reason: string[] }[] },
+  perceptionDelta: { deltaIndex: number; confidence: number },
+): string => {
+  const lines: string[] = [];
+
+  lines.push(`## Analysis Summary\n`);
+  lines.push(`Based on autonomous analysis across 44 intelligence engines, here is the assessment for your query:\n`);
+
+  // Strategic readiness
+  const readiness = strategicPipeline.readinessScore;
+  const readinessGrade = readiness >= 80 ? 'Strong' : readiness >= 60 ? 'Moderate' : readiness >= 40 ? 'Developing' : 'Early-stage';
+  lines.push(`### Strategic Readiness: ${readinessGrade} (${readiness}/100)\n`);
+
+  // Tribunal verdict
+  lines.push(`### Five-Engine Tribunal Verdict: **${tribunal.verdict.toUpperCase()}**`);
+  lines.push(`Release gate: ${tribunal.releaseGate}\n`);
+  if (tribunal.engines?.length) {
+    for (const eng of tribunal.engines.slice(0, 5)) {
+      lines.push(`- **${eng.engine}** (score: ${eng.score}/100): ${eng.finding} → ${eng.action}`);
+    }
+    lines.push('');
+  }
+
+  // Pipeline stages
+  const riskStages = strategicPipeline.stages.filter(s => (s.score ?? 100) < 50);
+  if (riskStages.length > 0) {
+    lines.push(`### Risk Flags`);
+    for (const stage of riskStages.slice(0, 5)) {
+      lines.push(`- ⚠️ ${stage.stage}: ${stage.detail} (score: ${stage.score ?? 'N/A'}/100)`);
+    }
+    lines.push('');
+  }
+
+  // Recommended path
+  if (strategicPipeline.recommendedPath) {
+    lines.push(`### Recommended Path`);
+    lines.push(`**Strategy:** ${strategicPipeline.recommendedPath.strategy}`);
+    lines.push(`**Target region:** ${strategicPipeline.recommendedPath.targetRegion}`);
+    for (const rationale of strategicPipeline.recommendedPath.rationale.slice(0, 4)) {
+      lines.push(`- ${rationale}`);
+    }
+    lines.push('');
+  }
+
+  // Overlooked intelligence / regional opportunities
+  if (overlookedIntelligence.topRegionalOpportunities?.length > 0) {
+    lines.push(`### Overlooked Intelligence`);
+    lines.push(`Evidence credibility: ${overlookedIntelligence.evidenceCredibility}/100 | Perception-reality gap: ${overlookedIntelligence.perceptionRealityGap}/100\n`);
+    for (const opp of overlookedIntelligence.topRegionalOpportunities.slice(0, 4)) {
+      lines.push(`- **${opp.place}** (score: ${opp.score}) — ${opp.reason.join('; ')}`);
+    }
+    lines.push('');
+  }
+
+  // Brain intelligence highlights
+  if (brainContext) {
+    lines.push(`### Brain Intelligence (${brainContext.readiness || 'computed'})`);
+    if (brainContext.compositeScore != null) {
+      lines.push(`Composite score: ${brainContext.compositeScore}/100`);
+    }
+    if (brainContext.riskMatrix?.topRisks?.length) {
+      lines.push(`\n**Top Risks:**`);
+      for (const risk of brainContext.riskMatrix.topRisks.slice(0, 3)) {
+        lines.push(`- ${risk.name} (${risk.severity}, score: ${risk.score}) — ${risk.mitigationStrategy}`);
+      }
+    }
+    if (brainContext.financialAnalysis) {
+      const fa = brainContext.financialAnalysis;
+      lines.push(`\n**Financial Analysis:**`);
+      lines.push(`- NPV: $${fa.npv?.npv?.toLocaleString() ?? 'N/A'} at ${((fa.npv?.discountRate ?? 0) * 100).toFixed(1)}% discount rate`);
+      lines.push(`- IRR: ${fa.irr?.irrPercent?.toFixed(1) ?? 'N/A'}%`);
+      lines.push(`- Payback period: ${fa.payback ?? 'N/A'}`);
+    }
+    lines.push('');
+  }
+
+  // NSIL report summary
+  if (nsilReport) {
+    const recommendation = nsilReport.recommendation as string | undefined;
+    if (recommendation) {
+      lines.push(`### NSIL Assessment`);
+      lines.push(`${recommendation}\n`);
+    }
+  }
+
+  // Perception delta
+  lines.push(`### Confidence Metrics`);
+  lines.push(`- Perception Delta Index: ${perceptionDelta.deltaIndex}/100 (confidence: ${perceptionDelta.confidence}%)`);
+  lines.push(`- Evidence Credibility: ${overlookedIntelligence.evidenceCredibility}/100`);
+  lines.push(`- Strategic Readiness: ${readiness}/100\n`);
+
+  lines.push(`---`);
+  lines.push(`*This analysis was generated entirely by the local intelligence engine suite (no external AI provider was used). For enhanced natural-language synthesis, configure at least one API key (GOOGLE_AI_API_KEY recommended — free at aistudio.google.com/apikey).*`);
+
+  return lines.join('\n');
+};
+
 const runConsultantBroker = async (
   prompt: string,
   order: ConsultantProvider[],
@@ -1094,6 +1247,7 @@ const runConsultantBroker = async (
       const invoker =
         provider === 'groq'    ? invokeConsultantWithGroq(prompt, consultantInstruction)
         : provider === 'together' ? invokeConsultantWithTogether(prompt, consultantInstruction)
+        : provider === 'gemma'    ? invokeConsultantWithGemma(prompt, consultantInstruction)
         :                          invokeConsultantWithOpenAI(prompt, consultantInstruction);
       const text = await withTimeout(
         invoker,
@@ -1493,12 +1647,13 @@ router.post('/consultant', async (req: Request, res: Response) => {
       !providerAvailability.openai &&
       !providerAvailability.anthropic &&
       !providerAvailability.groq &&
-      !providerAvailability.together;
+      !providerAvailability.together &&
+      !providerAvailability.gemma;
     if (noProviderAvailable) {
       return res.json({
         requestId,
         taskType: normalizedTaskType,
-        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GROQ_API_KEY — free at console.groq.com (recommended — fast and reliable)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n• ANTHROPIC_API_KEY — console.anthropic.com\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
+        text: `No AI provider is currently configured on this server. To activate the BW Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GOOGLE_AI_API_KEY — free at aistudio.google.com/apikey (recommended — generous free tier)\n• GROQ_API_KEY — free at console.groq.com (fast inference)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n• ANTHROPIC_API_KEY — console.anthropic.com\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
         provider: 'rule-engine',
         attempts: [],
         confidence: 1,
@@ -1512,6 +1667,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         openai: providerAvailability.openai,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
+        gemma: providerAvailability.gemma,
       },
       learningHint
     );
@@ -1665,19 +1821,44 @@ router.post('/consultant', async (req: Request, res: Response) => {
       brainContext?.promptBlock ?? undefined,
       nsilReport ? summariseNSILReport(nsilReport) : undefined
     );
-    const brokerResult = await runConsultantBroker(
-      prompt,
-      providerOrder,
-      controlDecision.timeoutMs,
-      {
-        // Bedrock removed
-        openai: providerAvailability.openai,
-        anthropic: providerAvailability.anthropic,
-        groq: providerAvailability.groq,
-        together: providerAvailability.together,
-      },
-      activeDomainInstruction
-    );
+    let brokerResult: { text: string; provider: ConsultantProvider | 'local-intelligence'; attempts: ConsultantProviderAttempt[] };
+    try {
+      brokerResult = await runConsultantBroker(
+        prompt,
+        providerOrder,
+        controlDecision.timeoutMs,
+        {
+          openai: providerAvailability.openai,
+          anthropic: providerAvailability.anthropic,
+          groq: providerAvailability.groq,
+          together: providerAvailability.together,
+          gemma: providerAvailability.gemma,
+        },
+        activeDomainInstruction
+      );
+    } catch (brokerError) {
+      // All external providers failed — fall back to local intelligence synthesis
+      console.warn('[Consultant] All providers failed, using local intelligence fallback:', brokerError instanceof Error ? brokerError.message : brokerError);
+      const localText = synthesizeLocalFallbackResponse(
+        sanitizedMessage,
+        brainContext,
+        nsilReport,
+        tribunal,
+        strategicPipeline,
+        overlookedIntelligence,
+        perceptionDelta,
+      );
+      brokerResult = {
+        text: localText,
+        provider: 'local-intelligence',
+        attempts: (brokerError instanceof Error && brokerError.message.includes('|'))
+          ? brokerError.message.replace('No consultant providers succeeded. ', '').split(' | ').map(d => {
+              const [provider, ...rest] = d.split(': ');
+              return { provider: provider as ConsultantProvider, ok: false, detail: rest.join(': ') };
+            })
+          : [],
+      };
+    }
     const normalizedText = normalizeConsultantOutput(brokerResult.text);
 
     const replayRecord: ConsultantReplayRecord = {

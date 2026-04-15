@@ -1,6 +1,6 @@
 export type ControlMode = 'reactive' | 'agentic_lite' | 'agentic_full' | 'deliberative';
 
-export type ControlProvider = 'bedrock' | 'openai' | 'anthropic' | 'groq' | 'together';
+export type ControlProvider = 'bedrock' | 'openai' | 'anthropic' | 'groq' | 'together' | 'gemma';
 
 export interface RequestEnvelope {
   requestId: string;
@@ -19,6 +19,7 @@ export interface ProviderAvailability {
   anthropic?: boolean;
   groq: boolean;
   together: boolean;
+  gemma?: boolean;
 }
 
 export interface LearningHint {
@@ -83,10 +84,11 @@ export const deriveControlDecision = (
     providers.groq ? 'groq' : null,
     providers.together ? 'together' : null,
     providers.openai ? 'openai' : null,
+    providers.gemma ? 'gemma' : null,
     providers.bedrock ? 'bedrock' : null,
   ].filter((p): p is ControlProvider => Boolean(p));
 
-  const fallbackOrder: ControlProvider[] = ['groq', 'together', 'openai', 'bedrock'];
+  const fallbackOrder: ControlProvider[] = ['groq', 'together', 'openai', 'gemma', 'bedrock'];
   const providerOrder = uniqueProviders(liveOrder.length ? [...liveOrder, ...fallbackOrder] : fallbackOrder);
 
   const explain: string[] = [
