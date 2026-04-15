@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, GitBranch, X, Info } from 'lucide-react';
+import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
 
@@ -21,6 +21,7 @@ interface CommandCenterProps {
 const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
+    const [showPipelineDeepDive, setShowPipelineDeepDive] = useState(false);
     const [showFormulas, setShowFormulas] = useState(false);
     const [_showCaseStudy, _setShowCaseStudy] = useState(false);
     const [showOutputDetails, setShowOutputDetails] = useState(false);
@@ -348,228 +349,238 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* THE STORY — Why This Matters */}
+            {/* ═══════════════════════════════════════════════════════════════
+                THE CORE IDEA
+            ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-
-                    {/* 2-COLUMN: Header (left) + Body copy (right) */}
-                    <div className="grid md:grid-cols-5 gap-12 items-start">
-
-                        {/* LEFT: Header + Founder statement */}
-                        <div className="md:col-span-2 md:sticky md:top-24">
-                            <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4">Adversarial Decision Verification</p>
-                            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-5">
-                                The Engine Room<br />of Decisions
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Statement */}
+                        <div>
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">The Core Idea</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
+                                Every AI system on the market generates answers.<br className="hidden md:block" />
+                                This one verifies them first.
                             </h2>
-                            <p className="text-lg text-slate-400 font-medium leading-snug mb-8">
-                                Built for Complexity<br />Accessible to All
+                            <p className="text-lg text-slate-500 leading-relaxed mb-6">
+                                This isn&rsquo;t a chatbot with a business skin. It&rsquo;s an operating system for verified decisions &mdash; built from regional development, architected for any high-stakes scenario where getting it wrong costs capital, credibility, or both.
                             </p>
-
-                            {/* Blue accent panel */}
-                            <div className="bg-blue-700 rounded-sm p-6">
-                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                We built a 10-layer intelligence pipeline with <strong className="text-slate-900">50+ engines</strong>, <strong className="text-slate-900">five adversarial reasoning personas</strong>, a <strong className="text-slate-900">SAT-based contradiction solver</strong>, <strong className="text-slate-900">Monte Carlo stress testing</strong>, <strong className="text-slate-900">computational neuroscience</strong> for decision modelling, and a <strong className="text-slate-900">247-template document factory</strong>. Every claim carries a confidence score. Every source is traced. Every conclusion has survived formal attack before it reaches you.
+                            </p>
+                            <p className="text-sm text-slate-500 leading-relaxed">
+                                It doesn&rsquo;t trust its own output &mdash; it formally attacks it, debates it, stress-tests it, and scores it. Only what survives reaches you.
+                            </p>
                         </div>
 
-                        {/* RIGHT: investment thesis */}
-                        <div className="md:col-span-3 space-y-6 text-lg text-slate-700 leading-relaxed text-justify">
-                            <p>
-                                Every organisation on earth that uses AI to make high-stakes decisions has the same problem: <strong className="text-slate-900">How do you trust the output?</strong> LLMs hallucinate. Dashboards show data without argument. Consultants give opinions. Nobody formally verifies decisions before they&rsquo;re made.
-                            </p>
-                            <p>
-                                There are trillions of dollars in economic potential locked away in overlooked places&mdash;markets, industries, and opportunities that decision-makers consistently misprice because their reality is hard to translate into structured proof. Capital followed the indices, the indices only measured what was easy to measure, and everything else was written off as &ldquo;emerging&rdquo; or &ldquo;high-risk.&rdquo; The problem was never the markets. It was the intelligence layer.
-                            </p>
-                            <p className="text-slate-900 font-semibold text-xl mt-4">
-                                Until now.
-                            </p>
+                        {/* Right — Photo */}
+                        <div>
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1639322537504-6427a16b0a28?w=800&h=900&fit=crop&q=80"
+                                    alt="Adversarial intelligence verification system"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Comparison Strip */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
+                        <div className="border-t-2 border-slate-300 pt-4">
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">Strategy Consulting</h4>
+                            <p className="text-xs text-slate-500 leading-relaxed">Sells time. Delivery in months. Frameworks designed for Fortune 500, not regional economies.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-4">
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">Financial Modelling</h4>
+                            <p className="text-xs text-slate-500 leading-relaxed">Sells projections. Built for standardised asset classes. Can&rsquo;t quantify localised advantages.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-4">
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">General-Purpose AI</h4>
+                            <p className="text-xs text-slate-500 leading-relaxed">Sells summaries. Fast and accessible, but no verification, no evidence tracing, no fiduciary rigour.</p>
+                        </div>
+                        <div className="border-t-2 border-blue-600 pt-4">
+                            <h4 className="text-sm font-bold text-blue-700 mb-1">ADVOS</h4>
+                            <p className="text-xs text-slate-500 leading-relaxed">Sells verified decisions. Adversarial testing across 50+ engines. Real-time intelligence from 20+ live APIs. Confidence-scored, source-traced, contradiction-checked. Minutes, not months.</p>
                         </div>
                     </div>
                 </div>
             </section>
-
-            {/* [REMOVED - moved to new structured section] */}
 
             {/* ═══════════════════════════════════════════════════════════════
-                NARRATIVE FLOW: Problem + Status Quo → Solution (consolidated)
+                WHAT MAKES THIS A FIRST — The Verification Pipeline
             ═══════════════════════════════════════════════════════════════ */}
-
-            <section className="py-8 px-4 bg-white">
+            <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-5">
-
-                        {/* CARD 1: Why This Doesn't Exist — matches Card 2 / Who This Is For layout */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-0.5 bg-amber-500/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">The Problem</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">The Intelligence Layer Doesn&rsquo;t Exist Yet.</h4>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    High-stakes decisions &mdash; where to invest, what to build, which markets to enter &mdash; still depend on tools that were never designed for the complexity involved. The data exists but sits fragmented across portals, reports, and spreadsheets. The analysis exists but arrives months late, built on macro-level assumptions that miss local reality. Capital flows to the same saturated markets while regional hubs, logistics corridors, and industrial centres remain consistently undervalued.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    The problem isn&rsquo;t a lack of effort. It&rsquo;s a structural gap: no single system existed that could ingest local evidence, verify it adversarially, stress-test it across scenarios, and deliver a defensible position &mdash; all in the time frame decisions actually require.
-                                </p>
-                                <div className="pt-3 border-t border-slate-200">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-3">Where Current Approaches Fall Short</h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Traditional Advisory</h5>
-                                            <p className="text-xs text-slate-600">Deep expertise, but delivery timelines measured in months and costs that limit access. Macro-level frameworks often miss the local nuance that determines whether a regional project succeeds or fails.</p>
-                                        </div>
-                                        <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Government Planning Tools</h5>
-                                            <p className="text-xs text-slate-600">Valuable data scattered across departments and portals, updated on long cycles. Project sponsors are left to manually piece together regulatory alignment, zoning, and compliance across disconnected systems.</p>
-                                        </div>
-                                        <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">Financial Modelling</h5>
-                                            <p className="text-xs text-slate-600">Built for standardised asset classes in established markets. Struggles to quantify localized advantages &mdash; workforce depth, supply chain proximity, infrastructure resilience &mdash; that define regional opportunity.</p>
-                                        </div>
-                                        <div className="border-l-2 border-slate-400 pl-3">
-                                            <h5 className="text-sm font-bold text-slate-900 mb-1">General-Purpose AI</h5>
-                                            <p className="text-xs text-slate-600">Fast and accessible, but generates summaries without verification. Lacks the adversarial logic, evidence tracing, and fiduciary rigour required for decisions that face real scrutiny.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80" alt="The gap in current AI tools" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Photo */}
+                        <div className="order-2 lg:order-1">
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=900&fit=crop&q=80"
+                                    alt="Verification pipeline architecture"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
 
-                        {/* The Actual Breakthrough — Blue Feature Block */}
-                        <div className="bg-blue-700 rounded-sm p-5 md:p-8">
-                            <div className="grid md:grid-cols-5 gap-6 items-start">
-                                <div className="md:col-span-2">
-                                    <p className="text-xs font-bold text-blue-300 uppercase tracking-widest mb-3">The Actual Breakthrough</p>
-                                    <h3 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
-                                        Applying the Failure Model<br className="hidden md:block" /> to Regional City<br className="hidden md:block" /> Economic Perception
-                                    </h3>
-                                    <button
-                                        onClick={() => setShowBreakthroughPopup(true)}
-                                        className="inline-flex items-center gap-2 px-4 py-2 border border-blue-300 text-blue-100 text-xs font-bold uppercase tracking-wider hover:bg-blue-600 transition-colors"
-                                    >
-                                        Read More
-                                        <ArrowRight size={14} />
-                                    </button>
-                                </div>
-                                <div className="md:col-span-3">
-                                    <p className="text-sm md:text-base text-blue-100 leading-relaxed text-justify">
-                                        The decision to overlook an opportunity is rarely made on evidence. It is made on perception &mdash; shaped by incomplete data, inherited assumptions about where value exists, a search process that never reaches the right geography, and an objective that quietly prioritises career safety over return. These are not rational risk assessments. They are cognitive failure modes that repeat across every institution, every cycle, without correction. This system was built to catch them.
-                                    </p>
-                                </div>
-                            </div>
+                        {/* Right — Text */}
+                        <div className="order-1 lg:order-2">
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What Makes This a First</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Each of these technologies exists. Nobody has ever combined them.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                SAT solvers verify chip designs at Intel and AMD. Monte Carlo simulations run on Wall Street trading desks. Bayesian networks power medical diagnostics. Computational neuroscience models sit in university research labs. Self-evolving algorithms drive recommendation engines at Netflix and Spotify.
+                            </p>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                                No one has ever wired these together into a single adversarial pipeline &mdash; and no one has ever pointed that pipeline at investment decisions and regional economic development. This system implements the actual mathematics: DPLL satisfiability algorithms, Nash bargaining equilibria, Wilson-Cowan neural field equations, Friston&rsquo;s Free Energy Principle, Thompson Sampling bandits. 54 formulas across the full pipeline, each backtested against 200+ real-world cases with known outcomes.
+                            </p>
+                            <p className="text-sm text-slate-600 leading-relaxed">
+                                We searched. No comparable system exists &mdash; in academia, in commercial products, or in government. The closest parallels are narrow single-domain tools that handle one or two of these capabilities. None handle all ten. None make them fight each other.
+                            </p>
                         </div>
+                    </div>
 
-                        {/* CARD 2: What We Built — matches "Who This Is For" layout */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">What We Built</span>
-                                <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">What the BW Consultant Is Designed to Do</h4>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Trillions of dollars in economic potential sit locked in overlooked places &mdash; regional hubs, industrial zones, agricultural corridors, emerging markets &mdash; because no tool existed to surface, verify, and defend that value. BW Consultant does. It analyzes any place on earth &mdash; city, region, or country &mdash; and reveals hidden supply chains, workforce strengths, and growth opportunities that traditional tools miss, then subjects every finding to adversarial verification so you make decisions based on proof, not perception.
-                                </p>
+                    {/* 5×2 Pipeline Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
+                        {[
+                            { n: '01', title: 'Five Competing Reasoning Engines', desc: 'Five AI personas debate independently via Bayesian inference and Nash bargaining. The Tribunal renders a verdict.' },
+                            { n: '02', title: 'SAT Contradiction Solver', desc: 'DPLL satisfiability checks whether engine conclusions are logically consistent. Contradictions caught mathematically.' },
+                            { n: '03', title: 'Monte Carlo Stress Testing', desc: 'Thousands of simulations across policy, currency, partner, and market variables. Probabilities, not promises.' },
+                            { n: '04', title: 'Human Cognition Engine', desc: 'Computational neuroscience models detect hidden priorities, decision friction, and cognitive blind spots.' },
+                            { n: '05', title: 'Self-Evolving Algorithms', desc: 'Online gradient descent and Thompson Sampling learn which methods work best per problem type.' },
+                            { n: '06', title: 'Reflexive Intelligence', desc: 'Seven background engines: Drift Detection, Backtesting, MetaCognition, Continuous Learning, and more.' },
+                            { n: '07', title: 'Entity Intelligence', desc: 'Every entity triggers 7 parallel streams: registry, ownership, sanctions, financial health, sentiment, litigation, mapping.' },
+                            { n: '08', title: 'Confidence Scoring', desc: 'Every claim carries a numerical confidence score with full data provenance and source tracing.' },
+                            { n: '09', title: 'DAG-Scheduled Execution', desc: '47+ interdependent tasks in 23 parallel workstreams. Months of advisory compressed into minutes.' },
+                            { n: '10', title: 'Document Factory', desc: '247 templates across 15 categories and 156 letter templates. Board-ready, investor-ready, regulator-ready.' },
+                        ].map((item) => (
+                            <div key={item.n} className="group border-t-2 border-slate-200 hover:border-blue-600 pt-4 cursor-pointer transition-colors" onClick={() => setShowPipelineDeepDive(true)}>
+                                <span className="text-2xl font-light text-slate-300 group-hover:text-blue-600 transition-colors">{item.n}</span>
+                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mt-2 mb-2 leading-snug">{item.title}</h3>
+                                <p className="text-xs text-slate-500 leading-relaxed mb-2">{item.desc}</p>
+                                <span className="text-[10px] font-semibold text-blue-600 group-hover:text-blue-800 transition-colors uppercase tracking-wider">Read more &rarr;</span>
+                            </div>
+                        ))}
+                    </div>
 
-                                <h5 className="text-base font-bold text-slate-900 mb-2 mt-4">The Five Core Engines &mdash; <span className="text-blue-600">With Extra Intelligence</span></h5>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-3">
-                                    Five specialized reasoning engines work in sequence on every analysis. Each brings a different perspective, each can challenge the others, and each contributes to explicit verdict, gate, and contradiction telemetry.
-                                </p>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                    {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
-                                        const cat = categoryDetails[key];
-                                        return (
-                                            <button
-                                                key={key}
-                                                onClick={() => setExpandedEngine(key)}
-                                                className={`group relative bg-gradient-to-r ${cat.color} p-3 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left`}
-                                            >
-                                                <div className="flex items-start justify-between gap-2">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-2 mb-0.5">
-                                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center">{cat.icon}</span>
-                                                            <h5 className="text-sm font-bold text-white leading-snug">{cat.title}</h5>
-                                                        </div>
-                                                        <p className="text-[11px] text-white/80 leading-relaxed">{cat.subtitle}</p>
-                                                    </div>
-                                                    <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-xs font-semibold">&rarr;</span>
-                                                </div>
-                                            </button>
-                                        );
-                                    })}
-
-                                    {/* The Intelligence Architecture */}
+                    {/* Deep Dive links */}
+                    <div className="text-center">
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Deep Dive &mdash; Engine Architecture</p>
+                        <div className="flex flex-wrap justify-center gap-3">
+                            {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
+                                const cat = categoryDetails[key];
+                                return (
                                     <button
-                                        onClick={() => setShowFormulas(true)}
-                                        className="group relative bg-gradient-to-r from-slate-900 to-blue-900 p-3 border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 text-left"
+                                        key={key}
+                                        onClick={() => setExpandedEngine(key)}
+                                        className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
                                     >
-                                        <div className="flex items-start justify-between gap-2">
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2 mb-0.5">
-                                                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 text-white text-[10px] font-bold flex items-center justify-center"><GitBranch size={12} /></span>
-                                                    <h5 className="text-sm font-bold text-white leading-snug">The Intelligence Architecture</h5>
-                                                </div>
-                                                <p className="text-[11px] text-white/80 leading-relaxed">10-layer NSIL pipeline, 50+ engine parallel brain, 12-layer Cognitive Reasoning Engine, Five Engine Tribunal runtime, 20+ live external APIs, multi-provider AI orchestration, anticipatory thinking, 3 quantum-inspired engines, production-grade financial modelling, drift detection, and Research Ecosystem scoring.</p>
-                                            </div>
-                                            <span className="text-white/60 group-hover:text-white transition-colors flex-shrink-0 text-xs font-semibold">&rarr;</span>
-                                        </div>
+                                        {cat.icon}. {cat.title} &rarr;
                                     </button>
-                                </div>
-
-                                <div className="pt-3 border-t border-slate-200">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-1">Every Claim Is Traceable.</h5>
-                                    <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                        Nothing in this system is a black box. Every number has a source. Every conclusion has an audit trail. Every recommendation can be traced back through the reasoning chain that produced it&mdash;the kind of defensible logic that regulators, boards, and fiduciary committees require.
-                                    </p>
-                                </div>
-                            </div>
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&h=600&q=80" alt="Regional city infrastructure and economic corridor" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
+                                );
+                            })}
+                            <button
+                                onClick={() => setShowFormulas(true)}
+                                className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
+                            >
+                                Full Architecture &rarr;
+                            </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className="py-10 px-4 bg-white">
+            {/* ═══════════════════════════════════════════════════════════════
+                WHY ADVOS — Every Word Is Precise
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                        {/* Text Content (Left) */}
-                        <div className="p-5 md:p-6 flex-1 flex flex-col justify-center">
-                            <span className="inline-block px-2.5 py-0.5 bg-blue-600/90 text-white text-[11px] font-bold uppercase tracking-wider mb-2 w-fit">Who This Is For</span>
-                            <h4 className="text-xl font-bold text-slate-900 leading-snug mb-3">You Don&rsquo;t Need to Be an Expert. The System Already Is.</h4>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                                The people who need this most are the ones who&rsquo;ve never had access to it. That&rsquo;s the point.
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Photo */}
+                        <div>
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=800&h=900&fit=crop&q=80"
+                                    alt="Adversarial verification architecture"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Right — Text */}
+                        <div>
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Why &ldquo;ADVOS&rdquo;</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Every word is precise.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                The name isn&rsquo;t marketing. It&rsquo;s a technical description. Each component maps directly to what the system does &mdash; and what makes it fundamentally different from anything else on the market.
                             </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                <div className="border-l-2 border-blue-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Regional Councils &amp; Development Agencies</h5>
-                                    <p className="text-xs text-slate-600">You know your region has potential. When the investment board asks for a risk-adjusted ROI model, the budget doesn&rsquo;t stretch. This system gives you the same analytical depth &mdash; without the consulting invoice.</p>
-                                </div>
-                                <div className="border-l-2 border-emerald-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Government Agencies &amp; Investment Boards</h5>
-                                    <p className="text-xs text-slate-600">Every decision needs a defensible trail. This system stress-tests assumptions, surfaces deal-killers early, runs adversarial debate from five perspectives, and produces documented rationale you can stand behind.</p>
-                                </div>
-                                <div className="border-l-2 border-amber-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">Businesses Expanding Into New Regions</h5>
-                                    <p className="text-xs text-slate-600">You don&rsquo;t know the regulatory landscape, the real cost of entry, or which local partners are credible. This system researches any location in seconds and flags what will go wrong before you commit capital.</p>
-                                </div>
-                                <div className="border-l-2 border-purple-500 pl-3">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-0.5">First-Time Exporters &amp; Regional Entrepreneurs</h5>
-                                    <p className="text-xs text-slate-600">You&rsquo;ve never written an investment prospectus. That&rsquo;s fine &mdash; the system walks you through a guided 10-step intake, asks the right questions, and produces the documents that open doors.</p>
-                                </div>
-                            </div>
-                            <div className="pt-3 border-t border-slate-200">
-                                <p className="text-xs text-slate-600 leading-relaxed">
-                                    <strong className="text-slate-900">The system adapts to you.</strong> First-time users get full walkthroughs and guided intake. Teams review scores together with shared workspaces. Experts get direct formula access, full audit trail export, and adjustable Monte Carlo parameters. Same engine &mdash; different depth based on who&rsquo;s driving.
-                                </p>
+                        </div>
+                    </div>
+
+                    {/* Three columns below */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div className="border-t-2 border-blue-600 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">Adversarial</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">The system is designed to be its own adversary. Every conclusion is challenged by competing engines. Every logical chain is checked for contradictions. Every projection is stress-tested against worst-case scenarios. The output isn&rsquo;t what the AI thinks is right &mdash; it&rsquo;s what survived the attack.</p>
+                        </div>
+                        <div className="border-t-2 border-blue-600 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">Decision Verification</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">It doesn&rsquo;t make the decision for you. It verifies the decision before you make it. You remain the decision-maker. The system ensures that when you commit capital, sign a contract, or submit to a regulator, the position underneath has been formally tested to fiduciary standard.</p>
+                        </div>
+                        <div className="border-t-2 border-blue-600 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">Operating System</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Not a single tool &mdash; an operating system for decisions. 50+ engines, multi-provider AI with automatic failover, 20+ live external APIs, a full compliance framework (IFC PS1&ndash;PS8, UN SDGs), and a 247-template document pipeline. The complete infrastructure for verified decision-making.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            {/* ═══════════════════════════════════════════════════════════════
+                WHO THIS IS FOR
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-20 px-4 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Photo */}
+                        <div className="order-2 lg:order-1">
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=900&fit=crop&q=80"
+                                    alt="Diverse teams making strategic decisions"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
-                        {/* Photo (Right) */}
-                        <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop&q=80" alt="Regional council meeting" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+
+                        {/* Right — Text */}
+                        <div className="order-1 lg:order-2">
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Who This Is For</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">You don&rsquo;t need to be an expert. The system already is.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                The same engine serves first-time exporters and seasoned investment boards. Beginners get guided walkthroughs and plain-language explanations. Experts get direct formula access, adjustable Monte Carlo parameters, audit trail exports, and raw confidence distributions. Same engine &mdash; different depth.
+                            </p>
                         </div>
+                    </div>
+
+                    {/* Four audience cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {[
+                            { title: 'Regional Councils & Development Agencies', desc: 'Get the same analytical depth as tier-one advisory \u2014 risk-adjusted ROI models, supply chain mapping, workforce analysis \u2014 without the consulting invoice.', photo: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Government Agencies & Investment Boards', desc: 'Defensible decision trails. Stress-tested assumptions, surfaced deal-killers, and documented rationale you can stand behind.', photo: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Businesses Expanding Into New Regions', desc: 'Research any location instantly \u2014 regulatory landscape, real cost of entry, partner credibility \u2014 and flag what will go wrong before you commit capital.', photo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop&q=80' },
+                            { title: 'First-Time Exporters & Entrepreneurs', desc: 'Never written an investment prospectus? The guided 10-step intake asks the right questions and produces the documents that open doors.', photo: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=250&fit=crop&q=80' },
+                        ].map((item, i) => (
+                            <div key={i} className="group">
+                                <div className="h-36 overflow-hidden mb-4">
+                                    <img src={item.photo} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                </div>
+                                <div className="border-t-2 border-slate-300 pt-4">
+                                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2 leading-snug">{item.title}</h3>
+                                    <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -620,320 +631,323 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* ═══════════════════════════════════════════════════════════════
-                INTERSTITIAL CTA - Full-Width Break
-            ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-r from-blue-800 via-blue-700 to-slate-900">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_30%)]" />
-                <div className="relative max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">&ldquo;You just describe your situation. The system figures out the rest.&rdquo;</h2>
-                    <p className="text-lg text-slate-300 leading-relaxed text-justify max-w-3xl mx-auto">
-                        You don&rsquo;t need to know which formula applies, which jurisdiction pack to select, or which document your situation requires. The <strong className="text-white">BW Consultant</strong> learns your case as the conversation develops. It detects signals while you type, builds the case model in the background, checks compliance for your jurisdiction, and tells you exactly what to generate when you&rsquo;re ready. The system is the analyst. You are the decision-maker.
-                    </p>
+            {/* ═══════ Unified Pipeline Deep Dive Modal ═══════ */}
+            {showPipelineDeepDive && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setShowPipelineDeepDive(false)}>
+                    <div className="bg-white border border-slate-200 shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
+                        {/* Header */}
+                        <div className="h-44 relative overflow-hidden flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=400&fit=crop&q=80" alt="Verification Pipeline" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent" />
+                            <button onClick={() => setShowPipelineDeepDive(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center shadow-lg"><X size={18} /></button>
+                            <div className="absolute bottom-4 left-6 right-6">
+                                <span className="inline-block px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider mb-2">10-Layer Architecture</span>
+                                <h3 className="text-xl font-bold text-white leading-snug">The Verification Pipeline &mdash; Deep Dive</h3>
+                            </div>
+                        </div>
+
+                        {/* Scrollable content with all 10 layers */}
+                        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-10">
+                            {[
+                                { n: '01', title: 'Five Competing Reasoning Engines', photo: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=400&fit=crop&q=80', extended: 'Five independent AI personas analyse your situation simultaneously but cannot see each other\u2019s work. Strategic Viability evaluates market opportunity. Risk & Compliance surfaces legal and regulatory exposure. Geopolitical Context maps political dynamics and stability. Financial Architecture stress-tests the numbers. Stakeholder & Social assesses community impact and partner dynamics. Once each persona reaches its own conclusion, they enter a structured adversarial debate. Bayesian inference updates each persona\u2019s confidence based on evidence quality. Nash bargaining theory finds the equilibrium position where no persona can improve its argument without considering the others. The Tribunal then renders a final verdict: proceed, proceed-with-conditions, or reject.', highlights: ['5 independent AI personas with separate reasoning chains', 'Bayesian belief updating based on evidence strength', 'Nash bargaining equilibrium across competing conclusions', 'Tribunal verdict system with 3 possible outcomes', 'Disagreements preserved in output \u2014 you see where experts couldn\u2019t agree'], plainEnglish: 'Imagine five senior advisors in separate rooms, each analysing your situation from their own expertise. They can\u2019t influence each other. Once they\u2019re done, they debate. The strongest arguments win \u2014 not the loudest voice. You get the consensus AND the dissent.' },
+                                { n: '02', title: 'SAT Contradiction Solver', photo: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&h=400&fit=crop&q=80', extended: 'Your inputs and the five engines\u2019 conclusions are converted into propositional logic clauses in conjunctive normal form (CNF). A DPLL-like satisfiability algorithm \u2014 the same class of solver used in chip design verification and NASA mission-critical software \u2014 checks whether all statements can be simultaneously true. If Engine A concludes \u201cthe market is ready\u201d but Engine B\u2019s evidence implies regulatory blockage, these become contradictory clauses. The solver catches this mathematically, not through pattern matching or keyword detection. No other commercial AI product applies formal logic verification to its own conclusions.', highlights: ['Propositional logic in conjunctive normal form (CNF)', 'DPLL satisfiability algorithm \u2014 same class used in chip verification', 'Catches logical contradictions between engine conclusions', 'Also validates user inputs for logical impossibility', 'Runs before resources are spent on full analysis'], plainEnglish: 'Before the system gives you an answer, it checks whether its own conclusions are logically possible. If one part of the analysis contradicts another, the system catches it \u2014 mathematically, not by guessing. Think of it as a spell-checker for logical consistency.' },
+                                { n: '03', title: 'Monte Carlo Stress Testing', photo: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=400&fit=crop&q=80', extended: 'The system runs thousands of randomised simulations, varying key parameters: policy changes, currency fluctuations, partner reliability, market demand shifts, regulatory timing, and commodity prices. Each simulation produces a complete outcome pathway. The results are aggregated into probability distributions. You get Value-at-Risk at the 95th percentile, expected shortfall (what happens in the worst 5% of cases), probability of loss, and full histograms. A regret analysis layer also calculates the cost of doing nothing \u2014 quantifying the opportunity cost of inaction.', highlights: ['10,000-iteration Monte Carlo simulations', 'Variables: policy, currency, partners, demand, regulation, commodities', 'Value-at-Risk (95th percentile) and expected shortfall', 'Probability distributions replace single-point estimates', 'Regret analysis quantifies the cost of inaction'], plainEnglish: 'Instead of telling you \u201cROI is 12%,\u201d the system tells you \u201cROI is 12% with 73% confidence, dropping below 5% in 18% of scenarios when partner reliability falls below threshold.\u201d Every number becomes a probability, not a promise.' },
+                                { n: '04', title: 'Human Cognition Engine', photo: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1200&h=400&fit=crop&q=80', extended: 'Seven computational neuroscience models work together to understand how you \u2014 and the people reading your output \u2014 actually make decisions. Wilson-Cowan neural field equations model attention oscillation. Friston\u2019s Free Energy Principle predicts which conclusions will feel surprising vs. confirming. Rao & Ballard predictive coding detects when your expectations diverge from reality. Itti-Koch saliency mapping identifies what will grab attention in a document. Baars\u2019 Global Workspace Theory models conscious vs. unconscious processing. Neurovisceral integration models emotional response. Baddeley\u2019s Working Memory model ensures output doesn\u2019t exceed cognitive load limits.', highlights: ['Wilson-Cowan neural oscillation \u2014 attention modelling', 'Friston\u2019s Free Energy Principle \u2014 surprise prediction', 'Itti-Koch saliency \u2014 what grabs attention in documents', 'Baars Global Workspace Theory \u2014 conscious processing limits', 'Baddeley\u2019s Working Memory \u2014 cognitive load management'], plainEnglish: 'The system models how your brain will react to information. It detects hidden priorities you haven\u2019t articulated, anticipates where you\u2019ll feel uncertain, and structures output so the most critical information lands where your attention naturally goes.' },
+                                { n: '05', title: 'Self-Evolving Algorithms', photo: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=400&fit=crop&q=80', extended: 'Scoring formulas adjust their own weights using online gradient descent and Thompson Sampling (Bayesian bandits) based on outcome feedback. When the system gets feedback on a recommendation \u2014 whether from explicit user input or from tracked outcomes \u2014 it updates which analytical approaches receive more weight for similar problem types. Exponential moving averages track performance trends. If accuracy drifts, the system rolls back automatically to the last known-good configuration. Every change is logged with a full audit trail: what changed, why, what triggered it, and accuracy before and after.', highlights: ['Online gradient descent for weight optimisation', 'Thompson Sampling (Bayesian bandits) for approach selection', 'Automatic rollback when accuracy degrades', 'Full audit trail of every weight adjustment', 'Performance tracking via exponential moving averages'], plainEnglish: 'The system learns which analytical methods work best for each type of problem. If Monte Carlo stress testing proves more predictive for infrastructure projects than real estate deals, the system automatically adjusts. It gets smarter with every case.' },
+                                { n: '06', title: 'Reflexive Intelligence', photo: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=400&fit=crop&q=80', extended: 'Seven specialised background engines run continuously to ensure the system monitors its own performance and the external environment. Drift Detection uses Welch\u2019s t-test to catch when the world changes enough that models need recalibration. Backtesting validates all 54+ formulas against 200+ real historical cases with known outcomes. MetaCognition audits the system\u2019s own reasoning for overconfidence, confirmation bias, and missing counterfactuals. Continuous Learning processes every interaction as a training signal. Proactive Intelligence anticipates what you\u2019ll need next. The Perception Delta Index measures the gap between your assumptions and reality. The Case Graph Builder maps relationships between all entities and findings.', highlights: ['Drift Detection \u2014 catches when models need recalibration', 'Backtesting against 200+ real historical cases', 'MetaCognition \u2014 the system auditing its own thinking', 'Proactive Intelligence \u2014 predicting your next question', 'Perception Delta Index \u2014 gap between assumptions and reality'], plainEnglish: 'These engines run silently in the background. They make sure the system stays honest, stays current, catches its own mistakes, and anticipates what you\u2019ll need before you ask for it.' },
+                                { n: '07', title: 'Entity Intelligence', photo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=400&fit=crop&q=80', extended: 'When any company, person, or organisation is mentioned in your input, the Entity Intelligence Pipeline activates automatically. Seven parallel verification streams fire simultaneously: OpenCorporates for corporate registry validation, GLEIF for beneficial ownership chains (LEI lookups), OpenSanctions for sanctions and PEP screening, financial health indicators from structured databases, GDELT for real-time news sentiment analysis, litigation history checks, and relationship mapping to uncover hidden connections. The output is a composite Entity Intelligence Report with verified/unverified status, a risk rating (LOW/MODERATE/HIGH/CRITICAL), and full source accountability showing exactly where each data point came from.', highlights: ['Corporate registry verification (OpenCorporates)', 'Beneficial ownership chains (GLEIF LEI)', 'Sanctions and PEP screening (OpenSanctions)', 'Real-time news sentiment (GDELT)', 'Composite risk rating: LOW / MODERATE / HIGH / CRITICAL'], plainEnglish: 'Every time you mention a company or person, the system quietly runs background checks \u2014 corporate registries, sanctions lists, news sentiment, ownership chains, litigation history. You get a verified trust score, not a guess.' },
+                                { n: '08', title: 'Confidence Scoring', photo: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=400&fit=crop&q=80', extended: 'Every material claim in the system\u2019s output carries a numerical confidence score. These scores are built from three sources: engine convergence (how much the five reasoning engines agree), Monte Carlo distribution width (how stable the projections are under stress), and evidence quality (how fresh, how authoritative, and how many independent sources confirm each data point). Data provenance annotations trace every number back to its exact source. You can see not just the conclusion, but the confidence behind it and the evidence trail that supports it.', highlights: ['Numerical confidence scores on every material claim', 'Engine convergence measurement across 5 reasoning personas', 'Monte Carlo distribution width as stability indicator', 'Evidence quality scoring: freshness, authority, independence', 'Full data provenance \u2014 every number traces to its source'], plainEnglish: 'You never have to wonder \u201chow sure is the system?\u201d Every claim shows its confidence score. High confidence with strong evidence means the claim has been validated from multiple angles. Low confidence with thin evidence means the system is being honest about what it doesn\u2019t know.' },
+                                { n: '09', title: 'DAG-Scheduled Execution', photo: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=400&fit=crop&q=80', extended: 'The system manages 47+ interdependent analysis tasks using a directed acyclic graph (DAG) with topological sorting. This means it automatically determines which tasks can run in parallel and which must wait for dependencies. 23 workstreams execute simultaneously where possible. The DAG scheduler handles memoisation of intermediate results (so the same calculation never runs twice), mathematical bounds enforcement, and dependency-aware parallelism. This is the architectural reason the system can compress months of traditional advisory work into minutes \u2014 it\u2019s not cutting corners, it\u2019s executing optimally.', highlights: ['Directed acyclic graph (DAG) with topological sorting', '47+ interdependent analysis tasks orchestrated', '23 parallel workstreams for maximum throughput', 'Memoisation prevents redundant calculations', 'Dependency-aware execution \u2014 nothing runs before its prerequisites'], plainEnglish: 'Traditional consulting takes months because tasks happen sequentially and manually. The system maps every dependency, runs everything that can run simultaneously, and never repeats work. Same rigour, fraction of the time.' },
+                                { n: '10', title: 'Document Factory', photo: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&h=400&fit=crop&q=80', extended: '247 document templates span 15 categories covering the entire project lifecycle: Foundation & Legal, Strategic Intelligence, Financial & Investment, Market & Competitive Analysis, Risk & Compliance, Government & Policy, Partnership & Stakeholder, Project Management, Procurement & Contract, Human Resources, Infrastructure & Environmental, Governance & Board, Regulatory & Licensing, ESG & Sustainability, and Case Study Intelligence. Plus 156 letter templates for every stakeholder communication scenario. Every document is grounded in verified evidence from the pipeline \u2014 not generated from thin air. Board-ready briefs, investor presentations, and regulator submissions are produced from the same validated analysis.', highlights: ['247 document templates across 15 lifecycle categories', '156 letter templates for stakeholder communications', 'Board-ready briefs and investor presentations', 'Regulator submissions with compliance evidence', 'All grounded in verified pipeline output \u2014 not hallucinated content'], plainEnglish: 'The system doesn\u2019t just analyse \u2014 it produces the actual documents you need. Investment memos, board papers, regulator filings, partnership agreements \u2014 all built from the verified analysis, ready to use on day one.' },
+                            ].map((layer) => (
+                                <div key={layer.n} className="border-t border-slate-200 pt-6">
+                                    <div className="flex items-start gap-4 mb-4">
+                                        <span className="inline-flex items-center justify-center w-10 h-10 bg-blue-600 text-white text-sm font-bold flex-shrink-0">{layer.n}</span>
+                                        <div>
+                                            <h4 className="text-base font-bold text-slate-900 mb-1">{layer.title}</h4>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm text-slate-700 leading-relaxed mb-4">{layer.extended}</p>
+                                    <div className="mb-4">
+                                        <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-3">Key Technical Details</h5>
+                                        <div className="space-y-2">
+                                            {layer.highlights.map((h, i) => (
+                                                <div key={i} className="flex items-start gap-3">
+                                                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-1.5 flex-shrink-0" />
+                                                    <p className="text-sm text-slate-600">{h}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="bg-slate-50 border border-slate-200 p-4">
+                                        <h5 className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">What this means for you</h5>
+                                        <p className="text-sm text-slate-600 leading-relaxed">{layer.plainEnglish}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-            </section>
+            )}
 
             {/* ═══════════════════════════════════════════════════════════════
-                TIER 3: SUPPORTING INFORMATION - Outputs, Assurance, Factory
+                INTERSTITIAL — The Experience
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Text */}
+                        <div>
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">The Experience</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
+                                You describe your situation. The system figures out the rest.
+                            </h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                You don&rsquo;t need to know which formula applies, which jurisdiction pack to select, or which document your situation requires. The system learns your case as the conversation develops. It detects signals while you type, builds the case model in the background, checks compliance for your jurisdiction, and tells you exactly what to generate when you&rsquo;re ready.
+                            </p>
+                        </div>
 
-                    {/* What You Walk Away With - Photo + Script Card */}
-                    <div className="mb-16">
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <span className="inline-block px-2.5 py-1 bg-slate-800/90 text-white text-[11px] font-bold uppercase tracking-wider mb-3 w-fit">Deliverables</span>
-                                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">What You Walk Away With</h2>
-                                <p className="text-base text-slate-700 leading-relaxed text-justify mb-6">
-                                    You leave with a <strong>verified operating position</strong> &mdash; not a generated summary, but a defensible strategy that has survived five competing reasoning engines, SAT contradiction detection, confidence scoring on every claim, and DAG-sequenced execution logic. What typically takes months of advisory work arrives ready for board presentations, investor conversations, and regulator submissions on day one.
-                                </p>
-
-                                {/* Updated Capability Framing */}
-                                <div className="border-t border-slate-200 pt-6 mb-6">
-                                    <h3 className="text-lg font-bold text-slate-900 mb-3">Verified Intelligence, Not Generated Output</h3>
-                                    <p className="text-sm text-slate-700 leading-relaxed text-justify">
-                                        The system builds a persistent case file, then attacks it: five reasoning personas debate via Bayesian inference and Nash bargaining, a SAT solver flags contradictions, Monte Carlo simulations stress-test across policy and market volatility, and every claim is scored with explicit confidence levels. Reflexive engines then model the user&rsquo;s own decision patterns &mdash; surfacing hidden priorities, constraints, and friction. The output is translated into board-ready briefs, submissions, and stakeholder messaging grounded in verified evidence, not template language.
-                                    </p>
-                                </div>
-
-                                <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-semibold transition-colors">
-                                    <Info size={16} /> View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
-                                </button>
-                            </div>
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        {/* Right — Photo */}
+                        <div>
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=900&fit=crop&q=80"
+                                    alt="Intelligence experience interface"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            {/* GLOBAL STANDARDS & ETHICS */}
-            <section className="py-20 px-4 bg-slate-50">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
-
-                        {/* SINGLE CONSOLIDATED GLOBAL STANDARDS CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-emerald-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Global Standards & Ethics</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Your Projects Meet the Highest Global Benchmarks. Automatically.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Every report you generate is measured against IFC Performance Standards and UN Sustainable Development Goals &mdash; the same frameworks used by the World Bank, DFIs, and 100+ global financial institutions. You don&rsquo;t need to know the standards. You just need to answer the intake questions.
-                                </p>
-
-                                {/* Three Steps */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <div className="border-l-2 border-blue-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-blue-600 text-white rounded text-[10px] font-bold flex items-center justify-center">1</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Global Baseline Applied</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Your project is scored against IFC Performance Standards (PS1&ndash;PS8) &mdash; covering environmental management, labour conditions, land acquisition, and indigenous peoples&rsquo; rights. Your report is valid in any country from the moment it&rsquo;s generated.</p>
-                                    </div>
-                                    <div className="border-l-2 border-amber-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-amber-600 text-white rounded text-[10px] font-bold flex items-center justify-center">2</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Gaps Identified & Scored</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Your inputs are checked against every Performance Standard. Where you fall short, you&rsquo;ll see exactly what&rsquo;s missing &mdash; with severity ratings, business impact assessment, and clear recommendations. You see the red flags before your investors do.</p>
-                                    </div>
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-5 h-5 bg-emerald-600 text-white rounded text-[10px] font-bold flex items-center justify-center">3</span>
-                                            <h5 className="text-sm font-bold text-slate-900">Local Law Resolved</h5>
-                                        </div>
-                                        <p className="text-xs text-slate-600">Once a gap is found, the matching local regulations are surfaced &mdash; with exact legal references, required forms, enforcing agencies, and filing deadlines for your specific jurisdiction. Global standard in, local action plan out.</p>
-                                    </div>
-                                </div>
-
-                                {/* What This Means For You */}
-                                <div className="bg-slate-50 border border-slate-200 p-4">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-2">What This Means For You</h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-600">
-                                        <p><strong className="text-slate-800">Start Anywhere:</strong> Generate a report from any country, immediately. The global baseline works everywhere.</p>
-                                        <p><strong className="text-slate-800">Investor-Ready From Day One:</strong> Global investors and DFIs prefer IFC Standards. Meeting these benchmarks opens doors to financing that local compliance alone cannot.</p>
-                                        <p><strong className="text-slate-800">Protected By Default:</strong> Every report highlights exact compliance risks with severity ratings &mdash; protecting you from legal exposure and deal-killers.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop&q=80" alt="Global standards compliance" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
+                    {/* Three detail columns */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Signal Detection</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">The system reads intent, context, urgency, and complexity from your natural language. Mention a company &mdash; entity verification triggers automatically. Mention a country &mdash; jurisdiction compliance loads in the background.</p>
                         </div>
-
-                    </div>
-                </div>
-            </section>
-
-            {/* WORK WITH US - Partnership & Pilot Programs */}
-            <section id="partnerships" className="py-20 px-4 bg-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
-
-                        {/* SINGLE CONSOLIDATED PARTNERSHIP CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-blue-600/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Partnership Opportunity</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Early Partners Shape What This Becomes. That&rsquo;s By Design.</h4>
-                                </div>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    Nobody is building what we&rsquo;re building. The advisory industry still runs on billable hours, recycled templates, and institutional gatekeeping. We&rsquo;re replacing that with a system that gives any organisation &mdash; regardless of size or budget &mdash; access to the same depth of strategic intelligence that used to cost six figures and take months.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                                    We&rsquo;re not looking for customers. We&rsquo;re looking for partners &mdash; organisations willing to put this system to work on real problems and help us sharpen it. Every pilot shapes the intelligence. Every partnership makes the platform stronger for every user after you. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
-                                </p>
-
-                                {/* Three Partner Types */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Investment Promotion Agencies</h5>
-                                        <p className="text-xs text-slate-600">Your next intake cycle becomes the proving ground &mdash; faster, defensible assessments while directly shaping what gets built next.</p>
-                                    </div>
-                                    <div className="border-l-2 border-purple-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Regional Economic Development</h5>
-                                        <p className="text-xs text-slate-600">Intelligence designed for regional economies &mdash; not retrofitted from corporate tools. Be one of the first in the world to use it.</p>
-                                    </div>
-                                    <div className="border-l-2 border-orange-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Public-Private Partnerships</h5>
-                                        <p className="text-xs text-slate-600">Work directly with the developer. Your pain points become features. No enterprise vendor will ever offer that.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                            </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Adaptive Depth</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">First-time users get guided walkthroughs and plain-language explanations. Experienced analysts get direct formula access, adjustable Monte Carlo parameters, audit trail exports, and raw confidence distributions.</p>
                         </div>
-
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Guided 10-Step Intake</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">A structured 10-step protocol captures everything the system needs: opportunity definition, strategic alignment, market analysis, financial structure, risk assessment, stakeholder mapping, implementation, compliance, partnership terms, and success metrics.</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                CLOSING - Dark Full-Width Position Statement
+                DELIVERABLES + GLOBAL STANDARDS
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="py-16 px-4 bg-gradient-to-r from-slate-900 to-slate-800">
-                <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">A Paradigm Shift</h2>
-                    <p className="text-lg text-slate-300 leading-relaxed text-justify mb-4">
-                        The core problem I&rsquo;m solving is <strong className="text-white">Trust</strong>. This isn&rsquo;t just technology. It is a system built to restore confidence in artificial intelligence. It empowers the &ldquo;underdogs&rdquo; of the global economy&mdash;regional councils, developing nations, and ambitious entrepreneurs&mdash;to make decisions they can legally and strategically defend in boardrooms, government briefings, and investment committees.
-                    </p>
-                    <p className="text-lg text-white leading-relaxed font-semibold">
-                        The technology is real. The results are real. And it&rsquo;s all here to help you succeed.
-                    </p>
-                </div>
-            </section>
+            <section className="py-20 px-4 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Text */}
+                        <div>
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Deliverables</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">What you walk away with.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                A verified operating position &mdash; a defensible strategy that has survived five competing reasoning engines, SAT contradiction detection, confidence scoring on every claim, and DAG-sequenced execution logic. Ready for board presentations, investor conversations, and regulator submissions on day one.
+                            </p>
+                        </div>
 
-
-            {/* SOLVING REAL PROBLEMS  -  Statement Piece */}
-            <section className="relative py-20 px-4 bg-gradient-to-br from-blue-700 via-blue-600 to-blue-800 overflow-hidden">
-                {/* Background pattern */}
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-                    <div className="absolute bottom-0 right-0 w-80 h-80 bg-white rounded-full translate-x-1/3 translate-y-1/3" />
-                </div>
-                <div className="relative max-w-4xl mx-auto text-center">
-                    <p className="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 font-bold">SOLVING REAL PROBLEMS</p>
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-light text-white mb-6 leading-relaxed">
-                        This platform exists to formally verify decisions before capital moves &mdash; so overlooked markets, complex strategies, and high-stakes opportunities get the same rigour that was once reserved for elite firms.
-                    </h2>
-                    <div className="w-20 h-0.5 bg-white/40 mx-auto mb-6" />
-                    <p className="text-lg text-white/90 leading-relaxed mb-6 max-w-3xl mx-auto">
-                        During this beta phase and in future subscriptions, <strong className="text-white font-bold">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto mb-6 text-left">
-                        <div className="bg-white/10 border border-white/20 p-4">
-                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Starter Access</p>
-                            <h3 className="text-xl font-bold text-white mb-1">5 Days</h3>
-                            <p className="text-sm text-blue-100 mb-2">Full Access Pass</p>
-                            <p className="text-2xl font-bold text-white">Free</p>
-                        </div>
-                        <div className="bg-white/10 border border-white/20 p-4">
-                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
-                            <h3 className="text-xl font-bold text-white mb-1">3 Months</h3>
-                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
-                            <p className="text-2xl font-bold text-white">$239</p>
-                        </div>
-                        <div className="bg-white/10 border border-white/20 p-4">
-                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
-                            <h3 className="text-xl font-bold text-white mb-1">6 Months</h3>
-                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
-                            <p className="text-2xl font-bold text-white">$429</p>
-                        </div>
-                        <div className="bg-white/10 border border-white/20 p-4">
-                            <p className="text-xs uppercase tracking-wider text-blue-100 mb-1">Subscription</p>
-                            <h3 className="text-xl font-bold text-white mb-1">12 Months</h3>
-                            <p className="text-sm text-blue-100 mb-2">Full Access</p>
-                            <p className="text-2xl font-bold text-white">$610</p>
+                        {/* Right — Photo */}
+                        <div>
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=900&fit=crop&q=80" alt="Strategic deliverables" className="w-full h-full object-cover" />
+                            </div>
                         </div>
                     </div>
-                    <p className="text-base text-blue-100 italic">
-                        A new voice for regions. A new standard for how opportunity is evaluated &mdash; anywhere in the world.
-                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Start Anywhere</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Global baseline works in any country, immediately. No jurisdiction pre-selection required.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Investor-Ready</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Every report scored against IFC Performance Standards (PS1&ndash;PS8) and UN SDGs. Compliance opens doors to DFI financing.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Protected</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Exact compliance risks flagged before they become deal-killers. Matching local regulations surfaced with legal references, forms, and filing deadlines.</p>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5">
+                            View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
+                        </button>
+                    </div>
                 </div>
             </section>
 
-            {/* FOOTER INFO SECTION */}
-            <section id="launch-platform" className="py-20 px-4 bg-white">
+            {/* ═══════════════════════════════════════════════════════════════
+                PARTNERSHIPS
+            ═══════════════════════════════════════════════════════════════ */}
+            <section id="partnerships" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-1 gap-8">
-
-                        {/* SINGLE CONSOLIDATED FOOTER CARD */}
-                        <div className="group bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-row">
-                            {/* Text Content (Left) */}
-                            <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
-                                <div className="mb-4">
-                                    <span className="inline-block px-2.5 py-1 bg-slate-800/90 text-white text-[10px] font-bold uppercase tracking-wider mb-3">Launch Platform</span>
-                                    <h4 className="text-xl font-bold text-slate-900 leading-snug mb-4">Launch the full BW Intelligence OS to start analyzing partnership opportunities with sovereign-grade analytical depth.</h4>
-                                </div>
-
-                                {/* Terms of Engagement */}
-                                <div className="bg-slate-50 border border-slate-200 p-4 mb-4">
-                                    <h5 className="text-sm font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                        <Shield size={14} className="text-blue-600" />
-                                        Terms of Engagement
-                                    </h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-600">
-                                        <p><strong className="text-slate-800">1. Strategic Decision Support:</strong> BW AI is a decision support platform. All outputs are advisory.</p>
-                                        <p><strong className="text-slate-800">2. Reasoning Governance:</strong> NSIL layer governs analysis via adversarial input screening.</p>
-                                        <p><strong className="text-slate-800">3. Data Privacy:</strong> Strict compliance with GDPR, Australian Privacy Act.</p>
-                                        <p><strong className="text-slate-800">4. Accountability:</strong> Users retain final accountability for decisions.</p>
-                                    </div>
-                                </div>
-
-                                {/* T&C Checkbox */}
-                                <div className="flex items-start gap-3 mb-4 text-left">
-                                    <input 
-                                        type="checkbox" 
-                                        id="acceptTerms" 
-                                        checked={termsAccepted}
-                                        onChange={(e) => setTermsAccepted(e.target.checked)}
-                                        className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-transparent text-blue-600 focus:ring-blue-400 cursor-pointer"
-                                    />
-                                    <label htmlFor="acceptTerms" className="text-sm text-slate-600 cursor-pointer">
-                                        By accessing the platform, you agree to our <strong className="text-slate-900">Terms & Conditions</strong>
-                                    </label>
-                                </div>
-
-                                {/* Launch Button */}
-                                <button 
-                                    disabled={!termsAccepted}
-                                    onClick={() => termsAccepted && onEnterPlatform?.()}
-                                    className={`w-full py-3 text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
-                                        termsAccepted 
-                                            ? 'bg-blue-600 text-white hover:bg-blue-500 cursor-pointer' 
-                                            : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                                    }`}
-                                >
-                                    Launch Intelligence OS
-                                    <ArrowRight size={16} />
-                                </button>
-
-                                {/* Three Info Columns */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-200">
-                                    <div className="border-l-2 border-blue-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">BWGA Ai</h5>
-                                        <p className="text-xs text-slate-600 mb-2">BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.</p>
-                                        <div className="space-y-0.5 text-xs text-slate-500">
-                                            <p className="flex items-center gap-1"><Mail size={10} /> brayden@bwglobaladvis.info</p>
-                                            <p className="flex items-center gap-1"><Phone size={10} /> +63 960 835 4283</p>
-                                        </div>
-                                    </div>
-                                    <div className="border-l-2 border-amber-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Development Status</h5>
-                                        <p className="text-xs text-slate-600"><strong>CURRENT PHASE:</strong> Research & Development</p>
-                                        <p className="text-xs text-slate-500 mt-1">Operating under Brayden Walls as a registered Australian sole trader. Platform being developed for government and enterprise clients.</p>
-                                    </div>
-                                    <div className="border-l-2 border-emerald-500 pl-3">
-                                        <h5 className="text-sm font-bold text-slate-900 mb-1">Documentation</h5>
-                                        <div className="flex flex-col gap-0.5 text-xs text-slate-500">
-                                            <button onClick={() => setActiveDocument('user-manual')} className="text-left hover:text-slate-900 transition-colors">User Manual</button>
-                                            <button onClick={() => setActiveDocument('terms')} className="text-left hover:text-slate-900 transition-colors">Terms & Conditions</button>
-                                            <button onClick={() => setActiveDocument('privacy')} className="text-left hover:text-slate-900 transition-colors">Privacy Policy</button>
-                                            <button onClick={() => setActiveDocument('ethics')} className="text-left hover:text-slate-900 transition-colors">Ethical AI Framework</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Photo (Right) */}
-                            <div className="h-auto w-1/3 flex-shrink-0 relative overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80" alt="Intelligence platform interface" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Photo */}
+                        <div className="order-2 lg:order-1">
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&h=900&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
+                        {/* Right — Text */}
+                        <div className="order-1 lg:order-2">
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Partnerships</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Early partners shape what this becomes.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                We&rsquo;re looking for organisations willing to put this system to work on real problems. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Investment Promotion Agencies</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Faster, defensible assessments while directly shaping what gets built next.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Regional Economic Development</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Intelligence designed for regional economies &mdash; not retrofitted from corporate tools.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Public-Private Partnerships</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Work directly with the developer. Your pain points become features.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                PRICING
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-20 px-4 bg-slate-50">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Photo */}
+                        <div className="order-2 lg:order-1">
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=900&fit=crop&q=80" alt="Accessible intelligence pricing" className="w-full h-full object-cover" />
+                            </div>
+                        </div>
+
+                        {/* Right — Text */}
+                        <div className="order-1 lg:order-2">
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Pricing</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Verified decisions for everyone.</h2>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                Not just those who can afford elite advisory firms. During beta and in future subscriptions, <strong className="text-slate-700">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[
+                            { label: 'Starter Access', period: '5 Days', note: 'Full Access Pass', price: 'Free', features: ['Full 10-layer pipeline', 'All 50+ engines active', '247 document templates', 'Entity verification', 'No credit card required'] },
+                            { label: 'Subscription', period: '3 Months', note: 'Full Access', price: '$239', features: ['Everything in Starter', 'Unlimited analyses', 'Priority processing', 'Audit trail exports', 'Email support'] },
+                            { label: 'Subscription', period: '6 Months', note: 'Full Access', price: '$429', features: ['Everything in 3-Month', 'Monte Carlo parameters', 'Formula weight access', 'Custom document templates', 'Save $49 vs quarterly'] },
+                            { label: 'Subscription', period: '12 Months', note: 'Full Access', price: '$610', features: ['Everything in 6-Month', 'Direct developer access', 'Feature request priority', 'Multi-user workspace', 'Save $348 vs quarterly'] },
+                        ].map((plan) => (
+                            <div key={plan.period} className="border-t-2 border-slate-300 pt-6">
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">{plan.label}</p>
+                                <h3 className="text-lg font-bold text-slate-900 mb-0.5">{plan.period}</h3>
+                                <p className="text-xs text-slate-500 mb-3">{plan.note}</p>
+                                <p className="text-2xl font-light text-slate-900 mb-4">{plan.price}</p>
+                                <ul className="space-y-1.5">
+                                    {plan.features.map((f, fi) => (
+                                        <li key={fi} className="flex items-start gap-2 text-xs text-slate-500">
+                                            <CheckCircle2 size={12} className="text-blue-600 mt-0.5 flex-shrink-0" />
+                                            <span>{f}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                LAUNCH PLATFORM + FOOTER
+            ═══════════════════════════════════════════════════════════════ */}
+            <section id="launch-platform" className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                        <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">Get Started</p>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Launch the Intelligence OS.</h2>
+                    </div>
+
+                    <div className="max-w-2xl mx-auto">
+                        {/* Terms */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mb-8">
+                            <div className="border-t border-slate-200 pt-3">
+                                <p className="text-xs text-slate-500"><strong className="text-slate-700">Strategic Decision Support</strong> &mdash; All outputs are advisory.</p>
+                            </div>
+                            <div className="border-t border-slate-200 pt-3">
+                                <p className="text-xs text-slate-500"><strong className="text-slate-700">Reasoning Governance</strong> &mdash; NSIL layer governs via adversarial screening.</p>
+                            </div>
+                            <div className="border-t border-slate-200 pt-3">
+                                <p className="text-xs text-slate-500"><strong className="text-slate-700">Data Privacy</strong> &mdash; Strict GDPR and Australian Privacy Act compliance.</p>
+                            </div>
+                            <div className="border-t border-slate-200 pt-3">
+                                <p className="text-xs text-slate-500"><strong className="text-slate-700">Accountability</strong> &mdash; Users retain final accountability for decisions.</p>
+                            </div>
+                        </div>
+
+                        {/* T&C Checkbox */}
+                        <div className="flex items-start gap-3 mb-6">
+                            <input 
+                                type="checkbox" 
+                                id="acceptTerms" 
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
+                                className="mt-0.5 w-4 h-4 rounded border-slate-300 bg-transparent text-blue-600 focus:ring-blue-400 cursor-pointer"
+                            />
+                            <label htmlFor="acceptTerms" className="text-sm text-slate-500 cursor-pointer">
+                                By accessing the platform, you agree to our <strong className="text-slate-700">Terms &amp; Conditions</strong>
+                            </label>
+                        </div>
+
+                        {/* Launch Button */}
+                        <button 
+                            disabled={!termsAccepted}
+                            onClick={() => termsAccepted && onEnterPlatform?.()}
+                            className={`w-full py-3.5 text-sm font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 ${
+                                termsAccepted 
+                                    ? 'bg-slate-900 text-white hover:bg-slate-800 cursor-pointer' 
+                                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                            }`}
+                        >
+                            Launch Intelligence OS
+                            <ArrowRight size={16} />
+                        </button>
+                    </div>
+
+                    {/* Footer Info */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-12 border-t border-slate-200">
+                        <div>
+                            <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">BWGA Ai</h5>
+                            <p className="text-xs text-slate-500 leading-relaxed mb-2">BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.</p>
+                            <div className="space-y-0.5 text-xs text-slate-400">
+                                <p className="flex items-center gap-1"><Mail size={10} /> brayden@bwglobaladvis.info</p>
+                                <p className="flex items-center gap-1"><Phone size={10} /> +63 960 835 4283</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">Development Status</h5>
+                            <p className="text-xs text-slate-500"><strong>Current Phase:</strong> Research &amp; Development</p>
+                            <p className="text-xs text-slate-400 mt-1">Operating under Brayden Walls as a registered Australian sole trader. Platform being developed for government and enterprise clients.</p>
+                        </div>
+                        <div>
+                            <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">Documentation</h5>
+                            <div className="flex flex-col gap-1 text-xs text-slate-400">
+                                <button onClick={() => setActiveDocument('user-manual')} className="text-left hover:text-slate-700 transition-colors">User Manual &rarr;</button>
+                                <button onClick={() => setActiveDocument('terms')} className="text-left hover:text-slate-700 transition-colors">Terms &amp; Conditions &rarr;</button>
+                                <button onClick={() => setActiveDocument('privacy')} className="text-left hover:text-slate-700 transition-colors">Privacy Policy &rarr;</button>
+                                <button onClick={() => setActiveDocument('ethics')} className="text-left hover:text-slate-700 transition-colors">Ethical AI Framework &rarr;</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
