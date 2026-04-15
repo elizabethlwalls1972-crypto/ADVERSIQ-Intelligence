@@ -363,13 +363,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 This one verifies them first.
                             </h2>
                             <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                This isn&rsquo;t a chatbot with a business skin. It&rsquo;s an operating system for verified decisions &mdash; built from regional development, architected for any high-stakes scenario where getting it wrong costs capital, credibility, or both.
-                            </p>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                We built a 10-layer intelligence pipeline with <strong className="text-slate-900">50+ engines</strong>, <strong className="text-slate-900">five adversarial reasoning personas</strong>, a <strong className="text-slate-900">SAT-based contradiction solver</strong>, <strong className="text-slate-900">Monte Carlo stress testing</strong>, <strong className="text-slate-900">computational neuroscience</strong> for decision modelling, and a <strong className="text-slate-900">247-template document factory</strong>. Every claim carries a confidence score. Every source is traced. Every conclusion has survived formal attack before it reaches you.
-                            </p>
-                            <p className="text-sm text-slate-500 leading-relaxed">
-                                It doesn&rsquo;t trust its own output &mdash; it formally attacks it, debates it, stress-tests it, and scores it. Only what survives reaches you.
+                                This isn&rsquo;t a chatbot with a business skin. It&rsquo;s an operating system that formally attacks its own conclusions, debates them across competing engines, stress-tests them mathematically, and scores every claim before it reaches you.
                             </p>
                         </div>
 
@@ -401,7 +395,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                         <div className="border-t-2 border-blue-600 pt-4">
                             <h4 className="text-sm font-bold text-blue-700 mb-1">ADVOS</h4>
-                            <p className="text-xs text-slate-500 leading-relaxed">Sells verified decisions. Adversarial testing across 50+ engines. Real-time intelligence from 20+ live APIs. Confidence-scored, source-traced, contradiction-checked. Minutes, not months.</p>
+                            <p className="text-xs text-slate-500 leading-relaxed">Ten mathematical systems forced into adversarial conflict. Every conclusion is attacked by competing engines, checked for logical contradiction, and stress-tested before it reaches you. Nothing else does this.</p>
                         </div>
                     </div>
                 </div>
@@ -427,38 +421,40 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What Makes This a First</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Each of these technologies exists. Nobody has ever combined them.</h2>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">The world&rsquo;s first Adversarial Decision Verification Operating System.</h2>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                SAT solvers verify chip designs at Intel and AMD. Monte Carlo simulations run on Wall Street trading desks. Bayesian networks power medical diagnostics. Computational neuroscience models sit in university research labs. Self-evolving algorithms drive recommendation engines at Netflix and Spotify.
-                            </p>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                No one has ever wired these together into a single adversarial pipeline &mdash; and no one has ever pointed that pipeline at investment decisions and regional economic development. This system implements the actual mathematics: DPLL satisfiability algorithms, Nash bargaining equilibria, Wilson-Cowan neural field equations, Friston&rsquo;s Free Energy Principle, Thompson Sampling bandits. 54 formulas across the full pipeline, each backtested against 200+ real-world cases with known outcomes.
+                                SAT solvers verify chips at Intel. Monte Carlo simulations price derivatives on Wall Street. Bayesian networks diagnose disease. Computational neuroscience models sit in university labs. Each one is proven. Each one is siloed. We built the architecture that forces all ten to operate as one adversarial pipeline &mdash; every layer challenging every other layer.
                             </p>
                             <p className="text-sm text-slate-600 leading-relaxed">
-                                We searched. No comparable system exists &mdash; in academia, in commercial products, or in government. The closest parallels are narrow single-domain tools that handle one or two of these capabilities. None handle all ten. None make them fight each other.
+                                We searched academia, commercial products, and government. Nothing comparable exists. The closest parallels handle one or two of these in isolation. None merge all ten. None make them adversarial. That&rsquo;s the invention.
                             </p>
                         </div>
+                    </div>
+
+                    {/* Section subheading */}
+                    <div className="mb-10">
+                        <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">The 10-Layer Pipeline</p>
+                        <p className="text-sm text-slate-500 max-w-3xl">Each layer was built to do one thing with mathematical precision. The breakthrough is the integration architecture that makes all ten operate as one adversarial system.</p>
                     </div>
 
                     {/* 5×2 Pipeline Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
                         {[
-                            { n: '01', title: 'Five Competing Reasoning Engines', desc: 'Five AI personas debate independently via Bayesian inference and Nash bargaining. The Tribunal renders a verdict.' },
-                            { n: '02', title: 'SAT Contradiction Solver', desc: 'DPLL satisfiability checks whether engine conclusions are logically consistent. Contradictions caught mathematically.' },
-                            { n: '03', title: 'Monte Carlo Stress Testing', desc: 'Thousands of simulations across policy, currency, partner, and market variables. Probabilities, not promises.' },
-                            { n: '04', title: 'Human Cognition Engine', desc: 'Computational neuroscience models detect hidden priorities, decision friction, and cognitive blind spots.' },
-                            { n: '05', title: 'Self-Evolving Algorithms', desc: 'Online gradient descent and Thompson Sampling learn which methods work best per problem type.' },
-                            { n: '06', title: 'Reflexive Intelligence', desc: 'Seven background engines: Drift Detection, Backtesting, MetaCognition, Continuous Learning, and more.' },
-                            { n: '07', title: 'Entity Intelligence', desc: 'Every entity triggers 7 parallel streams: registry, ownership, sanctions, financial health, sentiment, litigation, mapping.' },
-                            { n: '08', title: 'Confidence Scoring', desc: 'Every claim carries a numerical confidence score with full data provenance and source tracing.' },
-                            { n: '09', title: 'DAG-Scheduled Execution', desc: '47+ interdependent tasks in 23 parallel workstreams. Months of advisory compressed into minutes.' },
-                            { n: '10', title: 'Document Factory', desc: '247 templates across 15 categories and 156 letter templates. Board-ready, investor-ready, regulator-ready.' },
+                            { n: '01', title: 'Adversarial Reasoning', desc: 'Five AI personas with independent reasoning chains compete via Bayesian inference and Nash bargaining. They don\u2019t cooperate \u2014 they challenge. The strongest argument wins.' },
+                            { n: '02', title: 'Contradiction Detection', desc: 'DPLL satisfiability converts engine conclusions into formal logic and checks whether they can all be simultaneously true. Contradictions are caught mathematically, not by pattern matching.' },
+                            { n: '03', title: 'Probabilistic Stress Testing', desc: 'Monte Carlo simulation replaces every single-point estimate with a probability distribution. Thousands of scenarios test what happens when assumptions fail.' },
+                            { n: '04', title: 'Cognitive Modelling', desc: 'Wilson-Cowan neural equations and Friston\u2019s Free Energy Principle model how decision-makers actually think \u2014 detecting hidden priorities, attention limits, and cognitive blind spots.' },
+                            { n: '05', title: 'Self-Optimising Pipeline', desc: 'Thompson Sampling and online gradient descent teach the system which analytical methods work best per problem type. The pipeline evolves with every case.' },
+                            { n: '06', title: 'Reflexive Oversight', desc: 'Seven background engines monitor the system\u2019s own performance: drift detection, backtesting, metacognition, and continuous recalibration. The pipeline audits itself.' },
+                            { n: '07', title: 'Entity Verification', desc: 'Every entity mentioned triggers seven parallel verification streams \u2014 registry, ownership, sanctions, financial health, sentiment, litigation, relationship mapping.' },
+                            { n: '08', title: 'Confidence Provenance', desc: 'Every claim carries a numerical confidence score built from engine convergence, Monte Carlo stability, and evidence quality. Every number traces to its source.' },
+                            { n: '09', title: 'Parallel Orchestration', desc: '47+ interdependent tasks across 23 parallel workstreams, scheduled by directed acyclic graph. Dependency-aware execution \u2014 nothing runs before its prerequisites.' },
+                            { n: '10', title: 'Document Generation', desc: '247 templates across 15 categories. Every document is grounded in the verified pipeline output \u2014 not generated from thin air. Board-ready on day one.' },
                         ].map((item) => (
-                            <div key={item.n} className="group border-t-2 border-slate-200 hover:border-blue-600 pt-4 cursor-pointer transition-colors" onClick={() => setShowPipelineDeepDive(true)}>
-                                <span className="text-2xl font-light text-slate-300 group-hover:text-blue-600 transition-colors">{item.n}</span>
+                            <div key={item.n} className="border-t-2 border-slate-200 pt-4">
+                                <span className="text-2xl font-light text-slate-300">{item.n}</span>
                                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mt-2 mb-2 leading-snug">{item.title}</h3>
-                                <p className="text-xs text-slate-500 leading-relaxed mb-2">{item.desc}</p>
-                                <span className="text-[10px] font-semibold text-blue-600 group-hover:text-blue-800 transition-colors uppercase tracking-wider">Read more &rarr;</span>
+                                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>
