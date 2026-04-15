@@ -1301,6 +1301,30 @@ router.post('/consultant/stream', async (req: Request, res: Response) => {
 
     sendEvent('start', { message: 'Pipeline started', timestamp: new Date().toISOString() });
 
+    // ── Safety guardrails check ───────────────────────────────────────────
+    let safetyBlocked = false;
+    try {
+      const { checkInputSafety } = await import('../../services/SafetyGuardrailsPipeline.js');
+      const inputCheck = checkInputSafety(message);
+      sendEvent('phase_complete', { phase: 'Safety Check', result: { passed: inputCheck.passed, threatClass: inputCheck.threatClass } });
+      if (!inputCheck.passed && (inputCheck.threatClass === 'harmful_request' || inputCheck.threatClass === 'prompt_injection')) {
+        sendEvent('safety_block', { reason: inputCheck.details });
+        safetyBlocked = true;
+      }
+    } catch { /* safety check non-critical */ }
+
+    if (safetyBlocked) {
+      sendEvent('done', { message: 'Request blocked by safety guardrails', requestId });
+      res.write('data: [DONE]\n\n');
+      return res.end();
+    }
+
+    // ── Start reasoning trace ─────────────────────────────────────────────
+    try {
+      const { startTrace } = await import('../../services/ReasoningTraceRecorder.js');
+      startTrace(requestId, message);
+    } catch { /* tracing non-critical */ }
+
     const reportParams = extractReportParamsFromContext(message, context);
 
     // Phase 1: SAT Validation
@@ -1375,6 +1399,13 @@ router.post('/consultant/stream', async (req: Request, res: Response) => {
     }
 
     sendEvent('done', { message: 'Pipeline complete', requestId });
+
+    // ── Complete reasoning trace ──────────────────────────────────────────
+    try {
+      const { completeTrace } = await import('../../services/ReasoningTraceRecorder.js');
+      completeTrace(requestId, 'stream-complete');
+    } catch { /* tracing non-critical */ }
+
     res.write('data: [DONE]\n\n');
     res.end();
   } catch (error) {
@@ -1416,6 +1447,32 @@ router.post('/consultant', async (req: Request, res: Response) => {
     if (!sanitizedMessage) {
       return res.status(400).json({ error: 'message must not be empty' });
     }
+
+    // ── Frontier Pipeline: Safety guardrails ────────────────────────────────
+    try {
+      const { checkInputSafety } = await import('../../services/SafetyGuardrailsPipeline.js');
+      const inputSafety = checkInputSafety(sanitizedMessage);
+      if (!inputSafety.passed && (inputSafety.threatClass === 'harmful_request' || inputSafety.threatClass === 'prompt_injection')) {
+        return res.json({
+          requestId,
+          taskType: normalizedTaskType,
+          text: inputSafety.threatClass === 'harmful_request'
+            ? "I can't assist with that request as it may involve activities that are unethical or illegal. I'm here to help with legitimate business consulting and analysis."
+            : "I detected an attempt to manipulate my instructions. I'll continue operating with my standard guidelines. How can I help with your business question?",
+          provider: 'safety-guardrail',
+          attempts: [{ provider: 'safety-guardrail', ok: true }],
+          confidence: 1,
+          model: 'deterministic',
+          safety: { blocked: true, threatClass: inputSafety.threatClass },
+        });
+      }
+    } catch { /* safety check is non-blocking */ }
+
+    // ── Frontier Pipeline: Start reasoning trace ────────────────────────────
+    try {
+      const { startTrace } = await import('../../services/ReasoningTraceRecorder.js');
+      startTrace(requestId, sanitizedMessage);
+    } catch { /* tracing is non-blocking */ }
 
     const sanitizedContextResult = sanitizeConsultantContext(context);
 
@@ -1677,10 +1734,35 @@ router.post('/consultant', async (req: Request, res: Response) => {
       provider: brokerResult.provider,
     }).catch(() => undefined);
 
+    // ── Frontier Pipeline: Complete trace & collect training data ────────
+    try {
+      const { completeTrace } = await import('../../services/ReasoningTraceRecorder.js');
+      completeTrace(requestId, normalizedText, { modelUsed: brokerResult.provider });
+    } catch { /* non-blocking */ }
+
+    try {
+      const { collectExample } = await import('../../services/FineTuningDataCollector.js');
+      collectExample({
+        input: { messages: [{ role: 'user', content: sanitizedMessage }], systemPrompt: typeof systemPrompt === 'string' ? systemPrompt : undefined },
+        output: normalizedText,
+        metadata: { userId: requestId, model: brokerResult.provider, latencyMs: Date.now() - start, category: normalizedTaskType },
+      });
+    } catch { /* non-blocking */ }
+
+    // ── Frontier Pipeline: Append disclaimer if needed ────────────────────
+    let finalText = normalizedText;
+    try {
+      const { checkOutputSafety, appendDisclaimer } = await import('../../services/SafetyGuardrailsPipeline.js');
+      const outputCheck = checkOutputSafety(normalizedText, normalizedTaskType);
+      if (outputCheck.disclaimerNeeded) {
+        finalText = appendDisclaimer(normalizedText, normalizedTaskType);
+      }
+    } catch { /* non-blocking */ }
+
     return res.json({
       requestId,
       taskType: normalizedTaskType,
-      text: normalizedText,
+      text: finalText,
       intent,
       provider: brokerResult.provider,
       attempts: brokerResult.attempts,
@@ -3205,6 +3287,167 @@ Solve this problem. Be specific and actionable.`;
   } catch (error) {
     console.error('Self-solve error:', error);
     res.status(500).json({ error: 'Self-solve failed' });
+  }
+});
+
+// ============================================================================
+// FRONTIER PIPELINE ENDPOINTS
+// ============================================================================
+
+// ─── Reasoning Trace ────────────────────────────────────────────────────────
+router.get('/consultant/trace/:requestId', async (req: Request, res: Response) => {
+  try {
+    const { getTrace, explainTrace } = await import('../../services/ReasoningTraceRecorder.js');
+    const trace = getTrace(req.params.requestId);
+    if (!trace) return res.status(404).json({ error: 'Trace not found' });
+    res.json({ trace, explanation: explainTrace(req.params.requestId) });
+  } catch {
+    res.status(500).json({ error: 'Failed to retrieve trace' });
+  }
+});
+
+router.get('/consultant/trace-stats', async (_req: Request, res: Response) => {
+  try {
+    const { getTraceStats } = await import('../../services/ReasoningTraceRecorder.js');
+    res.json(getTraceStats());
+  } catch {
+    res.status(500).json({ error: 'Failed to get trace stats' });
+  }
+});
+
+// ─── Code Execution Sandbox ─────────────────────────────────────────────────
+router.post('/sandbox/execute', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { code, timeoutMs } = req.body;
+    if (!code || typeof code !== 'string') return res.status(400).json({ error: 'code is required' });
+    const { executeSandbox } = await import('../../services/CodeExecutionSandbox.js');
+    const result = await executeSandbox(code, { timeoutMs: Math.min(Number(timeoutMs) || 5000, 10000) });
+    res.json(result);
+  } catch {
+    res.status(500).json({ error: 'Sandbox execution failed' });
+  }
+});
+
+// ─── Multimodal Input Processing ────────────────────────────────────────────
+router.post('/multimodal/process', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { type, content, mimeType, filename } = req.body;
+    if (!type || !content) return res.status(400).json({ error: 'type and content are required' });
+    const { processMultimodalInput } = await import('../../services/MultimodalInputPipeline.js');
+    const result = await processMultimodalInput({ type, content, mimeType, filename });
+    res.json(result);
+  } catch {
+    res.status(500).json({ error: 'Multimodal processing failed' });
+  }
+});
+
+// ─── Persistent Memory ─────────────────────────────────────────────────────
+router.post('/memory/store', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { userId, type, key, value, metadata } = req.body;
+    if (!userId || !type || !key) return res.status(400).json({ error: 'userId, type, and key are required' });
+    const { storeMemory } = await import('../../services/PersistentMemoryStore.js');
+    const entry = storeMemory({ userId, type, key, value, metadata: metadata || {} });
+    res.json(entry);
+  } catch {
+    res.status(500).json({ error: 'Memory store failed' });
+  }
+});
+
+router.post('/memory/query', async (req: Request, res: Response) => {
+  try {
+    const { userId, type, key, limit, since } = req.body;
+    if (!userId) return res.status(400).json({ error: 'userId is required' });
+    const { queryMemory } = await import('../../services/PersistentMemoryStore.js');
+    const results = queryMemory({ userId, type, key, limit, since });
+    res.json({ results, count: results.length });
+  } catch {
+    res.status(500).json({ error: 'Memory query failed' });
+  }
+});
+
+// ─── Fine-Tuning Data ───────────────────────────────────────────────────────
+router.post('/training/feedback', async (req: Request, res: Response) => {
+  try {
+    const { exampleId, rating, comment, correctedOutput } = req.body;
+    if (!exampleId || !rating) return res.status(400).json({ error: 'exampleId and rating are required' });
+    const { recordFeedback } = await import('../../services/FineTuningDataCollector.js');
+    const updated = recordFeedback(exampleId, rating, comment, correctedOutput);
+    res.json({ success: updated });
+  } catch {
+    res.status(500).json({ error: 'Feedback recording failed' });
+  }
+});
+
+router.get('/training/stats', async (_req: Request, res: Response) => {
+  try {
+    const { getCollectionStats } = await import('../../services/FineTuningDataCollector.js');
+    res.json(getCollectionStats());
+  } catch {
+    res.status(500).json({ error: 'Failed to get training stats' });
+  }
+});
+
+router.post('/training/export', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { format, minRating, maxExamples, since, categories } = req.body;
+    const { exportForFineTuning } = await import('../../services/FineTuningDataCollector.js');
+    const data = exportForFineTuning({ format: format || 'openai', minRating, maxExamples, since, categories });
+    res.setHeader('Content-Type', 'application/jsonl');
+    res.send(data.join('\n'));
+  } catch {
+    res.status(500).json({ error: 'Export failed' });
+  }
+});
+
+// ─── MCP Server ─────────────────────────────────────────────────────────────
+router.post('/mcp', async (req: Request, res: Response) => {
+  try {
+    const { createMCPRouter } = await import('../../services/MCPServer.js');
+    const handler = createMCPRouter();
+    await handler(req, res);
+  } catch {
+    res.status(500).json({ jsonrpc: '2.0', error: { code: -32603, message: 'MCP server error' } });
+  }
+});
+
+// ─── Safety Pipeline Check ──────────────────────────────────────────────────
+router.post('/safety/check', async (req: Request, res: Response) => {
+  try {
+    const { input, output, category } = req.body;
+    const { runSafetyPipeline, checkInputSafety } = await import('../../services/SafetyGuardrailsPipeline.js');
+    if (output) {
+      res.json(runSafetyPipeline(input || '', output, category));
+    } else {
+      res.json(checkInputSafety(input || ''));
+    }
+  } catch {
+    res.status(500).json({ error: 'Safety check failed' });
+  }
+});
+
+// ─── Semantic Search (Native Embedding Pipeline) ────────────────────────────
+router.post('/embedding/search', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { query, maxResults } = req.body;
+    if (!query) return res.status(400).json({ error: 'query is required' });
+    const { globalEmbeddingPipeline } = await import('../../services/NativeEmbeddingPipeline.js');
+    const results = await globalEmbeddingPipeline.search(query, maxResults || 10);
+    res.json({ results, count: results.length });
+  } catch {
+    res.status(500).json({ error: 'Embedding search failed' });
+  }
+});
+
+router.post('/embedding/index', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { id, text, metadata } = req.body;
+    if (!id || !text) return res.status(400).json({ error: 'id and text are required' });
+    const { globalEmbeddingPipeline } = await import('../../services/NativeEmbeddingPipeline.js');
+    const doc = await globalEmbeddingPipeline.indexDocument(id, text, metadata || {});
+    res.json({ indexed: true, id: doc.id });
+  } catch {
+    res.status(500).json({ error: 'Embedding index failed' });
   }
 });
 
