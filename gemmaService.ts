@@ -12,8 +12,8 @@
  * Set GOOGLE_AI_API_KEY in .env to activate.
  *
  * Models:
- *   GEMMA_DEFAULT  - gemma-3-27b-it   (reasoning, analysis)
- *   GEMMA_FAST     - gemma-3-12b-it   (classification, extraction)
+ *   GEMMA_DEFAULT  - gemma-4-26b-a4b-it  (reasoning, analysis — Gemma 4 flagship)
+ *   GEMMA_FAST     - gemma-3-12b-it      (classification, extraction)
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
@@ -22,7 +22,7 @@ import { monitoringService } from './services/MonitoringService';
 // ─── Model Constants ──────────────────────────────────────────────────────────
 
 export const GEMMA_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-export const GEMMA_DEFAULT_MODEL = 'gemma-3-27b-it';
+export const GEMMA_DEFAULT_MODEL = 'gemma-4-26b-a4b-it';
 export const GEMMA_FAST_MODEL = 'gemma-3-12b-it';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
