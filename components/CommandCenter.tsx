@@ -340,11 +340,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <p className="text-xl sm:text-2xl md:text-3xl font-light text-slate-200 mb-6 tracking-wide uppercase">
                         Adversarial Intelligence Quorum
                     </p>
-                    <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
-                        Before any conclusion reaches you, it gets challenged, stress-tested, and verified by competing AI systems that are designed to find what&rsquo;s wrong with it. If the answer survives, you can trust it.
+                    <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-4">
+                        The AI-powered strategic advisory platform that verifies its own conclusions before they ever reach you.
                     </p>
-                    <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                        Built for anyone making decisions that matter.
+                    <p className="text-base md:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed mb-4">
+                        Describe a business decision &mdash; an investment, an expansion, a partnership, a market entry &mdash; and the system produces a fully verified analysis with financial projections, risk assessments, compliance checks, and board-ready documents.
+                    </p>
+                    <p className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                        Built for regional councils, investment boards, government agencies, and businesses entering new markets.
                     </p>
                 </div>
             </section>
@@ -359,15 +362,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What Is ADVERSIQ</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
-                                Other AI gives you answers.<br className="hidden md:block" />
-                                This one checks if they&rsquo;re right.
+                                Strategic intelligence<br className="hidden md:block" />
+                                that checks its own work.
                             </h2>
                             <p className="text-lg text-slate-500 leading-relaxed mb-4">
-                                ADVERSIQ &mdash; the <strong className="text-slate-900">Adversarial Intelligence Quorum</strong> &mdash; doesn&rsquo;t just generate a response and hope it&rsquo;s correct. It forces multiple independent AI systems to argue with each other, finds the contradictions, stress-tests the numbers, and scores how confident you should be in every claim &mdash; before you ever see the result.
+                                ADVERSIQ is an AI-powered advisory platform for high-stakes business decisions. You describe your situation &mdash; an overseas investment, a market entry, a public-private partnership &mdash; and the system produces a complete strategic analysis: financial projections, risk assessments, entity verification, compliance mapping, and board-ready documents.
                             </p>
-                            <div className="mt-8 space-y-1">
-                                {['Adversarial', 'Verified', 'Autonomous', 'Mathematical', 'Defensible'].map((word) => (
-                                    <p key={word} className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight tracking-tight">{word}.</p>
+                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                                What makes it different: before any conclusion reaches you, it gets challenged. Multiple independent AI systems argue with each other, a formal logic solver catches contradictions, Monte Carlo simulations stress-test every number, and every claim carries a confidence score. You see the debate, the evidence, and exactly how certain the system is.
+                            </p>
+                            <div className="mt-8 grid grid-cols-1 sm:grid-cols-5 gap-2">
+                                {[
+                                    { word: 'Adversarial', note: 'AI systems that argue with each other' },
+                                    { word: 'Verified', note: 'Every claim scored and sourced' },
+                                    { word: 'Autonomous', note: 'Detects what you need automatically' },
+                                    { word: 'Mathematical', note: 'Formal logic, not pattern matching' },
+                                    { word: 'Defensible', note: 'Audit trails you can stand behind' },
+                                ].map((item) => (
+                                    <div key={item.word} className="border-t-2 border-slate-900 pt-3">
+                                        <p className="text-lg font-bold text-slate-900 tracking-tight leading-tight">{item.word}.</p>
+                                        <p className="text-[11px] text-slate-500 leading-snug mt-1">{item.note}</p>
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -388,101 +403,150 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                WHAT NO ONE HAS ATTEMPTED — Reasoning Tribunal + Pipeline
+                THE REASONING TRIBUNAL
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
-                        {/* Left — Text and Judges Triangle */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        {/* Left — Statement */}
                         <div>
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What No One Has Attempted</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Three AI architectures. One question. They fight it out.</h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
+                                Three AI architectures.<br className="hidden md:block" />
+                                One question. They fight it out.
+                            </h2>
+                            <p className="text-lg text-slate-500 leading-relaxed mb-4">
                                 Most AI tools use one model to generate an answer. We use three fundamentally different reasoning systems &mdash; each built by a different company, each thinking in a different way &mdash; and make them argue with each other over the same question.
                             </p>
                             <p className="text-sm text-slate-600 leading-relaxed mb-4">
                                 These aren&rsquo;t chatbots giving quick opinions. These are reasoning models that think internally for up to 30 seconds before they even respond. Then they&rsquo;re forced to defend their position against the other two.
                             </p>
                             <p className="text-sm text-slate-600 leading-relaxed">
-                                Where they agree, you can trust the answer. Where they disagree, you see exactly what&rsquo;s uncertain and why. No other platform does this. No one has tried.
+                                Where they agree, you can trust the answer. Where they disagree, you see exactly what&rsquo;s uncertain &mdash; and why. No other platform does this.
                             </p>
-                            {/* Judges Triangle — Responsive, No Overlap, Consistent Card Style */}
-                            <div className="mt-10 mb-8 w-full flex flex-col items-center">
-                                <div className="grid grid-cols-3 gap-6 w-full max-w-2xl mx-auto">
-                                    <div />
-                                    <div className="bg-white border border-blue-200 shadow rounded-xl px-6 py-5 flex flex-col items-center">
-                                        <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1">Judge 1 &mdash; Extended Thinking</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong.</p>
-                                    </div>
-                                    <div />
-                                    <div className="bg-white border border-slate-200 shadow rounded-xl px-6 py-5 flex flex-col items-center mt-[-18px]">
-                                        <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">Judge 2 &mdash; Logical Reasoning</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three.</p>
-                                    </div>
-                                    <div />
-                                    <div className="bg-white border border-emerald-200 shadow rounded-xl px-6 py-5 flex flex-col items-center mt-[-18px]">
-                                        <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-1">Judge 3 &mdash; Broad-Knowledge Reasoning</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the others miss.</p>
-                                    </div>
-                                </div>
-                                {/* Synthesis below triangle */}
-                                <div className="mt-8 border-t-2 border-slate-200 pt-4 max-w-2xl w-full">
-                                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">The Synthesis</h4>
-                                    <p className="text-xs text-slate-500 leading-relaxed">After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score. You see everything &mdash; not just the conclusion, but the debate that produced it.</p>
-                                </div>
-                            </div>
                         </div>
 
-                        {/* Right — Enhanced Pipeline Card, Consistent Card Style */}
-                        <div className="bg-white border border-slate-200 shadow rounded-xl p-8 flex flex-col justify-between h-full">
-                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">The 10-Layer Pipeline</p>
-                            <p className="text-xs text-slate-500 mb-6">Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.</p>
-
-                            <div className="grid grid-cols-2 gap-3 mb-8">
-                                {[
-                                    { n: '01', title: 'Adversarial Reasoning', color: 'bg-blue-50 text-blue-700', icon: '⚔️' },
-                                    { n: '02', title: 'Contradiction Detection', color: 'bg-rose-50 text-rose-700', icon: '❗' },
-                                    { n: '03', title: 'Stress Testing', color: 'bg-yellow-50 text-yellow-700', icon: '💥' },
-                                    { n: '04', title: 'Cognitive Modelling', color: 'bg-indigo-50 text-indigo-700', icon: '🧠' },
-                                    { n: '05', title: 'Self-Improving Pipeline', color: 'bg-green-50 text-green-700', icon: '🔄' },
-                                    { n: '06', title: 'Reflexive Oversight', color: 'bg-slate-50 text-slate-700', icon: '🔍' },
-                                    { n: '07', title: 'Entity Verification', color: 'bg-emerald-50 text-emerald-700', icon: '🔗' },
-                                    { n: '08', title: 'Confidence Scoring', color: 'bg-orange-50 text-orange-700', icon: '📊' },
-                                    { n: '09', title: 'Parallel Orchestration', color: 'bg-cyan-50 text-cyan-700', icon: '⏩' },
-                                    { n: '10', title: 'Document Generation', color: 'bg-purple-50 text-purple-700', icon: '📄' },
-                                ].map((item) => (
-                                    <div key={item.n} className={`flex items-center gap-3 border-t border-slate-100 pt-3 rounded-lg px-2 py-1 ${item.color}`}>
-                                        <span className="text-lg">{item.icon}</span>
-                                        <span className="text-lg font-light text-slate-400">{item.n}</span>
-                                        <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-wide leading-snug">{item.title}</h3>
-                                    </div>
-                                ))}
+                        {/* Right — Photo */}
+                        <div>
+                            <div className="h-80 lg:h-[28rem] overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=900&fit=crop&q=80"
+                                    alt="Adversarial reasoning tribunal"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
+                        </div>
+                    </div>
 
-                            <div className="border-t border-slate-100 pt-4">
-                                <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">Deep Dive &mdash; Engine Architecture</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
-                                        const cat = categoryDetails[key];
-                                        return (
-                                            <button
-                                                key={key}
-                                                onClick={() => setExpandedEngine(key)}
-                                                className="text-[11px] font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded px-2 py-1 shadow-sm border-b border-transparent hover:border-blue-700 transition-colors"
-                                            >
-                                                {cat.icon}. {cat.title} &rarr;
-                                            </button>
-                                        );
-                                    })}
+                    {/* Three Judge Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+                        <div className="border-t-2 border-blue-600 pt-6">
+                            <div className="flex items-baseline gap-3 mb-3">
+                                <span className="text-4xl font-light text-slate-300">01</span>
+                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Extended Thinking</h4>
+                            </div>
+                            <p className="text-sm text-slate-500 leading-relaxed">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong &mdash; the risks others overlook.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-900 pt-6">
+                            <div className="flex items-baseline gap-3 mb-3">
+                                <span className="text-4xl font-light text-slate-300">02</span>
+                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Logical Reasoning</h4>
+                            </div>
+                            <p className="text-sm text-slate-500 leading-relaxed">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three &mdash; if the logic doesn&rsquo;t hold, it says so.</p>
+                        </div>
+                        <div className="border-t-2 border-emerald-600 pt-6">
+                            <div className="flex items-baseline gap-3 mb-3">
+                                <span className="text-4xl font-light text-slate-300">03</span>
+                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Broad-Knowledge</h4>
+                            </div>
+                            <p className="text-sm text-slate-500 leading-relaxed">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the other two miss.</p>
+                        </div>
+                    </div>
+
+                    {/* Synthesis */}
+                    <div className="border-t border-slate-200 pt-8 max-w-3xl">
+                        <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">The Synthesis</h4>
+                        <p className="text-sm text-slate-500 leading-relaxed">After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score. You see everything &mdash; not just the conclusion, but the debate that produced it.</p>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                THE 10-LAYER PIPELINE — Full-width banner
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="relative text-white overflow-hidden" style={{ backgroundColor: '#0f4f3a' }}>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/20" />
+                <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
+                    {/* Banner headline */}
+                    <div className="max-w-3xl mb-16">
+                        <p className="text-xs font-bold text-emerald-300 uppercase tracking-[0.2em] mb-4">The 10-Layer Pipeline</p>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
+                            Ten layers of verification.<br className="hidden md:block" />
+                            Nothing gets through unchecked.
+                        </h2>
+                        <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                            Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.
+                        </p>
+                        <p className="text-sm text-slate-400 leading-relaxed">
+                            From adversarial reasoning to document generation, every claim passes through contradiction detection, stress testing, cognitive modelling, and confidence scoring before it reaches you.
+                        </p>
+                    </div>
+
+                    {/* Pipeline Layers — 5-col with hover glow */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-20">
+                        {[
+                            'Adversarial Reasoning',
+                            'Contradiction Detection',
+                            'Stress Testing',
+                            'Cognitive Modelling',
+                            'Self-Improving Pipeline',
+                            'Reflexive Oversight',
+                            'Entity Verification',
+                            'Confidence Scoring',
+                            'Parallel Orchestration',
+                            'Document Generation',
+                        ].map((title, i) => (
+                            <div key={i} className="group relative bg-white/10 backdrop-blur-sm border border-white/15 hover:border-emerald-300/50 rounded-xl px-5 py-6 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/10">
+                                <span className="block text-4xl font-extralight text-emerald-300/40 group-hover:text-emerald-300 transition-colors mb-3">{String(i + 1).padStart(2, '0')}</span>
+                                <h4 className="text-[11px] font-bold text-slate-200 group-hover:text-white uppercase tracking-wider leading-snug transition-colors">{title}</h4>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Deep Dive — Engine Architecture */}
+                    <div>
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="h-px flex-1 bg-gradient-to-r from-emerald-300/50 to-transparent" />
+                            <p className="text-xs font-bold text-emerald-300 uppercase tracking-[0.2em]">Deep Dive &mdash; Engine Architecture</p>
+                            <div className="h-px flex-1 bg-gradient-to-l from-emerald-300/50 to-transparent" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
+                            {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
+                                const cat = categoryDetails[key];
+                                return (
                                     <button
-                                        onClick={() => setShowFormulas(true)}
-                                        className="text-[11px] font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded px-2 py-1 shadow-sm border-b border-transparent hover:border-emerald-700 transition-colors"
+                                        key={key}
+                                        onClick={() => setExpandedEngine(key)}
+                                        className="group relative text-left bg-white/10 backdrop-blur-sm border border-white/15 hover:border-emerald-300/50 rounded-xl px-5 py-5 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/10 overflow-hidden"
                                     >
-                                        Full Architecture &rarr;
+                                        <span className="block text-2xl font-extralight text-emerald-300/60 group-hover:text-emerald-300 transition-colors mb-2">{cat.icon}</span>
+                                        <span className="block text-sm font-semibold text-slate-200 group-hover:text-white transition-colors leading-snug">{cat.title}</span>
+                                        <span className="block text-[10px] text-slate-400 group-hover:text-emerald-300 mt-2 uppercase tracking-wider transition-colors">Explore &rarr;</span>
                                     </button>
-                                </div>
-                            </div>
+                                );
+                            })}
                         </div>
+                        {/* Full Architecture — focus card */}
+                        <button
+                            onClick={() => setShowFormulas(true)}
+                            className="group w-full text-left relative overflow-hidden rounded-xl px-8 py-7 transition-all duration-300 shadow-sm hover:shadow-lg flex items-center justify-between bg-emerald-600 hover:bg-emerald-500"
+                        >
+                            <div className="relative z-10">
+                                <span className="block text-[10px] font-bold text-blue-200 uppercase tracking-[0.25em] mb-1.5">Complete System</span>
+                                <span className="block text-xl md:text-2xl font-light text-white">Explore the Full Architecture &rarr;</span>
+                            </div>
+                            <span className="relative z-10 hidden sm:block text-6xl font-extralight text-white/15 group-hover:text-white/25 transition-colors">&#9670;</span>
+                        </button>
                     </div>
                 </div>
             </section>
