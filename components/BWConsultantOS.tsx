@@ -3389,7 +3389,31 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
     const policyPack = resolvePolicyPack(caseStudy);
     const caseReadiness = computeReadiness(caseStudy);
-    return `You are BW Consultant AI, an expert business intelligence consultant. Operate in mixed-initiative autonomous mode.
+    return `You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification system. You are NOT a chatbot or report writer. You operate a 10-layer adversarial verification pipeline.
+
+For substantive queries, structure your response as:
+
+**SITUATION ASSESSMENT**
+Brief synthesis of the user's situation and what the system has identified.
+
+**VERIFICATION STATUS**
+- Layers activated: [relevant pipeline layers]
+- Confidence: [Low / Moderate / High / Verified]
+- Contradictions detected: [Yes/No]
+
+**ANALYSIS**
+Core intelligence output — specific, data-anchored, decision-focused. Structure by dimension when multiple factors are in play.
+
+**RISK FLAGS**
+Bullet list with severity (Critical / High / Medium / Low).
+
+**RECOMMENDED ACTIONS**
+Numbered, specific, sequenced steps — who, what, when.
+
+**NEXT VERIFICATION STEP**
+One question or data point that would materially improve confidence.
+
+For simple questions or greetings, respond naturally without the full structure.
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
@@ -3413,23 +3437,18 @@ Case enrichment mode:
 - Ask at most one concise follow-up only when it materially improves the current answer.
 
 Autonomous operating instructions:
-- First, answer the user's actual request directly (including non-case or off-topic questions).
+- First, answer the user's actual request directly using the structured intelligence format.
 - Second, infer and update useful case facts from the conversation context.
-- Third, if critical information is missing, ask only one highest-value follow-up question.
+- Third, if critical information is missing, include it as the Next Verification Step.
 - Never force a rigid scripted questionnaire.
-- Be natural, concise, and decision-focused.
+- Never produce generic report or letter formats unless explicitly requested.
+- Default to structured verification intelligence output.
 
 Policy pack execution rules:
 - Respect regulatory tone: ${policyPack.regulatoryTone}
 - Ensure required support docs are reflected: ${policyPack.requiredSupportDocuments.join(', ')}
 - Ensure required letters are reflected: ${policyPack.requiredLetters.join(', ')}
 - Emphasize compliance focus: ${policyPack.complianceFocus.join(', ')}
-
-Consultant operating rules:
-- Always anchor advice on WHO the client is, WHERE they operate, and WHAT they want to achieve.
-- Build the case file like a consultant: facts, assumptions, risks, options, recommendation.
-- If data is incomplete, ask the single highest-value question that improves decision quality.
-- Convert provided information into action-oriented outputs, not generic commentary.
 
 ${(quickCountryFocus || quickBusinessTarget || quickCustomSector || customResearchTopics.length > 0) ? `Live Research context (user-configured in Pilot panel):
 ${quickCountryFocus ? `- Country/region of focus: ${quickCountryFocus}` : ''}
@@ -3448,8 +3467,6 @@ When the user has specified a country or region, proactively reference:
 - Regional business conditions and market access factors
 - Key stakeholders and institutional counterparts
 
-Respond naturally and helpfully. Keep responses focused and actionable.
-
 ${agentRegistry.current.toManifest()}`;
   }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, quickCountryFocus, quickBusinessTarget, activeIssuePackLabel, quickCustomSector, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary]);
 
@@ -3458,7 +3475,7 @@ ${agentRegistry.current.toManifest()}`;
 
     // ── GREETING ──────────────────────────────────────────────────────────────
     if (/^(hi|hello|hey|good\s+(morning|afternoon|evening)|yo|sup)[!.\s]*$/i.test(trimmed)) {
-      return 'Good to hear from you. Tell me what you\'re working on - a deal, a market, a partner, a pitch - and I\'ll help you build a clear path forward.';
+      return 'ADVERSIQ verification pipeline standing by. Describe your situation — a deal, a market, a partner, a decision — and the system will activate the relevant verification layers automatically.';
     }
 
     // ── DOCUMENT UPLOAD AWARENESS ──────────────────────────────────────────────
@@ -3519,8 +3536,8 @@ ${agentRegistry.current.toManifest()}`;
       const topicMatch = trimmed.match(/^(?:tell me(?:\s+more)?\s+about|more about|what is|what are|who is|explain|describe|give me info(?: on| about)?|can you tell me about|i want to know(?:\s+more)?\s+about|what do you know about|research|find out about|background (?:on|about))\s+(.+)/i);
       const topic = topicMatch?.[1]?.trim() || trimmed;
 
-      return `Good question. Let me pull together what I know about **${topic}** and cross-reference it with current data.\n\n` +
-        `If you want me to focus on a specific angle - investment feasibility, political risk, regulatory landscape, or market entry - let me know.`;
+      return `Activating verification layers for **${topic}**. Cross-referencing against entity intelligence, market signals, and regulatory frameworks.\n\n` +
+        `Specify the verification angle you need — investment feasibility, political risk, regulatory landscape, entity verification, or market entry — and I'll focus the pipeline.`;
     }
 
     // ── GENERAL FALLBACK - ANSWER DIRECTLY, never deflect ─────────────────────
@@ -3617,7 +3634,7 @@ ${agentRegistry.current.toManifest()}`;
     const knownIdentity = draft.organizationName || draft.userName || 'Not provided yet';
     const knownLocation = draft.country || draft.jurisdiction || 'Not provided yet';
 
-    return `I can format this a few ways-pick one and I'll generate it now:\n\nA) Quick background insight (3-5 bullets)\nB) Concrete next-step recommendation\nC) Full report (board-ready)\nD) Letter/document draft\nE) Full case pack (report + letters)\nF) Not sure - recommend best format\n\nReply with A-F (or say "just answer normally").\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
+    return `I can produce this in several intelligence formats:\n\nA) Quick verification scan (key signals + confidence level)\nB) Structured decision intelligence (full pipeline format)\nC) Risk-focused assessment (threat analysis + mitigation)\nD) Board-ready intelligence brief\nE) Full case pack (report + supporting documents)\nF) Not sure — let the pipeline decide\n\nReply with A-F (or just describe what you need).\n\nKnown so far:\n- Identity: ${knownIdentity}\n- Location: ${knownLocation}`;
   }, []);
 
   const isLowSignalInsight = useCallback((title: string, content: string, confidence?: number): boolean => {
