@@ -439,21 +439,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* 5×2 Pipeline Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
                         {[
-                            { n: '01', title: 'Adversarial Reasoning', desc: 'Five independent AI systems analyse your situation separately, then debate each other. They\u2019re designed to disagree. When they can\u2019t reach consensus, three reasoning models from different AI labs are brought in to break the deadlock.' },
-                            { n: '02', title: 'Contradiction Detection', desc: 'Before you see any result, the system checks whether its own conclusions are logically consistent. If one part contradicts another, it gets caught and flagged automatically.' },
-                            { n: '03', title: 'Stress Testing', desc: 'Instead of giving you one number, the system runs thousands of scenarios \u2014 what if costs rise, partners fall through, regulations change? You see the range of outcomes, not just the best case.' },
-                            { n: '04', title: 'Cognitive Modelling', desc: 'The system understands how people actually make decisions \u2014 what grabs attention, what gets overlooked, where hidden biases sit. Output is structured so the right information lands where it matters.' },
-                            { n: '05', title: 'Self-Improving Pipeline', desc: 'The system learns which analytical approaches work best for each type of problem. It gets smarter with every case, automatically adjusting to deliver better results over time.' },
-                            { n: '06', title: 'Reflexive Oversight', desc: 'Background systems continuously monitor for overconfidence, outdated assumptions, and missed risks. The system audits itself so you don\u2019t have to.' },
-                            { n: '07', title: 'Entity Verification', desc: 'Mention a company or person and the system runs automatic background checks \u2014 corporate registries, sanctions lists, news, ownership, litigation. You get a verified trust profile, not a guess.' },
-                            { n: '08', title: 'Confidence Scoring', desc: 'Every claim comes with a confidence score. You can see how sure the system is, what evidence supports it, and where uncertainty remains. No black boxes.' },
-                            { n: '09', title: 'Parallel Orchestration', desc: 'The system runs dozens of analysis tasks simultaneously, automatically handling dependencies. Work that traditionally takes months happens in minutes \u2014 without cutting corners.' },
-                            { n: '10', title: 'Document Generation', desc: '247 ready-to-use templates across 15 categories. Board papers, investor briefs, compliance filings \u2014 all built from verified analysis, not generated from thin air.' },
+                            { n: '01', title: 'Adversarial Reasoning' },
+                            { n: '02', title: 'Contradiction Detection' },
+                            { n: '03', title: 'Stress Testing' },
+                            { n: '04', title: 'Cognitive Modelling' },
+                            { n: '05', title: 'Self-Improving Pipeline' },
+                            { n: '06', title: 'Reflexive Oversight' },
+                            { n: '07', title: 'Entity Verification' },
+                            { n: '08', title: 'Confidence Scoring' },
+                            { n: '09', title: 'Parallel Orchestration' },
+                            { n: '10', title: 'Document Generation' },
                         ].map((item) => (
                             <div key={item.n} className="border-t-2 border-slate-200 pt-4">
                                 <span className="text-2xl font-light text-slate-300">{item.n}</span>
                                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mt-2 mb-2 leading-snug">{item.title}</h3>
-                                <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
                             </div>
                         ))}
                     </div>
