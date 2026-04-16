@@ -430,7 +430,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
-                                    src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=900&fit=crop&q=80"
+                                    src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=900&fit=crop&q=80"
                                     alt="Adversarial reasoning tribunal"
                                     className="w-full h-full object-cover"
                                 />
@@ -474,25 +474,34 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* ═══════════════════════════════════════════════════════════════
                 THE 10-LAYER PIPELINE — Full-width banner
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="relative text-white overflow-hidden" style={{ backgroundColor: '#0f4f3a' }}>
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/20" />
+            <section className="relative text-white overflow-hidden" style={{ backgroundColor: '#1a1a2e' }}>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/15" />
                 <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
-                    {/* Banner headline */}
-                    <div className="max-w-3xl mb-16">
-                        <p className="text-xs font-bold text-emerald-300 uppercase tracking-[0.2em] mb-4">The 10-Layer Pipeline</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                            Ten layers of verification.<br className="hidden md:block" />
-                            Nothing gets through unchecked.
-                        </h2>
-                        <p className="text-lg text-slate-300 leading-relaxed mb-4">
-                            Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.
-                        </p>
-                        <p className="text-sm text-slate-400 leading-relaxed">
-                            From adversarial reasoning to document generation, every claim passes through contradiction detection, stress testing, cognitive modelling, and confidence scoring before it reaches you.
-                        </p>
+                    {/* Banner headline — text + photo side by side */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                        <div>
+                            <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">The 10-Layer Pipeline</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
+                                Ten layers of verification.<br className="hidden md:block" />
+                                Nothing gets through unchecked.
+                            </h2>
+                            <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                                Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.
+                            </p>
+                            <p className="text-sm text-slate-400 leading-relaxed">
+                                From adversarial reasoning to document generation, every claim passes through contradiction detection, stress testing, cognitive modelling, and confidence scoring before it reaches you.
+                            </p>
+                        </div>
+                        <div className="hidden lg:block">
+                            <img
+                                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=900&fit=crop&q=80"
+                                alt="Data center network infrastructure"
+                                className="w-full h-[26rem] object-cover"
+                            />
+                        </div>
                     </div>
 
-                    {/* Pipeline Layers — 5-col with hover glow */}
+                    {/* Pipeline Layers — 5-col sharp corners */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-20">
                         {[
                             'Adversarial Reasoning',
@@ -506,8 +515,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             'Parallel Orchestration',
                             'Document Generation',
                         ].map((title, i) => (
-                            <div key={i} className="group relative bg-white/10 backdrop-blur-sm border border-white/15 hover:border-emerald-300/50 rounded-xl px-5 py-6 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/10">
-                                <span className="block text-4xl font-extralight text-emerald-300/40 group-hover:text-emerald-300 transition-colors mb-3">{String(i + 1).padStart(2, '0')}</span>
+                            <div key={i} className="group relative bg-white/10 backdrop-blur-sm border border-white/15 hover:border-indigo-400/50 px-5 py-6 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10">
+                                <span className="block text-4xl font-extralight text-indigo-400/40 group-hover:text-indigo-300 transition-colors mb-3">{String(i + 1).padStart(2, '0')}</span>
                                 <h4 className="text-[11px] font-bold text-slate-200 group-hover:text-white uppercase tracking-wider leading-snug transition-colors">{title}</h4>
                             </div>
                         ))}
@@ -516,9 +525,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* Deep Dive — Engine Architecture */}
                     <div>
                         <div className="flex items-center gap-4 mb-8">
-                            <div className="h-px flex-1 bg-gradient-to-r from-emerald-300/50 to-transparent" />
-                            <p className="text-xs font-bold text-emerald-300 uppercase tracking-[0.2em]">Deep Dive &mdash; Engine Architecture</p>
-                            <div className="h-px flex-1 bg-gradient-to-l from-emerald-300/50 to-transparent" />
+                            <div className="h-px flex-1 bg-gradient-to-r from-indigo-400/50 to-transparent" />
+                            <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em]">Deep Dive &mdash; Engine Architecture</p>
+                            <div className="h-px flex-1 bg-gradient-to-l from-indigo-400/50 to-transparent" />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
                             {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
@@ -527,11 +536,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <button
                                         key={key}
                                         onClick={() => setExpandedEngine(key)}
-                                        className="group relative text-left bg-white/10 backdrop-blur-sm border border-white/15 hover:border-emerald-300/50 rounded-xl px-5 py-5 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/10 overflow-hidden"
+                                        className="group relative text-left bg-white/10 backdrop-blur-sm border border-white/15 hover:border-indigo-400/50 px-5 py-5 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10 overflow-hidden"
                                     >
-                                        <span className="block text-2xl font-extralight text-emerald-300/60 group-hover:text-emerald-300 transition-colors mb-2">{cat.icon}</span>
+                                        <span className="block text-2xl font-extralight text-indigo-400/60 group-hover:text-indigo-300 transition-colors mb-2">{cat.icon}</span>
                                         <span className="block text-sm font-semibold text-slate-200 group-hover:text-white transition-colors leading-snug">{cat.title}</span>
-                                        <span className="block text-[10px] text-slate-400 group-hover:text-emerald-300 mt-2 uppercase tracking-wider transition-colors">Explore &rarr;</span>
+                                        <span className="block text-[10px] text-slate-400 group-hover:text-indigo-300 mt-2 uppercase tracking-wider transition-colors">Explore &rarr;</span>
                                     </button>
                                 );
                             })}
@@ -539,10 +548,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Full Architecture — focus card */}
                         <button
                             onClick={() => setShowFormulas(true)}
-                            className="group w-full text-left relative overflow-hidden rounded-xl px-8 py-7 transition-all duration-300 shadow-sm hover:shadow-lg flex items-center justify-between bg-emerald-600 hover:bg-emerald-500"
+                            className="group w-full text-left relative overflow-hidden px-8 py-7 transition-all duration-300 shadow-sm hover:shadow-lg flex items-center justify-between bg-indigo-600 hover:bg-indigo-500"
                         >
                             <div className="relative z-10">
-                                <span className="block text-[10px] font-bold text-blue-200 uppercase tracking-[0.25em] mb-1.5">Complete System</span>
+                                <span className="block text-[10px] font-bold text-indigo-200 uppercase tracking-[0.25em] mb-1.5">Complete System</span>
                                 <span className="block text-xl md:text-2xl font-light text-white">Explore the Full Architecture &rarr;</span>
                             </div>
                             <span className="relative z-10 hidden sm:block text-6xl font-extralight text-white/15 group-hover:text-white/25 transition-colors">&#9670;</span>
