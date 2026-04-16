@@ -392,7 +392,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
                         {/* Left — Text */}
                         <div>
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What No One Has Attempted</p>
@@ -408,78 +408,77 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right — The Three Judges */}
-                        <div>
-                            <div className="space-y-6">
+                        {/* Right — Pipeline Card */}
+                        <div className="bg-white border border-slate-200 p-8">
+                            <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">The 10-Layer Pipeline</p>
+                            <p className="text-xs text-slate-500 mb-6">Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.</p>
+
+                            <div className="grid grid-cols-2 gap-3 mb-8">
                                 {[
-                                    { label: 'Judge 1', name: 'Extended Thinking', desc: 'Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong.', color: 'border-blue-500' },
-                                    { label: 'Judge 2', name: 'Logical Reasoning', desc: 'Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three.', color: 'border-slate-900' },
-                                    { label: 'Judge 3', name: 'Broad-Knowledge Reasoning', desc: 'Draws from the widest knowledge base. Finds patterns across domains \u2014 what worked in similar industries, countries, and conditions. Sees what the others miss.', color: 'border-emerald-500' },
-                                ].map((judge) => (
-                                    <div key={judge.label} className={`border-l-4 ${judge.color} pl-6 py-2`}>
-                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">{judge.label}</p>
-                                        <h4 className="text-sm font-bold text-slate-900 mt-1">{judge.name}</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed mt-1">{judge.desc}</p>
+                                    { n: '01', title: 'Adversarial Reasoning' },
+                                    { n: '02', title: 'Contradiction Detection' },
+                                    { n: '03', title: 'Stress Testing' },
+                                    { n: '04', title: 'Cognitive Modelling' },
+                                    { n: '05', title: 'Self-Improving Pipeline' },
+                                    { n: '06', title: 'Reflexive Oversight' },
+                                    { n: '07', title: 'Entity Verification' },
+                                    { n: '08', title: 'Confidence Scoring' },
+                                    { n: '09', title: 'Parallel Orchestration' },
+                                    { n: '10', title: 'Document Generation' },
+                                ].map((item) => (
+                                    <div key={item.n} className="border-t border-slate-200 pt-3">
+                                        <span className="text-lg font-light text-slate-300">{item.n}</span>
+                                        <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-wide mt-1 leading-snug">{item.title}</h3>
                                     </div>
                                 ))}
                             </div>
-                            <div className="mt-8 border-t-2 border-slate-200 pt-4">
-                                <p className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">The Synthesis</p>
-                                <p className="text-xs text-slate-500 leading-relaxed">After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score. You see everything &mdash; not just the conclusion, but the debate that produced it.</p>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Section subheading */}
-                    <div className="mb-10">
-                        <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">The 10-Layer Pipeline</p>
-                        <p className="text-sm text-slate-500 max-w-3xl">Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.</p>
-                    </div>
-
-                    {/* 5×2 Pipeline Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-                        {[
-                            { n: '01', title: 'Adversarial Reasoning' },
-                            { n: '02', title: 'Contradiction Detection' },
-                            { n: '03', title: 'Stress Testing' },
-                            { n: '04', title: 'Cognitive Modelling' },
-                            { n: '05', title: 'Self-Improving Pipeline' },
-                            { n: '06', title: 'Reflexive Oversight' },
-                            { n: '07', title: 'Entity Verification' },
-                            { n: '08', title: 'Confidence Scoring' },
-                            { n: '09', title: 'Parallel Orchestration' },
-                            { n: '10', title: 'Document Generation' },
-                        ].map((item) => (
-                            <div key={item.n} className="border-t-2 border-slate-200 pt-4">
-                                <span className="text-2xl font-light text-slate-300">{item.n}</span>
-                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mt-2 mb-2 leading-snug">{item.title}</h3>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Deep Dive links */}
-                    <div className="text-center">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">Deep Dive &mdash; Engine Architecture</p>
-                        <div className="flex flex-wrap justify-center gap-3">
-                            {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
-                                const cat = categoryDetails[key];
-                                return (
+                            <div className="border-t border-slate-200 pt-4">
+                                <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">Deep Dive &mdash; Engine Architecture</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
+                                        const cat = categoryDetails[key];
+                                        return (
+                                            <button
+                                                key={key}
+                                                onClick={() => setExpandedEngine(key)}
+                                                className="text-[11px] font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
+                                            >
+                                                {cat.icon}. {cat.title} &rarr;
+                                            </button>
+                                        );
+                                    })}
                                     <button
-                                        key={key}
-                                        onClick={() => setExpandedEngine(key)}
-                                        className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
+                                        onClick={() => setShowFormulas(true)}
+                                        className="text-[11px] font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
                                     >
-                                        {cat.icon}. {cat.title} &rarr;
+                                        Full Architecture &rarr;
                                     </button>
-                                );
-                            })}
-                            <button
-                                onClick={() => setShowFormulas(true)}
-                                className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5"
-                            >
-                                Full Architecture &rarr;
-                            </button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    {/* Judge columns — same design as Signal Detection / Adaptive Depth / Guided 10-Step Intake */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Judge 1 &mdash; Extended Thinking</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Judge 2 &mdash; Logical Reasoning</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three.</p>
+                        </div>
+                        <div className="border-t-2 border-slate-300 pt-6">
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Judge 3 &mdash; Broad-Knowledge Reasoning</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the others miss.</p>
+                        </div>
+                    </div>
+
+                    {/* Synthesis row */}
+                    <div className="border-t-2 border-slate-300 pt-6">
+                        <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">The Synthesis</h4>
+                        <p className="text-sm text-slate-500 leading-relaxed max-w-3xl">After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score. You see everything &mdash; not just the conclusion, but the debate that produced it.</p>
                     </div>
                 </div>
             </section>
