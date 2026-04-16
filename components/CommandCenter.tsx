@@ -393,7 +393,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
-                        {/* Left — Text */}
+                        {/* Left — Text and Judges Triangle */}
                         <div>
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-4">What No One Has Attempted</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">Three AI architectures. One question. They fight it out.</h2>
@@ -406,53 +406,52 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-sm text-slate-600 leading-relaxed">
                                 Where they agree, you can trust the answer. Where they disagree, you see exactly what&rsquo;s uncertain and why. No other platform does this. No one has tried.
                             </p>
-                            {/* Upside-down triangle for judges */}
-                            <div className="flex flex-col items-center mt-12 mb-8">
-                                {/* Top judge */}
-                                <div className="w-full flex justify-center">
-                                    <div className="bg-white shadow-lg border-l-4 border-blue-500 rounded-lg px-6 py-4 max-w-xs text-center">
-                                        <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">Judge 1 &mdash; Extended Thinking</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong.</p>
+                            {/* Judges Triangle — Responsive, No Overlap, Consistent Card Style */}
+                            <div className="mt-10 mb-8 w-full flex flex-col items-center">
+                                <div className="grid grid-cols-3 gap-6 w-full max-w-2xl mx-auto">
+                                    <div />
+                                    <div className="bg-white border border-blue-200 shadow rounded-xl px-6 py-5 flex flex-col items-center">
+                                        <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wide mb-1">Judge 1 &mdash; Extended Thinking</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong.</p>
                                     </div>
-                                </div>
-                                {/* Bottom row judges */}
-                                <div className="flex flex-row justify-center gap-8 mt-[-18px]">
-                                    <div className="bg-white shadow-lg border-l-4 border-slate-900 rounded-lg px-6 py-4 max-w-xs text-center">
-                                        <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">Judge 2 &mdash; Logical Reasoning</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three.</p>
+                                    <div />
+                                    <div className="bg-white border border-slate-200 shadow rounded-xl px-6 py-5 flex flex-col items-center mt-[-18px]">
+                                        <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">Judge 2 &mdash; Logical Reasoning</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three.</p>
                                     </div>
-                                    <div className="bg-white shadow-lg border-l-4 border-emerald-500 rounded-lg px-6 py-4 max-w-xs text-center">
-                                        <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-1">Judge 3 &mdash; Broad-Knowledge Reasoning</h4>
-                                        <p className="text-xs text-slate-500 leading-relaxed">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the others miss.</p>
+                                    <div />
+                                    <div className="bg-white border border-emerald-200 shadow rounded-xl px-6 py-5 flex flex-col items-center mt-[-18px]">
+                                        <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wide mb-1">Judge 3 &mdash; Broad-Knowledge Reasoning</h4>
+                                        <p className="text-xs text-slate-500 leading-relaxed text-center">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the others miss.</p>
                                     </div>
                                 </div>
                                 {/* Synthesis below triangle */}
                                 <div className="mt-8 border-t-2 border-slate-200 pt-4 max-w-2xl w-full">
-                                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">The Synthesis</h4>
+                                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">The Synthesis</h4>
                                     <p className="text-xs text-slate-500 leading-relaxed">After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score. You see everything &mdash; not just the conclusion, but the debate that produced it.</p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Right — Enhanced Pipeline Card */}
-                        <div className="bg-gradient-to-br from-blue-50 via-white to-emerald-50 border border-slate-200 shadow-lg rounded-xl p-8">
+                        {/* Right — Enhanced Pipeline Card, Consistent Card Style */}
+                        <div className="bg-white border border-slate-200 shadow rounded-xl p-8 flex flex-col justify-between h-full">
                             <p className="text-xs font-bold text-blue-600 uppercase tracking-[0.2em] mb-2">The 10-Layer Pipeline</p>
                             <p className="text-xs text-slate-500 mb-6">Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.</p>
 
                             <div className="grid grid-cols-2 gap-3 mb-8">
                                 {[
-                                    { n: '01', title: 'Adversarial Reasoning', color: 'bg-blue-100 text-blue-700', icon: '⚔️' },
-                                    { n: '02', title: 'Contradiction Detection', color: 'bg-rose-100 text-rose-700', icon: '❗' },
-                                    { n: '03', title: 'Stress Testing', color: 'bg-yellow-100 text-yellow-700', icon: '💥' },
-                                    { n: '04', title: 'Cognitive Modelling', color: 'bg-indigo-100 text-indigo-700', icon: '🧠' },
-                                    { n: '05', title: 'Self-Improving Pipeline', color: 'bg-green-100 text-green-700', icon: '🔄' },
-                                    { n: '06', title: 'Reflexive Oversight', color: 'bg-slate-100 text-slate-700', icon: '🔍' },
-                                    { n: '07', title: 'Entity Verification', color: 'bg-emerald-100 text-emerald-700', icon: '🔗' },
-                                    { n: '08', title: 'Confidence Scoring', color: 'bg-orange-100 text-orange-700', icon: '📊' },
-                                    { n: '09', title: 'Parallel Orchestration', color: 'bg-cyan-100 text-cyan-700', icon: '⏩' },
-                                    { n: '10', title: 'Document Generation', color: 'bg-purple-100 text-purple-700', icon: '📄' },
+                                    { n: '01', title: 'Adversarial Reasoning', color: 'bg-blue-50 text-blue-700', icon: '⚔️' },
+                                    { n: '02', title: 'Contradiction Detection', color: 'bg-rose-50 text-rose-700', icon: '❗' },
+                                    { n: '03', title: 'Stress Testing', color: 'bg-yellow-50 text-yellow-700', icon: '💥' },
+                                    { n: '04', title: 'Cognitive Modelling', color: 'bg-indigo-50 text-indigo-700', icon: '🧠' },
+                                    { n: '05', title: 'Self-Improving Pipeline', color: 'bg-green-50 text-green-700', icon: '🔄' },
+                                    { n: '06', title: 'Reflexive Oversight', color: 'bg-slate-50 text-slate-700', icon: '🔍' },
+                                    { n: '07', title: 'Entity Verification', color: 'bg-emerald-50 text-emerald-700', icon: '🔗' },
+                                    { n: '08', title: 'Confidence Scoring', color: 'bg-orange-50 text-orange-700', icon: '📊' },
+                                    { n: '09', title: 'Parallel Orchestration', color: 'bg-cyan-50 text-cyan-700', icon: '⏩' },
+                                    { n: '10', title: 'Document Generation', color: 'bg-purple-50 text-purple-700', icon: '📄' },
                                 ].map((item) => (
-                                    <div key={item.n} className={`flex items-center gap-3 border-t border-slate-200 pt-3 rounded-lg px-2 py-1 ${item.color}`}>
+                                    <div key={item.n} className={`flex items-center gap-3 border-t border-slate-100 pt-3 rounded-lg px-2 py-1 ${item.color}`}>
                                         <span className="text-lg">{item.icon}</span>
                                         <span className="text-lg font-light text-slate-400">{item.n}</span>
                                         <h3 className="text-[11px] font-bold text-slate-900 uppercase tracking-wide leading-snug">{item.title}</h3>
@@ -460,7 +459,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 ))}
                             </div>
 
-                            <div className="border-t border-slate-200 pt-4">
+                            <div className="border-t border-slate-100 pt-4">
                                 <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">Deep Dive &mdash; Engine Architecture</p>
                                 <div className="flex flex-wrap gap-2">
                                     {(['a', 'b', 'c', 'd', 'e'] as const).map((key) => {
