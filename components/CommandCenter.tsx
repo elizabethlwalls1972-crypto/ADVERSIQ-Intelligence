@@ -349,9 +349,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         Adversarial Intelligence Quorum
                     </p>
                     <div className="max-w-5xl mx-auto">
-                        <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white leading-relaxed mb-6">
-                            Describe a business decision &mdash; an investment, an expansion, a partnership, a market entry &mdash; and the system produces a fully verified analysis with financial projections, risk assessments, compliance checks, and board-ready documents.
-                        </p>
                         <p className="text-base md:text-lg lg:text-xl text-white font-medium uppercase tracking-widest">
                             Built for regional councils, investment boards, government agencies, and businesses entering new markets.
                         </p>
@@ -398,10 +395,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Differentiator — below the grid */}
-                    <div className="max-w-5xl mx-auto text-center">
+                    {/* Business decision description */}
+                    <div className="max-w-6xl mx-auto text-center mt-16 mb-16">
                         <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-snug">
-                            Every conclusion is challenged by independent AI systems, stress-tested with simulations, and scored for confidence &mdash; before it ever reaches you.
+                            Describe a business decision &mdash; an investment, an expansion, a partnership, a market entry &mdash; and the system produces a fully verified analysis with financial projections, risk assessments, compliance checks, and board-ready documents.
                         </p>
                     </div>
 
@@ -598,7 +595,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.6s' }}>Who This Is For</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.1s' }}>You don&rsquo;t need to be an expert. The system already is.</h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 The same engine serves first-time exporters and seasoned investment boards. Beginners get guided walkthroughs and plain-language explanations. Experts get full control over advanced settings, detailed audit trails, and granular data breakdowns. Same engine &mdash; different depth.
                             </p>
                         </div>
@@ -743,7 +740,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.4s' }}>
                                 You describe your situation. The system figures out the rest.
                             </h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 You don&rsquo;t need to know which formula applies, which jurisdiction pack to select, or which document your situation requires. The system learns your case as the conversation develops. It detects signals while you type, builds the case model in the background, checks compliance for your jurisdiction, and tells you exactly what to generate when you&rsquo;re ready.
                             </p>
                         </div>
@@ -788,7 +785,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.2s' }}>Deliverables</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.7s' }}>What you walk away with.</h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 A verified strategy &mdash; one that has been challenged by five independent AI systems, checked for contradictions, scored for confidence on every claim, and assembled in the right order automatically. Ready for board presentations, investor conversations, and regulator submissions on day one.
                             </p>
                         </div>
@@ -839,7 +836,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.5s' }}>Partnerships</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2s' }}>Early partners shape what this becomes.</h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 We&rsquo;re looking for organisations willing to put this system to work on real problems. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
                             </p>
                         </div>
@@ -878,7 +875,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.8s' }}>Pricing</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2.3s' }}>Verified decisions for everyone.</h2>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                            <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 Not just those who can afford elite advisory firms. During beta and in future subscriptions, <strong className="text-slate-700">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
                             </p>
                         </div>
