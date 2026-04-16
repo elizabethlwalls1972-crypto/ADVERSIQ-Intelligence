@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Brain, Calculator, FileText, CheckCircle, ArrowRight, Users, Globe, Lock } from 'lucide-react';
+import { Shield, FileText, CheckCircle, ArrowRight, Globe, Lock } from 'lucide-react';
 
 const AttractWorkspace = () => {
   return (

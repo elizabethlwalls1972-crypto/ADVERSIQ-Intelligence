@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { FileText, Blocks, Sparkles, X, Users, Globe, Building2, Brain, Shield, BarChart3, FileCheck, Mail, Briefcase, Scale, TrendingUp, Eye, CheckCircle2, Target, ShieldCheck } from 'lucide-react';
 import { termsOfEngagement } from '../constants/commandCenterData';
 
@@ -1699,7 +1699,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
             </p>
             <div className="space-y-4">
               
-              {/* Report 1: Australian AgriTech Ã¢â€ â€™ Vietnam */}
+              {/* Report 1: Australian AgriTech → Vietnam */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -1737,7 +1737,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                   <div className="bg-slate-50 rounded-lg p-3 mb-3 text-xs">
                     <div className="font-semibold text-slate-700 mb-2">AI Analysis Summary:</div>
                     <p className="text-slate-600 mb-2">
-                      Vietnam's AgriTech market ($1.8B Ã¢â€ â€™ $3.2B by 2027, CAGR 21.4%) presents compelling expansion opportunity. 
+                      Vietnam's AgriTech market ($1.8B → $3.2B by 2027, CAGR 21.4%) presents compelling expansion opportunity. 
                       Recommended JV partner: Vietnam Agricultural Supply Co. (VASCO) - 12 provinces, $38M revenue, MARD relationships.
                       Monte Carlo simulation (10,000 iterations): P50 IRR 18.4%, break-even Month 28, 8% probability of loss.
                     </p>
@@ -1949,7 +1949,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 2: Singapore MedTech Ã¢â€ â€™ Vietnam */}
+              {/* Report 2: Singapore MedTech → Vietnam */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2071,7 +2071,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 3: US FinTech Ã¢â€ â€™ EU */}
+              {/* Report 3: US FinTech → EU */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2095,7 +2095,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                     </div>
                     <div>
                       <span className="text-slate-500 text-xs uppercase tracking-wide">Target Region</span>
-                      <div className="font-medium">Dublin, Ireland Ã¢â€ â€™ EU Passporting</div>
+                      <div className="font-medium">Dublin, Ireland → EU Passporting</div>
                       <div className="text-xs text-slate-500">Regulatory License * $8M Setup</div>
                     </div>
                     <div>
@@ -2153,7 +2153,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 4: Japanese Manufacturer Ã¢â€ â€™ Mexico */}
+              {/* Report 4: Japanese Manufacturer → Mexico */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2235,7 +2235,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 5: German Renewables Ã¢â€ â€™ Saudi Arabia */}
+              {/* Report 5: German Renewables → Saudi Arabia */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2317,7 +2317,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 6: UK EdTech Ã¢â€ â€™ India */}
+              {/* Report 6: UK EdTech → India */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2399,7 +2399,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 7: Canadian Mining Ã¢â€ â€™ Chile */}
+              {/* Report 7: Canadian Mining → Chile */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2481,7 +2481,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 8: Swiss Pharma Ã¢â€ â€™ Singapore */}
+              {/* Report 8: Swiss Pharma → Singapore */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2563,7 +2563,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 9: UAE Logistics Ã¢â€ â€™ East Africa */}
+              {/* Report 9: UAE Logistics → East Africa */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2645,7 +2645,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 10: Korean Gaming Ã¢â€ â€™ Southeast Asia */}
+              {/* Report 10: Korean Gaming → Southeast Asia */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2727,7 +2727,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 11: Brazilian Agribusiness Ã¢â€ â€™ Africa */}
+              {/* Report 11: Brazilian Agribusiness → Africa */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
@@ -2809,7 +2809,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
                 )}
               </div>
 
-              {/* Report 12: Indian IT Services Ã¢â€ â€™ Middle East */}
+              {/* Report 12: Indian IT Services → Middle East */}
               <div className="bg-white border border-slate-200 rounded-lg overflow-hidden hover:border-slate-400 hover:shadow-lg transition-all">
                 <div 
                   className="bg-slate-100 px-4 py-3 border-b border-slate-200 flex justify-between items-center cursor-pointer"
