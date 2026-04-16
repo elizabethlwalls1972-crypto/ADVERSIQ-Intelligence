@@ -318,7 +318,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <span className="text-lg font-light tracking-wide text-slate-800">ADVERSIQ Intelligence</span>
                     </div>
                     <div className="hidden lg:flex items-center gap-6 text-sm text-slate-600 font-medium">
-                        <button onClick={() => scrollToSection('launch-platform')} className="ml-2 px-4 py-1.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Launch Consultant</button>
+                        <button onClick={() => scrollToSection('launch-platform')} className="ml-2 px-6 py-2 bg-slate-200 text-slate-800 text-lg font-light tracking-wide hover:bg-slate-300 transition-colors">Launch Consultant</button>
                     </div>
                 </div>
             </nav>
@@ -336,7 +336,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 bg-black/80" />
                 <style>{`
                     @keyframes heroColor { 0%,100%{color:#ff3366} 25%{color:#00d4ff} 50%{color:#facc15} 75%{color:#a855f7} }
-                    @keyframes headerColor { 0%,100%{color:#ff3366} 20%{color:#00d4ff} 40%{color:#facc15} 60%{color:#a855f7} 80%{color:#22d3ee} }
+
                 `}</style>
                 <div className="relative z-10 max-w-5xl mx-auto text-center" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}>
                     <h1
@@ -364,8 +364,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Statement */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite' }}>What Is ADVERSIQ</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.5s' }}>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
                                 Strategic intelligence<br className="hidden md:block" />
                                 that checks its own work.
                             </h2>
@@ -414,8 +414,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Statement */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.3s' }}>What No One Has Attempted</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.8s' }}>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What No One Has Attempted</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
                                 Three AI architectures.<br className="hidden md:block" />
                                 One question. They fight it out.
                             </h2>
@@ -599,8 +599,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.6s' }}>Who This Is For</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.1s' }}>You don&rsquo;t need to be an expert. The system already is.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Who This Is For</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">You don&rsquo;t need to be an expert. The system already is.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 The same engine serves first-time exporters and seasoned investment boards. Beginners get guided walkthroughs and plain-language explanations. Experts get full control over advanced settings, detailed audit trails, and granular data breakdowns. Same engine &mdash; different depth.
                             </p>
@@ -742,8 +742,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Text */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '0.9s' }}>The Experience</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.4s' }}>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Experience</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
                                 You describe your situation. The system figures out the rest.
                             </h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
@@ -789,8 +789,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Text */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.2s' }}>Deliverables</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.7s' }}>What you walk away with.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Deliverables</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">What you walk away with.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 A verified strategy &mdash; one that has been challenged by five independent AI systems, checked for contradictions, scored for confidence on every claim, and assembled in the right order automatically. Ready for board presentations, investor conversations, and regulator submissions on day one.
                             </p>
@@ -840,8 +840,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.5s' }}>Partnerships</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2s' }}>Early partners shape what this becomes.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Partnerships</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Early partners shape what this becomes.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 We&rsquo;re looking for organisations willing to put this system to work on real problems. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
                             </p>
@@ -879,8 +879,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '1.8s' }}>Pricing</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2.3s' }}>Verified decisions for everyone.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Pricing</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Verified decisions for everyone.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
                                 Not just those who can afford elite advisory firms. During beta and in future subscriptions, <strong className="text-slate-700">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
                             </p>
@@ -918,8 +918,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="launch-platform" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2.1s' }}>Get Started</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6" style={{ animation: 'headerColor 3s ease-in-out infinite', animationDelay: '2.6s' }}>Launch the Intelligence OS.</h2>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Get Started</p>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Launch the Intelligence OS.</h2>
                     </div>
 
                     <div className="max-w-2xl mx-auto">
