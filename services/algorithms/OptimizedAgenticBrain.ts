@@ -42,6 +42,8 @@ import { HumanCognitionEngine, HumanCognitionResult } from './HumanCognitionEngi
 import { type ToolResult } from './ToolRegistry';
 import { AutonomousLoopController, type LoopResult, type LoopIteration } from './AutonomousLoopController';
 import { runTribunal, getAvailableJudges, type TribunalSynthesis } from '../ReasoningTribunal';
+import { startTrace, addTraceEvent, completeTrace } from '../ReasoningTraceRecorder';
+import { ConfidenceScorer } from '../ConfidenceScorer';
 
 // ============================================================================
 // TYPES
@@ -458,6 +460,27 @@ export class OptimizedAgenticBrain {
     // ========================================================================
     const completedAt = new Date().toISOString();
     performance.totalTimeMs = Date.now() - startTime;
+
+    // ── Reasoning Trace Recording ──────────────────────────────────────────
+    try {
+      startTrace(runId, `AgenticBrain.think: ${params.country || 'unknown'}`);
+      addTraceEvent(runId, 'input-validation', params, { isValid: inputValidation.isValid, trustScore: inputValidation.trustScore }, performance.inputValidationMs);
+      addTraceEvent(runId, 'reasoning', { country: params.country }, { debateRounds: debate?.rounds ?? 0 }, performance.reasoningMs);
+      addTraceEvent(runId, 'synthesis', { country: params.country }, { recommendation: synthesis?.recommendation ?? 'unknown' }, performance.synthesisMs);
+      if (tribunalEscalation) {
+        addTraceEvent(runId, 'tribunal-escalation', { country: params.country }, { escalated: true }, 0);
+      }
+      completeTrace(runId, executiveBrief?.proceedSignal || 'complete');
+    } catch { /* trace recording is non-critical */ }
+
+    // ── Confidence scoring ─────────────────────────────────────────────────
+    let _pipelineConfidence: number | undefined;
+    try {
+      const scorer = new ConfidenceScorer();
+      const pState = { input: { query: params.country || '', constraints: [], context: {} }, restartCount: 0, executionTrace: [] };
+      const scoreResult = await scorer.computeResult(pState as Parameters<typeof scorer.computeResult>[0]);
+      _pipelineConfidence = scoreResult?.overallConfidence ?? undefined;
+    } catch { /* confidence scoring is non-critical */ }
     
     // Calculate speedup (estimate sequential time)
     const estimatedSequentialMs = 

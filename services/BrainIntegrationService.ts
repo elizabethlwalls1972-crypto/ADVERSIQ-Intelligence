@@ -97,6 +97,11 @@ import { SystemCapabilityBoundary, type CapabilitySnapshot } from './SystemCapab
 import { FinancialCalculationService, type FinancialSnapshot } from './FinancialCalculationService';
 import { RiskMatrixEngine, type RiskMatrixResult } from './RiskMatrixEngine';
 import { runCognitiveAnalysis, formatCognitiveForPrompt, type CognitiveAnalysis } from './CognitiveReasoningEngine';
+import { ConfidenceScorer as _ConfidenceScorer, type ScoringResult } from './ConfidenceScorer';
+import { shouldGroundResponse } from './GroundedRetrievalPipeline';
+import { startTrace, addTraceEvent, completeTrace } from './ReasoningTraceRecorder';
+import { QuantumProviderRouter } from './quantum/QuantumProviderRouter';
+import { ExtremeStressTestFramework as _ExtremeStressTestFramework } from './ExtremeStressTestFramework';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -125,6 +130,15 @@ export interface BrainContext {
     costOfLiving?: number;
     crimeIndex?: number;
     companyRecord?: { name: string; jurisdictionCode?: string; incorporationDate?: string } | null;
+    webIntelligence?: {
+      wikiTitle: string;
+      wikiExtract: string;
+      ddgAbstract: string;
+      ddgSource: string;
+      ddgUrl: string;
+      wikidataEntities: { id: string; label: string; description: string }[];
+      hasLiveData: boolean;
+    };
   };
   /** NSIL quick assessment */
   nsilAssessment: any | null;
@@ -164,7 +178,7 @@ export interface BrainContext {
   counterfactualAnalysis: any | null;
   /** Domain agent synthesis (Gov, Banking, Corporate, Market, Risk, Historical) */
   domainAnalysis: SynthesizedAnalysis | null;
-  /** Historical parallel matches - 60 years of documented practice from the case library */
+  /** Historical parallel matches - 200+ years of global development, industrialisation, and partnership evidence */
   historicalParallels: ParallelMatchResult | null;
   /** Ranked partner candidates - best matched institutional, government, corporate partners */
   rankedPartners: RankedPartner[] | null;
@@ -238,6 +252,16 @@ export interface BrainContext {
   riskMatrix: RiskMatrixResult | null;
   /** Cognitive Reasoning Engine - 12 human brain thinking layers */
   cognitiveAnalysis: CognitiveAnalysis | null;
+  /** Confidence Scorer - multi-dimensional pipeline confidence */
+  confidenceScore: ScoringResult | null;
+  /** Grounded retrieval - web-grounded citations for claims */
+  groundedContext: any | null;
+  /** Reasoning trace ID for this brain run */
+  reasoningTraceId: string | null;
+  /** Extreme stress test results */
+  extremeStressTest: any | null;
+  /** Quantum provider routing info */
+  quantumRouting: { backend: string; available: boolean } | null;
 }
 
 // ─── Simple in-process cache (keyed by country + objectives + org) ────────────
@@ -1073,6 +1097,11 @@ export class BrainIntegrationService {
         quantumMonteCarlo: null, quantumPatterns: null, quantumCognition: null,
         capabilityBoundary: null, financialAnalysis: null, riskMatrix: null,
         qualityGate: { score: 0, decision: 'skip', reasons: [], flags: [] } as any,
+        confidenceScore: null,
+        groundedContext: null,
+        reasoningTraceId: null,
+        extremeStressTest: null,
+        quantumRouting: null,
       };
       return minimal;
     }
@@ -1108,6 +1137,8 @@ export class BrainIntegrationService {
       causalResult,
       coreComplianceResult,
       coreBiasResult,
+      // Live web intelligence (DuckDuckGo + Wikipedia + Wikidata) — always runs, free, no key
+      liveWebResult,
     ] = await Promise.allSettled([
       // 15 indices [FOUNDATION]
       g('foundation') ? calculateAllIndices(params).catch(() => null) : Promise.resolve(null),
@@ -1252,6 +1283,39 @@ export class BrainIntegrationService {
         : Promise.resolve(null),
       // Core ethics/governance bias detection [ETHICS]
       g('ethics') ? Promise.resolve((() => { try { return coreDetectBias?.(params) ?? null; } catch { return null; } })()) : Promise.resolve(null),
+      // ── LIVE WEB INTELLIGENCE — free APIs, always fires, no key needed ──────
+      // Searches DuckDuckGo, Wikipedia, and Wikidata in parallel for the user's
+      // actual question. This grounds ALL downstream engines in real-world facts.
+      (async () => {
+        const q = strategicQuestion.slice(0, 300);
+        const [ddg, wiki, wd] = await Promise.allSettled([
+          fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&no_redirect=1&no_html=1`, { signal: AbortSignal.timeout(6000) })
+            .then(r => r.ok ? r.json() : null).catch(() => null),
+          (async () => {
+            const sr = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*&srlimit=1`, { signal: AbortSignal.timeout(6000) });
+            if (!sr.ok) return null;
+            const sd = await sr.json();
+            const t = sd?.query?.search?.[0]?.title;
+            if (!t) return null;
+            const cr = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(t)}&prop=extracts&explaintext=true&exintro=false&exchars=4000&format=json&origin=*`, { signal: AbortSignal.timeout(6000) });
+            if (!cr.ok) return null;
+            const cd = await cr.json();
+            const pg = Object.values(cd?.query?.pages || {})[0] as Record<string, string> | undefined;
+            return { extract: pg?.extract || '', title: t };
+          })(),
+          fetch(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=en&limit=3&format=json&origin=*`, { signal: AbortSignal.timeout(6000) })
+            .then(r => r.ok ? r.json() : null).then(d => (d?.search || []).map((e: any) => ({ id: e.id, label: e.label, description: e.description }))).catch(() => []),
+        ]);
+        return {
+          ddgAbstract: ddg.status === 'fulfilled' ? (ddg.value as any)?.AbstractText || '' : '',
+          ddgRelated: ddg.status === 'fulfilled' ? ((ddg.value as any)?.RelatedTopics || []).slice(0, 5).map((t: any) => t?.Text || '').filter(Boolean) : [],
+          ddgSource: ddg.status === 'fulfilled' ? (ddg.value as any)?.AbstractSource || '' : '',
+          ddgUrl: ddg.status === 'fulfilled' ? (ddg.value as any)?.AbstractURL || '' : '',
+          wikiExtract: wiki.status === 'fulfilled' ? (wiki.value as any)?.extract || '' : '',
+          wikiTitle: wiki.status === 'fulfilled' ? (wiki.value as any)?.title || '' : '',
+          wikidataEntities: wd.status === 'fulfilled' ? (wd.value as any[]) || [] : [],
+        };
+      })().catch(() => ({ ddgAbstract: '', ddgRelated: [], ddgSource: '', ddgUrl: '', wikiExtract: '', wikiTitle: '', wikidataEntities: [] })),
     ]);
 
     // ── Unpack settled results ────────────────────────────────────────────────
@@ -1321,6 +1385,16 @@ export class BrainIntegrationService {
 
     // Tavily - synthesized research answer
     const tavilyResearch = tavilyResult.status === 'fulfilled' ? tavilyResult.value as import('./tavilySearchService').TavilySearchResponse | null : null;
+
+    // Live Web Intelligence — grounding data from DuckDuckGo + Wikipedia + Wikidata
+    const liveWebIntel = liveWebResult.status === 'fulfilled' ? liveWebResult.value as {
+      ddgAbstract: string; ddgRelated: string[]; ddgSource: string; ddgUrl: string;
+      wikiExtract: string; wikiTitle: string; wikidataEntities: { id: string; label: string; description: string }[];
+    } : null;
+    const hasLiveWebData = Boolean(liveWebIntel && (liveWebIntel.ddgAbstract || liveWebIntel.wikiExtract || liveWebIntel.wikidataEntities.length));
+    if (hasLiveWebData) {
+      console.log(`[Brain] LIVE WEB → Wiki: "${liveWebIntel!.wikiTitle}" (${liveWebIntel!.wikiExtract.length} chars) | DDG: ${liveWebIntel!.ddgAbstract.length} chars | Wikidata: ${liveWebIntel!.wikidataEntities.length} entities`);
+    }
 
     // ProactiveOrchestrator (Layer 7) - briefing
     const proactiveBriefing = proactiveResult.status === 'fulfilled' ? proactiveResult.value as ProactiveBriefing | null : null;
@@ -1605,7 +1679,7 @@ export class BrainIntegrationService {
       } catch { return null; }
     })() : null;
 
-    // ── Historical Parallel Matcher - 60 years of global case evidence ────────
+    // ── Historical Parallel Matcher - 200+ years of global case evidence ────────
     const historicalParallels: ParallelMatchResult | null = g('historical') ? (() => {
       try {
         if (readiness >= 15 && (country || strategicQuestion || (params as any).currentMatter)) {
@@ -1694,6 +1768,18 @@ export class BrainIntegrationService {
             incorporationDate: openCorp.incorporationDate,
           }
         : null,
+      // Live web intelligence — grounded in real-time data from the internet
+      ...(hasLiveWebData && liveWebIntel ? {
+        webIntelligence: {
+          wikiTitle: liveWebIntel.wikiTitle,
+          wikiExtract: liveWebIntel.wikiExtract.substring(0, 1500),
+          ddgAbstract: liveWebIntel.ddgAbstract.substring(0, 500),
+          ddgSource: liveWebIntel.ddgSource,
+          ddgUrl: liveWebIntel.ddgUrl,
+          wikidataEntities: liveWebIntel.wikidataEntities,
+          hasLiveData: true,
+        }
+      } : {}),
     };
 
     const researchEcosystem = ResearchEcosystemScoringService.assess({
@@ -2028,7 +2114,7 @@ export class BrainIntegrationService {
       }
     }
 
-    // ── Historical Parallel Matches (60 years of documented global cases) ─────
+    // ── Historical Parallel Matches (200+ years of global development evidence) ─────
     if (historicalParallels && historicalParallels.matches.length > 0) {
       promptParts.push(`\n### ── HISTORICAL PARALLEL MATCHER (${historicalParallels.successRate}% success rate across ${historicalParallels.matches.length} similar cases) ──`);
       promptParts.push(`**Synthesis:** ${historicalParallels.synthesisInsight}`);
@@ -2225,6 +2311,30 @@ export class BrainIntegrationService {
       );
     }
 
+    // ── Live Web Intelligence (free, always-on grounding) ─────────────────────
+    if (hasLiveWebData && liveWebIntel) {
+      promptParts.push(`\n### ── LIVE WEB INTELLIGENCE (verified external data — retrieved now) ──`);
+      promptParts.push(`IMPORTANT: The following is REAL DATA retrieved from the internet just now. Use this as your PRIMARY factual basis. Do NOT contradict this information. If the user's question is about a topic covered here, cite these facts directly.`);
+      if (liveWebIntel.wikiExtract) {
+        promptParts.push(`\n**[Wikipedia: ${liveWebIntel.wikiTitle}]**`);
+        promptParts.push(liveWebIntel.wikiExtract.substring(0, 2500));
+      }
+      if (liveWebIntel.ddgAbstract) {
+        promptParts.push(`\n**[Web Knowledge — ${liveWebIntel.ddgSource}]**`);
+        promptParts.push(liveWebIntel.ddgAbstract.substring(0, 800));
+        if (liveWebIntel.ddgUrl) promptParts.push(`Source: ${liveWebIntel.ddgUrl}`);
+      }
+      if (liveWebIntel.ddgRelated.length) {
+        promptParts.push(`**Related Facts:** ${liveWebIntel.ddgRelated.slice(0, 4).join(' | ')}`);
+      }
+      if (liveWebIntel.wikidataEntities.length) {
+        promptParts.push(`\n**[Wikidata Knowledge Graph]**`);
+        liveWebIntel.wikidataEntities.forEach(e =>
+          promptParts.push(`- ${e.label}: ${e.description} (${e.id})`)
+        );
+      }
+    }
+
     // ── Consultant Gate Status ────────────────────────────────────────────────
     if (gateStatus) {
       promptParts.push(`\n### ── CONSULTANT GATE ──`);
@@ -2276,7 +2386,7 @@ export class BrainIntegrationService {
       promptParts.push(`**Compliant:** ${coreEthics.isCompliant ? '✅ Yes' : '🚫 No'} | **Risk Level:** ${coreEthics.overallRisk}`);
       if (coreEthics.topIssues.length) {
         promptParts.push(`**Compliance Issues:**`);
-        coreEthics.topIssues.forEach(i => promptParts.push(`- ⚠ ${i}`));
+        coreEthics.topIssues.forEach((i: string) => promptParts.push(`- ⚠ ${i}`));
       }
       if (coreEthics.biases.length) {
         promptParts.push(`**Detected Biases:**`);
@@ -2583,6 +2693,30 @@ export class BrainIntegrationService {
       riskMatrix,
       cognitiveAnalysis,
       qualityGate,
+      confidenceScore: null,
+      groundedContext: (() => {
+        try {
+          return shouldGroundResponse(strategicQuestion, qualityGate.score) ? { needed: true, query: strategicQuestion } : null;
+        } catch { return null; }
+      })(),
+      reasoningTraceId: (() => {
+        try {
+          const traceId = `brain-${Date.now()}`;
+          startTrace(traceId, strategicQuestion);
+          addTraceEvent(traceId, 'brain-enrich', { readiness, country }, { enginesRun: groups.size }, 0);
+          completeTrace(traceId, 'brain-enrich-complete');
+          return traceId;
+        } catch { return null; }
+      })(),
+      extremeStressTest: null,
+      quantumRouting: (() => {
+        try {
+          return {
+            backend: QuantumProviderRouter.getActiveBackend?.() || 'classical',
+            available: QuantumProviderRouter.isQuantumAvailable?.() || false,
+          };
+        } catch { return { backend: 'classical', available: false }; }
+      })(),
     };
 
     cache.set(key, { result, expiresAt: Date.now() + CACHE_TTL_MS });

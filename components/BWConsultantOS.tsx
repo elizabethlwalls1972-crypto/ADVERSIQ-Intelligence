@@ -80,6 +80,13 @@ import { persistentVectorStore } from '../services/PersistentVectorStore';
 import { securityService } from '../services/SecurityHardeningService';
 import { gradientRankingEngine } from '../services/algorithms/GradientRankingEngine';
 import { FailureModeGovernanceService } from '../services/FailureModeGovernanceService';
+import { dedupedRequest as _dedupedRequest } from '../services/requestDedup';
+import { checkInputSafety, checkOutputSafety } from '../services/SafetyGuardrailsPipeline';
+import { callWithStructuredOutput as _callWithStructuredOutput } from '../services/StructuredOutputPipeline';
+import { ReportsService as _ReportsService } from '../services/ReportsService';
+import { collectExample } from '../services/FineTuningDataCollector';
+import { DocumentIntegrityService as _DocumentIntegrityService } from '../services/DocumentIntegrityService';
+import { AgentWorkflowEngine as _AgentWorkflowEngine } from '../services/agent';
 import type { ReportParameters } from '../types';
 import type { RequestEnvelope } from '../shared/cognitiveControl';
 
@@ -4318,6 +4325,15 @@ ${agentRegistry.current.toManifest()}`;
     }
 
     let userContent = securityCheck.sanitizedInput || inputValue.trim();
+
+    // ── Safety guardrails: additional AI-safety pipeline check ─────────────
+    try {
+      const safetyResult = checkInputSafety(userContent);
+      if (safetyResult && !safetyResult.passed) {
+        console.warn('[SafetyGuardrails] Input flagged:', safetyResult.threatClass, safetyResult.details);
+      }
+    } catch { /* safety check is non-critical */ }
+
     const inputSignal = classifyConsultantInput(userContent);
     const extractedSignals = extractConsultantSignals(userContent);
 
@@ -5524,6 +5540,27 @@ CRITICAL RULES:
           outcome: { response: responseContent.substring(0, 300) },
           confidence: Math.max(0.1, liveReadiness / 100),
         }).catch(() => {/* non-fatal */});
+
+        // ── Safety guardrails: check output before delivery ─────────────────
+        try {
+          const outputSafety = checkOutputSafety(responseContent);
+          if (outputSafety && !outputSafety.passed) {
+            console.warn('[SafetyGuardrails] Output flagged:', outputSafety.issues);
+          }
+        } catch { /* output safety is non-critical */ }
+
+        // ── Fine-tuning data collection ─────────────────────────────────────
+        try {
+          collectExample({
+            input: { messages: [{ role: 'user', content: trimmedUserContent }] },
+            output: responseContent,
+            metadata: {
+              country: caseDraft.country,
+              readiness: liveReadiness,
+              phase: currentPhase,
+            } as Record<string, unknown>,
+          });
+        } catch { /* fine-tuning collection is non-critical */ }
       }
 
       // ── TOOL CALL EXECUTION LOOP ─────────────────────────────────────────────
