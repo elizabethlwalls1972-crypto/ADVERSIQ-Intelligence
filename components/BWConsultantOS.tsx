@@ -1531,7 +1531,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       {
         id: crypto.randomUUID(),
         role: 'system',
-        content: `New topic detected. NSIL analysis engines are recalibrating for this new line of inquiry.${topicHistoryNote} Core intelligence and session learnings have been preserved.`,
+        content: `New topic detected.${topicHistoryNote} Continue answering the user's question directly — do not restart the conversation or produce unrelated analysis.`,
         timestamp: new Date(),
         phase: 'discovery'
       }
@@ -3389,31 +3389,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
     const policyPack = resolvePolicyPack(caseStudy);
     const caseReadiness = computeReadiness(caseStudy);
-    return `You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification system. You are NOT a chatbot or report writer. You operate a 10-layer adversarial verification pipeline.
+    return `You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification and intelligence system.
 
-For substantive queries, structure your response as:
-
-**SITUATION ASSESSMENT**
-Brief synthesis of the user's situation and what the system has identified.
-
-**VERIFICATION STATUS**
-- Layers activated: [relevant pipeline layers]
-- Confidence: [Low / Moderate / High / Verified]
-- Contradictions detected: [Yes/No]
-
-**ANALYSIS**
-Core intelligence output — specific, data-anchored, decision-focused. Structure by dimension when multiple factors are in play.
-
-**RISK FLAGS**
-Bullet list with severity (Critical / High / Medium / Low).
-
-**RECOMMENDED ACTIONS**
-Numbered, specific, sequenced steps — who, what, when.
-
-**NEXT VERIFICATION STEP**
-One question or data point that would materially improve confidence.
-
-For simple questions or greetings, respond naturally without the full structure.
+ADAPTIVE RESPONSE FORMAT:
+- For SIMPLE questions (who is X? tell me about Y, what is Z?) — respond naturally in conversational expert prose. Do NOT use the structured format below. Just answer the question directly with real information.
+- For COMPLEX decisions, strategy, risk analysis, or multi-factor evaluations — use the structured format:
+  **SITUATION ASSESSMENT** → **VERIFICATION STATUS** → **ANALYSIS** → **RISK FLAGS** → **RECOMMENDED ACTIONS** → **NEXT VERIFICATION STEP**
+- Match your depth and format to the complexity of the question. A simple factual question deserves a direct, informative answer — not a full risk assessment pipeline.
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
@@ -3437,12 +3419,12 @@ Case enrichment mode:
 - Ask at most one concise follow-up only when it materially improves the current answer.
 
 Autonomous operating instructions:
-- First, answer the user's actual request directly using the structured intelligence format.
+- First, answer the user's actual request directly. Use the structured format ONLY for complex analytical queries — NOT for simple factual questions.
 - Second, infer and update useful case facts from the conversation context.
-- Third, if critical information is missing, include it as the Next Verification Step.
+- Third, if critical information is missing, include it as the Next Verification Step (only for complex queries).
 - Never force a rigid scripted questionnaire.
 - Never produce generic report or letter formats unless explicitly requested.
-- Default to structured verification intelligence output.
+- For simple questions, just answer them directly and naturally.
 
 Policy pack execution rules:
 - Respect regulatory tone: ${policyPack.regulatoryTone}
@@ -5182,17 +5164,19 @@ ${agentRegistry.current.toManifest()}`;
 
         // ── QUERY TYPE CLASSIFIER - determines engine routing + prompt framing ──
         // Runs on every turn regardless of readiness to ensure correct engine mix
+        const isContinuationQuery = /^(proceed|continue|go ahead|carry on|go on|yes|ok|do it|go for it|keep going|what did you find|what have you found|tell me what you found|show me|elaborate|expand on|more detail|go deeper)/i.test(trimmedUserContent)
+          || /\b(proceed with|continue with|what you (have |)said|what you found|you mentioned|as you said|from before|earlier)\b/i.test(trimmedUserContent);
         const isInfoQueryTurn = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)/i.test(trimmedUserContent)
           || /\b(who is|who was|what is|what are|tell me about|more about)\b.{3,}/i.test(trimmedUserContent)
           || /\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director|general|admiral|chief)\s+\w/i.test(trimmedUserContent);
         const isPersonQuery = /\b(mayor|governor|minister|president|senator|secretary|ambassador|ceo|director|general|admiral|chief|mr\.|ms\.|dr\.|hon\.)\s+\w/i.test(trimmedUserContent);
         const isLocationQuery = /\b(city|province|region|state|country|district|municipality|island|capital|town|village|prefecture|county|territory)\b/i.test(trimmedUserContent);
-        const isComplexAnalysis = /\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection)\b/i.test(trimmedUserContent);
+        const isComplexAnalysis = /\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection)\b/i.test(trimmedUserContent) && !isContinuationQuery;
         const isLetterRequest = /\b(write\s+a\s+letter|draft\s+a\s+letter|letter\s+to|write\s+to|reach\s+out\s+to|approach\s+them|formal\s+letter|letter\s+of\s+intent|LOI|introduce\s+(myself|us|our)|expression\s+of\s+interest|EOI|MOU|memorandum|proposal\s+letter|cover\s+letter|request\s+letter)\b/i.test(trimmedUserContent);
         const isCaseStudyRequest = /\b(case\s+study|case\s+report|full\s+report|write\s+up|write\s+a\s+report|build\s+(me\s+)?a?\s*case|do\s+a\s+case|prepare\s+a\s+(report|brief|dossier)|put\s+together|assess\s+this|give\s+me\s+a\s+breakdown|deep\s+dive|comprehensive\s+(review|analysis|report))\b/i.test(trimmedUserContent);
         const isComparisonRequest = /\b(compare|comparison|versus|vs\.?|which\s+is\s+better|difference\s+between|pros\s+and\s+cons|options|alternatives|weigh\s+up|side\s+by\s+side|benchmark|which\s+one|other\s+places|other\s+options|what\s+else|somewhere\s+else|another\s+country|elsewhere)\b/i.test(trimmedUserContent);
         const isHistoricalRequest = /\b(precedent|historical|history|who\s+else|where\s+else|done\s+before|success\s+story|similar\s+project|another\s+country\s+did|been\s+done|example\s+of|case\s+where|model\s+for|replicate|adapt\s+from|learn\s+from|what\s+worked)\b/i.test(trimmedUserContent);
-        const _isSimpleFollowUp = messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis;
+        const _isSimpleFollowUp = isContinuationQuery || (messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis);
 
         // ── LIVE SEARCH for factual queries - retrieval-grounded answers ──────────
         // Fires for info/person/location queries AND any substantive non-greeting
@@ -5263,16 +5247,41 @@ When advising ANY user on ANY market, country, or investment:
 
 You NEVER say "I need more context before answering" - you answer with what you know, then gather context.`;
 
-        const openingInstruction = isOpeningTurn
-          ? `You are ADVERSIQ — an autonomous decision verification system backed by the NSIL Agentic Runtime and 10-Layer Verification Pipeline.
+        // ── ADAPTIVE RESPONSE FORMAT ──────────────────────────────────────────
+        // Simple/informational queries get natural conversational responses.
+        // Complex analysis/strategy/risk queries get the structured format.
+        const needsStructuredFormat = isComplexAnalysis || isCaseStudyRequest || isComparisonRequest;
+        const isSimpleQuery = (isInfoQueryTurn || isPersonQuery || isLocationQuery || isContinuationQuery) && !needsStructuredFormat;
 
-CRITICAL RULES - READ BEFORE RESPONDING:
-- You are a verification system, NOT a chatbot. Every response must assess, verify, or challenge the decision under review.
+        const responseFormatInstruction = isSimpleQuery
+          ? `## RESPONSE FORMAT
+Respond naturally and directly — like a knowledgeable expert answering a question.
+Do NOT use the structured verification format (Situation Assessment / Verification Status / Risk Flags / etc.) for simple questions.
+Just answer the question with real, substantive information. Be thorough but conversational.
+If you have relevant data, share it. If you cannot verify something, say so clearly.
+After answering, you may ask ONE follow-up question if it would help the user.`
+          : needsStructuredFormat
+          ? `## RESPONSE FORMAT
+Use the structured verification format for this complex query:
+**SITUATION ASSESSMENT** → **VERIFICATION STATUS** → **ANALYSIS** → **RISK FLAGS** → **RECOMMENDED ACTIONS** → **NEXT VERIFICATION STEP**
+This is a substantive analytical query that benefits from structured intelligence output.`
+          : `## RESPONSE FORMAT
+Adapt your response format to the complexity of the query:
+- For simple factual questions, greetings, or informational lookups: respond naturally in conversational prose. Do NOT force the structured format.
+- For complex decisions, strategy, risk analysis, or multi-factor evaluations: use the structured format (Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions).
+- Match your depth to the question's complexity. A simple "who is X?" deserves a direct answer, not a risk assessment.`;
+
+        const openingInstruction = isOpeningTurn
+          ? `You are ADVERSIQ — an autonomous decision verification and intelligence system backed by the NSIL Agentic Runtime.
+
+CRITICAL RULES:
 - Do NOT say "I've captured the key elements of your input" - this phrase is BANNED.
 - Do NOT list numbered intake questions ("1) Name 2) Country 3) Decision") - that is scripted chatbot behaviour.
 - Do NOT invent case context that wasn't in the user's message.
 - Do NOT ask for context before answering - ANSWER FIRST, then optionally ask ONE follow-up.
-- Structure responses with: Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions.
+- Match your response format to the complexity of the question. Simple questions get direct answers. Complex decisions get structured analysis.
+
+${responseFormatInstruction}
 
 ${worldKnowledgeInstruction}
 
@@ -5287,7 +5296,9 @@ BEHAVIOUR:
 - Always attribute where your key facts came from at the end of substantive responses
 - Ask at most ONE follow-up - the single most valuable missing detail
 - Be concise, direct, and confident`
-          : `You are ADVERSIQ — autonomous decision verification mode. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. You are a verification system, NOT a chatbot. ALWAYS answer the user's question directly with verification-grade analysis FIRST. Structure outputs with situation assessment, verification status, risk flags, and recommended actions. Think beyond the obvious scope. Attribute your sources.
+          : `You are ADVERSIQ — autonomous intelligence and decision verification system. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. ALWAYS answer the user's question directly FIRST. Think beyond the obvious scope. Attribute your sources.
+
+${responseFormatInstruction}
 
 ${worldKnowledgeInstruction}
 

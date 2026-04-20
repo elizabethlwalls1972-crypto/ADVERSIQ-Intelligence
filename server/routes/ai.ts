@@ -144,50 +144,51 @@ const _getSystemInstructionForDomain = (domainMode?: DomainMode): string => {
 };
 
 const CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT = `
-You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification system.
-You are NOT a chatbot. You are NOT a report writer. You are a structured intelligence pipeline that verifies decisions.
+You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification and intelligence system.
 
 Core identity:
-- You operate a 10-layer adversarial verification pipeline.
-- Every response passes through reasoning engines, contradiction detection, and stress testing before reaching the user.
-- You produce verified intelligence outputs, not generic advice or letters.
+- You are a senior expert with deep knowledge across countries, markets, governance, and industries worldwide.
+- You have access to verification engines, contradiction detection, and stress testing capabilities.
+- You produce substantive, data-anchored intelligence — not generic advice.
 
-Response structure — use this format for substantive responses:
+ADAPTIVE RESPONSE FORMAT — THIS IS CRITICAL:
+
+For SIMPLE QUESTIONS (who is X? tell me about Y? what is Z? where is W?):
+- Respond naturally in expert conversational prose
+- Do NOT use the structured format below
+- Just answer the question directly with real, substantive information
+- Be thorough but natural — like a knowledgeable expert answering a colleague
+
+For COMPLEX DECISIONS (strategy, risk analysis, investment evaluation, multi-factor assessment):
+- Use this structured format:
 
 **SITUATION ASSESSMENT**
 Brief synthesis of what the user described and what the system has identified.
 
 **VERIFICATION STATUS**
-- Layers activated: [list which of the 10 layers are relevant]
+- Layers activated: [relevant layers]
 - Confidence: [Low / Moderate / High / Verified] with brief basis
 - Contradictions detected: [Yes/No — if yes, state them]
 
 **ANALYSIS**
 The core intelligence output. Be specific, data-anchored, and decision-focused.
-Structure by dimension when multiple factors are in play (market, regulatory, financial, risk, stakeholder).
 
 **RISK FLAGS**
 Bullet list of verified risks with severity (Critical / High / Medium / Low).
 
 **RECOMMENDED ACTIONS**
-Numbered, specific, sequenced steps the user should take — with who, what, and when.
+Numbered, specific, sequenced steps — who, what, and when.
 
 **NEXT VERIFICATION STEP**
-One question or data point that would materially improve confidence in this analysis.
+One question or data point that would materially improve confidence.
 
-Adaptive behavior:
-- For simple questions or greetings, respond naturally without the full structure.
-- For complex decisions, always use the structured format above.
+KEY RULE: Match your format to the question's complexity. "Tell me about Mayor X of City Y" is a simple question — answer it directly. "Should we invest in market X given regulatory risk Y?" is a complex decision — use the structured format.
+
+General behavior:
 - Be direct and client-facing. No filler. No vague claims.
 - When context is incomplete, state assumptions and flag confidence impact.
-- Adapt depth to complexity: quick answers stay concise, strategic decisions get full pipeline treatment.
 - Preserve professional tone suitable for executive and government stakeholders.
-
-Case intelligence capabilities:
-- Extract case signals from natural conversation (who, where, objective, decision, deadline, audience, constraints).
-- Build the verification profile progressively — never force rigid intake forms.
-- Cross-reference entities, jurisdictions, and market conditions against verification layers.
-- Score confidence numerically when sufficient data exists.
+- Extract case signals from natural conversation progressively — never force rigid intake forms.
 `;
 const CONSULTANT_SYSTEM_INSTRUCTION = CONSULTANT_SYSTEM_INSTRUCTION_DEFAULT;
 
@@ -198,6 +199,7 @@ const getConsultantInstructionForDomain = (domainMode?: DomainMode): string => {
 };
 
 type ConsultantIntent =
+  | 'simple_question'
   | 'report_build'
   | 'information_lookup'
   | 'strategy_advice'
@@ -211,6 +213,28 @@ type ConsultantIntent =
 
 const detectConsultantIntent = (message: string): ConsultantIntent => {
   const text = message.toLowerCase();
+
+  // Continuation/follow-up queries — respond naturally, continue the thread
+  if (/^(proceed|continue|go ahead|carry on|go on|yes|ok|do it|keep going|what did you find|what have you found|tell me what you found|show me|elaborate|expand on|more detail|go deeper)/i.test(text)) {
+    return 'simple_question';
+  }
+  if (/\b(proceed with|continue with|what you (have |)said|what you found|you mentioned|as you said)\b/.test(text)) {
+    return 'simple_question';
+  }
+
+  // Simple factual questions — respond naturally, NOT with structured format
+  if (/^(tell me about|tell me more about|who is|who was|what is|what are|where is|where are|when did|when was|how old|how many|how much|describe|explain)\s+/i.test(text)) {
+    // Unless it also contains complex analysis keywords
+    if (!/\b(strategy|investment|risk|analysis|evaluate|assess|compare|due diligence|feasibility|market entry)\b/.test(text)) {
+      return 'simple_question';
+    }
+  }
+  // Person/entity queries are simple questions
+  if (/\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director|mr\.|ms\.|dr\.|hon\.)\s+\w/i.test(text)) {
+    if (!/\b(strategy|investment|risk|analysis|evaluate|assess|compare|due diligence|feasibility)\b/.test(text)) {
+      return 'simple_question';
+    }
+  }
 
   if (/\breport\b|\bbrief\b|\bsubmission\b|\bdocument\b|\bdraft\b|\bsummary\b/.test(text)) {
     return 'report_build';
@@ -245,6 +269,8 @@ const detectConsultantIntent = (message: string): ConsultantIntent => {
 
 const buildIntentDirective = (intent: ConsultantIntent): string => {
   switch (intent) {
+    case 'simple_question':
+      return 'This is a simple factual question. Respond naturally and directly — do NOT use the structured verification format. Just answer the question with real, substantive information like a knowledgeable expert.';
     case 'report_build':
       return 'Focus on building report-ready structure: key points, evidence gaps, and immediate next inputs required.';
     case 'information_lookup':
@@ -935,7 +961,9 @@ const buildConsultantPrompt = (message: string, intent: ConsultantIntent, contex
     },
     {
       label: '',
-      content: `OUTPUT FORMAT:\n1) Use the structured intelligence format (Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions → Next Verification Step) for substantive queries.\n2) For simple questions, respond naturally without the full structure.\n3) Never produce generic report or letter formats unless explicitly requested — default to structured verification intelligence.\n4) Always include a confidence level and at least one risk flag when analyzing a decision.\n5) End with one verification question that would materially improve confidence.`,
+      content: intent === 'simple_question'
+        ? `OUTPUT FORMAT:\n1) This is a simple factual question — respond naturally in expert conversational prose.\n2) Do NOT use the structured verification format (Situation Assessment / Verification Status / Risk Flags / etc.).\n3) Just answer the question directly with real information. Be thorough but natural.\n4) If you cannot verify specific facts, say so clearly.\n5) You may ask ONE follow-up question if it would genuinely help the user.`
+        : `OUTPUT FORMAT:\n1) Use the structured intelligence format (Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions → Next Verification Step) for this substantive query.\n2) Always include a confidence level and at least one risk flag when analyzing a decision.\n3) End with one verification question that would materially improve confidence.\n4) Never produce generic report or letter formats unless explicitly requested.`,
       priority: 1,
       minTokens: 100,
     },
