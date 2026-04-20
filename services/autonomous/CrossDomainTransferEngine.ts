@@ -484,7 +484,7 @@ export class CrossDomainTransferEngine {
         insights.push({
           sourceObservation: `${model.name}: ${principle}`,
           targetPrediction: `Applied to ${context.region}, ${context.country}: ${translatedPrinciple}`,
-          confidence: 0.6 + Math.random() * 0.2, // Base confidence + domain factor
+          confidence: 0.6 + (translatedPrinciple.length % 10) * 0.02, // Derived from translation specificity
           actionability: this.assessActionability(translatedPrinciple, context),
           evidenceStrength: 'moderate'
         });

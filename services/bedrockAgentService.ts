@@ -29,6 +29,7 @@
  */
 
 import { generateWithTogether, TOGETHER_SYSTEM_PROMPT } from './togetherAIService';
+import { callAI } from './AIProviderOrchestrator';
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -63,20 +64,32 @@ export interface AgentInvokeOptions {
 
 /**
  * Invoke the Bedrock Supervisor Agent.
- * Falls back to Together.ai if agent credentials are not configured.
+ * Routes through the multi-provider AI orchestrator (Ollama → Gemma → Groq → Together → OpenAI → Anthropic).
  */
-// Stub: Always fallback to TogetherAI
 export async function invokeBedrockAgent(
   inputText: string,
   options: AgentInvokeOptions = {}
 ): Promise<string> {
-  return generateWithTogether(inputText, TOGETHER_SYSTEM_PROMPT, options.onToken);
+  try {
+    const result = await callAI({
+      messages: [
+        { role: 'system', content: TOGETHER_SYSTEM_PROMPT },
+        { role: 'user', content: inputText }
+      ],
+      taskType: 'general',
+      temperature: 0.4,
+    });
+    if (options.onToken) options.onToken(result.text);
+    return result.text;
+  } catch {
+    // Final fallback: direct Together.ai call
+    return generateWithTogether(inputText, TOGETHER_SYSTEM_PROMPT, options.onToken);
+  }
  }
 
 // ─── Typed action shortcuts ──────────────────────────────────────────────────
 
 /** Ask the agent to run the full autonomous pipeline for a case */
-// Stub: Always fallback to TogetherAI
 export async function runAutonomousPipeline(params: {
   organizationName: string;
   country: string;
@@ -86,17 +99,42 @@ export async function runAutonomousPipeline(params: {
   onToken?: (t: string) => void;
 }): Promise<string> {
   const prompt = `Run the full BW NEXUS autonomous pipeline for this case:\n\nOrganization: ${params.organizationName}\nCountry: ${params.country}\nSector: ${params.sector}\nObjectives: ${params.objectives}\n${params.documentTypes?.length ? `Priority Documents: ${params.documentTypes.join(', ')}` : ''}`;
-  return generateWithTogether(prompt, TOGETHER_SYSTEM_PROMPT, params.onToken);
+  try {
+    const result = await callAI({
+      messages: [
+        { role: 'system', content: TOGETHER_SYSTEM_PROMPT },
+        { role: 'user', content: prompt }
+      ],
+      taskType: 'long-generation',
+      temperature: 0.4,
+    });
+    if (params.onToken) params.onToken(result.text);
+    return result.text;
+  } catch {
+    return generateWithTogether(prompt, TOGETHER_SYSTEM_PROMPT, params.onToken);
+  }
 }
 
 /** Quick single-question chat via the agent */
-// Stub: Always fallback to TogetherAI
 export async function agentChat(
   message: string,
-  sessionId: string,
+  _sessionId: string,
   onToken?: (t: string) => void
 ): Promise<string> {
-  return generateWithTogether(message, TOGETHER_SYSTEM_PROMPT, onToken);
+  try {
+    const result = await callAI({
+      messages: [
+        { role: 'system', content: TOGETHER_SYSTEM_PROMPT },
+        { role: 'user', content: message }
+      ],
+      taskType: 'quick-analysis',
+      temperature: 0.5,
+    });
+    if (onToken) onToken(result.text);
+    return result.text;
+  } catch {
+    return generateWithTogether(message, TOGETHER_SYSTEM_PROMPT, onToken);
+  }
 }
 
 export default {

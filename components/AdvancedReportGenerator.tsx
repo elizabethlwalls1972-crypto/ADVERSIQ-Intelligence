@@ -65,14 +65,18 @@ const AdvancedReportGenerator: React.FC<AdvancedReportGeneratorProps> = ({
     setCurrentStep(generationSteps[0]);
 
     try {
-      // Simulate progress updates
+      // Show initial progress while assembling report
+      setCurrentStep(generationSteps[0]);
+      setGenerationProgress(10);
+
+      const payload = await ReportOrchestrator.assembleReportPayload(params);
+
+      // Mark remaining steps complete after real work finishes
       for (let i = 0; i < generationSteps.length; i++) {
         setCurrentStep(generationSteps[i]);
         setGenerationProgress(((i + 1) / generationSteps.length) * 100);
-        await new Promise(resolve => setTimeout(resolve, 800));
       }
 
-      const payload = await ReportOrchestrator.assembleReportPayload(params);
       setReportPayload(payload);
       GovernanceService.recordProvenance({
         reportId: params.id,

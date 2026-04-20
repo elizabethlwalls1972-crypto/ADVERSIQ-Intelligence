@@ -155,9 +155,6 @@ const AlternativeLocationMatcher: React.FC<AlternativeLocationMatcherProps> = ({
     setIsSearching(true);
 
     try {
-      // Simulate search time
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
       const candidates = Object.values(GLOBAL_CITY_DATABASE)
         .filter(city => city.city !== originalLocation?.city)
         .map(city => ({
