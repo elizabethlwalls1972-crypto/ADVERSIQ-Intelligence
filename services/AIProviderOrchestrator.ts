@@ -67,8 +67,8 @@ function getProviderConfigs(): ProviderConfig[] {
   // Availability is checked async; we always register it but callProvider
   // will verify reachability before use.
   const ollamaModel = typeof process !== 'undefined'
-    ? (process.env?.OLLAMA_MODEL || 'llama3.1:8b')
-    : 'llama3.1:8b';
+    ? (process.env?.OLLAMA_MODEL || 'llama3.2:3b')
+    : 'llama3.2:3b';
   configs.push({
     name: 'ollama',
     apiUrl: typeof process !== 'undefined'

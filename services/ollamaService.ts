@@ -29,8 +29,8 @@ const OLLAMA_BASE_URL = typeof process !== 'undefined'
   : 'http://localhost:11434';
 
 const OLLAMA_DEFAULT_MODEL = typeof process !== 'undefined'
-  ? (process.env?.OLLAMA_MODEL || 'llama3.1:8b')
-  : 'llama3.1:8b';
+  ? (process.env?.OLLAMA_MODEL || 'llama3.2:3b')
+  : 'llama3.2:3b';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
