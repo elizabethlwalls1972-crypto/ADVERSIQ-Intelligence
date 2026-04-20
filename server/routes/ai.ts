@@ -35,6 +35,89 @@ import { validateBody, aiValidation } from '../middleware/validate.js';
 import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
 import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 
+// ─── Live Intelligence: free web data for grounding AI responses ───────────
+interface LiveIntelligenceResult {
+  ddgSnippet: string;
+  wikiExtract: string;
+  wikidataDesc: string;
+  sources: string[];
+}
+
+async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceResult> {
+  const result: LiveIntelligenceResult = { ddgSnippet: '', wikiExtract: '', wikidataDesc: '', sources: [] };
+  const searchQuery = query.slice(0, 300);
+
+  const [ddg, wiki, wikidata] = await Promise.allSettled([
+    // DuckDuckGo Instant Answers — free, no key
+    (async () => {
+      const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery)}&format=json&no_redirect=1&no_html=1`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const abstract = data?.AbstractText || '';
+      const related = (data?.RelatedTopics || [])
+        .slice(0, 5)
+        .map((t: Record<string, string>) => t?.Text || '')
+        .filter(Boolean)
+        .join(' | ');
+      return { abstract, related, source: data?.AbstractSource || 'DuckDuckGo', url: data?.AbstractURL || '' };
+    })(),
+    // Wikipedia extract — free, no key
+    (async () => {
+      const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=1`;
+      const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
+      if (!sRes.ok) return null;
+      const sData = await sRes.json();
+      const title = sData?.query?.search?.[0]?.title;
+      if (!title) return null;
+      const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&exintro=false&exchars=3000&format=json&origin=*`;
+      const cRes = await fetch(contentUrl, { signal: AbortSignal.timeout(6000) });
+      if (!cRes.ok) return null;
+      const cData = await cRes.json();
+      const pages = cData?.query?.pages || {};
+      const page = Object.values(pages)[0] as Record<string, string> | undefined;
+      return { extract: page?.extract || '', title };
+    })(),
+    // Wikidata structured knowledge — free, no key
+    (async () => {
+      const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(searchQuery)}&language=en&limit=1&format=json&origin=*`;
+      const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
+      if (!sRes.ok) return null;
+      const sData = await sRes.json();
+      const entity = sData?.search?.[0];
+      if (!entity) return null;
+      return { id: entity.id, label: entity.label || '', description: entity.description || '' };
+    })(),
+  ]);
+
+  if (ddg.status === 'fulfilled' && ddg.value) {
+    const d = ddg.value;
+    if (d.abstract) { result.ddgSnippet = d.abstract; result.sources.push(d.source + (d.url ? ` (${d.url})` : '')); }
+    if (d.related) result.ddgSnippet += '\nRelated: ' + d.related;
+  }
+  if (wiki.status === 'fulfilled' && wiki.value?.extract) {
+    result.wikiExtract = wiki.value.extract;
+    result.sources.push(`Wikipedia: ${wiki.value.title}`);
+  }
+  if (wikidata.status === 'fulfilled' && wikidata.value) {
+    result.wikidataDesc = `${wikidata.value.label}: ${wikidata.value.description} (${wikidata.value.id})`;
+    result.sources.push(`Wikidata: ${wikidata.value.id}`);
+  }
+
+  return result;
+}
+
+function formatLiveIntelligence(live: LiveIntelligenceResult): string {
+  if (!live.ddgSnippet && !live.wikiExtract && !live.wikidataDesc) return '';
+  const parts: string[] = [];
+  parts.push('The following is VERIFIED LIVE DATA retrieved from external sources just now. Use this as your primary factual basis. Do NOT contradict this data. If the user asks about something covered here, reference this information directly.');
+  if (live.wikiExtract) parts.push(`[Wikipedia]\n${live.wikiExtract}`);
+  if (live.ddgSnippet) parts.push(`[Web Search]\n${live.ddgSnippet}`);
+  if (live.wikidataDesc) parts.push(`[Wikidata]\n${live.wikidataDesc}`);
+  if (live.sources.length) parts.push(`Sources: ${live.sources.join('; ')}`);
+  return parts.join('\n\n');
+}
+
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -939,7 +1022,7 @@ const buildWithTokenBudget = (sections: PromptSection[], maxTokens: number): str
 
 const MAX_PROMPT_TOKENS = 16000; // Groq 128K context supports much more
 
-const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string) => {
+const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string, liveIntelligence?: string) => {
   const capProfile = deriveConsultantCapabilityProfile(message, context).brief;
   const overlooked = JSON.stringify(buildOverlookedIntelligenceSnapshot(message, context));
   const pipeline = JSON.stringify(runStrategicIntelligencePipeline(message, context));
@@ -979,6 +1062,12 @@ const buildConsultantPrompt = (message: string, intent: ConsultantIntent, contex
       content: nsilSummary || '',
       priority: 2,
       minTokens: 100,
+    },
+    {
+      label: '═══ LIVE INTELLIGENCE (real-time web data) ═══',
+      content: liveIntelligence || '',
+      priority: 2,
+      minTokens: 200,
     },
     {
       label: '',
@@ -1765,11 +1854,12 @@ router.post('/consultant', async (req: Request, res: Response) => {
 
     let brainContext: BrainContext | null = null;
     let nsilReport: Record<string, unknown> | null = null;
+    let liveIntel: LiveIntelligenceResult | null = null;
 
     const BRAIN_TIMEOUT_MS = 12000;
 
     try {
-      const [brainResult, nsilResult] = await Promise.allSettled([
+      const [brainResult, nsilResult, liveResult] = await Promise.allSettled([
         Promise.race([
           BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
@@ -1778,13 +1868,19 @@ router.post('/consultant', async (req: Request, res: Response) => {
           NSILIntelligenceHub.runFullAnalysis(reportParams),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
         ]),
+        Promise.race([
+          fetchLiveIntelligence(sanitizedMessage),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), 8000)),
+        ]),
       ]);
       if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
       else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
       if (nsilResult.status === 'fulfilled') nsilReport = nsilResult.value as unknown as Record<string, unknown>;
       else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
+      if (liveResult.status === 'fulfilled') liveIntel = liveResult.value;
+      else console.warn('[Consultant] Live intelligence did not complete:', liveResult.reason?.message);
     } catch (brainErr) {
-      console.warn('[Consultant] Brain/NSIL parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
+      console.warn('[Consultant] Brain/NSIL/Live parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
     }
     // ═══ END BRAIN + NSIL WIRING ════════════════════════════════════════════
 
@@ -1866,7 +1962,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
       sanitizedContextResult.context,
       systemPrompt,
       brainContext?.promptBlock ?? undefined,
-      nsilReport ? summariseNSILReport(nsilReport) : undefined
+      nsilReport ? summariseNSILReport(nsilReport) : undefined,
+      liveIntel ? formatLiveIntelligence(liveIntel) : undefined
     );
     let brokerResult: { text: string; provider: ConsultantProvider | 'local-intelligence'; attempts: ConsultantProviderAttempt[] };
     try {
@@ -2097,6 +2194,10 @@ router.post('/consultant', async (req: Request, res: Response) => {
         componentsRun: (nsilReport as Record<string, unknown>).componentsRun,
         reflexive: (nsilReport as Record<string, unknown>).reflexive ?? null,
         autonomous: (nsilReport as Record<string, unknown>).autonomous ?? null,
+      } : null,
+      liveIntelligence: liveIntel ? {
+        sources: liveIntel.sources,
+        hasData: Boolean(liveIntel.ddgSnippet || liveIntel.wikiExtract || liveIntel.wikidataDesc),
       } : null,
       control: controlDecision,
       learningHint,
