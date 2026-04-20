@@ -36,10 +36,12 @@ async function build() {
         'zlib', 'util', 'os', 'events', 'buffer', 'querystring',
         'child_process', 'cluster', 'dgram', 'dns', 'net', 'readline',
         'tls', 'tty', 'v8', 'vm', 'worker_threads', 'fs/promises',
-        // Dependencies that should not be bundled
+        // Dependencies that should not be bundled (available in node_modules at runtime)
         'express', 'cors', 'helmet', 'compression', 'dotenv', 'pg',
+        'express-rate-limit',
         '@google/generative-ai', 'jsonwebtoken', 'axios',
-        '@aws-sdk/client-bedrock-runtime', 'serverless-http'
+        '@aws-sdk/client-bedrock-runtime', 'serverless-http',
+        'uuid',
       ],
       sourcemap: true,
       minify: false, // Keep readable for debugging

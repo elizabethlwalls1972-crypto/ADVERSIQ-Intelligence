@@ -3,13 +3,17 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Increase Node memory for Vite build (Railway containers can be tight)
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+
 # Install dependencies
 COPY package*.json ./
 RUN npm ci --silent
 
 # Copy source and build frontend + server bundle
 COPY . .
-RUN npm run build && npm run build:server
+# build:all = build:client (Vite) + build:server (esbuild) — single pass
+RUN npm run build:all
 
 ### Runtime image
 FROM node:20-alpine AS runtime
@@ -23,13 +27,10 @@ RUN npm ci --omit=dev --silent
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/dist-server ./dist-server
 
-EXPOSE 3000
-
+# Railway injects PORT at runtime — don't hardcode it
 ENV NODE_ENV=production
-ENV PORT=3000
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -qO- http://localhost:3000/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=5 \
+  CMD wget -qO- http://localhost:${PORT:-3000}/api/health || exit 1
 
-# Direct start — env injection happens at orchestrator level (Docker, ECS, K8s)
 CMD ["node", "dist-server/server/index.js"]

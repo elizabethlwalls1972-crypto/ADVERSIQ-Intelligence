@@ -69,7 +69,7 @@ import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
 
 const app = express();
-const PORT = parseInt(String(process.env.PORT || 3001), 10);
+const PORT = parseInt(String(process.env.PORT || 3000), 10);
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Trust Railway's reverse proxy so that X-Forwarded-For is used for client IP
