@@ -60,13 +60,15 @@ const opencorporatesLimiter = new RateLimiter(5, 60_000);
 const marineLimiter = new RateLimiter(2, 60_000);
 
 export function isExternalDataEnabled(): boolean {
+  // Default to TRUE — free APIs (World Bank, GLEIF, REST Countries, Wikipedia, etc.)
+  // should always be active. Only disable explicitly with VITE_ENABLE_EXTERNAL_DATA=false.
   try {
-    if (import.meta.env.VITE_ENABLE_EXTERNAL_DATA === 'true') return true;
+    if (import.meta.env.VITE_ENABLE_EXTERNAL_DATA === 'false') return false;
   } catch {
     // ignore
   }
-  if (typeof process !== 'undefined' && process.env?.ENABLE_EXTERNAL_DATA === 'true') return true;
-  return false;
+  if (typeof process !== 'undefined' && process.env?.ENABLE_EXTERNAL_DATA === 'false') return false;
+  return true;
 }
 
 export async function fetchWorldBankCountryIndicators(countryCode: string): Promise<WorldBankIndicators | null> {

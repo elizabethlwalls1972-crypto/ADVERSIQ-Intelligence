@@ -7,8 +7,10 @@
  * Spreads token usage, picks the best provider for each task type,
  * implements retry-with-fallback, and tracks usage to avoid rate limits.
  *
- * Providers: Groq → Together → OpenAI → Anthropic
+ * Providers: Ollama (local) → Gemma → Groq → Together → OpenAI → Anthropic
  * Each provider has different strengths:
+ *   - Ollama:     Local inference, zero cost, full privacy (requires Ollama installed)
+ *   - Gemma:      Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
  *   - Groq:      Ultra-fast inference, great for quick analytical queries
  *   - Together:   Good for long-form generation, large context
  *   - OpenAI:     Best reasoning, function calling, nuanced analysis
@@ -16,7 +18,10 @@
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
-export type AIProvider = 'groq' | 'together' | 'openai' | 'anthropic';
+import { callOllama, checkOllamaAvailable, type OllamaMessage } from './ollamaService';
+import { callGemma, isGemmaAvailable, type GemmaMessage } from '../gemmaService';
+
+export type AIProvider = 'ollama' | 'gemma' | 'groq' | 'together' | 'openai' | 'anthropic';
 
 export type TaskType =
   | 'quick-analysis'    // Short analytical response — Groq preferred
@@ -57,6 +62,41 @@ const WINDOW_MS = 60_000; // 1 minute sliding window
 
 function getProviderConfigs(): ProviderConfig[] {
   const configs: ProviderConfig[] = [];
+
+  // Ollama — local, free, no API key needed (highest priority)
+  // Availability is checked async; we always register it but callProvider
+  // will verify reachability before use.
+  const ollamaModel = typeof process !== 'undefined'
+    ? (process.env?.OLLAMA_MODEL || 'llama3.1:8b')
+    : 'llama3.1:8b';
+  configs.push({
+    name: 'ollama',
+    apiUrl: typeof process !== 'undefined'
+      ? (process.env?.OLLAMA_BASE_URL || 'http://localhost:11434')
+      : 'http://localhost:11434',
+    getKey: () => 'local',
+    model: ollamaModel,
+    maxOutputTokens: 8192,
+    requestsPerMinute: 999,
+    tokensPerMinute: 999999,
+    strengths: ['quick-analysis', 'general', 'research', 'long-generation', 'deep-reasoning', 'consensus'],
+    costWeight: 0,
+  });
+
+  // Gemma — free Google AI key (second priority)
+  if (isGemmaAvailable()) {
+    configs.push({
+      name: 'gemma',
+      apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
+      getKey: () => 'managed-by-gemma-service',
+      model: 'gemma-4-26b-a4b-it',
+      maxOutputTokens: 8192,
+      requestsPerMinute: 60,
+      tokensPerMinute: 100000,
+      strengths: ['deep-reasoning', 'long-generation', 'general', 'research', 'consensus'],
+      costWeight: 0,
+    });
+  }
 
   const groqKey = String(process.env.GROQ_API_KEY || '').trim();
   if (groqKey && groqKey.length > 20 && !groqKey.toLowerCase().includes('your-')) {
@@ -242,6 +282,53 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
   const maxTokens = options.maxTokens || config.maxOutputTokens;
   const temperature = options.temperature ?? 0.4;
 
+  // ── Ollama (local) ──
+  if (config.name === 'ollama') {
+    // Check availability first — if Ollama isn't running, fail fast so orchestrator falls through
+    const available = await checkOllamaAvailable();
+    if (!available) {
+      throw new Error('Ollama is not running locally');
+    }
+
+    const ollamaMsgs: OllamaMessage[] = options.messages.map(m => ({
+      role: m.role as 'system' | 'user' | 'assistant',
+      content: m.content,
+    }));
+
+    const text = await callOllama(ollamaMsgs, {
+      model: config.model,
+      maxTokens,
+      temperature,
+    });
+
+    return {
+      text,
+      provider: 'ollama',
+      tokensUsed: 0, // Ollama tracks internally
+      latencyMs: Date.now() - start,
+    };
+  }
+
+  // ── Gemma (Google AI — free key) ──
+  if (config.name === 'gemma') {
+    const gemmaMsgs: GemmaMessage[] = options.messages.map(m => ({
+      role: m.role as 'system' | 'user' | 'assistant',
+      content: m.content,
+    }));
+
+    const text = await callGemma(gemmaMsgs, {
+      maxTokens,
+      temperature,
+    });
+
+    return {
+      text,
+      provider: 'gemma',
+      tokensUsed: 0,
+      latencyMs: Date.now() - start,
+    };
+  }
+
   if (config.name === 'anthropic') {
     // Anthropic API — supports extended thinking mode
     const systemContent = options.messages.find(m => m.role === 'system')?.content || options.systemPrompt || '';
@@ -355,7 +442,7 @@ export async function callAI(options: AICallOptions): Promise<AICallResult> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     const provider = selectProvider(taskType, excludeProviders);
     if (!provider) {
-      throw new Error('No AI providers available. Configure at least one of: GROQ_API_KEY, TOGETHER_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY');
+      throw new Error('No AI providers available. Install Ollama (https://ollama.com) for free local AI, or configure: GOOGLE_AI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY');
     }
 
     try {
