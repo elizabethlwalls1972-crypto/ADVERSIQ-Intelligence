@@ -72,6 +72,11 @@ const app = express();
 const PORT = parseInt(String(process.env.PORT || 3001), 10);
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Trust Railway's reverse proxy so that X-Forwarded-For is used for client IP
+// resolution. This must be set before any rate-limiting or IP-dependent
+// middleware to avoid express-rate-limit ValidationErrors on proxied requests.
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
