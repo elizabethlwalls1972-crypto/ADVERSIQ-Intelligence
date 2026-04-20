@@ -3780,4 +3780,33 @@ router.post('/embedding/index', requireApiKey, async (req: Request, res: Respons
   }
 });
 
+// ─── Matchmaking Marketplace Engine ─────────────────────────────────────────
+router.post('/matchmaking/match', requireApiKey, async (req: Request, res: Response) => {
+  try {
+    const { companies, industry, headcount, budget } = req.body;
+    const { MatchmakingEngine } = await import('../../services/MatchmakingEngine.js');
+    if (companies?.length) {
+      const results = MatchmakingEngine.match(companies);
+      res.json(results);
+    } else if (industry) {
+      const results = MatchmakingEngine.matchIndustry(industry, headcount || 100, budget || 1000000);
+      res.json({ matches: results, count: results.length });
+    } else {
+      return res.status(400).json({ error: 'Provide companies array or industry string' });
+    }
+  } catch {
+    res.status(500).json({ error: 'Matchmaking failed' });
+  }
+});
+
+// ─── Backend Architecture Reference ────────────────────────────────────────
+router.get('/system/architecture', requireApiKey, async (_req: Request, res: Response) => {
+  try {
+    const { BACKEND_ARCHITECTURE, IMMEDIATE_ACTION_ITEMS } = await import('../../services/backendArchitecture.js');
+    res.json({ architecture: BACKEND_ARCHITECTURE, actionItems: IMMEDIATE_ACTION_ITEMS });
+  } catch {
+    res.status(500).json({ error: 'Architecture retrieval failed' });
+  }
+});
+
 export default router;

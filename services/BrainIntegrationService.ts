@@ -102,6 +102,7 @@ import { shouldGroundResponse } from './GroundedRetrievalPipeline';
 import { startTrace, addTraceEvent, completeTrace } from './ReasoningTraceRecorder';
 import { QuantumProviderRouter } from './quantum/QuantumProviderRouter';
 import { ExtremeStressTestFramework as _ExtremeStressTestFramework } from './ExtremeStressTestFramework';
+import { BACKEND_ARCHITECTURE as _BACKEND_ARCHITECTURE } from './backendArchitecture';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
