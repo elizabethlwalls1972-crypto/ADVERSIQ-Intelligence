@@ -39,7 +39,11 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join as pathJoin } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export class BwNexusBedrockStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

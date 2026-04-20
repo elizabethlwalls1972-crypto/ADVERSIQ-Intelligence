@@ -191,7 +191,7 @@ async function deepWikipediaExtract(locationQuery: string): Promise<WikipediaExt
     const coords = page.coordinates?.[0] || null;
 
     return {
-      title: page.title,
+      title: page.title || '',
       fullExtract,
       summary: sections['Overview'] || fullExtract.substring(0, 1500),
       infobox: {}, // Would need HTML parsing for infobox
@@ -1098,7 +1098,7 @@ export async function deepLocationResearch(
         exportVolume: 'See trade statistics',
         majorIndustries: allIndustries.length > 0 ? allIndustries : ['See economic surveys'],
         topExports: allIndustries.length > 0 ? allIndustries.slice(0, 3) : ['See trade data'],
-        tradePartners: countryInfo?.borders?.length > 0 
+        tradePartners: countryInfo?.borders?.length && countryInfo.borders.length > 0
           ? countryInfo.borders.map((b: string) => b)
           : ['Regional partners']
       },

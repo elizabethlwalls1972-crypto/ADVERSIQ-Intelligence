@@ -1747,10 +1747,10 @@ export class BrainIntegrationService {
         consensusRecommendation: panel.consensus || 'Proceed with caution',
         agreementLevel: panel.agreementLevel ?? 60,
         topRisks: [
-          ...(panel.insights?.filter(i => i.stance === 'oppose').flatMap(i => i.points?.slice(0, 2) ?? []) ?? []),
+          ...(panel.insights?.filter(i => i.stance === 'oppose').flatMap(i => i.riskCallouts?.slice(0, 2) ?? []) ?? []),
           ...(shield.checks?.filter(c => c.severity === 'critical').map(c => c.challengePrompt) ?? []),
         ].slice(0, 4),
-        topOpportunities: panel.insights?.filter(i => i.stance === 'support').flatMap(i => i.points?.slice(0, 2) ?? []).slice(0, 3) ?? [],
+        topOpportunities: panel.insights?.filter(i => i.stance === 'support').flatMap(i => i.evidence?.slice(0, 2) ?? []).slice(0, 3) ?? [],
         contradictionIndex: shield.contradictionIndex ?? 0,
         escalations: shield.escalations ?? [],
       };
@@ -1926,16 +1926,16 @@ export class BrainIntegrationService {
     // ── NSIL Assessment ───────────────────────────────────────────────────────
     if (nsilAssessment) {
       promptParts.push(`\n### ── NSIL NATIONAL STRATEGIC INTELLIGENCE ──`);
-      if (nsilAssessment.overallScore !== undefined) {
-        promptParts.push(`**NSIL Score:** ${nsilAssessment.overallScore}/100 | **Risk Level:** ${nsilAssessment.riskLevel || 'medium'}`);
+      if (nsilAssessment.trustScore !== undefined) {
+        promptParts.push(`**NSIL Score:** ${nsilAssessment.trustScore}/100 | **Status:** ${nsilAssessment.status || 'yellow'}`);
       }
-      if (nsilAssessment.strategicOpportunities?.length) {
+      if (nsilAssessment.topOpportunities?.length) {
         promptParts.push(`**Strategic Opportunities:**`);
-        (nsilAssessment.strategicOpportunities as string[]).slice(0, 3).forEach((o: string) => promptParts.push(`- ${o}`));
+        nsilAssessment.topOpportunities.slice(0, 3).forEach((o: string) => promptParts.push(`- ${o}`));
       }
-      if (nsilAssessment.criticalRisks?.length) {
+      if (nsilAssessment.topConcerns?.length) {
         promptParts.push(`**Critical Risks:**`);
-        (nsilAssessment.criticalRisks as string[]).slice(0, 3).forEach((r: string) => promptParts.push(`- ⚠ ${r}`));
+        nsilAssessment.topConcerns.slice(0, 3).forEach((r: string) => promptParts.push(`- ⚠ ${r}`));
       }
     }
 

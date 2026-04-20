@@ -270,9 +270,9 @@ class LocationIntelligenceDocumentGenerator {
         rows: [
           ['Latitude', `${profile.latitude}°`, 'Geocoding Data'],
           ['Longitude', `${profile.longitude}°`, 'Geocoding Data'],
-          ['Timezone', profile.timezone, 'Country Data'],
-          ['Area Size', profile.areaSize, 'Geographic Surveys'],
-          ['Climate', profile.climate, 'Environmental Data']
+          ['Timezone', (profile.timezone ?? ''), 'Country Data'] as [string, string, string],
+          ['Area Size', (profile.areaSize ?? ''), 'Geographic Surveys'] as [string, string, string],
+          ['Climate', (profile.climate ?? ''), 'Environmental Data'] as [string, string, string]
         ]
       }
     };
@@ -358,7 +358,7 @@ class LocationIntelligenceDocumentGenerator {
           title: 'Administrative Contacts',
           level: 2,
           content: `For government interaction, contact local administrative offices. ` +
-            `${profile.governmentLinks?.length > 0 ? 'Official links: ' + profile.governmentLinks.map(l => l.label).join('; ') : 'See official government website'}`
+            `${profile.governmentLinks && profile.governmentLinks.length > 0 ? 'Official links: ' + profile.governmentLinks.map(l => l.label).join('; ') : 'See official government website'}`
         }
       ]
     };

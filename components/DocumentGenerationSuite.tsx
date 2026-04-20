@@ -32,67 +32,67 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // SPI - Strategic Partnership Index
   if (ci?.spi) {
-    const spi = ci.spi as Record<string, unknown>;
+    const spi = ci.spi as unknown as Record<string, unknown>;
     parts.push(`\n**Strategic Partnership Index (SPI):** ${spi.overallScore ?? spi.score ?? 'N/A'}/100`);
     if (spi.components) parts.push(`Components: ${JSON.stringify(spi.components).slice(0, 300)}`);
   }
 
   // RROI - Risk-Return on Investment
   if (ci?.rroi) {
-    const rroi = ci.rroi as Record<string, unknown>;
+    const rroi = ci.rroi as unknown as Record<string, unknown>;
     parts.push(`\n**Risk-Return Index (RROI):** Score ${rroi.score ?? rroi.rroiScore ?? 'N/A'} | Rating: ${rroi.rating || 'N/A'}`);
   }
 
   // SEAM - Symbiotic Economic Alignment Model
   if (ci?.seam) {
-    const seam = ci.seam as Record<string, unknown>;
+    const seam = ci.seam as unknown as Record<string, unknown>;
     parts.push(`\n**SEAM Blueprint:** Alignment ${seam.alignmentScore ?? seam.overallAlignment ?? 'N/A'}%`);
   }
 
   // Ethics Check
   if (ci?.ethicsCheck) {
-    const ec = ci.ethicsCheck as Record<string, unknown>;
+    const ec = ci.ethicsCheck as unknown as Record<string, unknown>;
     parts.push(`\n**Ethical Safeguards:** Gate ${ec.overallDecision ?? ec.decision ?? 'N/A'} | Score ${ec.overallScore ?? ec.ethicalScore ?? 'N/A'}`);
     if (ec.dimensions && Array.isArray(ec.dimensions)) {
-      parts.push(`Dimensions: ${(ec.dimensions as Array<Record<string, unknown>>).map(d => `${d.name}(${d.score})`).join(', ')}`);
+      parts.push(`Dimensions: ${(ec.dimensions as unknown as Array<Record<string, unknown>>).map(d => `${d.name}(${d.score})`).join(', ')}`);
     }
   }
 
   // Adversarial Shield
   if (ci?.adversarialShield) {
-    const as_ = ci.adversarialShield as Record<string, unknown>;
+    const as_ = ci.adversarialShield as unknown as Record<string, unknown>;
     parts.push(`\n**Adversarial Shield:** Threat Level ${as_.threatLevel ?? 'N/A'} | Confidence ${as_.confidenceScore ?? 'N/A'}%`);
     if (as_.topThreats && Array.isArray(as_.topThreats)) {
-      (as_.topThreats as Array<Record<string, unknown>>).slice(0, 3).forEach(t => parts.push(`- Threat: ${t.name || t.description} (severity: ${t.severity})`));
+      (as_.topThreats as unknown as Array<Record<string, unknown>>).slice(0, 3).forEach(t => parts.push(`- Threat: ${t.name || t.description} (severity: ${t.severity})`));
     }
   }
 
   // Persona Panel (5-persona debate)
   if (ci?.personaPanel) {
-    const pp = ci.personaPanel as Record<string, unknown>;
+    const pp = ci.personaPanel as unknown as Record<string, unknown>;
     parts.push(`\n**5-Persona Adversarial Debate:** Consensus: ${pp.consensus ?? pp.overallAssessment ?? 'N/A'}`);
     if (pp.personas && Array.isArray(pp.personas)) {
-      (pp.personas as Array<Record<string, unknown>>).slice(0, 5).forEach(p => parts.push(`- ${p.role || p.name}: ${String(p.verdict || p.assessment || '').slice(0, 120)}`));
+      (pp.personas as unknown as Array<Record<string, unknown>>).slice(0, 5).forEach(p => parts.push(`- ${p.role || p.name}: ${String(p.verdict || p.assessment || '').slice(0, 120)}`));
     }
   }
 
   // PRI/TCO/CRI derived indices
   if (ci?.pri) {
-    const pri = ci.pri as Record<string, unknown>;
+    const pri = ci.pri as unknown as Record<string, unknown>;
     parts.push(`\n**Political Risk Index (PRI):** ${pri.score ?? pri.overallScore ?? 'N/A'}/100 | Rating: ${pri.rating ?? 'N/A'}`);
   }
   if (ci?.tco) {
-    const tco = ci.tco as Record<string, unknown>;
+    const tco = ci.tco as unknown as Record<string, unknown>;
     parts.push(`**Total Cost of Ownership (TCO):** ${tco.score ?? tco.totalScore ?? 'N/A'}`);
   }
   if (ci?.cri) {
-    const cri = ci.cri as Record<string, unknown>;
+    const cri = ci.cri as unknown as Record<string, unknown>;
     parts.push(`**Cultural Risk Index (CRI):** ${cri.score ?? cri.overallScore ?? 'N/A'}/100`);
   }
 
   // Advanced Indices
   if (ci?.advancedIndices) {
-    const ai_ = ci.advancedIndices as Record<string, unknown>;
+    const ai_ = ci.advancedIndices as unknown as Record<string, unknown>;
     const keys = ['SEQ', 'FMS', 'DCS', 'DQS', 'GCS'];
     const vals = keys.map(k => {
       const v = ai_[k] || ai_[k.toLowerCase()];
@@ -103,7 +103,7 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // Agentic Brain
   if (ci?.agenticBrain) {
-    const ab = ci.agenticBrain as Record<string, unknown>;
+    const ab = ci.agenticBrain as unknown as Record<string, unknown>;
     parts.push(`\n**Agentic Brain Snapshot:** Goal: ${ab.currentGoal ?? 'N/A'} | Confidence: ${ab.confidenceLevel ?? 'N/A'}`);
     if (ab.recommendations && Array.isArray(ab.recommendations)) {
       (ab.recommendations as string[]).slice(0, 3).forEach(r => parts.push(`- ${r}`));
@@ -112,16 +112,16 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // Frontier Intelligence
   if (ci?.frontierIntelligence) {
-    const fi = ci.frontierIntelligence as Record<string, unknown>;
+    const fi = ci.frontierIntelligence as unknown as Record<string, unknown>;
     parts.push(`\n**Frontier Intelligence:** ${fi.summary || fi.headline || JSON.stringify(fi).slice(0, 200)}`);
   }
 
   // Proactive Briefing
   if (ci?.proactiveBriefing) {
-    const pb = ci.proactiveBriefing as Record<string, unknown>;
+    const pb = ci.proactiveBriefing as unknown as Record<string, unknown>;
     parts.push(`\n**Proactive Briefing:** Backtest Accuracy ${pb.backtestAccuracy ?? 'N/A'}%`);
     if (pb.proactiveSignals && Array.isArray(pb.proactiveSignals)) {
-      (pb.proactiveSignals as Array<Record<string, unknown>>).slice(0, 3).forEach(s => parts.push(`- [${s.urgency}] ${s.title}: ${String(s.description).slice(0, 120)}`));
+      (pb.proactiveSignals as unknown as Array<Record<string, unknown>>).slice(0, 3).forEach(s => parts.push(`- [${s.urgency}] ${s.title}: ${String(s.description).slice(0, 120)}`));
     }
     if (pb.actionPriorities && Array.isArray(pb.actionPriorities)) {
       parts.push(`**Action Priorities:** ${(pb.actionPriorities as string[]).slice(0, 5).join('; ')}`);
@@ -130,9 +130,9 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // NSIL Intelligence (autonomous + reflexive layers)
   if (ci?.nsilIntelligence) {
-    const nsil = ci.nsilIntelligence as Record<string, unknown>;
+    const nsil = ci.nsilIntelligence as unknown as Record<string, unknown>;
     if (nsil.recommendation) {
-      const rec = nsil.recommendation as Record<string, unknown>;
+      const rec = nsil.recommendation as unknown as Record<string, unknown>;
       parts.push(`\n**NSIL Recommendation:** ${rec.action ?? 'N/A'} (Confidence: ${rec.confidence ?? 'N/A'})`);
       if (rec.summary) parts.push(`Summary: ${String(rec.summary).slice(0, 300)}`);
       if (rec.criticalActions && Array.isArray(rec.criticalActions)) parts.push(`Critical Actions: ${(rec.criticalActions as string[]).slice(0, 4).join('; ')}`);
@@ -143,19 +143,19 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // Situation Analysis (blind spots, unconsidered needs)
   if (ci?.situationAnalysis) {
-    const sa = ci.situationAnalysis as Record<string, unknown>;
+    const sa = ci.situationAnalysis as unknown as Record<string, unknown>;
     parts.push(`\n**Situation Analysis:**`);
     if (sa.blindSpots && Array.isArray(sa.blindSpots)) parts.push(`Blind Spots: ${(sa.blindSpots as string[]).slice(0, 3).join('; ')}`);
     if (sa.unconsideredNeeds && Array.isArray(sa.unconsideredNeeds)) parts.push(`Unconsidered Needs: ${(sa.unconsideredNeeds as string[]).slice(0, 3).join('; ')}`);
-    if (sa.stakeholderViews && Array.isArray(sa.stakeholderViews)) parts.push(`Stakeholder Views: ${(sa.stakeholderViews as Array<Record<string, unknown>>).slice(0, 3).map(v => `${v.stakeholder}: ${String(v.view).slice(0, 80)}`).join('; ')}`);
+    if (sa.stakeholderViews && Array.isArray(sa.stakeholderViews)) parts.push(`Stakeholder Views: ${(sa.stakeholderViews as unknown as Array<Record<string, unknown>>).slice(0, 3).map(v => `${v.stakeholder}: ${String(v.view).slice(0, 80)}`).join('; ')}`);
   }
 
   // Historical Parallels
   if (ci?.historicalParallels) {
-    const hp = ci.historicalParallels as Record<string, unknown>;
+    const hp = ci.historicalParallels as unknown as Record<string, unknown>;
     parts.push(`\n**Historical Parallels:**`);
     if (hp.matches && Array.isArray(hp.matches)) {
-      (hp.matches as Array<Record<string, unknown>>).slice(0, 3).forEach(m => parts.push(`- ${m.title || m.caseId} (${m.country}, ${m.year}) — Relevance: ${m.relevanceScore ?? 'N/A'}% | Outcome: ${m.outcome ?? 'N/A'}`));
+      (hp.matches as unknown as Array<Record<string, unknown>>).slice(0, 3).forEach(m => parts.push(`- ${m.title || m.caseId} (${m.country}, ${m.year}) — Relevance: ${m.relevanceScore ?? 'N/A'}% | Outcome: ${m.outcome ?? 'N/A'}`));
     }
     if (hp.successFactors && Array.isArray(hp.successFactors)) parts.push(`Success Factors: ${(hp.successFactors as string[]).slice(0, 4).join('; ')}`);
     if (hp.failureFactors && Array.isArray(hp.failureFactors)) parts.push(`Failure Factors: ${(hp.failureFactors as string[]).slice(0, 4).join('; ')}`);
@@ -163,7 +163,7 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
 
   // Regional Kernel
   if (ci?.regionalKernel) {
-    const rk = ci.regionalKernel as Record<string, unknown>;
+    const rk = ci.regionalKernel as unknown as Record<string, unknown>;
     parts.push(`\n**Regional Development Kernel:**`);
     if (rk.governanceReadiness) parts.push(`Governance Readiness: ${JSON.stringify(rk.governanceReadiness).slice(0, 200)}`);
     if (rk.interventions && Array.isArray(rk.interventions)) parts.push(`Interventions: ${(rk.interventions as string[]).slice(0, 3).join('; ')}`);
@@ -172,22 +172,22 @@ function buildIntelligenceBlock(reportData?: ReportData, reportParams?: ReportPa
   // Symbiotic Partners
   if (ci?.symbioticPartners && Array.isArray(ci.symbioticPartners) && ci.symbioticPartners.length > 0) {
     parts.push(`\n**Symbiotic Partner Matches:**`);
-    (ci.symbioticPartners as Array<Record<string, unknown>>).slice(0, 3).forEach(p => parts.push(`- ${p.name || p.partnerName}: Score ${p.score ?? p.matchScore ?? 'N/A'} | Type: ${p.type || p.partnerType || 'N/A'}`));
+    (ci.symbioticPartners as unknown as Array<Record<string, unknown>>).slice(0, 3).forEach(p => parts.push(`- ${p.name || p.partnerName}: Score ${p.score ?? p.matchScore ?? 'N/A'} | Type: ${p.type || p.partnerType || 'N/A'}`));
   }
 
   // Diversification Analysis
   if (ci?.diversificationAnalysis) {
-    const da = ci.diversificationAnalysis as Record<string, unknown>;
+    const da = ci.diversificationAnalysis as unknown as Record<string, unknown>;
     parts.push(`\n**Diversification Analysis:** Score ${da.overallScore ?? da.score ?? 'N/A'} | ${da.recommendation || ''}`);
   }
 
   // IVAS / SCF
   if (ci?.ivas) {
-    const ivas = ci.ivas as Record<string, unknown>;
+    const ivas = ci.ivas as unknown as Record<string, unknown>;
     parts.push(`\n**Investment Value Alignment Score (IVAS):** ${ivas.score ?? ivas.overallScore ?? 'N/A'}`);
   }
   if (ci?.scf) {
-    const scf = ci.scf as Record<string, unknown>;
+    const scf = ci.scf as unknown as Record<string, unknown>;
     parts.push(`**Strategic Clarity Factor (SCF):** ${scf.score ?? scf.overallScore ?? 'N/A'}`);
   }
 
@@ -608,7 +608,7 @@ const DocumentGenerationSuite: React.FC<DocumentGenerationSuiteProps> = ({
         body: JSON.stringify({ message: prompt, systemPrompt }),
       });
       if (response.ok) {
-        const data = await response.json() as Record<string, unknown>;
+        const data = await response.json() as unknown as Record<string, unknown>;
         const text = String(data?.text || '').trim();
         if (text) return text;
       }

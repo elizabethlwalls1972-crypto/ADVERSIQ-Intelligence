@@ -461,7 +461,7 @@ const AdvancedStepExpansionSystem: React.FC = () => {
 
                         <button
                           onClick={() => {
-                            const currentScore = section.score ?? 50;
+                            const currentScore = (section as unknown as Record<string, number>).score ?? 50;
                             const adjusted = Math.min(100, Math.max(0, currentScore + (currentScore < 50 ? 10 : -10)));
                             overrideScore(section.id, adjusted);
                           }}

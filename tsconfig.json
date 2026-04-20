@@ -28,5 +28,5 @@
     "noEmit": true
   },
   "include": ["**/*.ts", "**/*.tsx", "data/**/*"],
-  "exclude": ["node_modules", "dist", "dist-server", "backups", "**/backups/**", "bwmetadata", "**/bwmetadata/**"]
+  "exclude": ["node_modules", "dist", "dist-server", "backups", "**/backups/**", "bwmetadata", "**/bwmetadata/**", "infrastructure/**", "tests/**"]
 }

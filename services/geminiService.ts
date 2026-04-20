@@ -286,7 +286,7 @@ export const generateReportSectionStream = async (
 // ─── generateAnalysisStream ───────────────────────────────────────────────────
 
 export const generateAnalysisStream = async (item: LiveOpportunityItem, region: string): Promise<ReadableStream> => {
-  const prompt = `${SYSTEM_INSTRUCTION}\n\nAnalyse this opportunity in ${region}:\n\nTitle: ${item.title}\nSector: ${item.sector}\nCountry: ${item.country}\nDescription: ${item.description}\n\nProvide a comprehensive strategic analysis including opportunity assessment, key risks, recommended entry approach, and BW Advisory value proposition.`;
+  const prompt = `${SYSTEM_INSTRUCTION}\n\nAnalyse this opportunity in ${region}:\n\nTitle: ${item.project_name}\nSector: ${item.sector}\nCountry: ${item.country}\nDescription: ${item.summary}\n\nProvide a comprehensive strategic analysis including opportunity assessment, key risks, recommended entry approach, and BW Advisory value proposition.`;
 
   const data = await apiPost('/ai/chat', { message: prompt });
   let text: string;

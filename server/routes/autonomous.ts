@@ -84,23 +84,23 @@ router.post('/solve', async (req: Request, res: Response) => {
       crossDomain,
     ] = await Promise.allSettled([
       Promise.race([
-        CreativeSynthesisEngine.synthesise(synthesisContext, 6),
+        CreativeSynthesisEngine.synthesise(synthesisContext as any, 6),
         new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), LAYER6_TIMEOUT_MS)),
       ]),
       Promise.race([
-        EthicalReasoningEngine.assess(ethicalContext),
+        EthicalReasoningEngine.assess(ethicalContext as any),
         new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), LAYER6_TIMEOUT_MS)),
       ]),
       Promise.race([
-        EmotionalIntelligenceEngine.analyse(emotionalContext),
+        EmotionalIntelligenceEngine.analyse(emotionalContext as any),
         new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), LAYER6_TIMEOUT_MS)),
       ]),
       Promise.race([
-        ScenarioSimulationEngine.simulate(simulationContext, 3000),
+        ScenarioSimulationEngine.simulate(simulationContext as any, 3000),
         new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), LAYER6_TIMEOUT_MS)),
       ]),
       Promise.race([
-        CrossDomainTransferEngine.analyse(transferContext),
+        CrossDomainTransferEngine.analyse(transferContext as any),
         new Promise<never>((_, rej) => setTimeout(() => rej(new Error('timeout')), LAYER6_TIMEOUT_MS)),
       ]),
     ]);
@@ -118,7 +118,7 @@ router.post('/solve', async (req: Request, res: Response) => {
     const solutions: Array<{ id: string; action: string; priority: string; confidence: number; source: string }> = [];
 
     if (creativeSynthesis.status === 'fulfilled') {
-      const cs = creativeSynthesis.value as Record<string, unknown>;
+      const cs = creativeSynthesis.value as unknown as Record<string, unknown>;
       const strategies = (cs.strategies || cs.ideas || []) as Array<Record<string, unknown>>;
       strategies.slice(0, 3).forEach((s, i) => {
         solutions.push({
@@ -132,7 +132,7 @@ router.post('/solve', async (req: Request, res: Response) => {
     }
 
     if (crossDomain.status === 'fulfilled') {
-      const cd = crossDomain.value as Record<string, unknown>;
+      const cd = crossDomain.value as unknown as Record<string, unknown>;
       const transfers = (cd.transfers || cd.analogies || []) as Array<Record<string, unknown>>;
       transfers.slice(0, 2).forEach((t, i) => {
         solutions.push({

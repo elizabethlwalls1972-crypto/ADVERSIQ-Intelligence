@@ -9,8 +9,8 @@
  * Judges run in parallel/serial/cascading modes with conflict resolution.
  */
 
-import { callGemma, callGeminiThinking, GemmaMessage, GemmaOptions } from './gemmaService';
-import { monitoringService } from './services/MonitoringService';
+import { callGemma, callGeminiThinking, GemmaMessage, GemmaOptions } from '../gemmaService';
+import { monitoringService } from './MonitoringService';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -429,10 +429,10 @@ export class JudgeOrchestrator {
       wellInformed: j3.confidence > 0.6,
       recommendation:
         j1.escalate || j1.riskLevel === 'critical'
-          ? 'escalate'
+          ? 'escalate' as const
           : !j2.isLogicallySound
-            ? 'review'
-            : 'proceed',
+            ? 'review' as const
+            : 'proceed' as const,
     };
 
     return {

@@ -1361,7 +1361,6 @@ export interface ReportPayload {
       evidence: Array<{ filePath: string; relevanceScore: number; matchedInContext: boolean; basis: string }>;
     };
     externalSearchSignals?: Array<{ query: string; results: Array<{ title: string; snippet: string; url: string; source: string; publishedAt?: string }>; source: string; status: 'ok' | 'failed'; error?: string }>;
-    };
   };
 }
 

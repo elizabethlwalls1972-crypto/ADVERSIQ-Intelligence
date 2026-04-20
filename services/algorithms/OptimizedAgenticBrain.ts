@@ -816,7 +816,7 @@ export class OptimizedAgenticBrain {
         type: insight.type as any,
         title: insight.title,
         description: insight.description,
-        confidence: Math.round(insight.confidence * 100),
+        confidence: Math.round((insight.confidence ?? 0) * 100),
         isAutonomous: true
       })));
 

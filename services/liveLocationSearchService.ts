@@ -205,7 +205,7 @@ export async function getWikipediaInfo(locationName: string): Promise<WikipediaI
       extract: page.extract || '',
       thumbnail: page.thumbnail?.source,
       fullUrl: page.fullurl || `https://en.wikipedia.org/wiki/${encodeURIComponent(pageTitle)}`,
-      pageId: page.pageid
+      pageId: page.pageid || 0
     };
   } catch {
     console.error('Wikipedia fetch failed');

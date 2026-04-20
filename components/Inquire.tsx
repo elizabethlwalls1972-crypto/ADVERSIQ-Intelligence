@@ -71,7 +71,7 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
             // Run NSIL quick assessment + situation analysis for context enrichment
             let nsilContext = '';
             try {
-              const quickAssess = NSILIntelligenceHub.quickAssess(params);
+              const quickAssess = await NSILIntelligenceHub.quickAssess(params);
               const situation = SituationAnalysisEngine.quickSummary(params);
               const historical = HistoricalParallelMatcher.quickMatch(params);
               

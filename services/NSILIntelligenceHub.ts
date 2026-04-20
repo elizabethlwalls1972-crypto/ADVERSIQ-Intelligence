@@ -259,7 +259,7 @@ export class NSILIntelligenceHub {
       globalStandards = globalStandardsResult;
       
       // Run reflexive intelligence layer
-      reflexive = this.runReflexiveLayer(params, autonomous);
+      reflexive = await this.runReflexiveLayer(params, autonomous);
       
       componentsRun.push(
         'PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis',
@@ -342,14 +342,14 @@ export class NSILIntelligenceHub {
    * Run all 8 autonomous engines and compile results.
    * This is the layer that makes the system unprecedented.
    */
-  private static runAutonomousLayer(params: Partial<ReportParameters>): AutonomousIntelligence {
+  private static async runAutonomousLayer(params: Partial<ReportParameters>): Promise<AutonomousIntelligence> {
     const country = (params as Record<string, string>).country || 'Australia';
     const sector = ((params as Record<string, string[]>).industry || ['general'])[0] || 'general';
     const region = (params as Record<string, string>).region || '';
 
     // 1. Creative Synthesis " novel strategy generation
     const creativeCtx: SynthesisContext = { country, sector, region, investmentSizeM: 10, existingCapabilities: [], constraints: [], objectives: ['growth', 'sustainability'] };
-    const creativeResult = CreativeSynthesisEngine.synthesise(creativeCtx, 5);
+    const creativeResult = await CreativeSynthesisEngine.synthesise(creativeCtx, 5);
     const creativeStrategies = creativeResult.strategies.map(s => ({
       strategy: s.title,
       noveltyScore: s.noveltyScore,
@@ -358,7 +358,7 @@ export class NSILIntelligenceHub {
 
     // 2. Cross-Domain Transfer " structural analogies
     const transferCtx: TransferContext = { country, sector, region, challenge: 'market access and infrastructure', currentState: ['emerging market', 'developing infrastructure'], desiredState: ['competitive market', 'robust infrastructure'] };
-    const transferResult = CrossDomainTransferEngine.analyse(transferCtx);
+    const transferResult = await CrossDomainTransferEngine.analyse(transferCtx);
     const crossDomainInsights = transferResult.topInsights.slice(0, 5).map(t => ({
       analogy: t.sourceObservation,
       sourceModel: t.targetPrediction,
@@ -368,7 +368,7 @@ export class NSILIntelligenceHub {
     // 3. Autonomous Goals " self-initiated objectives
     const goalCtx: GoalGenerationContext = { country, sector, region, spiScore: 50, rroiScore: 50, riskFlags: [], opportunities: [], dataGaps: [], stakeholderConcerns: [], timelineWeeks: 12, investmentSizeM: 10, existingGoals: [] };
     const goalEngine = new AutonomousGoalEngine();
-    const goalResult = goalEngine.generateGoals(goalCtx);
+    const goalResult = await goalEngine.generateGoals(goalCtx);
     const autonomousGoals = goalResult.goals.slice(0, 5).map(g => ({
       goal: g.description,
       priority: g.compositeScore,
@@ -393,7 +393,7 @@ export class NSILIntelligenceHub {
       labourStandards: 'international',
       supplyChainVisibility: 60
     };
-    const ethicalResult = EthicalReasoningEngine.assess(ethicalCtx);
+    const ethicalResult = await EthicalReasoningEngine.assess(ethicalCtx);
     const ethicalAssessment = {
       score: ethicalResult.overallEthicsScore,
       recommendation: ethicalResult.recommendation,
@@ -414,7 +414,7 @@ export class NSILIntelligenceHub {
       communitySupport: 'moderate',
       investorRiskAppetite: 'moderate'
     };
-    const emotionalResult = EmotionalIntelligenceEngine.analyse(emotionalCtx);
+    const emotionalResult = await EmotionalIntelligenceEngine.analyse(emotionalCtx);
     const emotionalClimate = {
       overallValence: emotionalResult.aggregateEmotionalClimate.overallValence,
       derailmentRisk: emotionalResult.aggregateEmotionalClimate.riskOfEmotionalDerailment,
@@ -433,7 +433,7 @@ export class NSILIntelligenceHub {
       riskFactors: [],
       opportunities: []
     };
-    const simResult = ScenarioSimulationEngine.quickSimulate(simCtx);
+    const simResult = await ScenarioSimulationEngine.quickSimulate(simCtx);
     const scenarioOutlook = {
       probabilityOfSuccess: simResult.probabilityOfSuccess,
       medianSPI: simResult.medianSPI,
@@ -490,10 +490,10 @@ export class NSILIntelligenceHub {
    * This layer turns the system's analytical power inward " on the user's
    * own inputs, assumptions, blind spots, and hidden assets.
    */
-  private static runReflexiveLayer(
+  private static async runReflexiveLayer(
     params: Partial<ReportParameters>,
     autonomous: AutonomousIntelligence
-  ): ReflexiveIntelligence {
+  ): Promise<ReflexiveIntelligence> {
     const country = (params as Record<string, string>).country || '';
     const sectorArr = (params as Record<string, string[]>).industry || ['general'];
     const sector = sectorArr[0] || 'general';
@@ -522,7 +522,7 @@ export class NSILIntelligenceHub {
     };
 
     // 1. User Signal Decoder " detect repetition, avoidance, circularity
-    const userSignals = UserSignalDecoder.decode(snapshot);
+    const userSignals = await UserSignalDecoder.decode(snapshot);
 
     // 2. Internal Echo Detector " cross-reference within user's own data
     const internalEchoes = InternalEchoDetector.detect(snapshot);
@@ -629,7 +629,7 @@ export class NSILIntelligenceHub {
    * Quick assessment " faster, less comprehensive.
    * Now includes ethical gate check and emotional climate.
    */
-  static quickAssess(params: Partial<ReportParameters>): QuickAssessment {
+  static async quickAssess(params: Partial<ReportParameters>): Promise<QuickAssessment> {
     // Quick input check
     const inputCheck = InputShieldService.quickCheck(params);
     
@@ -639,7 +639,7 @@ export class NSILIntelligenceHub {
     // Quick ethical check
     const country = (params as Record<string, string>).country || 'Australia';
     const sector = ((params as Record<string, string[]>).industry || ['general'])[0] || 'general';
-    const ethicalQuick = EthicalReasoningEngine.quickCheck({
+    const ethicalQuick = await EthicalReasoningEngine.quickCheck({
       country, region: '', sector,
       investmentSizeM: 10, expectedJobs: 100,
       environmentalImpact: 'neutral', displacementRisk: false,
@@ -650,7 +650,7 @@ export class NSILIntelligenceHub {
     });
 
     // Quick emotional check
-    const emotionalQuick = EmotionalIntelligenceEngine.quickCheck({
+    const emotionalQuick = await EmotionalIntelligenceEngine.quickCheck({
       country, region: '', sector,
       investmentSizeM: 10, hasDeadline: false, deadlineWeeks: 52,
       isElectionYear: false, hasMediaAttention: false,

@@ -4,13 +4,9 @@ import { TrendingUp, BrainCircuit, Loader2 } from 'lucide-react';
 
 // Gemini/Google AI logic removed
 
-const generateThinkingContent = async (prompt: string) => {
+const generateThinkingContent = async (_prompt: string) => {
     try {
-        const response = await ai.models.generateContent({
-            // Gemini model removed
-            contents: prompt,
-        });
-        return response.text;
+        return "Simulation unavailable. Please configure API keys.";
     } catch (e) {
         console.error(e);
         return "Simulation unavailable. Please check your API configuration.";

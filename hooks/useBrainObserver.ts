@@ -130,7 +130,7 @@ function findHistoricalMatch(params: ReportParameters): StepIntelligence['histor
   // Pick most recent relevant pattern
   const pattern = matchingPatterns[matchingPatterns.length - 1];
   // Derive relevance from pattern specificity: more archetype matches = higher relevance
-  const archetypeOverlap = pattern.archetype.split(',').length;
+  const archetypeOverlap = pattern.archetype.length;
   const relevance = Math.min(95, 70 + archetypeOverlap * 5 + pattern.scenario.length % 10);
   return {
     era: pattern.era,

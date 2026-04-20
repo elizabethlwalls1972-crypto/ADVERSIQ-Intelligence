@@ -582,7 +582,8 @@ async function tryDirectGeminiResearch(
     });
 
     // Transform to MultiSourceResult - pass multiSourceSummary as the context
-    return transformAIToProfile(locationQuery, aiIntelligence, geoData, enrichedContext.multiSourceSummary, worldBankData, enrichedContext.sourceUrls as string[], onProgress);
+    const wbDataSafe: Record<string, unknown> = worldBankData ?? {};
+    return transformAIToProfile(locationQuery, aiIntelligence, geoData, enrichedContext.multiSourceSummary, wbDataSafe, enrichedContext.sourceUrls as string[], onProgress);
 
   } catch (error) {
     console.error('[GLI Research] Direct Gemini research failed:', error);
@@ -1801,15 +1802,15 @@ function transformAIToProfile(
     },
     economy: {
       title: 'Economic Profile',
-      introduction: profile.economics.gdpLocal || 'Economic data available.',
+      introduction: profile.economics?.gdpLocal || 'Economic data available.',
       paragraphs: [{
         text: `Key industries include ${profile.keySectors.slice(0, 3).join(', ')}. Major employers: ${profile.foreignCompanies.slice(0, 3).join(', ')}.`,
         citations: sources.filter(s => s.type === 'worldbank'),
         confidence: 0.85
       }],
       keyFacts: [
-        `GDP: ${profile.economics.gdpLocal}`,
-        `Growth: ${profile.economics.gdpGrowthRate}`,
+        `GDP: ${profile.economics?.gdpLocal}`,
+        `Growth: ${profile.economics?.gdpGrowthRate}`,
         `Key Sectors: ${profile.keySectors.slice(0, 3).join(', ')}`
       ],
       conclusion: 'Economic fundamentals support investment consideration.'
@@ -1829,13 +1830,13 @@ function transformAIToProfile(
       title: 'Infrastructure & Connectivity',
       introduction: 'Transportation and utilities infrastructure supports operations.',
       paragraphs: [{
-        text: `Airports: ${profile.infrastructure.airports.map(a => a.name).join(', ') || 'See aviation authority'}. Ports: ${profile.infrastructure.seaports.map(p => p.name).join(', ') || 'See port authority'}. Internet: ${profile.infrastructure.internetPenetration}.`,
+        text: `Airports: ${profile.infrastructure?.airports?.map(a => a.name).join(', ') || 'See aviation authority'}. Ports: ${profile.infrastructure?.seaports?.map(p => p.name).join(', ') || 'See port authority'}. Internet: ${profile.infrastructure?.internetPenetration}.`,
         citations: [],
         confidence: 0.8
       }],
       keyFacts: [
-        `Internet: ${profile.infrastructure.internetPenetration}`,
-        `Power: ${profile.infrastructure.powerCapacity}`
+        `Internet: ${profile.infrastructure?.internetPenetration}`,
+        `Power: ${profile.infrastructure?.powerCapacity}`
       ],
       conclusion: 'Infrastructure assessment indicates operational readiness.'
     },
@@ -2182,8 +2183,8 @@ async function tryBackendResearch(
           confidence: 0.8
         }],
         keyFacts: [
-          `GDP: ${profile.economics.gdpLocal}`,
-          `Growth: ${profile.economics.gdpGrowthRate}`,
+          `GDP: ${profile.economics?.gdpLocal}`,
+          `Growth: ${profile.economics?.gdpGrowthRate}`,
           `Key Sectors: ${profile.keySectors.slice(0, 3).join(', ')}`
         ],
         conclusion: 'Economic fundamentals support investment consideration.'
@@ -2203,13 +2204,13 @@ async function tryBackendResearch(
         title: 'Infrastructure & Connectivity',
         introduction: 'Transportation and utilities infrastructure supports business operations.',
         paragraphs: [{
-          text: `Airports: ${profile.infrastructure.airports.map(a => a.name).join(', ')}. Ports: ${profile.infrastructure.seaports.map(p => p.name).join(', ')}. Internet: ${profile.infrastructure.internetPenetration}.`,
+          text: `Airports: ${profile.infrastructure?.airports?.map(a => a.name).join(', ')}. Ports: ${profile.infrastructure?.seaports?.map(p => p.name).join(', ')}. Internet: ${profile.infrastructure?.internetPenetration}.`,
           citations: [],
           confidence: 0.75
         }],
         keyFacts: [
-          `Internet: ${profile.infrastructure.internetPenetration}`,
-          `Power: ${profile.infrastructure.powerCapacity}`
+          `Internet: ${profile.infrastructure?.internetPenetration}`,
+          `Power: ${profile.infrastructure?.powerCapacity}`
         ],
         conclusion: 'Infrastructure assessment indicates operational readiness.'
       },
@@ -2703,7 +2704,7 @@ async function executeResearchPipeline(
     });
 
     const extractedData = extractStructuredData(
-      govSearch, cityStatsSearch, economicSearch, infrastructureSearch, geoNamesLocData
+      govSearch, cityStatsSearch, economicSearch, infrastructureSearch, geoNamesLocData?.name ? `${geoNamesLocData.name}, ${geoNamesLocData.countryName}` : null
     );
 
     // STAGE 5: Build profile
@@ -2716,7 +2717,7 @@ async function executeResearchPipeline(
 
     const profile = await buildComprehensiveProfile(
       cityName, region, country, countryCode,
-      geo, worldBankData, countryData, geoNamesLocData?.name ? `${geoNamesLocData.name} is a ${geoNamesLocData.fcodeName || 'location'} in ${geoNamesLocData.countryName || country}. Population: ${geoNamesLocData.population?.toLocaleString() || 'N/A'}` : null,
+      geo, (worldBankData || {}) as Record<string, unknown>, countryData, geoNamesLocData?.name ? `${geoNamesLocData.name} is a ${geoNamesLocData.fcodeName || 'location'} in ${geoNamesLocData.countryName || country}. Population: ${geoNamesLocData.population?.toLocaleString() || 'N/A'}` : null,
       leadershipData, extractedData,
       sources
     );
@@ -3227,7 +3228,7 @@ async function buildComprehensiveProfile(
       if (wb) {
         profile.economics = {
           ...(profile.economics || {}),
-          majorIndustries: (profile.economics && (profile.economics as Partial<EconomicData>).majorIndustries) ? (profile.economics as Partial<EconomicData>).majorIndustries : [],
+          majorIndustries: (profile.economics && (profile.economics as Partial<EconomicData>).majorIndustries) ? (profile.economics as Partial<EconomicData>).majorIndustries! : [],
           topExports: (profile.economics && (profile.economics as Partial<EconomicData>).topExports) ? (profile.economics as Partial<EconomicData>).topExports : [],
           tradePartners: (profile.economics && (profile.economics as Partial<EconomicData>).tradePartners) ? (profile.economics as Partial<EconomicData>).tradePartners : []
         };

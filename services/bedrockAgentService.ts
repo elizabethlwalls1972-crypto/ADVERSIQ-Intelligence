@@ -51,6 +51,14 @@ export const resetAgentSession = () => {
 
 // ─── Core invoke ─────────────────────────────────────────────────────────────
 
+/** Check if Bedrock Agent is configured (has required env vars) */
+export function isBedrockAgentConfigured(): boolean {
+  return !!(
+    (typeof window !== 'undefined' && (window as any).__ENV__?.VITE_BEDROCK_AGENT_ID) ||
+    (typeof process !== 'undefined' && process.env?.VITE_BEDROCK_AGENT_ID)
+  );
+}
+
 export interface AgentInvokeOptions {
   /** Overrides default session; use to run isolated sub-tasks */
   sessionId?: string;

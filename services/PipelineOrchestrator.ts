@@ -10,8 +10,8 @@
  *       → Reflexive → Entity Verification → Confidence → Orchestration → Generation
  */
 
-import { callGemma, callGemmaJSON, callGemmaFast, GemmaMessage } from './gemmaService';
-import { monitoringService } from './services/MonitoringService';
+import { callGemma, callGemmaJSON, callGemmaFast, GemmaMessage } from '../gemmaService';
+import { monitoringService } from './MonitoringService';
 import { JudgeOrchestrator, JudgeConsensus } from './JudgeOrchestrator';
 
 // ─── Pipeline Layer Outputs ────────────────────────────────────────────────────

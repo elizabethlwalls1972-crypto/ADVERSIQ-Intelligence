@@ -503,8 +503,8 @@ export class ScenarioSimulationEngine {
   /**
    * Quick simulation - 1000 runs, returns probability of success.
    */
-  static quickSimulate(ctx: SimulationContext): { probabilityOfSuccess: number; medianSPI: number; riskLevel: string } {
-    const result = this.simulate(ctx, 1000);
+  static async quickSimulate(ctx: SimulationContext): Promise<{ probabilityOfSuccess: number; medianSPI: number; riskLevel: string }> {
+    const result = await this.simulate(ctx, 1000);
     return {
       probabilityOfSuccess: result.monteCarloDistribution.probabilityOfSuccess,
       medianSPI: result.monteCarloDistribution.median,

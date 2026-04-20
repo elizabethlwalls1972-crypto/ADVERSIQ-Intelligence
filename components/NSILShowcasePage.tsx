@@ -33,7 +33,7 @@ const NSILShowcasePage: React.FC<NSILShowcasePageProps> = ({ onBack, onStart }) 
                         </div>
                         <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                             <p className="text-xs font-bold text-stone-900 mb-1">Adversarial Governance</p>
-                            <p>Validate a' Debate a> Counterfactuals a> Score a> Synthesize a' Deliver. False confidence is blocked by design.</p>
+                            <p>Validate → Debate → Counterfactuals → Score → Synthesize → Deliver. False confidence is blocked by design.</p>
                         </div>
                         <div className="rounded-sm border border-stone-200 p-4 bg-stone-50">
                             <p className="text-xs font-bold text-stone-900 mb-1">Agentic Brain</p>

@@ -494,7 +494,7 @@ export class VectorMemoryIndex {
 
     // Variant 3: Region-based expansion (same region, different country)
     if (params.region && !params.country) {
-      variants.push({ ...params, country: undefined });
+      variants.push({ ...params, country: '' } as ReportParameters);
     }
 
     return variants;

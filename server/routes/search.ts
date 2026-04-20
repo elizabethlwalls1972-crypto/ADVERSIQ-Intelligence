@@ -375,8 +375,8 @@ router.post('/news', async (req: Request, res: Response) => {
     // Deduplicate by URL
     const seen = new Set<string>();
     const uniqueArticles = articles.filter(a => {
-      if (seen.has(a.url)) return false;
-      seen.add(a.url);
+      if (!a.url || seen.has(a.url)) return false;
+      seen.add(a.url!);
       return true;
     });
 

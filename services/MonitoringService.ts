@@ -46,7 +46,7 @@ export interface LogEntry {
 export interface AICallMetric {
   timestamp: string;
   model: string;
-  provider: 'together' | 'gemini' | 'gemma' | 'openai' | 'bedrock' | 'groq' | 'unknown';
+  provider: 'together' | 'gemini' | 'gemma' | 'openai' | 'bedrock' | 'groq' | 'ollama' | 'judge1' | 'judge2' | 'judge3' | 'unknown';
   latencyMs: number;
   inputTokens?: number;
   outputTokens?: number;

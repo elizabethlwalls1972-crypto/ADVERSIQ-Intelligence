@@ -1564,14 +1564,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     const message = messages.find((entry) => entry.id === msgId);
     setFeedbackMap((prev) => ({ ...prev, [msgId]: signal }));
 
-    const rankingQuery: ReportParameters = {
+    const rankingQuery = {
       country: caseStudy.country,
       region: caseStudy.jurisdiction || caseStudy.country,
       industry: [],
       strategicIntent: [caseStudy.objectives, caseStudy.organizationMandate, caseStudy.currentMatter].filter(Boolean),
       organizationType: caseStudy.organizationType,
       problemStatement: caseStudy.currentMatter,
-    } as ReportParameters;
+    } as unknown as ReportParameters;
 
     const learnedFeatures = gradientRankingEngine.recordRelevanceSignal(
       msgId,
@@ -3062,9 +3062,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         .filter((reason): reason is string => Boolean(reason && reason !== 'Provider returned zero matches for this query.'));
 
       const newsInsights: LiveInsightResult[] = (Array.isArray(newsData.articles) ? newsData.articles : [])
-        .filter((article) => article.title && article.url)
+        .filter((article: { title?: string; url?: string; description?: string; source?: string; publishedAt?: string }) => article.title && article.url)
         .slice(0, 4)
-        .map((article) => ({
+        .map((article: { title?: string; url?: string; description?: string; source?: string; publishedAt?: string }) => ({
           title: article.title || '',
           link: article.url || '',
           snippet: article.description || '',
@@ -4895,26 +4895,24 @@ ${agentRegistry.current.toManifest()}`;
             }
 
             // Motivation Detector - risk signals from user language
-            if (motivationResult && (motivationResult.redFlags?.length || motivationResult.triggers?.length)) {
+            if (motivationResult && motivationResult.redFlags?.length) {
               const flags = (motivationResult.redFlags || []).slice(0, 3);
-              const triggers = (motivationResult.triggers || []).slice(0, 3);
               blocks.push(
                 `## MOTIVATION ANALYSIS (MotivationDetector - behavioural signal scanner)\n` +
-                (flags.length ? `Red flags in user language: ${flags.map((f: { flag: string }) => f.flag).join('; ')}\n` : '') +
-                (triggers.length ? `Detected motivation signals: ${triggers.map((t: { category: string; implication: string }) => `${t.category} - ${t.implication}`).join('; ')}` : '')
+                (flags.length ? `Red flags in user language: ${flags.map((f: { flag: string }) => f.flag).join('; ')}` : '')
               );
             }
 
             // User Signal Decoder - hidden agenda, avoidance, repetition
-            if (userSignalResult && (userSignalResult.repetitionSignals.length || userSignalResult.avoidanceSignals.length || userSignalResult.proactiveQuestions.length)) {
-              const reps = userSignalResult.repetitionSignals.slice(0, 2);
-              const avoid = userSignalResult.avoidanceSignals.slice(0, 2);
+            if (userSignalResult && (userSignalResult.repetitions.length || userSignalResult.avoidances.length || userSignalResult.proactiveQuestions.length)) {
+              const reps = userSignalResult.repetitions.slice(0, 2);
+              const avoid = userSignalResult.avoidances.slice(0, 2);
               const proQs = userSignalResult.proactiveQuestions.slice(0, 2);
               blocks.push(
                 `## USER SIGNAL ANALYSIS (UserSignalDecoder - reflexive intelligence layer)\n` +
-                (reps.length ? `Repeated concerns (hidden priority): ${reps.map(r => `"${r.phrase}" - ${r.hiddenPriority}`).join('; ')}\n` : '') +
-                (avoid.length ? `Topics being avoided: ${avoid.map(a => `${a.missingTopic} - ${a.significance}`).join('; ')}\n` : '') +
-                (userSignalResult.inferredHiddenAgenda ? `Inferred hidden agenda: ${userSignalResult.inferredHiddenAgenda}\n` : '') +
+                (reps.length ? `Repeated concerns (hidden priority): ${reps.map((r: { phrase: string; hiddenPriority: string }) => `"${r.phrase}" - ${r.hiddenPriority}`).join('; ')}\n` : '') +
+                (avoid.length ? `Topics being avoided: ${avoid.map((a) => `${a.missingTopic} - ${a.riskOfOmission}`).join('; ')}\n` : '') +
+                (userSignalResult.hiddenAgenda ? `Inferred hidden agenda: ${userSignalResult.hiddenAgenda}\n` : '') +
                 (proQs.length ? `Questions the system should ask proactively: ${proQs.map(q => q.question).join(' | ')}` : '')
               );
             }
@@ -4958,14 +4956,14 @@ ${agentRegistry.current.toManifest()}`;
               );
             }
 
-            if (counterfactualResult && counterfactualResult.scenarios.length > 0) {
+            if (counterfactualResult && counterfactualResult.alternativeScenarios.length > 0) {
               const mc = counterfactualResult.monteCarlo;
               blocks.push(
                 `## COUNTERFACTUAL SCENARIOS (CounterfactualEngine - Monte Carlo)\n` +
                 `Monte Carlo (${mc.iterations} iterations): Median outcome ${mc.distribution.p50.toFixed(0)}% | ` +
                 `Probability of loss: ${mc.probabilityOfLoss.toFixed(0)}% | ` +
                 `VaR (95%): ${mc.valueAtRisk95.toFixed(0)}%\n` +
-                counterfactualResult.scenarios.slice(0, 3).map(s =>
+                counterfactualResult.alternativeScenarios.slice(0, 3).map((s: { name: string; probability: number; description: string }) =>
                   `• **${s.name}** (${s.probability}% probability) - ${s.description}`
                 ).join('\n')
               );
@@ -5079,12 +5077,12 @@ ${agentRegistry.current.toManifest()}`;
               const confidence = adversarialResult.adversarialConfidence;
               blocks.push(
                 `## ADVERSARIAL REASONING (AdversarialReasoningService - multi-persona stress test)\n` +
-                (shield?.riskLevel ? `Input risk level: ${shield.riskLevel}\n` : '') +
-                (shield?.concerns?.length ? `Shield concerns: ${shield.concerns.slice(0, 2).join('; ')}\n` : '') +
-                (motivation?.primaryMotivation ? `Primary motivation detected: ${motivation.primaryMotivation}\n` : '') +
-                (motivation?.riskLevel ? `Motivation risk: ${motivation.riskLevel}\n` : '') +
-                (confidence?.overallConfidence !== undefined
-                  ? `Adversarial confidence score: ${confidence.overallConfidence}/100`
+                (shield?.contradictionIndex !== undefined ? `Input contradiction index: ${shield.contradictionIndex}\n` : '') +
+                (shield?.escalations?.length ? `Shield escalations: ${shield.escalations.slice(0, 2).join('; ')}\n` : '') +
+                (motivation?.statedMotivation ? `Stated motivation: ${motivation.statedMotivation}\n` : '') +
+                (motivation?.alignmentScore !== undefined ? `Motivation alignment: ${motivation.alignmentScore}\n` : '') +
+                (confidence?.score !== undefined
+                  ? `Adversarial confidence score: ${confidence.score}/100`
                   : '')
               );
             }
@@ -5112,8 +5110,8 @@ ${agentRegistry.current.toManifest()}`;
                 historicalSuccessRate: historicalResult?.successRate,
                 counterfactualLossProbability: counterfactualResult?.monteCarlo?.probabilityOfLoss,
                 counterfactualMedianOutcome: counterfactualResult?.monteCarlo?.distribution?.p50,
-                adversarialRiskLevel: adversarialResult?.adversarialShield?.riskLevel,
-                adversarialConcerns: adversarialResult?.adversarialShield?.concerns,
+                adversarialRiskLevel: adversarialResult?.adversarialShield?.contradictionIndex?.toString(),
+                adversarialConcerns: adversarialResult?.adversarialShield?.escalations,
                 unbiasedRecommendation: unbiasedResult?.prosCons?.overallAssessment?.recommendation,
                 unbiasedConfidence: unbiasedResult?.prosCons?.overallAssessment?.confidence,
                 dataGaps: nsilFullResult?.recommendation?.criticalActions?.filter((a: string) => /gap|missing|unavailable|unknown/i.test(a)),
@@ -5731,7 +5729,7 @@ CRITICAL RULES:
           phase: inferredPhase,
           provenance: {
             confidence: Math.min(95, Math.max(50, Math.round(
-              actionableInsights.reduce((sum, i) => sum + (i.confidence * 100), 0) / actionableInsights.length
+              actionableInsights.reduce((sum, i) => sum + ((i.confidence ?? 0) * 100), 0) / actionableInsights.length
             ))),
             confidenceBand: liveReadiness >= 75 ? 'high' : liveReadiness >= 40 ? 'medium' : 'low',
             sources: insightSources.length > 0 ? insightSources : ['NSIL Agentic Insight Engine', `Readiness score: ${liveReadiness}%`]
@@ -6455,7 +6453,7 @@ CRITICAL RULES:
         preparedFor: caseStudy.organizationName || 'Client',
         preparedBy: 'BW Global Advisory - NEXUS AI',
         date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
-        reportId: isLetter ? undefined : `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        reportId: isLetter ? '' : `BWGA-${new Date().getFullYear()}-${(caseStudy.country || 'GL').slice(0, 2).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         version: '1.0',
         sections: sections.length > 0 ? sections : [{ title: doc.title, content, type: 'paragraph' }],
         appendices: isLetter ? [] : undefined,

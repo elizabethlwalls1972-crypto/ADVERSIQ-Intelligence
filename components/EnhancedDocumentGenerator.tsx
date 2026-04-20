@@ -407,9 +407,9 @@ Key points are documented in the following subsections with supporting evidence 
     // Derive risk index from available parameter signals
     let riskScore = 0;
     if (params.country) riskScore += params.country.length % 3;
-    if (params.sector) riskScore += params.sector.length % 2;
+    if ((params as Record<string, unknown>).sector) riskScore += String((params as Record<string, unknown>).sector).length % 2;
     if (riskType === 'political' || riskType === 'regulatory') riskScore += 1;
-    if (riskType === 'financial' || riskType === 'market') riskScore += (params.dealValue && params.dealValue > 100_000_000 ? 1 : 0);
+    if (riskType === 'financial' || riskType === 'market') riskScore += ((params as Record<string, unknown>).dealValue && Number((params as Record<string, unknown>).dealValue) > 100_000_000 ? 1 : 0);
     const idx = Math.min(riskScore, levels.length - 1);
     return levels[idx] + ' - Mitigation strategies available';
   };

@@ -1203,7 +1203,7 @@ th { background: #f1f5f9; }
             </section>
 
             {/* Location Map */}
-            {isLocationProfile && activeProfile.latitude && activeProfile.longitude && (
+            {isLocationProfile && Boolean(activeProfile.latitude) && Boolean(activeProfile.longitude) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Location</h2>
                 <div className="rounded-xl border border-slate-700 overflow-hidden bg-slate-900 relative">
@@ -1274,7 +1274,7 @@ th { background: #f1f5f9; }
               <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Government & Leadership</h2>
               
               {/* Government Type and Structure */}
-              {getProfileProp('governmentType') && (
+              {!!getProfileProp('governmentType') && (
                 <div className="mb-4 p-3 bg-slate-800/50 rounded-lg">
                   <div className="text-sm text-slate-400 mb-1">Government Type</div>
                   <div className="text-white font-medium">{safeDisplay(getProfileProp('governmentType'))}</div>
@@ -1298,7 +1298,7 @@ th { background: #f1f5f9; }
                       <div className="flex-1">
                         <div className="font-medium text-white">{safeDisplay(leader.name, 'Name not available')}</div>
                         <div className="text-sm text-slate-400">{safeDisplay(leader.role, 'Role not specified')}</div>
-                        {(leader as unknown as Record<string, unknown>).since && <div className="text-xs text-slate-500">Since {String((leader as unknown as Record<string, unknown>).since)}</div>}
+                        {!!(leader as unknown as Record<string, unknown>).since && <div className="text-xs text-slate-500">Since {String((leader as unknown as Record<string, unknown>).since)}</div>}
                         {leader.tenure && <div className="text-xs text-slate-500">{leader.tenure}</div>}
                       </div>
                     </div>
@@ -1312,7 +1312,7 @@ th { background: #f1f5f9; }
                   <div className="flex-1">
                     <div className="font-medium text-white">{safeDisplay((getProfileProp('leader') as Record<string, unknown>)?.name, 'Name not available')}</div>
                     <div className="text-sm text-slate-400">{safeDisplay((getProfileProp('leader') as Record<string, unknown>)?.title, 'Title not specified')}</div>
-                    {(getProfileProp('leader') as Record<string, unknown>)?.since && <div className="text-xs text-slate-500">Since {String((getProfileProp('leader') as Record<string, unknown>).since)}</div>}
+                    {!!(getProfileProp('leader') as Record<string, unknown>)?.since && <div className="text-xs text-slate-500">Since {String((getProfileProp('leader') as Record<string, unknown>).since)}</div>}
                   </div>
                 </div>
               ) : (
@@ -1337,7 +1337,7 @@ th { background: #f1f5f9; }
             </section>
 
             {/* Economy - Enhanced data display */}
-            {(activeProfile.economics || getProfileProp('gdp') || getProfileProp('mainIndustries')) && (
+            {!!(activeProfile.economics || getProfileProp('gdp') || getProfileProp('mainIndustries')) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Economy</h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm mb-6">
@@ -1407,7 +1407,7 @@ th { background: #f1f5f9; }
             )}
 
             {/* Demographics - Enhanced */}
-            {(activeProfile.demographics || getProfileProp('population')) && (
+            {!!(activeProfile.demographics || getProfileProp('population')) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Demographics</h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
@@ -1500,7 +1500,7 @@ th { background: #f1f5f9; }
             )}
 
             {/* Investment & Incentives */}
-            {(activeProfile.investmentPrograms?.length > 0 || activeProfile.taxIncentives?.length > 0) && (
+            {((activeProfile.investmentPrograms?.length ?? 0) > 0 || (activeProfile.taxIncentives?.length ?? 0) > 0) && (
               <section>
                 <h2 className="text-xl font-semibold text-white border-b border-slate-700 pb-2 mb-4">Investment Information</h2>
                 

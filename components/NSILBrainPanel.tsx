@@ -9,7 +9,7 @@
  * - Unified recommendation
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReportParameters } from '../types';
 import { NSILIntelligenceHub, IntelligenceReport, QuickAssessment } from '../services/NSILIntelligenceHub';
 import { FullPersonaAnalysis } from '../services/PersonaEngine';
@@ -277,12 +277,14 @@ export const NSILBrainPanel: React.FC<NSILBrainPanelProps> = ({
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'personas' | 'scenarios' | 'validation'>('overview');
   
-  // Compute quick assessment synchronously using useMemo (no setState needed)
-  const quickAssessment = useMemo(() => {
+  // Compute quick assessment asynchronously
+  const [quickAssessment, setQuickAssessment] = useState<QuickAssessment | null>(null);
+  useEffect(() => {
     if (parameters && Object.keys(parameters).length > 0) {
-      return NSILIntelligenceHub.quickAssess(parameters);
+      NSILIntelligenceHub.quickAssess(parameters).then(setQuickAssessment).catch(() => setQuickAssessment(null));
+    } else {
+      setQuickAssessment(null);
     }
-    return null;
   }, [parameters]);
   
   const runFullAnalysis = async () => {
