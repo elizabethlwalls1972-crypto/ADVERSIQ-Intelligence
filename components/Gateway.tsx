@@ -981,3 +981,4 @@ export const Gateway: React.FC<GatewayProps> = ({ params, onUpdate, onComplete }
     );
 };
 
+export default Gateway;
