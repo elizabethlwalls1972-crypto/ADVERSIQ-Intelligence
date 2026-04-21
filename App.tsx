@@ -663,7 +663,7 @@ const App: React.FC = () => {
                     <CommandCenter
                         onEnterPlatform={(payload) => {
                           if (payload?.query) setPendingConsultantQuery(payload.query);
-                          setViewMode('consultant-os');
+                          startNewMission();
                         }}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
