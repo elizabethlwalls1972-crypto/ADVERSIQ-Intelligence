@@ -36,7 +36,7 @@ const CommandCenter = lazyWithReload(() => import('./components/CommandCenter'))
 const BWConsultantOS = lazyWithReload(() => import('./components/BWConsultantOS'));
 const GlobalLocationIntelligence = lazyWithReload(() => import('./components/GlobalLocationIntelligence'));
 const AdminDashboard = lazyWithReload(() => import('./components/AdminDashboard'));
-const Gateway = lazyWithReload(() => import('./components/Gateway').then(module => ({ default: module.Gateway })));
+const Gateway = lazyWithReload(() => import('./components/Gateway'));
 const MatchmakingEngine = lazyWithReload(() => import('./components/MatchmakingEngine'));
 const DocumentGenerationSuite = lazyWithReload(() => import('./components/DocumentGenerationSuite'));
 const AdvancedReportGenerator = lazyWithReload(() => import('./components/AdvancedReportGenerator'));
