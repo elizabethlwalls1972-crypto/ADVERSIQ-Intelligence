@@ -717,6 +717,36 @@ const App: React.FC = () => {
             );
         }
 
+        if (viewMode === 'report-generator') {
+            return (
+                <div className="flex flex-1 w-full h-full overflow-hidden">
+                    <NSILWorkspace 
+                        params={params}
+                        setParams={setParams}
+                        reportData={reportData}
+                        isGenerating={isGeneratingReport}
+                        generationPhase={genPhase}
+                        generationProgress={genProgress}
+                        onGenerate={handleGenerateReport}
+                        reports={savedReports}
+                        onOpenReport={loadReport}
+                        onDeleteReport={deleteReport}
+                        onNewAnalysis={startNewMission}
+                        onCopilotMessage={(msg) => setInsights(prev => [msg, ...prev])}
+                        onChangeViewMode={(mode: string) => setViewMode(mode as ViewMode)}
+                        insights={combinedInsights}
+                        autonomousMode={autonomousMode}
+                        autonomousSuggestions={autonomousSuggestions}
+                        isAutonomousThinking={isAutonomousThinking}
+                        initialConsultantQuery={pendingConsultantQuery || undefined}
+                        onInitialConsultantQueryHandled={() => setPendingConsultantQuery(null)}
+                        initialContext={pendingConsultantContext}
+                        onInitialContextHandled={() => setPendingConsultantContext(null)}
+                    />
+                </div>
+            );
+        }
+
         if (viewMode === 'global-location-intel') {
             return (
                 <div className="w-full h-full overflow-y-auto">
