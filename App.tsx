@@ -687,7 +687,7 @@ const App: React.FC = () => {
             );
         }
 
-        if (viewMode === 'main') {
+        if (viewMode === 'report-generator' || viewMode === 'main') {
             return (
                 <div className="flex flex-1 w-full h-full overflow-hidden">
                     <NSILWorkspace 
