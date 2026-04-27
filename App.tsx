@@ -42,6 +42,10 @@ const DocumentGenerationSuite = lazyWithReload(() => import('./components/Docume
 const AdvancedReportGenerator = lazyWithReload(() => import('./components/AdvancedReportGenerator'));
 const ExecutiveSummaryGenerator = lazyWithReload(() => import('./components/ExecutiveSummaryGenerator'));
 const LettersCatalogModal = lazyWithReload(() => import('./components/LettersCatalogModal'));
+const NSILShowcasePage = lazyWithReload(() => import('./components/NSILShowcasePage'));
+const NSILBrainPanel = lazyWithReload(() => import('./components/NSILBrainPanel').then(m => ({ default: m.NSILBrainPanel })));
+const HumanOversightUI = lazyWithReload(() => import('./components/HumanOversightUI').then(m => ({ default: m.HumanOversightUI })));
+const SystemDashboard = lazyWithReload(() => import('./components/SystemDashboard').then(m => ({ default: m.SystemDashboard })));
 import useEscapeKey from './hooks/useEscapeKey';
 import type { AgenticRun } from './services/agenticWorker';
 import type { ConsultantInsight } from './services/BWConsultantAgenticAI';
@@ -63,7 +67,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel' | 'admin' | 'intake' | 'matchmaking' | 'documents' | 'advanced-report' | 'exec-summary' | 'letters';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel' | 'admin' | 'intake' | 'matchmaking' | 'documents' | 'advanced-report' | 'exec-summary' | 'letters' | 'nsil-showcase' | 'nsil-brain' | 'oversight' | 'system-dashboard';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -840,8 +844,59 @@ const App: React.FC = () => {
             );
         }
 
+        if (viewMode === 'nsil-showcase') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <NSILShowcasePage
+                        onBack={() => setViewMode('consultant-os')}
+                        onStart={() => setViewMode('consultant-os')}
+                    />
+                </div>
+            );
+        }
 
-        
+        if (viewMode === 'nsil-brain') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">NSIL Brain Panel — 9-Layer Intelligence Hub</span>
+                    </nav>
+                    <NSILBrainPanel parameters={params} />
+                </div>
+            );
+        }
+
+        if (viewMode === 'oversight') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Human Oversight &amp; Review Queue</span>
+                    </nav>
+                    <HumanOversightUI />
+                </div>
+            );
+        }
+
+        if (viewMode === 'system-dashboard') {
+            return (
+                <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">System Dashboard</span>
+                    </nav>
+                    <SystemDashboard />
+                </div>
+            );
+        }
+
         // Fallback or default view
         return (
             <div className="flex flex-1 w-full h-full overflow-hidden">

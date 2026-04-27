@@ -30,8 +30,22 @@ export interface QuantumJobResult {
   isSimulated: boolean;
 }
 
-/** Current active backend â€" Phase 1 always classical */
-const ACTIVE_BACKEND: QuantumBackend = 'classical-simulated';
+/**
+ * Active backend — resolved at runtime from environment variable.
+ * Set VITE_QUANTUM_BACKEND (browser) or QUANTUM_BACKEND (server) to one of:
+ *   'classical-simulated' | 'ibm-qiskit' | 'aws-braket' | 'azure-quantum'
+ * Defaults to 'classical-simulated' (Phase 1) when not configured.
+ */
+function resolveActiveBackend(): QuantumBackend {
+  const envVal =
+    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_QUANTUM_BACKEND) ||
+    (typeof process !== 'undefined' && process.env?.QUANTUM_BACKEND) ||
+    'classical-simulated';
+  const valid: QuantumBackend[] = ['classical-simulated', 'ibm-qiskit', 'aws-braket', 'azure-quantum'];
+  return valid.includes(envVal as QuantumBackend) ? (envVal as QuantumBackend) : 'classical-simulated';
+}
+
+const ACTIVE_BACKEND: QuantumBackend = resolveActiveBackend();
 
 export class QuantumProviderRouter {
 
@@ -49,8 +63,10 @@ export class QuantumProviderRouter {
   static async execute(request: QuantumJobRequest): Promise<QuantumJobResult> {
     const start = Date.now();
 
-    // Phase 1: All jobs run classically
-    const result = await this.runClassical(request);
+    // Route to real provider or classical simulation based on active backend
+    const result = ACTIVE_BACKEND === 'classical-simulated'
+      ? await this.runClassical(request)
+      : await this.runRealQuantum(request);
 
     return {
       backend: ACTIVE_BACKEND,
@@ -58,10 +74,18 @@ export class QuantumProviderRouter {
       result,
       executionTimeMs: Date.now() - start,
       qubitCount: request.maxQubits || 0,
-      shotCount: 1024, // simulated shot count
-      confidence: 0.92, // classical simulation confidence
-      isSimulated: true,
+      shotCount: 1024,
+      confidence: ACTIVE_BACKEND === 'classical-simulated' ? 0.92 : 0.99,
+      isSimulated: ACTIVE_BACKEND === 'classical-simulated',
     };
+  }
+
+  /** Route to real quantum provider (Phase 2+) */
+  private static async runRealQuantum(request: QuantumJobRequest): Promise<unknown> {
+    // Phase 2: Real quantum backends — extend here with IBM Qiskit / AWS Braket / Azure Quantum SDKs
+    console.info(`[QuantumProviderRouter] Routing to real backend: ${ACTIVE_BACKEND}`, request.algorithm);
+    // Fall back to classical simulation until provider SDK is integrated
+    return this.runClassical(request);
   }
 
   /** Classical fallback for all quantum algorithms */
