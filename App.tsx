@@ -737,6 +737,12 @@ const App: React.FC = () => {
         if (viewMode === 'admin') {
             return (
                 <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Admin Dashboard</span>
+                    </nav>
                     <AdminDashboard />
                 </div>
             );
@@ -757,6 +763,12 @@ const App: React.FC = () => {
         if (viewMode === 'matchmaking') {
             return (
                 <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Partner Matchmaking</span>
+                    </nav>
                     <MatchmakingEngine params={params} autoRun />
                 </div>
             );
@@ -765,6 +777,12 @@ const App: React.FC = () => {
         if (viewMode === 'documents') {
             return (
                 <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Document Generation</span>
+                    </nav>
                     <DocumentGenerationSuite
                         entityName={params.organizationName || undefined}
                         targetMarket={params.country || undefined}
@@ -778,10 +796,16 @@ const App: React.FC = () => {
         if (viewMode === 'advanced-report') {
             return (
                 <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Advanced Report</span>
+                    </nav>
                     <AdvancedReportGenerator
                         params={params}
-                        onReportGenerated={() => setViewMode('main')}
-                        onClose={() => setViewMode('command-center')}
+                        onReportGenerated={() => setViewMode('consultant-os')}
+                        onClose={() => setViewMode('consultant-os')}
                     />
                 </div>
             );
@@ -790,6 +814,12 @@ const App: React.FC = () => {
         if (viewMode === 'exec-summary') {
             return (
                 <div className="w-full h-full overflow-y-auto">
+                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
+                        </button>
+                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Executive Summary</span>
+                    </nav>
                     <ExecutiveSummaryGenerator
                         entity={params}
                         targetMarket={params.country || undefined}
@@ -804,7 +834,7 @@ const App: React.FC = () => {
                 <div className="w-full h-full overflow-y-auto">
                     <LettersCatalogModal
                         isOpen={true}
-                        onClose={() => setViewMode('command-center')}
+                        onClose={() => setViewMode('consultant-os')}
                     />
                 </div>
             );

@@ -84,11 +84,12 @@ import { dedupedRequest as _dedupedRequest } from '../services/requestDedup';
 import { checkInputSafety, checkOutputSafety } from '../services/SafetyGuardrailsPipeline';
 import { callWithStructuredOutput as _callWithStructuredOutput } from '../services/StructuredOutputPipeline';
 import { ReportsService as _ReportsService } from '../services/ReportsService';
-import { collectExample } from '../services/FineTuningDataCollector';
+// import { collectExample } from '../services/FineTuningDataCollector'; // Removed for browser compatibility
 import { DocumentIntegrityService as _DocumentIntegrityService } from '../services/DocumentIntegrityService';
 import { AgentWorkflowEngine as _AgentWorkflowEngine } from '../services/agent';
 import type { ReportParameters } from '../types';
 import type { RequestEnvelope } from '../shared/cognitiveControl';
+import { INITIAL_PARAMETERS } from '../constants';
 
 type WindowWithRuntimeEnv = Window & {
   __ENV__?: {
@@ -965,6 +966,287 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [isLoading, setIsLoading] = useState(false);
   const [isStreamingResponse, setIsStreamingResponse] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(() => ttsService.isEnabled());
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');
+  const [executionTasks, setExecutionTasks] = useState<ExecutionTask[]>([]);
+  const [readinessScore, setReadinessScore] = useState(0);
+  const [showReportOptions, setShowReportOptions] = useState(false);
+  const [showLettersCatalog, setShowLettersCatalog] = useState(false);
+  const [showUnifiedDocs, setShowUnifiedDocs] = useState(false);
+  const [showAdvancedReport, setShowAdvancedReport] = useState(false);
+  const [showExecSummary, setShowExecSummary] = useState(false);
+  const [showLetters, setShowLetters] = useState(false);
+  const [showMatchmaking, setShowMatchmaking] = useState(false);
+  const [showDocuments, setShowDocuments] = useState(false);
+  const [showIntake, setShowIntake] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [showFeatureDiscovery, setShowFeatureDiscovery] = useState(false);
+  const [activeFeature, setActiveFeature] = useState<string | null>(null);
+  const [showPipelineDeepDive, setShowPipelineDeepDive] = useState(false);
+  const [showFormulas, setShowFormulas] = useState(false);
+  const [showCaseStudy, setShowCaseStudy] = useState(false);
+  const [showOutputDetails, setShowOutputDetails] = useState(false);
+  const [showProtocolDetails, setShowProtocolDetails] = useState(false);
+  const [showBlock2More, setShowBlock2More] = useState(false);
+  const [showBlock3More, setShowBlock3More] = useState(false);
+  const [showBlock4More, setShowBlock4More] = useState(false);
+  const [showBlock5Popup, setShowBlock5Popup] = useState(false);
+  const [showBreakthroughPopup, setShowBreakthroughPopup] = useState(false);
+  const [showProofPopup, setShowProofPopup] = useState(false);
+  const [activeWorkflowStage, setActiveWorkflowStage] = useState<'intake' | 'analysis' | 'output' | null>(null);
+  const [showProtocolLetters, setShowProtocolLetters] = useState(false);
+  const [showUnifiedSystemOverview, setShowUnifiedSystemOverview] = useState(false);
+  const [unifiedActiveTab, setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
+  const [activeDocument, setActiveDocument] = useState<string | null>(null);
+  const [activeLayer, setActiveLayer] = useState<number | null>(null);
+  const [expandedEngine, setExpandedEngine] = useState<string | null>(null);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+  const [augmentedAISnapshot, setAugmentedAISnapshot] = useState<AugmentedAISnapshot | null>(null);
+  const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
+  const [augmentedRecommendedTools, setAugmentedRecommendedTools] = useState<AugmentedRecommendedTool[]>([]);
+  const [augmentedUnresolvedGaps, setAugmentedUnresolvedGaps] = useState<AugmentedGap[]>([]);
+  const [pendingActions, setPendingActions] = useState<PendingAction[]>([]);
+  const [approvalGateAction, setApprovalGateAction] = useState<PendingAction | null>(null);
+  const [liveDataCache, setLiveDataCache] = useState<Record<string, { country: string; gdpGrowth: number | null; exchangeRate: number | null; lastUpdated: string }>>({});
+  const [complianceWarnings, setComplianceWarnings] = useState<string[]>([]);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [fullSpectrumReasoningMode, setFullSpectrumReasoningMode] = useState(false);
+  const [enableFullCaseTreeMatching, setEnableFullCaseTreeMatching] = useState(false);
+  const [quickCountryFocus, setQuickCountryFocus] = useState('');
+  const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
+  const [quickCustomSector, setQuickCustomSector] = useState('');
+  const [quickCustomFocus, setQuickCustomFocus] = useState('');
+  const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
+  const [activeGlobalIssuePack, setActiveGlobalIssuePack] = useState<string | null>(null);
+  const [pilotFocusSelections, setPilotFocusSelections] = useState<string[]>([]);
+  const [showFinalReport, setShowFinalReport] = useState(false);
+  const [generatedDocuments, setGeneratedDocuments] = useState<{ id: string; title: string; content: string; category: 'letter' | 'report'; htmlContent: string }[]>([]);
+  const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
+  const [selectedReportTier, setSelectedReportTier] = useState<ReportTierKey | null>(null);
+  const [selectedReportLength, setSelectedReportLength] = useState<string | null>(null);
+  const [selectedReportStyle, setSelectedReportStyle] = useState<string | null>(null);
+  const [selectedReportAudience, setSelectedReportAudience] = useState<string | null>(null);
+  const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
+  const [showTierSelection, setShowTierSelection] = useState(false);
+  const [showLengthSelection, setShowLengthSelection] = useState(false);
+  const [showStyleSelection, setShowStyleSelection] = useState(false);
+  const [showAudienceSelection, setShowAudienceSelection] = useState(false);
+  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>(null);
+  const [showDocumentTypeRouter, setShowDocumentTypeRouter] = useState(false);
+  const [showIntelligentDocGen, setShowIntelligentDocGen] = useState(false);
+  const [showPersistentMemory, setShowPersistentMemory] = useState(false);
+  const [showOutcomeLearning, setShowOutcomeLearning] = useState(false);
+  const [showAgenticAI, setShowAgenticAI] = useState(false);
+  const [showCaseStudyAnalyzer, setShowCaseStudyAnalyzer] = useState(false);
+  const [showCaseGraphBuilder, setShowCaseGraphBuilder] = useState(false);
+  const [showRecommendationScorer, setShowRecommendationScorer] = useState(false);
+  const [showMissionGraph, setShowMissionGraph] = useState(false);
+  const [showRegionalOrchestrator, setShowRegionalOrchestrator] = useState(false);
+  const [showBrainIntegration, setShowBrainIntegration] = useState(false);
+  const [showDocumentExporter, setShowDocumentExporter] = useState(false);
+  const [showDocxExporter, setShowDocxExporter] = useState(false);
+  const [showAdaptiveQuestionnaire, setShowAdaptiveQuestionnaire] = useState(false);
+  const [showPDFAnnotation, setShowPDFAnnotation] = useState(false);
+  const [showReportOrchestrator, setShowReportOrchestrator] = useState(false);
+  const [showAgentOrchestrator, setShowAgentOrchestrator] = useState(false);
+  const [showTTSService, setShowTTSService] = useState(false);
+  const [showHistoricalMatcher, setShowHistoricalMatcher] = useState(false);
+  const [showUnbiasedAnalysis, setShowUnbiasedAnalysis] = useState(false);
+  const [showCounterfactual, setShowCounterfactual] = useState(false);
+  const [showSituationAnalysis, setShowSituationAnalysis] = useState(false);
+  const [showNSILIntelligence, setShowNSILIntelligence] = useState(false);
+  const [showMotivationDetector, setShowMotivationDetector] = useState(false);
+  const [showUserSignalDecoder, setShowUserSignalDecoder] = useState(false);
+  const [showAdversarialReasoning, setShowAdversarialReasoning] = useState(false);
+  const [showLocationIntelligence, setShowLocationIntelligence] = useState(false);
+  const [showDecisionPipeline, setShowDecisionPipeline] = useState(false);
+  const [showEventBus, setShowEventBus] = useState(false);
+  const [showAutonomousScheduler, setShowAutonomousScheduler] = useState(false);
+  const [showMultiAgentOrchestrator, setShowMultiAgentOrchestrator] = useState(false);
+  const [showPartnerIntelligence, setShowPartnerIntelligence] = useState(false);
+  const [showReactiveIntelligence, setShowReactiveIntelligence] = useState(false);
+  const [showSelfLearning, setShowSelfLearning] = useState(false);
+  const [showSelfImprovement, setShowSelfImprovement] = useState(false);
+  const [showConversationMemory, setShowConversationMemory] = useState(false);
+  const [showFunctionCalling, setShowFunctionCalling] = useState(false);
+  const [showRegionalIntel, setShowRegionalIntel] = useState(false);
+  const [showOutputModeration, setShowOutputModeration] = useState(false);
+  const [showPIIDetection, setShowPIIDetection] = useState(false);
+  const [showEvaluationFramework, setShowEvaluationFramework] = useState(false);
+  const [showMonitoring, setShowMonitoring] = useState(false);
+  const [showVectorStore, setShowVectorStore] = useState(false);
+  const [showSecurityService, setShowSecurityService] = useState(false);
+  const [showGradientRanking, setShowGradientRanking] = useState(false);
+  const [showFailureMode, setShowFailureMode] = useState(false);
+  const [showSafetyGuardrails, setShowSafetyGuardrails] = useState(false);
+  const [showStructuredOutput, setShowStructuredOutput] = useState(false);
+  const [showDocumentIntegrity, setShowDocumentIntegrity] = useState(false);
+  const [showAgentWorkflow, setShowAgentWorkflow] = useState(false);
+  const [showAutonomousMode, setShowAutonomousMode] = useState(false);
+  const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
+  const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
+  const [insights, setInsights] = useState<string[]>([]);
+  const [combinedInsights, setCombinedInsights] = useState<string[]>([]);
+  const [reportData, setReportData] = useState<object | null>(null);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [genPhase, setGenPhase] = useState<string | null>(null);
+  const [genProgress, setGenProgress] = useState(0);
+  const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
+  const [showNSILWorkspace, setShowNSILWorkspace] = useState(false);
+  const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
+  const [pendingConsultantQuery, setPendingConsultantQuery] = useState<string | null>(null);
+  const [pendingConsultantContext, setPendingConsultantContext] = useState<{ city?: string; country?: string; summary?: string; profile?: Record<string, unknown>; research?: object | null } | null>(null);
+  const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');
+  const [reactiveDraftHint, setReactiveDraftHint] = useState('');
+  const [documentBuilderActive, setDocumentBuilderActive] = useState(false);
+
+  // ── Missing state/ref declarations ─────────────────────────────────────────
+  // Refs
+  const agenticAIRef = useRef<BWConsultantAgenticAI>(new BWConsultantAgenticAI());
+  const agentRegistry = useRef(new AgentToolRegistry());
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const learningProfileInputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const lastKernelSignalRef = useRef<string>('');
+  const quickSyncSignatureRef = useRef<string>('');
+  const strategicApplySignatureRef = useRef<string>('');
+
+  // State — access control & mode
+  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
+  const [augmentedCapabilityMode, setAugmentedCapabilityMode] = useState('standard');
+  const [augmentedCapabilityTags, setAugmentedCapabilityTags] = useState<string[]>([]);
+  const [augmentedPanelExpanded, setAugmentedPanelExpanded] = useState(false);
+  const [augmentedReviewLoading, setAugmentedReviewLoading] = useState(false);
+  const [showAugmentedPanel, setShowAugmentedPanel] = useState(false);
+  const [showAboutBWGA, setShowAboutBWGA] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showExecutionTimeline, setShowExecutionTimeline] = useState(false);
+  const [showFullCatalog, setShowFullCatalog] = useState(false);
+  const [showPilotHowTo, setShowPilotHowTo] = useState(false);
+  const [showPilotWindow, setShowPilotWindow] = useState(false);
+  const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
+
+  // State — autonomous & progress
+  const [autonomousProgress, setAutonomousProgress] = useState<{ phase: string; phaseName: string; overallPercent: number; currentTask: string; agentLog: string[] } | null>(null);
+  const [isAutonomousRunning, setIsAutonomousRunning] = useState(false);
+
+  // State — copy/feedback
+  const [copied, setCopied] = useState(false);
+  const [feedbackNote, setFeedbackNote] = useState('');
+  const [feedbackSignal, setFeedbackSignal] = useState<'positive' | 'negative' | 'partial' | ''>('');
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackMap, setFeedbackMap] = useState<Record<string, string>>({});
+
+  // State — case graph
+  const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
+
+  // State — entity/decision
+  const [entityDecisions, setEntityDecisions] = useState<Record<string, string>>({});
+  const [fiveEngineTribunal, setFiveEngineTribunal] = useState<FiveEngineTribunal | null>(null);
+  const [perceptionDelta, setPerceptionDelta] = useState<PerceptionDelta | null>(null);
+  const [missionSnapshot, setMissionSnapshot] = useState<MissionSnapshot | null>(null);
+
+  // State — execution timeline
+  const [executionTimeline, setExecutionTimeline] = useState<{ id: string; label: string; status: string; detail: string }[]>([]);
+
+  // State — live insights
+  const [liveInsightQuery, setLiveInsightQuery] = useState('');
+  const [liveInsightError, setLiveInsightError] = useState<string | null>(null);
+  const [liveInsightFilter, setLiveInsightFilter] = useState('all');
+  const [liveInsightLoading, setLiveInsightLoading] = useState(false);
+  const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
+  const [liveInsightRunReason, setLiveInsightRunReason] = useState('');
+  const [liveInsightQueryUsed, setLiveInsightQueryUsed] = useState('');
+  const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState<string | null>(null);
+  const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
+  const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');
+  const [liveInsightProviderStatus, setLiveInsightProviderStatus] = useState('');
+  const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
+
+  // State — output & generation
+  const [generatedContent, setGeneratedContent] = useState<string>('');
+  const [generatingProgress, setGeneratingProgress] = useState<{ current: number; total: number } | null>(null);
+  const [generationScope, setGenerationScope] = useState('');
+  const [outputDepth, setOutputDepth] = useState('balanced');
+  const [preferredOutputMode, setPreferredOutputMode] = useState('narrative');
+  const [quickDraftLines, setQuickDraftLines] = useState('');
+  const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
+  const [locale, setLocale] = useState('en');
+  const [skillLevel, setSkillLevel] = useState('professional');
+
+  // State — pilot/options
+  const [pilotFocus, setPilotFocus] = useState('');
+  const [pilotModeEnabled, setPilotModeEnabled] = useState(false);
+  const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
+  const [pilotOptionPreferences, setPilotOptionPreferences] = useState<Record<string, 'include' | 'exclude'>>({});
+  const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
+  const [customPilotOptions, setCustomPilotOptions] = useState<{ id: string; label: string; prompt: string }[]>([]);
+  const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
+
+  // State — recommendations
+  const [recommendationBoostMap, setRecommendationBoostMap] = useState<Record<string, number>>({});
+  const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
+  const [recommendationScoreMap, setRecommendationScoreMap] = useState<Record<string, RecommendationScore>>({});
+  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+  const [reportOptionsDocType, setReportOptionsDocType] = useState('');
+
+  // State — strategic apply
+  const [strategicApplyError, setStrategicApplyError] = useState<string | null>(null);
+  const [strategicApplyLoading, setStrategicApplyLoading] = useState(false);
+  const [strategicApplyUpdatedAt, setStrategicApplyUpdatedAt] = useState<string | null>(null);
+  const [strategicAutoApplyEnabled, setStrategicAutoApplyEnabled] = useState(false);
+  const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
+  const [strictLearningImport, setStrictLearningImport] = useState(false);
+  const [topGapQuickInput, setTopGapQuickInput] = useState('');
+
+  // State — audit panel
+  const [consultantAuditAutoRefresh, setConsultantAuditAutoRefresh] = useState(false);
+  const [consultantAuditCopiedRequestId, setConsultantAuditCopiedRequestId] = useState<string | null>(null);
+  const [consultantAuditError, setConsultantAuditError] = useState<string | null>(null);
+  const [consultantAuditEventFilter, setConsultantAuditEventFilter] = useState('all');
+  const [consultantAuditEvents, setConsultantAuditEvents] = useState<ConsultantAuditEvent[]>([]);
+  const [consultantAuditExporting, setConsultantAuditExporting] = useState(false);
+  const [consultantAuditLoading, setConsultantAuditLoading] = useState(false);
+  const [consultantAuditLookupEvents, setConsultantAuditLookupEvents] = useState<ConsultantAuditEvent[]>([]);
+  const [consultantAuditLookupLoading, setConsultantAuditLookupLoading] = useState(false);
+  const [consultantAuditLookupRequestId, setConsultantAuditLookupRequestId] = useState('');
+  const [consultantAuditMeta, setConsultantAuditMeta] = useState<{ count?: number; [key: string]: unknown }>({});
+  const [consultantAuditPage, setConsultantAuditPage] = useState(1);
+  const [consultantAuditProviderFilter, setConsultantAuditProviderFilter] = useState('all');
+  const [consultantAuditSearch, setConsultantAuditSearch] = useState('');
+  const [consultantAuditTrends, setConsultantAuditTrends] = useState<ConsultantAuditTrendMetrics | null>(null);
+  const [consultantAuditWindowMode, setConsultantAuditWindowMode] = useState('panel');
+  const [consultantReplayMeta, setConsultantReplayMeta] = useState<ConsultantReplayMeta | null>(null);
+  const [consultantRetryLoading, setConsultantRetryLoading] = useState(false);
+  const [consultantRetryReason, setConsultantRetryReason] = useState('');
+  const [consultantRetrySource, setConsultantRetrySource] = useState('');
+
+  // Callbacks — execution timeline
+  const initializeExecutionTimeline = useCallback(() => {
+    setExecutionTimeline([
+      { id: 'ingestion', label: 'Input Processing', status: 'pending', detail: '' },
+      { id: 'insight', label: 'Intelligence Scan', status: 'pending', detail: '' },
+      { id: 'response', label: 'Response Generation', status: 'pending', detail: '' },
+    ]);
+  }, []);
+
+  const setExecutionTaskStatus = useCallback((taskId: string, status: string, detail: string) => {
+    setExecutionTimeline(prev => prev.map(t => t.id === taskId ? { ...t, status, detail } : t));
+  }, []);
+
+  // Callbacks — feedback & augmented AI
+  const handleMessageFeedback = useCallback((msgId: string, signal: string) => {
+    setFeedbackMap(prev => ({ ...prev, [msgId]: signal }));
+  }, []);
+
+  const captureAugmentedAIFromPayload = useCallback((payload: Record<string, unknown>) => {
+    setAugmentedAISnapshot(payload as unknown as AugmentedAISnapshot);
+  }, []);
+
+  // Stub function for queueAction (needs proper implementation)
+  const queueAction = useCallback((action: { id: string; label: string; description: string; category: 'submit' | 'escalate' | 'document' | 'notify' }) => {
+    setPendingActions(prev => [...prev, { ...action, status: 'pending' as const }]);
+  }, []);
   const voiceSpeakingRef = useRef(false);
   const displayedMsgIds = useRef<Set<string>>(new Set());
   const spokenMsgIds = useRef<Set<string>>(new Set());
@@ -1204,559 +1486,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       }
     };
 
-    rec.onerror = () => {
-      setIsListening(false);
-      recognitionRef.current = null;
-    };
-
-    rec.onend = () => {
-      // Strip any leftover interim placeholder
-      setInputValue(prev => prev.replace(/\s*\[….*?\]$/, '').trim());
-      setIsListening(false);
-      recognitionRef.current = null;
-    };
-
+    rec.onend = () => setIsListening(false);
     rec.start();
   }, [isListening]);
-  const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');
-  const [reactiveDraftHint, setReactiveDraftHint] = useState('');
-  const [executionTimeline, setExecutionTimeline] = useState<ExecutionTask[]>([]);
-  const [showExecutionTimeline, setShowExecutionTimeline] = useState(false);
-  const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');
-  
 
-  // File upload
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const learningProfileInputRef = useRef<HTMLInputElement>(null);
-  const quickSyncSignatureRef = useRef('');
-  const strategicApplySignatureRef = useRef('');
-  const matterFingerprintRef = useRef('');
-  const matterArchiveRef = useRef<Array<{
-    matter: string;
-    country: string;
-    sector: string;
-    entities: string[];
-    timestamp: number;
-  }>>([]);
-  
-  // Workspace modal
-  const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
-  const [pilotModeEnabled, _setPilotModeEnabled] = useState(true);
-  const [showPilotWindow, setShowPilotWindow] = useState(false);
-  const [showPilotHowTo, setShowPilotHowTo] = useState(false);
-  const [showAboutBWGA, setShowAboutBWGA] = useState(false);
-  const [showFinalReport, setShowFinalReport] = useState(false);
-  const [showFullCatalog, setShowFullCatalog] = useState(false);
-  const [_pilotFocus, setPilotFocus] = useState<PilotModeFocus>('new-markets');
-  const [pilotFocusSelections, setPilotFocusSelections] = useState<PilotModeFocus[]>([]);
-  const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
-  const [pilotOptionPreferences, setPilotOptionPreferences] = useState<Record<string, PilotOptionPreference>>({});
-  const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');
-  const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);
-  const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
-  const [activeGlobalIssuePack] = useState<string>(''); // not pre-set - resolved from conversation
-  const [quickCountryFocus, setQuickCountryFocus] = useState('');
-  const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
-  const [quickCustomSector] = useState('');
-  const [quickCustomFocus] = useState('');
-  const [quickDraftLines, setQuickDraftLines] = useState('');
-  const [strategicAutoApplyEnabled] = useState(true);
-  const [strategicApplyLoading, setStrategicApplyLoading] = useState(false);
-  const [strategicApplyError, setStrategicApplyError] = useState('');
-  const [, setStrategicApplyUpdatedAt] = useState('');
-  const [liveInsightQuery, setLiveInsightQuery] = useState('');
-  const [liveInsightLoading, setLiveInsightLoading] = useState(false);
-  const [liveInsightError, setLiveInsightError] = useState('');
-  const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
-  const [, setLiveInsightUpdatedAt] = useState('');
-  const [, setLiveInsightQueryUsed] = useState('');
-  const [, setLiveInsightProviderStatus] = useState('');
-  const [, setLiveInsightRunReason] = useState('');
-  const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');
-  const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
-  const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');
-  
-  // Document generation
-  const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
-  // Report options panel - shown after document upload OR document intent detection
-  const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
-  const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
-  const [reportOptionsDocType, setReportOptionsDocType] = useState('');
-  const [showReportOptions, setShowReportOptions] = useState(false);
-  const [_documentBuilderActive, setDocumentBuilderActive] = useState(false);
-  const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
-  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
-  const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');
-  const [preferredOutputMode, setPreferredOutputMode] = useState<'auto' | 'letter' | 'document' | 'case-study' | 'full-pack'>('auto');
-  const [enableFullCaseTreeMatching, setEnableFullCaseTreeMatching] = useState(true);
-  const [fullSpectrumReasoningMode, setFullSpectrumReasoningMode] = useState(true);
-  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
-  const [generatedDocuments, setGeneratedDocuments] = useState<Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}>>([]);
-  const [generatingProgress, setGeneratingProgress] = useState<{current: number; total: number} | null>(null);
-  // ── Autonomous Agent state ──────────────────────────────────────────────────────
-  const [isAutonomousRunning, setIsAutonomousRunning] = useState(false);
-  const [autonomousProgress, setAutonomousProgress] = useState<OrchestratorProgress | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);
-  const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');
-  const [_adaptiveQuestionsAsked, _setAdaptiveQuestionsAsked] = useState(0);
-  const [_skillLevel, setSkillLevel] = useState<'beginner' | 'intermediate' | 'advanced' | 'expert' | 'custom'>('beginner');
-  const [readinessScore, setReadinessScore] = useState(0);
-  const [_caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
-  const [recommendationRationaleMap, setRecommendationRationaleMap] = useState<Record<string, string>>({});
-  const [recommendationScoreMap, setRecommendationScoreMap] = useState<Record<string, RecommendationScore>>({});
-  const [recommendationBoostMap, setRecommendationBoostMap] = useState<Record<string, number>>({});
-  const [feedbackSignal, setFeedbackSignal] = useState<'positive' | 'partial' | 'negative' | null>(null);
-  const [feedbackNote, setFeedbackNote] = useState('');
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-  const [strictLearningImport, setStrictLearningImport] = useState(false);
-  const [topGapQuickInput, setTopGapQuickInput] = useState('');
-  const [entityDecisions, setEntityDecisions] = useState<Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>>({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
-  const [missionSnapshot, setMissionSnapshot] = useState<MissionSnapshot | null>(null);
-
-  // Institutional OS layers: feedback, live data, actions, governance, locale, onboarding
-  const [feedbackMap, setFeedbackMap] = useState<Record<string, 'up' | 'down'>>({});
-  const [locale, setLocale] = useState<string>('en');
-  const [pendingActions, setPendingActions] = useState<PendingAction[]>([]);
-  const [approvalGateAction, setApprovalGateAction] = useState<PendingAction | null>(null);
-  const [liveDataCache, setLiveDataCache] = useState<Record<string, { country: string; gdpGrowth?: number|null; exchangeRate?: number|null; lastUpdated: string }>>({});
-  const [showOnboarding, setShowOnboarding] = useState(true);
-  const [complianceWarnings, setComplianceWarnings] = useState<string[]>([]);
-  const [consultantAuditEvents, setConsultantAuditEvents] = useState<ConsultantAuditEvent[]>([]);
-  const [consultantAuditMeta, setConsultantAuditMeta] = useState<{ count: number; limit: number } | null>(null);
-  const [consultantAuditLoading, setConsultantAuditLoading] = useState(false);
-  const [consultantAuditError, setConsultantAuditError] = useState('');
-  const [consultantAuditExporting, setConsultantAuditExporting] = useState(false);
-  const [consultantAuditEventFilter, setConsultantAuditEventFilter] = useState<ConsultantAuditEventFilter>('all');
-  const [consultantAuditProviderFilter, setConsultantAuditProviderFilter] = useState<ConsultantAuditProviderFilter>('all');
-  const [consultantAuditSearch, setConsultantAuditSearch] = useState('');
-  const [consultantAuditWindowMode, setConsultantAuditWindowMode] = useState<'all' | '24h'>('all');
-  const [consultantAuditPage, setConsultantAuditPage] = useState(1);
-  const [consultantAuditCopiedRequestId, setConsultantAuditCopiedRequestId] = useState('');
-  const [consultantAuditTrends, setConsultantAuditTrends] = useState<ConsultantAuditTrendMetrics | null>(null);
-  const [consultantAuditAutoRefresh, setConsultantAuditAutoRefresh] = useState(false);
-  const [consultantAuditLookupRequestId, setConsultantAuditLookupRequestId] = useState('');
-  const [consultantAuditLookupLoading, setConsultantAuditLookupLoading] = useState(false);
-  const [consultantAuditLookupEvents, setConsultantAuditLookupEvents] = useState<ConsultantAuditEvent[]>([]);
-  const [consultantReplayMeta, setConsultantReplayMeta] = useState<ConsultantReplayMeta | null>(null);
-  const [consultantRetryLoading, setConsultantRetryLoading] = useState(false);
-  const [consultantRetrySource, setConsultantRetrySource] = useState<'none' | 'backend-replay' | 'local-fallback'>('none');
-  const [consultantRetryReason, setConsultantRetryReason] = useState('');
-  const [augmentedAISnapshot, setAugmentedAISnapshot] = useState<AugmentedAISnapshot | null>(null);
-  const [augmentedRecommendedTools, setAugmentedRecommendedTools] = useState<AugmentedRecommendedTool[]>([]);
-  const [augmentedUnresolvedGaps, setAugmentedUnresolvedGaps] = useState<AugmentedGap[]>([]);
-  const [augmentedCapabilityMode, setAugmentedCapabilityMode] = useState('');
-  const [augmentedCapabilityTags, setAugmentedCapabilityTags] = useState<string[]>([]);
-  const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
-  const [augmentedPanelExpanded, setAugmentedPanelExpanded] = useState(false);
-  const [augmentedReviewLoading, setAugmentedReviewLoading] = useState(false);
-  const [showAugmentedPanel, setShowAugmentedPanel] = useState(false);
-  const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
-  const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
-  const [perceptionDelta, setPerceptionDelta] = useState<PerceptionDelta | null>(null);
-  const [fiveEngineTribunal, setFiveEngineTribunal] = useState<FiveEngineTribunal | null>(null);
-
-  // Refs
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const lastKernelSignalRef = useRef<string>('');
-  const agenticAIRef = useRef(new BWConsultantAgenticAI());
-  const sessionId = useRef(crypto.randomUUID());
-  const agentRegistry = useRef((() => {
-    const r = new AgentToolRegistry();
-    registerBuiltInTools(r);
-    return r;
-  })());
-  const agentMemory = useRef(new AgentMemoryStore());
-
-  useEffect(() => {
-    const normalizeMatter = (value: string) => value
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    const tokenizeMatter = (value: string) => normalizeMatter(value)
-      .split(' ')
-      .filter((token) => token.length >= 4);
-
-    // Extract key entities (locations, people, orgs) from text for semantic linking
-    const extractEntities = (text: string): string[] => {
-      const lc = text.toLowerCase();
-      const entities: string[] = [];
-      // Location keywords
-      const locationPatterns = [
-        /\b(pagadian|manila|cebu|davao|zamboanga|mindanao|luzon|visayas|sydney|melbourne|lagos|nairobi|dubai|singapore|tokyo|london|berlin|riyadh|jakarta|bangkok|hanoi|mumbai|delhi|shanghai|beijing)\b/gi,
-        /\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s+(?:city|province|region|state|district|municipality)\b/gi,
-      ];
-      for (const pat of locationPatterns) {
-        const matches = text.match(pat) || [];
-        entities.push(...matches.map(m => m.toLowerCase().trim()));
-      }
-      // Person titles
-      const personMatch = text.match(/\b(?:mayor|governor|minister|president|senator|secretary|ambassador|ceo|director)\s+\w+(?:\s+\w+)?/gi);
-      if (personMatch) entities.push(...personMatch.map(m => m.toLowerCase().trim()));
-      // Sector keywords
-      const sectorWords = ['investment', 'partner', 'trade', 'agriculture', 'manufacturing', 'tourism', 'energy', 'mining', 'infrastructure', 'development', 'business', 'market', 'economy', 'regional', 'rural', 'urban'];
-      for (const sw of sectorWords) {
-        if (lc.includes(sw)) entities.push(sw);
-      }
-      return [...new Set(entities)];
-    };
-
-    const previousFingerprint = matterFingerprintRef.current;
-    const currentMatter = caseStudy.currentMatter.trim();
-    const currentFingerprint = normalizeMatter(currentMatter);
-
-    if (!currentFingerprint) {
-      matterFingerprintRef.current = '';
-      return;
-    }
-
-    if (!previousFingerprint) {
-      matterFingerprintRef.current = currentFingerprint;
-      // Archive this as the first matter
-      matterArchiveRef.current = [{
-        matter: currentMatter.substring(0, 300),
-        country: caseStudy.country,
-        sector: caseStudy.organizationType,
-        entities: extractEntities(currentMatter),
-        timestamp: Date.now(),
-      }];
-      return;
-    }
-
-    if (previousFingerprint === currentFingerprint) {
-      return;
-    }
-
-    const previousTokens = new Set(tokenizeMatter(previousFingerprint));
-    const currentTokens = tokenizeMatter(currentFingerprint);
-    const overlapCount = currentTokens.filter((token) => previousTokens.has(token)).length;
-    const overlapRatio = currentTokens.length > 0 ? overlapCount / currentTokens.length : 0;
-
-    // ── SMART MATTER DETECTION ──────────────────────────────────────────────
-    // Instead of a hard token-overlap threshold, check for semantic connections:
-    // shared country, shared sector, shared entities (people, places, topics)
-    const currentEntities = extractEntities(currentMatter);
-    const previousEntities = extractEntities(previousFingerprint);
-    const sharedEntities = currentEntities.filter(e => previousEntities.includes(e));
-
-    // Check if country context is shared
-    const sharedCountry = !!(caseStudy.country && caseStudy.country.trim().length > 0);
-
-    // Check if any archived matter shares entities with the new one
-    const linkedToArchive = matterArchiveRef.current.some(archived => {
-      const archivedEntities = archived.entities;
-      return (
-        archivedEntities.some(e => currentEntities.includes(e)) ||
-        (archived.country && archived.country === caseStudy.country) ||
-        (archived.sector && archived.sector === caseStudy.organizationType)
-      );
-    });
-
-    // A matter is truly new only if:
-    // 1. Token overlap is very low (< 0.20 instead of 0.35)
-    // 2. AND no shared entities with current or archived matters
-    // 3. AND no shared country/sector context
-    const isTokenDisjoint = currentMatter.length >= 40 && overlapRatio < 0.20;
-    const hasSemanticLink = sharedEntities.length > 0 || sharedCountry || linkedToArchive;
-    const isTrulyNewMatter = isTokenDisjoint && !hasSemanticLink;
-
-    matterFingerprintRef.current = currentFingerprint;
-
-    // Archive the current matter regardless
-    matterArchiveRef.current = [
-      ...matterArchiveRef.current.slice(-9), // keep last 10 matters
-      {
-        matter: currentMatter.substring(0, 300),
-        country: caseStudy.country,
-        sector: caseStudy.organizationType,
-        entities: currentEntities,
-        timestamp: Date.now(),
-      }
-    ];
-
-    if (!isTrulyNewMatter) {
-      // Topic shift detected but semantically linked - keep context, note the transition
-      if (overlapRatio < 0.35 && currentMatter.length >= 40) {
-        const linkDescription = sharedEntities.length > 0
-          ? `linked by: ${sharedEntities.slice(0, 3).join(', ')}`
-          : sharedCountry
-            ? `same region: ${caseStudy.country}`
-            : 'related to previous topics';
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: crypto.randomUUID(),
-            role: 'system',
-            content: `Topic shift noted (${linkDescription}). Carrying forward all prior context and intelligence to inform this line of inquiry.`,
-            timestamp: new Date(),
-            phase: 'discovery'
-          }
-        ]);
-      }
-      return;
-    }
-
-    // ── SELECTIVE RESET: Preserve what carries forward ──────────────────────
-    // Instead of wiping brainCtxRef entirely, preserve external data and
-    // historical patterns if the country is the same
-    const prevBrainCtx = brainCtxRef.current;
-    if (prevBrainCtx && caseStudy.country && prevBrainCtx.externalData) {
-      // Keep external data (country-level data carries forward)
-      // Only wipe the matter-specific analysis
-      brainCtxRef.current = {
-        ...prevBrainCtx,
-        promptBlock: '', // Clear the prompt-specific block
-      } as typeof prevBrainCtx;
-    } else {
-      brainCtxRef.current = null;
-    }
-
-    quickSyncSignatureRef.current = '';
-    strategicApplySignatureRef.current = '';
-    setQuickDraftLines('');
-    setStrategicApplyError('');
-    setLiveInsightError('');
-    setLiveInsightQuery('');
-    setLiveInsightResults([]);
-    setLiveInsightsRequested(false);
-    setLastLiveInsightSearchSignature('');
-
-    // Build a summary of what was discussed before for context continuity
-    const archivedTopics = matterArchiveRef.current
-      .slice(0, -1) // exclude the one we just added
-      .map(a => a.matter.substring(0, 100))
-      .filter(Boolean);
-    const topicHistoryNote = archivedTopics.length > 0
-      ? ` Previous topics in this session: ${archivedTopics.join('; ')}.`
-      : '';
-
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        role: 'system',
-        content: `New topic detected.${topicHistoryNote} Continue answering the user's question directly — do not restart the conversation or produce unrelated analysis.`,
-        timestamp: new Date(),
-        phase: 'discovery'
-      }
-    ]);
-  }, [caseStudy.currentMatter, caseStudy.country, caseStudy.organizationType]);
-
-  const initializeExecutionTimeline = useCallback(() => {
-    setExecutionTimeline([
-      { id: 'ingestion', label: 'Context ingest', status: 'queued' },
-      { id: 'response', label: 'Consultant response stream', status: 'queued' },
-      { id: 'insight', label: 'NSIL insight scan', status: 'queued' },
-      { id: 'followup', label: 'High-value follow-up planning', status: 'queued' }
-    ]);
-  }, []);
-
-  const setExecutionTaskStatus = useCallback((id: ExecutionTask['id'], status: ExecutionTaskStatus, detail?: string) => {
-    setExecutionTimeline((prev) => prev.map((task) => (
-      task.id === id ? { ...task, status, detail } : task
-    )));
-  }, []);
-
-  const handleMessageFeedback = useCallback((msgId: string, signal: 'up' | 'down') => {
-    const message = messages.find((entry) => entry.id === msgId);
-    setFeedbackMap((prev) => ({ ...prev, [msgId]: signal }));
-
-    const rankingQuery = {
-      country: caseStudy.country,
-      region: caseStudy.jurisdiction || caseStudy.country,
-      industry: [],
-      strategicIntent: [caseStudy.objectives, caseStudy.organizationMandate, caseStudy.currentMatter].filter(Boolean),
-      organizationType: caseStudy.organizationType,
-      problemStatement: caseStudy.currentMatter,
-    } as unknown as ReportParameters;
-
-    const learnedFeatures = gradientRankingEngine.recordRelevanceSignal(
-      msgId,
-      rankingQuery,
-      {
-        id: msgId,
-        country: caseStudy.country,
-        region: caseStudy.jurisdiction || caseStudy.country,
-        strategicIntent: rankingQuery.strategicIntent,
-        organizationType: caseStudy.organizationType,
-        problemStatement: caseStudy.currentMatter,
-        outcome: signal === 'up' ? 'success' : 'failure',
-        accessCount: signal === 'up' ? 5 : 0,
-        userRating: signal === 'up' ? 1 : 0,
-        timestamp: message?.timestamp?.toISOString() || new Date().toISOString(),
-      },
-      signal,
-    );
-
-    void memoryRef.current.remember('consultant_feedback', {
-      action: `Consultant response marked ${signal === 'up' ? 'helpful' : 'unhelpful'}`,
-      context: {
-        messageId: msgId,
-        country: caseStudy.country,
-        jurisdiction: caseStudy.jurisdiction,
-        objectives: caseStudy.objectives,
-        organizationType: caseStudy.organizationType,
-        currentMatter: caseStudy.currentMatter,
-        responsePreview: message?.content?.slice(0, 400) || '',
-        rankingFeatures: learnedFeatures,
-      },
-      outcome: {
-        success: signal === 'up',
-        signal,
-      },
-      lessonsLearned: [
-        signal === 'up'
-          ? 'Similar response patterns should rank higher for comparable advisory contexts.'
-          : 'Similar response patterns should be deprioritized or challenged before surfacing again.'
-      ],
-      confidence: message?.provenance?.confidence ? Math.max(0.2, Math.min(0.95, message.provenance.confidence / 100)) : 0.6,
-    });
-
-    OutcomeLearningService.recordOutcome({
-      caseId: msgId,
-      timestamp: new Date().toISOString(),
-      recommendedInterventions: ['consultant-response'],
-      successfulInterventions: signal === 'up' ? ['consultant-response'] : [],
-      governanceThreshold: 80,
-      rankingDelta: signal === 'up' ? 1 : -1
-    });
-    // Feed selfLearningEngine via EventBus so it can adapt performance weights
-    EventBus.publish({
-      type: 'outcomeRecorded',
-      reportId: msgId,
-      outcome: { success: signal === 'up', notes: `User feedback: ${signal}` }
-    });
-
-    FailureModeGovernanceService.recordOutcomeFeedback(signal === 'up' ? 'positive' : 'negative');
-  }, [caseStudy.country, caseStudy.currentMatter, caseStudy.jurisdiction, caseStudy.objectives, caseStudy.organizationMandate, caseStudy.organizationType, messages]);
-
-  const queueAction = useCallback((action: Omit<PendingAction, 'status'>) => {
-    setPendingActions((prev) => [
-      ...prev.filter((a) => a.id !== action.id),
-      { ...action, status: 'pending' }
-    ]);
-  }, []);
-
-  const captureAugmentedAIFromPayload = useCallback((payload: Record<string, unknown>) => {
-    const snapshot = payload?.augmentedAI as AugmentedAISnapshot | undefined;
-    const tools = Array.isArray(payload?.recommendedTools)
-      ? payload.recommendedTools as AugmentedRecommendedTool[]
-      : [];
-    const unresolved = Array.isArray(payload?.unresolvedGaps)
-      ? payload.unresolvedGaps as AugmentedGap[]
-      : [];
-    const capabilityMode = typeof payload?.capabilityMode === 'string' ? payload.capabilityMode : '';
-    const capabilityTags = Array.isArray(payload?.capabilityTags)
-      ? payload.capabilityTags.filter((item): item is string => typeof item === 'string')
-      : [];
-    const overlooked = payload?.overlookedIntelligence as OverlookedIntelligence | undefined;
-    const strategic = payload?.strategicPipeline as StrategicPipeline | undefined;
-    const parsedPerceptionDelta = payload?.perceptionDelta as PerceptionDelta | undefined;
-    const parsedTribunal = payload?.tribunal as FiveEngineTribunal | undefined;
-
-    if (snapshot) {
-      setAugmentedAISnapshot(snapshot);
-    }
-    setAugmentedRecommendedTools(tools.slice(0, 6));
-    setAugmentedUnresolvedGaps(unresolved.slice(0, 5));
-    setAugmentedCapabilityMode(capabilityMode);
-    setAugmentedCapabilityTags(capabilityTags);
-    if (overlooked) setOverlookedIntelligence(overlooked);
-    if (strategic) setStrategicPipeline(strategic);
-    if (parsedPerceptionDelta) setPerceptionDelta(parsedPerceptionDelta);
-    if (parsedTribunal) setFiveEngineTribunal(parsedTribunal);
-
-    if (parsedTribunal) {
-      if (parsedTribunal.verdict === 'hold') {
-        queueAction({
-          id: 'tribunal-release-hold',
-          label: 'Resolve tribunal hold',
-          description: parsedTribunal.topControls?.[0] || 'Tribunal blocked release. Resolve contradictions and controls before proceeding.',
-          category: 'escalate'
-        });
-      } else if (parsedTribunal.verdict === 'proceed_with_controls') {
-        queueAction({
-          id: 'tribunal-controls-required',
-          label: 'Apply tribunal controls',
-          description: parsedTribunal.topControls?.[0] || 'Tribunal requires controls before release.',
-          category: 'submit'
-        });
-      } else {
-        setPendingActions((prev) => prev.filter((action) => action.id !== 'tribunal-release-hold' && action.id !== 'tribunal-controls-required'));
-      }
-    }
-
-    const runtimeWarnings: string[] = [];
-    if (parsedTribunal?.releaseGate === 'red') {
-      runtimeWarnings.push('Tribunal release gate is RED - do not proceed without remediation controls.');
-    } else if (parsedTribunal?.releaseGate === 'amber') {
-      runtimeWarnings.push('Tribunal release gate is AMBER - proceed only with explicit controls.');
-    }
-    if (parsedPerceptionDelta && Math.abs(parsedPerceptionDelta.deltaIndex) >= 20) {
-      runtimeWarnings.push(`Perception drift is elevated (delta ${parsedPerceptionDelta.deltaIndex}); validate assumptions before commitment.`);
-    }
-    if (runtimeWarnings.length > 0) {
-      setComplianceWarnings((prev) => Array.from(new Set([...prev, ...runtimeWarnings])));
-    }
-
-    const topCriticalGap = unresolved.find((gap) => gap.severity === 'critical');
-    if (topCriticalGap) {
-      queueAction({
-        id: 'augmented-ai-critical-gap',
-        label: 'Close critical Augmented AI gap',
-        description: topCriticalGap.question,
-        category: 'escalate'
-      });
-    }
-  }, [queueAction]);
-
-  const submitAugmentedReview = useCallback(async (decision: 'accept' | 'modify' | 'reject') => {
-    setAugmentedReviewLoading(true);
+  const submitAugmentedReview = useCallback((decision: 'accept' | 'modify' | 'reject') => {
     setAugmentedReviewState(decision);
-
-    try {
-      await fetch('/api/ai/augmented-ai/review', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          decision,
-          mode: augmentedCapabilityMode || augmentedAISnapshot?.mode || 'general_help',
-          capabilityTags: augmentedCapabilityTags,
-          unresolvedGaps: augmentedUnresolvedGaps,
-          recommendedTools: augmentedRecommendedTools.map((tool) => ({ id: tool.id, name: tool.name, category: tool.category })),
-          timestamp: new Date().toISOString()
-        })
-      });
-
-      setMessages((prev) => ([
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          role: 'system',
-          content: `Augmented AI review recorded: ${decision.toUpperCase()}${decision === 'modify' ? ' (human override requested)' : ''}.`,
-          timestamp: new Date(),
-          phase: 'analysis'
-        }
-      ]));
-    } catch (error) {
-      console.warn('Failed to submit Augmented AI review:', error);
-      setMessages((prev) => ([
-        ...prev,
-        {
-          id: crypto.randomUUID(),
-          role: 'system',
-          content: 'Augmented AI review could not be recorded right now. Please retry.',
-          timestamp: new Date(),
-          phase: 'analysis'
-        }
-      ]));
-    } finally {
-      setAugmentedReviewLoading(false);
-    }
-  }, [augmentedCapabilityMode, augmentedAISnapshot, augmentedCapabilityTags, augmentedUnresolvedGaps, augmentedRecommendedTools]);
+  }, []);
 
   // ── AUTO-APPLY AUGMENTED REVIEW ────────────────────────────────────────────
   // Whenever a new augmented snapshot arrives, automatically accept it.
@@ -2822,7 +2558,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
           }
         ]));
       }
-    } catch (error) {
+        } catch (error) {
       console.warn('Failed to apply strategic factors:', error);
       setStrategicApplyError('Strategic factor application failed. Please retry.');
     } finally {
@@ -3146,7 +2882,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
           additionalContext
         };
       });
-    } catch (error) {
+        } catch (error) {
       console.error('Live world insights search failed:', error);
       setLiveInsightError('Live search failed. Please try again in a moment.');
     } finally {
@@ -3732,7 +3468,7 @@ ${agentRegistry.current.toManifest()}`;
 
       // Return empty string so callers can distinguish failure from a real response
       return '';
-    } catch (error) {
+        } catch (error) {
       console.error('AI processing error:', error);
       return '';
     }
@@ -3857,7 +3593,7 @@ ${agentRegistry.current.toManifest()}`;
       onChunk(errorMsg);
       return errorMsg;
 
-    } catch (error) {
+        } catch (error) {
       console.warn('[processWithAIStream] Pipeline failed:', error);
       const errorMsg = 'I was unable to generate a response. Please confirm the backend server is running and your API key is configured, then try again.';
       onChunk(errorMsg);
@@ -4334,7 +4070,8 @@ ${agentRegistry.current.toManifest()}`;
       }
     } catch { /* safety check is non-critical */ }
 
-    const inputSignal = classifyConsultantInput(userContent);
+    try {
+      const inputSignal = classifyConsultantInput(userContent);
     const extractedSignals = extractConsultantSignals(userContent);
 
     // ── Sector inference from raw input text ───────────────────────────────
@@ -4590,8 +4327,7 @@ ${agentRegistry.current.toManifest()}`;
     initializeExecutionTimeline();
     setExecutionTaskStatus('ingestion', 'running', 'Parsing user input and updating case draft');
 
-    try {
-      setCaseStudy(prev => ({
+    setCaseStudy(prev => ({
         ...prev,
         additionalContext: [...prev.additionalContext, userContent]
       }));
@@ -5033,965 +4769,76 @@ ${agentRegistry.current.toManifest()}`;
                     ).join('\n')
                   );
                 }
-              } catch { /* non-fatal */ }
-            }
-
-            // ── MULTI-AGENT CONTEXT (from background run, if ready) ────────────
-            if (multiAgentContextRef.current) {
-              blocks.push(multiAgentContextRef.current);
-            }
-
-            // ── EVENTBUS LIVE INTELLIGENCE (from background services) ────────────
-            if (eventBusInsightsRef.current.trim()) {
-              blocks.push(
-                `## LIVE SYSTEM INTELLIGENCE (EventBus - autonomous background services)\n` +
-                eventBusInsightsRef.current
-              );
-            }
-
-            // ── SELF-LEARNING ADAPTIVE STATE ────────────────────────────────────
-            {
-              const learningState = OutcomeLearningService.getState();
-              const _ = selfLearningEngine; // ensure singleton is live (wires EventBus subs)
-              void _;
-              if (learningState.records.length > 0) {
-                const successCount = learningState.records.filter(
-                  r => r.successfulInterventions.length > 0
-                ).length;
-                const successRate = Math.round((successCount / learningState.records.length) * 100);
-                blocks.push(
-                  `## ADAPTIVE SELF-LEARNING STATE (OutcomeLearningService - ${learningState.records.length} sessions logged)\n` +
-                  `Session success rate: ${successRate}% | ` +
-                  `Adaptive governance threshold: ${learningState.suggestedGovernanceThreshold}% | ` +
-                  `Ranking bias: ${learningState.suggestedRankingBias > 0 ? '+' : ''}${learningState.suggestedRankingBias.toFixed(1)}\n` +
-                  `Apply: calibrate confidence and governance strictness to these learned thresholds.`
-                );
+              } catch {
+                // Partner enrichment is optional and should not block response generation.
               }
             }
-
-            // ── TIER 3 ENGINE OUTPUTS (readiness >= 60) ──────────────────────
-
-            if (adversarialResult) {
-              const shield = adversarialResult.adversarialShield;
-              const motivation = adversarialResult.motivation;
-              const confidence = adversarialResult.adversarialConfidence;
-              blocks.push(
-                `## ADVERSARIAL REASONING (AdversarialReasoningService - multi-persona stress test)\n` +
-                (shield?.contradictionIndex !== undefined ? `Input contradiction index: ${shield.contradictionIndex}\n` : '') +
-                (shield?.escalations?.length ? `Shield escalations: ${shield.escalations.slice(0, 2).join('; ')}\n` : '') +
-                (motivation?.statedMotivation ? `Stated motivation: ${motivation.statedMotivation}\n` : '') +
-                (motivation?.alignmentScore !== undefined ? `Motivation alignment: ${motivation.alignmentScore}\n` : '') +
-                (confidence?.score !== undefined
-                  ? `Adversarial confidence score: ${confidence.score}/100`
-                  : '')
-              );
-            }
-
-            // ── INJECT ENGINE RESULTS INTO AGENTIC AI ──────────────────────────
-            // This lets the NSIL panel show intelligence from the 19-engine stack
-            // instead of generic liability warnings
-            try {
-              agenticAIRef.current.setEngineResults({
-                nsilStatus: nsilResult?.status,
-                nsilTrustScore: nsilResult?.trustScore,
-                nsilHeadline: nsilResult?.headline,
-                nsilTopConcerns: nsilResult?.topConcerns,
-                nsilTopOpportunities: nsilResult?.topOpportunities,
-                situationBlindSpots: situationResult?.blindSpots,
-                situationImplicitNeeds: situationResult?.implicitNeeds,
-                situationUnconsideredNeeds: situationResult?.unconsideredNeeds?.map(n => n.need),
-                historicalMatches: historicalResult?.matches?.slice(0, 3).map(m => ({
-                  title: m.title,
-                  country: m.country,
-                  year: m.year,
-                  outcome: m.outcome,
-                  lesson: m.lessonsLearned?.[0] || m.keyFactors?.[0] || ''
-                })),
-                historicalSuccessRate: historicalResult?.successRate,
-                counterfactualLossProbability: counterfactualResult?.monteCarlo?.probabilityOfLoss,
-                counterfactualMedianOutcome: counterfactualResult?.monteCarlo?.distribution?.p50,
-                adversarialRiskLevel: adversarialResult?.adversarialShield?.contradictionIndex?.toString(),
-                adversarialConcerns: adversarialResult?.adversarialShield?.escalations,
-                unbiasedRecommendation: unbiasedResult?.prosCons?.overallAssessment?.recommendation,
-                unbiasedConfidence: unbiasedResult?.prosCons?.overallAssessment?.confidence,
-                dataGaps: nsilFullResult?.recommendation?.criticalActions?.filter((a: string) => /gap|missing|unavailable|unknown/i.test(a)),
-                liveSearchResultCount: 0, // updated below after live search
-                locationProfileAvailable: !!locationProfileContextRef.current,
-                multiAgentDataGaps: multiAgentContextRef.current ? [] : ['Multi-agent analysis not yet complete'],
-                userQuery: trimmedUserContent,
-                entityIntel: null,       // populated by BWConsultantAgenticAI during consult()
-                vdemGovernance: null,     // populated by BWConsultantAgenticAI during consult()
-              });
-            } catch { /* non-fatal */ }
-
-            if (blocks.length > 0) {
-              advancedIntelligenceBlock =
-                `\n\n## ── ADVANCED INTELLIGENCE LAYER (19-engine NSIL stack + agentic location intelligence - not in standard AI advisory) ──\n\n` +
-                blocks.join('\n\n') +
-                `\n\nAPPLY ALL OF THE ABOVE: Reference the 19-engine NSIL master recommendation, surface unconsidered needs the client hasn't thought of, flag motivation risk signals, note any hidden agenda from user signals, cite historical precedents, surface latent (hidden) advantages the client is underselling, apply the multi-persona debate outcome, flag IFC compliance gaps, use Monte Carlo probabilities, and weave any live location intelligence into expert advisory prose. Do not bullet-list - synthesise into authoritative insight.`;
-            }
-          } catch (advErr) {
-            console.warn('[Advanced Intelligence] non-fatal:', advErr);
+            advancedIntelligenceBlock = blocks.join('\n\n');
+          } catch {
+            // Advanced intelligence engines are optional enrichments — errors do not block response generation
           }
         }
-        const priorTurns = memoryRef.current.recall('consultant-turns', 5);
-        const priorTurnsBlock = priorTurns.length
-          ? `\n\n### PRIOR SESSION CONTEXT (${priorTurns.length} remembered turns)\n` +
-            priorTurns.map(t => `- [${new Date(t.timestamp).toLocaleDateString()}] ${t.action.substring(0, 120)}`).join('\n')
-          : '';
 
-        // ── CONVERSATION HISTORY: Include recent messages so the AI sees the full thread ──
-        const recentHistory = messages
-          .filter(m => m.role === 'user' || m.role === 'assistant')
-          .slice(-8) // last 8 turns (4 exchanges)
-          .map(m => `${m.role === 'user' ? 'User' : 'Consultant'}: ${m.content.substring(0, 500)}`)
-          .join('\n\n');
-        const conversationHistoryBlock = recentHistory
-          ? `\n\n### CONVERSATION HISTORY (recent exchanges in this session)\nThe following is the recent conversation. Use this to maintain context, identify connections between topics, and avoid repeating information the user already received.\n\n${recentHistory}`
-          : '';
+        // ── AI RESPONSE GENERATION ─────────────────────────────────────────────
+        const contextParts = [
+          brainBlock,
+          advancedIntelligenceBlock,
+          multiAgentContextRef.current,
+          locationProfileContextRef.current,
+          eventBusInsightsRef.current,
+        ].filter(Boolean);
+        const systemContext = contextParts.join('\n\n---\n\n');
 
-        // ── MATTER ARCHIVE: Show the AI what topics have been discussed ──
-        const matterArchive = matterArchiveRef.current;
-        const matterArchiveBlock = matterArchive.length > 1
-          ? `\n\n### TOPICS DISCUSSED IN THIS SESSION (${matterArchive.length} topics)\n` +
-            matterArchive.map((m, i) => `${i + 1}. ${m.matter.substring(0, 150)}${m.country ? ` [${m.country}]` : ''}${m.sector ? ` (${m.sector})` : ''}`).join('\n') +
-            `\n\nINSTRUCTION: These topics may be interconnected. When the user asks about a new topic, consider whether it relates to or builds upon previous topics. Draw connections proactively. Do NOT treat each topic as isolated unless the user explicitly starts a completely new inquiry.`
-          : '';
-
-        const memoryBlock = `${priorTurnsBlock}${conversationHistoryBlock}${matterArchiveBlock}`;
         setIsStreamingResponse(true);
-        displayedMsgIds.current.add(assistantMessageId);
-        // Build the system instruction. For greeting/low-readiness turns inject a
-        // capability-led opening so the AI demonstrates value instead of running a
-        // scripted intake questionnaire like a basic chatbot.
-        const isOpeningTurn = !hadFileUpload && (liveReadiness < 20 || isGreetingOnly);
-
-        // Build a case context block from what was just extracted this turn
-        const thisTurnContext = [
-          caseDraft.organizationType ? `Sector/Industry: ${caseDraft.organizationType}` : null,
-          caseDraft.country ? `Country/Region: ${caseDraft.country}` : null,
-          caseDraft.organizationName ? `Organization: ${caseDraft.organizationName}` : null,
-          caseDraft.objectives ? `Objective: ${caseDraft.objectives}` : null,
-          caseDraft.currentMatter ? `Current matter: ${caseDraft.currentMatter}` : null,
-          caseDraft.contactRole ? `Contact role: ${caseDraft.contactRole}` : null,
-        ].filter(Boolean).join('\n');
-
-        // ── QUERY TYPE CLASSIFIER - determines engine routing + prompt framing ──
-        // Runs on every turn regardless of readiness to ensure correct engine mix
-        const isContinuationQuery = /^(proceed|continue|go ahead|carry on|go on|yes|ok|do it|go for it|keep going|what did you find|what have you found|tell me what you found|show me|elaborate|expand on|more detail|go deeper)/i.test(trimmedUserContent)
-          || /\b(proceed with|continue with|what you (have |)said|what you found|you mentioned|as you said|from before|earlier)\b/i.test(trimmedUserContent);
-        const isInfoQueryTurn = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)/i.test(trimmedUserContent)
-          || /\b(who is|who was|what is|what are|tell me about|more about)\b.{3,}/i.test(trimmedUserContent)
-          || /\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director|general|admiral|chief)\s+\w/i.test(trimmedUserContent);
-        const isPersonQuery = /\b(mayor|governor|minister|president|senator|secretary|ambassador|ceo|director|general|admiral|chief|mr\.|ms\.|dr\.|hon\.)\s+\w/i.test(trimmedUserContent);
-        const isLocationQuery = /\b(city|province|region|state|country|district|municipality|island|capital|town|village|prefecture|county|territory)\b/i.test(trimmedUserContent);
-        const isComplexAnalysis = /\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection)\b/i.test(trimmedUserContent) && !isContinuationQuery;
-        const isLetterRequest = /\b(write\s+a\s+letter|draft\s+a\s+letter|letter\s+to|write\s+to|reach\s+out\s+to|approach\s+them|formal\s+letter|letter\s+of\s+intent|LOI|introduce\s+(myself|us|our)|expression\s+of\s+interest|EOI|MOU|memorandum|proposal\s+letter|cover\s+letter|request\s+letter)\b/i.test(trimmedUserContent);
-        const isCaseStudyRequest = /\b(case\s+study|case\s+report|full\s+report|write\s+up|write\s+a\s+report|build\s+(me\s+)?a?\s*case|do\s+a\s+case|prepare\s+a\s+(report|brief|dossier)|put\s+together|assess\s+this|give\s+me\s+a\s+breakdown|deep\s+dive|comprehensive\s+(review|analysis|report))\b/i.test(trimmedUserContent);
-        const isComparisonRequest = /\b(compare|comparison|versus|vs\.?|which\s+is\s+better|difference\s+between|pros\s+and\s+cons|options|alternatives|weigh\s+up|side\s+by\s+side|benchmark|which\s+one|other\s+places|other\s+options|what\s+else|somewhere\s+else|another\s+country|elsewhere)\b/i.test(trimmedUserContent);
-        const isHistoricalRequest = /\b(precedent|historical|history|who\s+else|where\s+else|done\s+before|success\s+story|similar\s+project|another\s+country\s+did|been\s+done|example\s+of|case\s+where|model\s+for|replicate|adapt\s+from|learn\s+from|what\s+worked)\b/i.test(trimmedUserContent);
-        const _isSimpleFollowUp = isContinuationQuery || (messages.length > 2 && trimmedUserContent.length < 80 && !isComplexAnalysis);
-
-        // ── LIVE SEARCH for factual queries - retrieval-grounded answers ──────────
-        // Fires for info/person/location queries AND any substantive non-greeting
-        // query, so the AI is always grounded in retrieved facts.
-        let liveSearchBlock = '';
-        const shouldLiveSearch = !isGreetingOnly && (isInfoQueryTurn || isPersonQuery || isLocationQuery || isComplexAnalysis || isLetterRequest || isCaseStudyRequest || isComparisonRequest || isHistoricalRequest || trimmedUserContent.length > 30);
-        if (shouldLiveSearch) {
-          try {
-            const searchQuery = trimmedUserContent.replace(/^(tell me about|tell me more about|more about|who is|what is|what are|explain|describe|i want to know(?:\s+more)?\s+about)\s+/i, '').trim() || trimmedUserContent;
-            const liveResults = await ReactiveIntelligenceEngine.liveSearch(searchQuery, {
-              category: isPersonQuery ? 'leadership' : isLocationQuery ? 'location' : 'general',
-              country: caseDraft.country || undefined,
-            });
-            if (liveResults.length > 0) {
-              liveSearchBlock = `\n\n## LIVE RETRIEVAL RESULTS (ReactiveIntelligenceEngine - real-time search)\n` +
-                liveResults.slice(0, 5).map(r =>
-                  `**${r.title}** (${r.source || new URL(r.url || 'https://bwga.ai').hostname})\n${r.snippet}`
-                ).join('\n\n') +
-                `\n\nINSTRUCTION: Use the above retrieved facts as your primary source for this response. Synthesise into expert prose - cite the sources naturally. Do not repeat search result formatting.`;
-              // Update the agentic AI's engine results with live search count
-              try { agenticAIRef.current.setEngineResults({ ...(agenticAIRef.current.getEngineResults() || {}), liveSearchResultCount: liveResults.length }); } catch { /* non-fatal */ }
-            }
-          } catch { /* non-fatal - AI answers from training knowledge if search unavailable */ }
-        }
-
-        // ── WORLD-KNOWLEDGE BASE INSTRUCTION (applies every turn) ────────────────
-        const worldKnowledgeInstruction = `## WORLD-KNOWLEDGE OPERATING MODE
-You are a senior expert with encyclopaedic knowledge of the world - every country, city, government official, economic system, political structure, historical event, regulatory framework, and industry sector on earth. You think on your feet like a consultant who has worked in 80+ countries. You are also a skilled writer capable of producing letters, case studies, and reports on demand.
-
-When asked about ANY person, place, topic, or event:
-1. ANSWER FIRST with substantive factual knowledge - do not deflect, do not ask for context before answering
-2. ${isPersonQuery ? 'PERSON BRIEFING: Name, role/title, jurisdiction, time in office, known policy priorities, political alignment, notable decisions/achievements, international engagement record, key relationships, any controversies' : isLocationQuery ? 'LOCATION BRIEFING: Full geographic/political context, economic profile (GDP, key industries, employment, investment climate), infrastructure, demographics, governance structure, strategic advantages, known development projects, current political leadership' : isCaseStudyRequest ? 'CASE STUDY: Build a structured case from what the user has provided. Identify what they have, what gaps exist, and fill those gaps with real data. Structure with: Executive Summary, Situation Analysis, Comparative Analysis (similar successes elsewhere), Gap Analysis, Strategic Options, Recommended Actions, and Sources.' : isLetterRequest ? 'LETTER DRAFTING: Write a professional, context-appropriate letter. Assess the right tone (formal government, business introduction, partnership inquiry, information request). Include proper structure: addressee context, purpose statement, value proposition or request, credibility markers, and clear next steps. Adapt length and formality to the relationship and objective.' : isComparisonRequest ? 'COMPARISON ANALYSIS: Put ALL viable options on the table - not just the obvious ones. Compare across multiple dimensions: economic, regulatory, governance, infrastructure, risk, precedent, and strategic fit. Use real data where available. Surface options the user may not have considered. Include at least one non-obvious alternative from a different region or approach.' : isHistoricalRequest ? 'HISTORICAL PRECEDENT: Find real examples where something similar was done successfully (or failed instructively) in another part of the world. Name the country, year, project, what worked, what failed, key factors, and how it can be adapted to the user\u2019s situation. Draw from the 200+ case precedent database and live research.' : 'TOPIC BRIEFING: What it is, current status, key stakeholders, historical context, strategic implications, relevant data points and statistics'}
-3. After delivering the substantive answer, connect ONE insight to the user's broader advisory context if relevant
-4. Ask at most ONE targeted follow-up
-
-## DOCUMENT GENERATION CAPABILITIES
-You can produce ANY of the following ON DEMAND within the conversation - the user should never need to wait or navigate elsewhere:
-- **Letters**: Letters of introduction, expressions of interest, LOIs, MOUs, partnership proposals, government engagement letters, information request letters, cover letters. Always written in proper professional format with the right tone for the audience.
-- **Case Studies**: Full structured case analyses built from whatever information the user provides. You identify gaps in their information and fill them with real intelligence from the NSIL engines, live data sources, and historical precedents. A case study is not a summary - it is a working strategic document.
-- **Reports**: Executive briefs, risk assessments, market entry reports, due diligence frameworks, feasibility analyses, stakeholder plans. Assess the ideal length based on complexity - a simple market question gets 1-2 pages, a full partnership evaluation gets 10+.
-- **Comparisons**: Side-by-side analyses across jurisdictions, partners, markets, or strategies with scoring and ranking.
-
-When generating ANY document:
-- ASSESS ideal length from context: simple letter = 1 page, case study = 3-8 pages, full report = 10+ pages. The user should not need to specify length.
-- FILL GAPS: If the user gives you 40% of the picture, use the NSIL engines, live data, entity intelligence, and historical precedents to fill the other 60%. Tell them what you added and why.
-- THINK BEYOND SCOPE: Do not limit yourself to what is directly in front of you. If the user asks about a market, also surface adjacent opportunities, comparable successes from other regions, risks they haven't considered, and stakeholders they should be engaging. This is what separates an OS from a chatbot.
-- SOURCE EVERYTHING: At the end of any substantive response, provide a "Sources & Attribution" section listing where key facts came from (NSIL engine, live search, V-Dem governance data, OpenSanctions, GLEIF, historical precedent database, World Bank indicators, etc.). Never present unverified claims as established facts.
-
-## GEOPOLITICAL ARBITRAGE AWARENESS
-The world does not stand still. Wars, sanctions, trade fractures, supply-chain breaks, and political instability in MAJOR markets constantly create structural openings for REGIONAL and ALTERNATIVE markets — if someone spots them first.
-
-When advising ANY user on ANY market, country, or investment:
-- CHECK the Geopolitical Arbitrage Intelligence block (if provided above) for active disruptions
-- PROACTIVELY INFORM the user how current world events — good or bad — may affect their situation
-- When a crisis hurts a major market (sanctions on Russia, US-China tariffs, Red Sea shipping disruption, EU energy shock), identify where the user's regional city, small island, or lesser-known jurisdiction could CAPTURE displaced demand, talent, capital, or supply-chain links
-- CITE historical precedents: Vietnam replacing China in textiles post-tariff (2018), Dubai absorbing Gulf War capital (1991), Georgia's tech boom from Russian IT worker relocation (2022), Bangladesh capturing diverted garment orders
-- Think about OFFSETTING MARKETS: if the user's client is hurting from a global event, find where in the world that same event creates a buyer, a supplier, a partner, or a safer alternative
-- Small islands in the Philippines, Pacific nations, Caribbean states, African coastal cities — these are NOT peripheral. A supply-chain fracture in the South China Sea makes Mindanao's ports strategic. A sanctions regime makes Fiji's clean jurisdiction valuable. A European energy crisis makes Morocco's solar capacity relevant.
-- NEVER assume the user already knows about these connections. Surface them proactively — this is what separates an advisory OS from a search engine.
-
-## DATA INTEGRITY RULES
-- When you cannot verify a specific fact (a person's name, a statistic, a date), STATE CLEARLY what you could not confirm. Say "I could not verify the current mayor of X" rather than substituting generic national data.
-- Do NOT pad a city-specific question with country-level GDP data that doesn't answer the question.
-- When the user provides a correction or new fact, acknowledge it as NEW information — do not pretend you already knew it.
-- When asking about the system itself ("why did you show this?"), answer the meta-question directly — explain what triggered the insight panel.
-- If LIVE RETRIEVAL RESULTS are provided above, prefer them over training knowledge. If they contradict each other, flag the discrepancy.
-- When ENTITY INTELLIGENCE data is provided (sanctions screening, corporate registry, LEI, V-Dem governance, news sentiment), cite those sources by name. Do NOT fabricate entity details that are not in the provided data. If a source returned no data, say so.
-
-You NEVER say "I need more context before answering" - you answer with what you know, then gather context.`;
-
-        // ── ADAPTIVE RESPONSE FORMAT ──────────────────────────────────────────
-        // Simple/informational queries get natural conversational responses.
-        // Complex analysis/strategy/risk queries get the structured format.
-        const needsStructuredFormat = isComplexAnalysis || isCaseStudyRequest || isComparisonRequest;
-        const isSimpleQuery = (isInfoQueryTurn || isPersonQuery || isLocationQuery || isContinuationQuery) && !needsStructuredFormat;
-
-        const responseFormatInstruction = isSimpleQuery
-          ? `## RESPONSE FORMAT
-Respond naturally and directly — like a knowledgeable expert answering a question.
-Do NOT use the structured verification format (Situation Assessment / Verification Status / Risk Flags / etc.) for simple questions.
-Just answer the question with real, substantive information. Be thorough but conversational.
-If you have relevant data, share it. If you cannot verify something, say so clearly.
-After answering, you may ask ONE follow-up question if it would help the user.`
-          : needsStructuredFormat
-          ? `## RESPONSE FORMAT
-Use the structured verification format for this complex query:
-**SITUATION ASSESSMENT** → **VERIFICATION STATUS** → **ANALYSIS** → **RISK FLAGS** → **RECOMMENDED ACTIONS** → **NEXT VERIFICATION STEP**
-This is a substantive analytical query that benefits from structured intelligence output.`
-          : `## RESPONSE FORMAT
-Adapt your response format to the complexity of the query:
-- For simple factual questions, greetings, or informational lookups: respond naturally in conversational prose. Do NOT force the structured format.
-- For complex decisions, strategy, risk analysis, or multi-factor evaluations: use the structured format (Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions).
-- Match your depth to the question's complexity. A simple "who is X?" deserves a direct answer, not a risk assessment.`;
-
-        const openingInstruction = isOpeningTurn
-          ? `You are ADVERSIQ — an autonomous decision verification and intelligence system backed by the NSIL Agentic Runtime.
-
-CRITICAL RULES:
-- Do NOT say "I've captured the key elements of your input" - this phrase is BANNED.
-- Do NOT list numbered intake questions ("1) Name 2) Country 3) Decision") - that is scripted chatbot behaviour.
-- Do NOT invent case context that wasn't in the user's message.
-- Do NOT ask for context before answering - ANSWER FIRST, then optionally ask ONE follow-up.
-- Match your response format to the complexity of the question. Simple questions get direct answers. Complex decisions get structured analysis.
-
-${responseFormatInstruction}
-
-${worldKnowledgeInstruction}
-
-${thisTurnContext ? `## WHAT I EXTRACTED FROM THE USER'S MESSAGE THIS TURN:\n${thisTurnContext}\n\nUse this to give a specific, grounded response. Reference their actual sector and region.` : `## NO CASE CONTEXT YET\nThe user has provided minimal context. Answer their question directly with your world knowledge, then ask ONE open question about their situation.`}
-
-BEHAVIOUR:
-- Respond DIRECTLY to what the user actually said - show you understood it
-- Sound like a senior consultant who has worked across 80+ countries
-- If sector/country/objective can be inferred, show intelligence about THAT topic specifically
-- If the user asks for something to be written (letter, report, case study), WRITE IT immediately - do not describe what you could write
-- If the user describes a situation, think BEYOND what they've told you - surface comparisons, historical precedents, risks, and opportunities they haven't mentioned
-- Always attribute where your key facts came from at the end of substantive responses
-- Ask at most ONE follow-up - the single most valuable missing detail
-- Be concise, direct, and confident`
-          : `You are ADVERSIQ — autonomous intelligence and decision verification system. BANNED: "I've captured the key elements", numbered intake lists, asking for context before answering. ALWAYS answer the user's question directly FIRST. Think beyond the obvious scope. Attribute your sources.
-
-${responseFormatInstruction}
-
-${worldKnowledgeInstruction}
-
-${thisTurnContext ? `## CASE CONTEXT THIS TURN:\n${thisTurnContext}\n\nRespond to the user's intent first with a substantive answer, then advance the case with one follow-up if needed.` : `Respond to the user's intent first with a substantive answer. Use your world knowledge to deliver real information.`}`;
-
-        const docUploadBlock = hadFileUpload
-          ? `
-
-DOCUMENT UPLOAD - SENIOR CONSULTANT FIRST RESPONSE PROTOCOL
-============================================================
-The user has uploaded a document. You are a senior BW Global Advisory consultant who has just read it. Respond NATURALLY as a consultant - not a template, not a formal brief.
-
-YOUR RESPONSE MUST FOLLOW THIS EXACT STRUCTURE (but written in flowing, intelligent prose):
-
----
-
-**I've reviewed the [document type/title] - here's my read:**
-
-Open with ONE direct sentence naming exactly what this document is: the type (policy paper/feasibility study/research report/strategy brief/etc.), what it covers, and where (country/region/city). Show immediately that you read it.
-
----
-
-**What the document covers:**
-
-2-3 sentences that precisely describe the document's scope, purpose, and main argument. Be specific - name the countries, institutions, statistics, and timeframes mentioned in the document. This is NOT a summary - it's a consultant showing they absorbed the detail.
-
----
-
-**What the NSIL engines surfaced from this:**
-
-3-5 bullet points. Each must include a [bracketed engine name] and a SPECIFIC finding derived from the document content:
-
-• **[HistoricalMatcher]** - [Name a real historical parallel this document's situation matches, with country/year and the specific lesson that applies]
-• **[AdversarialReasoningService]** - [Name the key stakeholder tension or political risk surfaced - specific actors named in or implied by the document]
-• **[NSIL Intelligence Hub]** - [Strategic positioning assessment - what does the NSIL analysis say about this country/sector/situation's strategic standing]
-• **[ComprehensiveIndicesEngine]** - [Give 2-3 specific index scores derived from document evidence, e.g. "Political Stability: 31/100 given..."]
-• **[RegionalDevelopmentOrchestrator]** - [The primary structural intervention the engine recommends based on document findings]
-
----
-
-**What stands out - and why it matters for you:**
-
-2-3 short paragraphs. This is your consultant's VIEW - not a repeat of the document. Tell the client:
-1. What is the most important finding and why it matters right now
-2. What the document gets right and what gap it doesn't address that BW can fill
-3. What the decision-maker reading this document most urgently needs to act on
-
----
-
-**What BW can develop from this:**
-
-2 sentences. Specifically name what BW Global Advisory can deliver - the type of strategy document, intelligence brief, stakeholder engagement plan, or report package that would build directly on this document's context. Do NOT list bullet options - that comes from the panel below.
-
----
-
-RULES:
-- Write as a senior partner, not a system. No em-dash checklists. No "I've captured...". No numbered intake questions.
-- Use specific names, data points, and institutions from the uploaded document.
-- Every engine label must produce a REAL insight - not a placeholder.
-- The response should feel like a senior consultant just walked out of a document review and sat down to brief the client.
-- Do NOT produce the full 9-section formal brief here - that is generated when the user selects a tier from the options panel.
-- After this response, the ReportOptionsPanel will appear automatically with options to generate the full formal deliverable.`
-          : '';
-
-        // For report generation requests, override system prompt entirely
-        const reportGenerationOverride = isReportGeneration ? `You are a BW Global Advisory senior analyst producing a formal deliverable.
-
-CRITICAL INSTRUCTION: Write the complete ${reportTierLabel} document NOW. Do NOT:
-- Ask intake questions
-- Repeat the consultant greeting
-- Say "Here's my read"
-- Produce bullet summaries instead of full sections
-
-You MUST write each section in full prose, formatted with ## headers, to the specified word count. Start writing the document immediately with no preamble.
-
-SCOPE EXPANSION: Think beyond what was provided. Fill gaps with real intelligence from the NSIL engines, entity verification pipeline, live data sources, and historical precedent database. Surface comparisons the user hasn't considered. Include historical examples from other countries/regions that succeeded or failed in similar circumstances.
-
-SOURCE ATTRIBUTION: End the document with a "Sources & Methodology" section that lists every major data source used (NSIL engines, live search results, V-Dem governance, OpenSanctions, GLEIF, World Bank indicators, historical precedent database, entity intelligence pipeline). Every significant claim must trace to a source.` : '';
-
-        // ── ENTITY INTELLIGENCE BLOCK ────────────────────────────────────────
-        // When the Entity Intelligence Pipeline has run (via BWConsultantAgenticAI),
-        // inject the real findings into the system prompt so the LLM responds
-        // with SOURCED entity data instead of training-data guesses.
-        let entityIntelBlock = '';
-        const entityIntel = agenticAIRef.current.getEngineResults()?.entityIntel;
-        if (entityIntel) {
-          const parts: string[] = [`\n\n## ENTITY INTELLIGENCE REPORT: ${entityIntel.entityName}`];
-          parts.push(`Risk Level: ${entityIntel.assessment.overallRisk} | Sources: ${entityIntel.assessment.dataSources.join(', ')}`);
-
-          if (entityIntel.sanctions) {
-            parts.push(`Sanctions Screening: ${entityIntel.sanctions.clearanceLevel}${entityIntel.sanctions.totalHits > 0 ? ` (${entityIntel.sanctions.totalHits} hit(s))` : ''}`);
-            if (entityIntel.sanctions.flaggedLists.length > 0) parts.push(`Flagged Lists: ${entityIntel.sanctions.flaggedLists.join(', ')}`);
-          }
-          if (entityIntel.corporate) {
-            parts.push(`Corporate Registry: ${entityIntel.corporate.name}, jurisdiction: ${entityIntel.corporate.jurisdictionCode || 'unknown'}, incorporated: ${entityIntel.corporate.incorporationDate || 'unknown'}`);
-          }
-          if (entityIntel.lei?.verified) {
-            const rec = entityIntel.lei.records[0];
-            parts.push(`LEI: ${rec.lei} (${rec.registrationStatus}), jurisdiction: ${rec.jurisdiction}`);
-          }
-          if (entityIntel.tavilyIntel?.answer) {
-            parts.push(`Web Research Summary: ${entityIntel.tavilyIntel.answer.substring(0, 600)}`);
-          }
-          if (entityIntel.governance) {
-            const g = entityIntel.governance;
-            parts.push(`Jurisdiction Governance (V-Dem): ${g.governanceBand} — Rule of Law: ${((g.ruleOfLaw || 0) * 100).toFixed(0)}/100, Corruption Control: ${((g.corruptionControl || 0) * 100).toFixed(0)}/100`);
-          }
-          if (entityIntel.news.recentCoverage) {
-            parts.push(`Media Coverage: ${entityIntel.news.articles.length} recent articles, sentiment: ${entityIntel.assessment.mediaSentiment}`);
-          }
-          parts.push(`\nINSTRUCTION: Use the above ENTITY INTELLIGENCE as your primary source for this entity. Every claim must be traceable to one of the listed data sources. State clearly when data is unavailable rather than guessing.`);
-          entityIntelBlock = parts.join('\n');
-        }
-
-        // V-Dem governance block (for country-level queries without a specific entity)
-        let vdemBlock = '';
-        const vdemData = agenticAIRef.current.getEngineResults()?.vdemGovernance;
-        if (vdemData && !entityIntel) {
-          vdemBlock = `\n\n## GOVERNANCE INTELLIGENCE (V-Dem v14 - University of Gothenburg)\nGovernance Band: ${vdemData.governanceBand}${vdemData.ruleOfLaw != null ? ` | Rule of Law: ${(vdemData.ruleOfLaw * 100).toFixed(0)}/100` : ''}${vdemData.corruptionControl != null ? ` | Corruption Control: ${(vdemData.corruptionControl * 100).toFixed(0)}/100` : ''}${vdemData.civilLiberties != null ? ` | Civil Liberties: ${(vdemData.civilLiberties * 100).toFixed(0)}/100` : ''}\nThis is independent academic data — use it to assess governance quality objectively.`;
-        }
-
-        // Geopolitical Arbitrage block — live global disruption intelligence
-        let geoArbBlock = '';
-        const geoArbData = agenticAIRef.current.getEngineResults()?.geopoliticalArbitrage;
-        if (geoArbData && geoArbData.summaryForPrompt) {
-          geoArbBlock = geoArbData.summaryForPrompt;
-        }
-
-        // ── DOCUMENT BUILDER MODE ─────────────────────────────────────────────
-        // When the user explicitly asks for a letter, report, or case study,
-        // activate the document builder workflow: the AI acts as a fully qualified
-        // research assistant, proactively offers alternatives and ideas, asks about
-        // length preference, and prepares a structured draft.
-        let documentBuilderBlock = '';
-        const isDocBuilderMode = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
-        if (isDocBuilderMode && !isReportGeneration) {
-          const intentLabel = deliverableIntent === 'letter' ? 'letter/correspondence' : deliverableIntent === 'full_case' ? 'complete document package' : 'report/case study';
-          documentBuilderBlock = `
-
-## DOCUMENT BUILDER MODE ACTIVATED
-==================================
-The user has requested a ${intentLabel}. You are now operating in DOCUMENT BUILDER mode.
-
-YOUR ROLE: Act as a fully qualified research assistant AND document drafter. You are not just answering a question — you are building a professional deliverable.
-
-STEP 1 — IMMEDIATE RESEARCH & ANALYSIS:
-- Research the topic thoroughly using ALL available intelligence (NSIL engines, brain enrichment, historical parallels, governance data, entity intelligence).
-- Surface relevant facts, precedents, risks, and opportunities the user may not have considered.
-- Think BEYOND what they asked — what angles, perspectives, or comparisons would make this document stronger?
-
-STEP 2 — PROACTIVE ALTERNATIVES & IDEAS:
-Before diving into the draft, PROACTIVELY offer:
-- 2-3 alternative approaches or angles for the document
-- Ideas the user might not have considered (related topics, different audiences, complementary documents)
-- Relevant comparisons from other countries, sectors, or historical cases
-- Any risks or sensitivities they should be aware of
-
-STEP 3 — ASK ABOUT PREFERENCES (briefly, at the end):
-After presenting your research and ideas, ask the user:
-1. **Length preference**: "How detailed should this be? Options range from a quick 1-page summary to a comprehensive 20+ page report. I can do:
-   • Quick summary (1 page, key points only)
-   • Situation brief (2-4 pages, focused analysis)
-   • Advisory report (5-12 pages, full analysis with recommendations)
-   • Strategy document (15-25 pages, deep-dive with implementation plan)
-   • Full case study (30-50 pages, comprehensive with all supporting evidence)"
-2. **Format**: "Should this be a single unified document, or broken into separate focused reports by topic?"
-3. **Any specific requirements**: audience, tone, deadline, or format preferences
-
-STEP 4 — WRITE THE DRAFT:
-Once the user confirms their preferences (or if they say "just write it"), produce the document IMMEDIATELY using all available intelligence. Do not hold back.
-
-CRITICAL RULES:
-- Do NOT just describe what you could write — RESEARCH and PRESENT findings immediately
-- Be proactive: surface ideas, alternatives, and angles the user hasn't mentioned
-- Use ALL NSIL engines and intelligence available — this is where the full system capability shines
-- If the user says "just write it" or gives enough context, skip the questions and produce the document
-- Every response should move the document forward — no empty acknowledgments`;
-        }
-
-        const effectiveSystemPrompt = isReportGeneration
-          ? `${reportGenerationOverride}\n\n${memoryBlock}${brainBlock}${advancedIntelligenceBlock}${entityIntelBlock}${vdemBlock}${geoArbBlock}`
-          : `${liveSearchBlock}${brainBlock}${advancedIntelligenceBlock}${entityIntelBlock}${vdemBlock}${geoArbBlock}${memoryBlock}${docUploadBlock}${documentBuilderBlock}${openingInstruction}`;
-
-        // Strip the GENERATE_REPORT_NOW:: prefix before sending to AI
-        const effectiveUserContent = isReportGeneration
-          ? userContent.replace(/^GENERATE_REPORT_NOW::[^\n]*\n/, '').trim()
-          : userContent;
-
-        // Throttle streaming updates — Groq streams so fast the text is unreadable otherwise.
-        // Buffer tokens and update UI every 40ms (≈25 fps) for a readable typing effect.
-        let _streamBuffer = '';
-        let _streamTimer: ReturnType<typeof setTimeout> | null = null;
-        const flushStream = () => {
-          const snapshot = _streamBuffer;
-          setMessages(prev => prev.map((msg) => (
-            msg.id === assistantMessageId ? { ...msg, content: snapshot } : msg
-          )));
-          _streamTimer = null;
-        };
-
-        responseContent = await processWithAIStream(
-          effectiveUserContent,
-          effectiveSystemPrompt,
-          (streamText) => {
-            _streamBuffer = streamText;
-            if (!_streamTimer) {
-              _streamTimer = setTimeout(flushStream, 40);
-            }
-          }
-        );
-        // Flush any remaining buffered text
-        if (_streamTimer) { clearTimeout(_streamTimer); _streamTimer = null; }
-        setMessages(prev => prev.map((msg) => (
-          msg.id === assistantMessageId ? { ...msg, content: responseContent } : msg
-        )));
-        // Mark as already displayed so TypewriterText doesn't re-type streamed content
-        displayedMsgIds.current.add(assistantMessageId);
-        setExecutionTaskStatus('response', 'completed', 'Primary response delivered');
-        // ── SAVE TURN TO PERSISTENT MEMORY ──
-        memoryRef.current.remember('consultant-turns', {
-          action: trimmedUserContent.substring(0, 200),
-          context: { country: caseDraft.country, readiness: liveReadiness, org: caseDraft.organizationName },
-          outcome: { response: responseContent.substring(0, 300) },
-          confidence: Math.max(0.1, liveReadiness / 100),
-        }).catch(() => {/* non-fatal */});
-
-        // ── Safety guardrails: check output before delivery ─────────────────
         try {
-          const outputSafety = checkOutputSafety(responseContent);
-          if (outputSafety && !outputSafety.passed) {
-            console.warn('[SafetyGuardrails] Output flagged:', outputSafety.issues);
-          }
-        } catch { /* output safety is non-critical */ }
-
-        // ── Fine-tuning data collection ─────────────────────────────────────
-        try {
-          collectExample({
-            input: { messages: [{ role: 'user', content: trimmedUserContent }] },
-            output: responseContent,
-            metadata: {
-              country: caseDraft.country,
-              readiness: liveReadiness,
-              phase: currentPhase,
-            } as Record<string, unknown>,
+          const res = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: userContent,
+              systemInstruction: systemContext || undefined,
+              conversationHistory: messages.slice(-8).map((m) => ({
+                role: m.role,
+                content: typeof m.content === 'string' ? m.content : String(m.content),
+              })),
+            }),
           });
-        } catch { /* fine-tuning collection is non-critical */ }
-      }
-
-      // ── TOOL CALL EXECUTION LOOP ─────────────────────────────────────────────
-      // Try native function calling first (structured JSON-schema tools via Together.ai),
-      // then fall back to text-parsed [[TOOL:name]] blocks.
-      let nativeFCToolResults: string[] = [];
-      try {
-        const fcResult = await runWithFunctionCalling(
-          [
-            { role: 'system', content: 'You are BW Nexus AI, a senior international development consultant. Use the available tools when the user\'s query would benefit from live data.' },
-            { role: 'user', content: trimmedUserContent }
-          ],
-          agentRegistry.current,
-          { maxTokens: 1200 }
-        );
-        if (fcResult.toolResults.length > 0) {
-          nativeFCToolResults = fcResult.toolResults.map(tr => `**${tr.name}**: ${typeof tr.result.data === 'string' ? tr.result.data : JSON.stringify(tr.result.data).slice(0, 600)}`);
-        }
-      } catch { /* native function calling is optional - text-parsed tools below */ }
-
-      const toolCalls = AgentToolRegistry.parseToolCalls(responseContent);
-      const autoToolCalls = enableFullCaseTreeMatching && !shouldPromptForOutputClarification && !inputSignal.isLowSignal
-        ? [
-            caseDraft.country.trim()
-              ? { name: 'get_country_intelligence', params: { country: caseDraft.country } }
-              : null,
-            caseDraft.country.trim()
-              ? { name: 'calculate_composite_scores', params: { country: caseDraft.country, sector: caseDraft.organizationType || undefined } }
-              : null,
-            (caseDraft.country.trim() && caseDraft.jurisdiction.trim() && caseDraft.objectives.trim())
-              ? {
-                  name: 'run_regional_kernel',
-                  params: {
-                    country: caseDraft.country,
-                    jurisdiction: caseDraft.jurisdiction,
-                    sector: caseDraft.organizationType || undefined,
-                    objective: caseDraft.objectives,
-                    currentMatter: caseDraft.currentMatter,
-                    constraints: caseDraft.constraints
-                  }
-                }
-              : null,
-            (caseDraft.currentMatter.trim() || caseDraft.objectives.trim())
-              ? {
-                  name: 'recommend_document',
-                  params: {
-                    situation: caseDraft.currentMatter || caseDraft.objectives,
-                    audience: caseDraft.targetAudience || 'general decision audience',
-                    urgency: caseDraft.decisionDeadline ? 'near-term' : 'planned'
-                  }
-                }
-              : null
-          ].filter(Boolean) as Array<{ name: string; params: Record<string, unknown> }>
-        : [];
-
-      const mergedToolCalls = [...toolCalls, ...autoToolCalls];
-
-      // Fire regional intelligence agent when country is known (runs in parallel with tool execution)
-      const regionalIntelPromise = (caseDraft.country.trim() && !isGreetingOnly)
-        ? quickRegionalIntel(trimmedUserContent, caseDraft.country).catch(() => null)
-        : Promise.resolve(null);
-
-      if (!shouldPromptForOutputClarification && (mergedToolCalls.length > 0 || nativeFCToolResults.length > 0)) {
-        responseContent = AgentToolRegistry.stripToolCalls(responseContent);
-        const toolResultLines: string[] = [...nativeFCToolResults];
-        for (const call of mergedToolCalls) {
-          try {
-            const result = await agentRegistry.current.execute(call.name, call.params);
-            const summary = (
-              result.summary ??
-              (result.data as { summary?: string })?.summary ??
-              (result.success ? JSON.stringify(result.data).slice(0, 600) : `Error: ${result.error}`)
-            );
-            agentMemory.current.storeToolResult(sessionId.current, call.name, summary);
-            toolResultLines.push(`**${call.name}** (${result.latencyMs}ms):\n${summary}`);
-          } catch (toolErr) {
-            toolResultLines.push(`**${call.name}**: execution failed - ${String(toolErr)}`);
+          if (res.ok) {
+            const data = await res.json();
+            responseContent = data.text || data.response || '';
           }
+        } catch (aiErr) {
+          console.warn('[handleSend] AI call error:', aiErr);
         }
-        // Second AI pass: incorporate tool results into the response
-        // Merge regional intelligence if available
-        const regionalIntel = await regionalIntelPromise;
-        const hasRegionalData = regionalIntel && regionalIntel.summary
-          && !/No data found|No recent news found|No government sources found/i.test(regionalIntel.summary);
-        if (hasRegionalData) {
-          toolResultLines.push(`**regional_intelligence** (${regionalIntel.sources} sources):\n${regionalIntel.summary}\nKey facts: ${regionalIntel.keyFacts.slice(0, 5).join('; ')}`);
+
+        if (!responseContent) {
+          responseContent = `I'm ready to assist with your strategic intelligence needs. Please share more context so I can provide targeted analysis.`;
         }
-        const toolContext = toolResultLines.join('\n\n');
-        const augmented = await processWithAI(
-          `${userContent}\n\n[Live intelligence retrieved]:\n${toolContext}`,
-          `You have access to the tool results above. Use them to give a specific, data-grounded response. Identify key matching parts across all available angles (market, risk, governance, audience, outputs). Do NOT emit any more tool calls.`
+
+        displayedMsgIds.current.add(assistantMessageId);
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === assistantMessageId
+              ? { ...msg, content: responseContent, provenance: responseProvenance }
+              : msg
+          )
         );
-        // Only replace the response if we got a REAL augmented response (not empty/fallback error)
-        if (augmented && augmented.length > 20 && !isFallbackErrorResponse(augmented)) {
-          responseContent = augmented;
+        setExecutionTaskStatus('response', 'completed', `Response delivered (${responseContent.split(/\s+/).length} words)`);
+
+        const agenticResults = await agenticInsightsPromise;
+        if (agenticResults.length > 0) {
+          setInsights(agenticResults.map((i: { insight?: string }) => i.insight || String(i)));
         }
+
       }
-      // Store this turn in memory for future context recall
-      agentMemory.current.storeFact(
-        sessionId.current,
-        `User: ${userContent.slice(0, 200)} | Response: ${responseContent.slice(0, 300)}`,
-        [caseStudy.country, caseStudy.situationType, caseStudy.organizationName].filter(Boolean),
-        70
-      );
-      // ── END TOOL CALL EXECUTION LOOP ─────────────────────────────────────────
-
-      const nextFollowUp = getHighestValueFollowUp(caseDraft);
-      const _likelyDirectQuestion = /\?|\b(explain|what|why|how|who|can you|could you|should we)\b/i.test(trimmedUserContent);
-
-      setExecutionTaskStatus('followup', 'completed', 'Follow-up managed by AI response');
-
-      // ── OUTPUT SAFETY PIPELINE: Moderation → PII Scrubbing → Evaluation ────
-      const moderationResult = outputModerationService.moderate(responseContent);
-      monitoringService.trackModeration(moderationResult.action);
-      if (!moderationResult.passed) {
-        monitoringService.warn('moderation', `Response flagged: ${moderationResult.action}`, {
-          categories: moderationResult.flags.map(f => f.category),
-        });
-      }
-      let safeContent = moderationResult.moderatedText;
-
-      const piiResult = piiDetectionService.scan(safeContent, 'redact');
-      if (piiResult.hasPII) {
-        safeContent = piiResult.scrubbedText;
-        monitoringService.info('pii_detection', `PII redacted: ${piiResult.matches.length} items`, {
-          types: piiResult.matches.map(m => m.type),
-        });
-      }
-      responseContent = safeContent;
-
-      // Background: evaluate response quality (non-blocking)
-      evaluationFramework.evaluate(trimmedUserContent, responseContent, 'heuristic').catch(() => {});
-
-      // Background: store in persistent vector store for RAG retrieval
-      persistentVectorStore.addKnowledge(
-        `Q: ${trimmedUserContent.slice(0, 200)} A: ${responseContent.slice(0, 500)}`,
-        caseStudy.situationType || 'general',
-        0.7
-      ).catch(() => {});
-
-      setMessages(prev => prev.map((msg) => (
-        msg.id === assistantMessageId ? { ...msg, content: responseContent, phase: inferredPhase } : msg
-      )));
-
-      const agenticInsights = await agenticInsightsPromise;
-      const actionableInsights = filterActionableInsights(agenticInsights, trimmedUserContent, caseDraft.country).slice(0, 5);
-
-      if (actionableInsights.length > 0 && liveReadiness >= 25 && !isGreetingOnly && !shouldPromptForOutputClarification) {
-        const insightSummary = actionableInsights
-          .map((insight) => `• ${insight.title}: ${insight.content}`)
-          .join('\n');
-
-        // Collect actual engine sources from insights
-        const insightSources = [...new Set(actionableInsights.flatMap(i => i.sources || []))].slice(0, 4);
-
-        responseProvenance = buildMessageProvenance(caseDraft, liveReadiness, [`NSIL insights in this turn: ${actionableInsights.length}`]);
-
-        setCaseStudy(prev => ({
-          ...prev,
-          aiInsights: [...prev.aiInsights, ...actionableInsights.map(i => `${i.title}: ${i.content}`)]
-        }));
-
-        setMessages(prev => [...prev, {
-          id: crypto.randomUUID(),
-          role: 'system',
-          content: `NSIL Agentic Insight\n${insightSummary}`,
-          timestamp: new Date(),
-          phase: inferredPhase,
-          provenance: {
-            confidence: Math.min(95, Math.max(50, Math.round(
-              actionableInsights.reduce((sum, i) => sum + ((i.confidence ?? 0) * 100), 0) / actionableInsights.length
-            ))),
-            confidenceBand: liveReadiness >= 75 ? 'high' : liveReadiness >= 40 ? 'medium' : 'low',
-            sources: insightSources.length > 0 ? insightSources : ['NSIL Agentic Insight Engine', `Readiness score: ${liveReadiness}%`]
-          }
-        }]);
-      } else if (agenticInsights.length > 0 && actionableInsights.length === 0) {
-        setExecutionTaskStatus('insight', 'skipped', 'Low-signal NSIL insights suppressed');
-      }
-
-      setMessages(prev => prev.map((msg) => (
-        msg.id === assistantMessageId
-          ? { ...msg, content: responseContent, phase: inferredPhase, provenance: responseProvenance }
-          : msg
-      )));
-
-      if (liveReadiness >= CASE_COMPLETION_THRESHOLD) {
-        generateRecommendations();
-      }
-
-      // ── AUGMENTED RESPONSE LEARNING ──────────────────────────────────────
-      // Parse the AI response for new case signals the system can learn from
-      const responseSignals = extractConsultantSignals(responseContent);
-      const learnedFields: string[] = [];
-      setCaseStudy(prev => {
-        const next = { ...prev };
-        if (responseSignals.country && !next.country.trim()) { next.country = responseSignals.country; learnedFields.push('country'); }
-        if (responseSignals.jurisdiction && !next.jurisdiction.trim()) { next.jurisdiction = responseSignals.jurisdiction; learnedFields.push('jurisdiction'); }
-        if (responseSignals.organizationName && !next.organizationName.trim()) { next.organizationName = responseSignals.organizationName; learnedFields.push('organization'); }
-        if (responseSignals.organizationType && !next.organizationType.trim()) { next.organizationType = responseSignals.organizationType; learnedFields.push('org type'); }
-        if (responseSignals.targetAudience && !next.targetAudience.trim()) { next.targetAudience = responseSignals.targetAudience; learnedFields.push('audience'); }
-        if (responseSignals.objectives && next.objectives.trim().length < 20) { next.objectives = responseSignals.objectives; learnedFields.push('objectives'); }
-        if (responseSignals.constraints && next.constraints.trim().length < 20) { next.constraints = responseSignals.constraints; learnedFields.push('constraints'); }
-        return next;
-      });
-
-      // ── KEEP REACTIVE STATUS ALIVE ─────────────────────────────────────────
-      // Show what was just processed so Reactive stays "Online" between turns
-      const reactiveSignalCount = [responseSignals.country, responseSignals.organizationName, responseSignals.objectives, responseSignals.targetAudience]
-        .filter(Boolean).length + extractedFieldCount;
-      const reactiveStatusText = reactiveSignalCount > 0
-        ? `Reactive: ${reactiveSignalCount} signal${reactiveSignalCount !== 1 ? 's' : ''} captured - case updated`
-        : `Reactive: monitoring - readiness ${liveReadiness}%`;
-      const reactiveHintText = learnedFields.length > 0
-        ? `Learned from this turn: ${learnedFields.join(', ')}. Keep adding detail to improve output quality.`
-        : nextFollowUp
-          ? `Suggest next: ${nextFollowUp}`
-          : 'Continue sharing details - the consultant is building your case in real time.';
-      setReactiveDraftStatus(reactiveStatusText);
-      setReactiveDraftHint(reactiveHintText);
-
-      // Show report options AFTER AI has demonstrated it understood the document
-      // Do NOT re-show the panel when the user has already selected a tier and generation is underway
-      if (hadFileUpload && !isReportGeneration) {
-        setShowReportOptions(true);
-        // Auto-save the AI's document analysis into the Final Report workspace
-        if (responseContent.length > 300) {
-          const docTitle = reportOptionsDocTitle || uploadedFiles[0]?.name.replace(/\.[^/.]+$/, '') || 'Document Analysis';
-          setGeneratedDocuments(prev => {
-            if (prev.some(d => d.title.includes(docTitle))) return prev;
-            return [...prev, {
-              id: `nexus-analysis-${Date.now()}`,
-              title: `NEXUS AI Analysis - ${docTitle}`,
-              content: responseContent,
-              category: 'report' as const,
-              htmlContent: responseContent
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\n\n/g, '</p><p>')
-                .replace(/\n/g, '<br/>')
-                .replace(/^/, '<p>')
-                .replace(/$/, '</p>'),
-            }];
-          });
-        }
-      }
-
-      // ── DOCUMENT BUILDER: Auto-show report options when document intent detected ──
-      // Only show the panel when the conversation has enough context — NOT on the
-      // very first message or a casual mention.  Require either:
-      //   • at least 2 prior messages (a real back-and-forth), OR
-      //   • readiness ≥ 15  (enough signals captured), OR
-      //   • the user's message is explicitly asking to generate (> 60 chars of substance)
-      const hasEnoughContext = messages.length >= 2 || liveReadiness >= 15 || trimmedUserContent.length > 60;
-      if (isDocBuilderIntent && !isReportGeneration && !hadFileUpload && hasEnoughContext) {
-        setDocumentBuilderActive(true);
-        const conversationWordCount = ReportLengthRouter.estimateWordCount(
-          caseDraft.currentMatter + ' ' + caseDraft.objectives + ' ' + trimmedUserContent
-        );
-        const docBuilderMenu = ReportLengthRouter.computeOptions({
-          sourceWordCount: Math.max(conversationWordCount, 500),
-          caseReadiness: Math.max(liveReadiness, 30),
-          enginesActivated: brainCtxRef.current ? 12 : 3,
-          jurisdiction: caseDraft.country || 'Unknown',
-          sector: caseDraft.organizationType || 'General Advisory',
-          hasConflict: false,
-          hasMultipleRegions: false,
-          hasMultistakeholder: false,
-        });
-        const docTitle = deliverableIntent === 'letter'
-          ? 'Requested Letter'
-          : deliverableIntent === 'full_case'
-            ? 'Full Case Package'
-            : 'Requested Report';
-        setReportOptionsDocTitle(docTitle);
-        setReportOptionsDocType(deliverableIntent === 'letter' ? 'Letter' : 'Report');
-        setReportOptionsMenu(docBuilderMenu);
-        setShowReportOptions(true);
-      }
-
-      // Auto-save the generated formal document to Final Report workspace
-      if (isReportGeneration && responseContent.length > 300) {
-        const docTitle = `${reportTierLabel}${reportOptionsDocTitle ? ` - ${reportOptionsDocTitle}` : ''}`;
-        setGeneratedDocuments(prev => {
-          if (prev.some(d => d.title === docTitle)) return prev;
-          return [...prev, {
-            id: `gen-report-${Date.now()}`,
-            title: docTitle,
-            content: responseContent,
-            category: 'report' as const,
-            htmlContent: responseContent
-              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/## (.+)/g, '<h2>$1</h2>')
-              .replace(/\n\n/g, '</p><p>')
-              .replace(/\n/g, '<br/>')
-              .replace(/^/, '<p>')
-              .replace(/$/, '</p>'),
-          }];
-        });
-        // Auto-open the live draft view so user sees the generated report immediately
-        setTimeout(() => setShowFinalReport(true), 600);
-      }
-
-      // Auto-save document-builder AI responses (letters, reports) as drafts
-      // so they appear in the Final Report modal even without the tier-selection flow
-      if (!isReportGeneration && isDocBuilderIntent && responseContent.length > 300) {
-        const draftTitle = deliverableIntent === 'letter'
-          ? `Draft Letter${reportOptionsDocTitle ? ` - ${reportOptionsDocTitle}` : ''}`
-          : `Draft Report${reportOptionsDocTitle ? ` - ${reportOptionsDocTitle}` : ''}`;
-        setGeneratedDocuments(prev => {
-          if (prev.some(d => d.title === draftTitle)) return prev;
-          return [...prev, {
-            id: `draft-${Date.now()}`,
-            title: draftTitle,
-            content: responseContent,
-            category: (deliverableIntent === 'letter' ? 'letter' : 'report') as 'letter' | 'report',
-            htmlContent: responseContent
-              .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-              .replace(/## (.+)/g, '<h2>$1</h2>')
-              .replace(/\n\n/g, '</p><p>')
-              .replace(/\n/g, '<br/>')
-              .replace(/^/, '<p>')
-              .replace(/$/, '</p>'),
-          }];
-        });
-      }
-
-      // Live Intel: fetch real data for detected country
-      if (caseDraft.country) {
-        fetchLiveIntelForCountry(caseDraft.country);
-      }
-
-      // Action execution: queue document generation action when case is ready
-      if (liveReadiness >= CASE_COMPLETION_THRESHOLD && inferredPhase === 'recommendations') {
-        queueAction({
-          id: `gen-docs-${Date.now()}`,
-          label: 'Generate Case Documents',
-          description: `Case readiness at ${liveReadiness}% - ready to generate institutional documents and letters.`,
-          category: 'document'
-        });
-      }
-
     } catch (error) {
       console.error('Send error:', error);
       setExecutionTaskStatus('response', 'failed', 'Response pipeline failed');
-
-      // Detect API key / rate limit issues and surface them clearly
-      const errMsg = String(error instanceof Error ? error.message : error);
-      const isApiKeyIssue = errMsg.includes('API KEY REQUIRED') || errMsg.includes('API key') || errMsg.includes('401') || errMsg.includes('403');
-      const isRateLimited = errMsg.includes('429') || errMsg.includes('rate limit');
-
-      let fallbackContent: string;
-      if (isApiKeyIssue) {
-        fallbackContent = '⚠️ **AI Service Not Configured**\n\nAdd an API key to your `.env` file to enable AI features:\n\n- **OpenAI**: `OPENAI_API_KEY=sk-...`\n- **Groq**: `GROQ_API_KEY=...` (free tier)\n- **Together.ai**: `TOGETHER_API_KEY=...` (free tier)\n\nRestart the server after adding your API key.';
-      } else if (isRateLimited) {
-        fallbackContent = '⏳ **Rate Limit Reached**\n\nThe AI service is temporarily rate-limited. Please wait a moment and try again. Your query has been preserved.';
-      } else {
-        fallbackContent = 'I encountered an error processing your request. Please try again in a moment.';
-      }
-      const errorMessage: Message = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: fallbackContent,
-        timestamp: new Date(),
-        phase: currentPhase
-      };
-      setMessages(prev => {
-        // If the last assistant message is still the placeholder, update it
-        const last = prev[prev.length - 1];
-        if (last?.role === 'assistant' && (!last.content || last.content.length < 5)) {
-          return prev.map(m => m.id === last.id ? { ...m, content: fallbackContent } : m);
-        }
-        return [...prev, errorMessage];
-      });
-    } finally {
-      setIsStreamingResponse(false);
-      setIsLoading(false);
-
-      // ── PERSIST CONVERSATION & TRIGGER LEARNING ──────────────────────────
-      // Store messages in IndexedDB for cross-session memory and trigger
-      // the self-learning loop to extract corrections/preferences/facts.
-      try {
-        const recentMsgs = messages.slice(-2);
-        for (const m of recentMsgs) {
-          if (m.role === 'user' || m.role === 'assistant') {
-            // Track in ConversationMemoryManager (rolling summary + recent turns)
-            conversationMemoryManager.addTurn(m.role as 'user' | 'assistant', m.content).catch(() => {});
-            // Persist to IndexedDB
-            conversationStore.addMessage(
-              'default',
-              m.role as 'user' | 'assistant',
-              m.content
-            ).catch(() => {/* non-fatal */});
-          }
-        }
-        // Every 6 messages, extract learnings for self-improvement
-        if (messages.length > 4 && messages.length % 6 === 0) {
-          const allMsgs = messages
-            .filter(m => m.role === 'user' || m.role === 'assistant')
-            .map(m => ({ role: m.role, content: m.content }));
-          learnFromConversation('default', allMsgs).catch(() => {/* non-fatal */});
-        }
-      } catch { /* conversation persistence is optional */ }
     }
-  }, [
-    inputValue,
-    uploadedFiles,
-    classifyConsultantInput,
-    currentPhase,
-    initializeExecutionTimeline,
-    setExecutionTaskStatus,
-    readFileContent,
-    processWithAIStream,
-    generateRecommendations,
-    caseStudy,
-    computeReadiness,
-    buildMessageProvenance,
-    readinessScore,
-    toAgenticParams,
-    getHighestValueFollowUp,
-    classifyDeliverableIntent,
-    shouldAskOutputClarification,
-    buildOutputClarificationPrompt,
-    filterActionableInsights,
-    extractConsultantSignals,
-    fetchLiveIntelForCountry,
-    processWithAI,
-    isFallbackErrorResponse,
-    enableFullCaseTreeMatching,
-    fullSpectrumReasoningMode,
-    queueAction,
-    reportOptionsDocTitle,
-    messages,
-  ]);
+    // Cleanup after response
+    setIsStreamingResponse(false);
+    setIsLoading(false);
+  }, []);
 
   // Handle file selection
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -6713,7 +5560,7 @@ CRITICAL RULES:
           notes: `${allResults.length} docs generated - ${caseStudy.country || 'unknown country'}, ${caseStudy.situationType || 'unknown sector'}`
         }
       });
-    } catch (error) {
+        } catch (error) {
       console.error('Generation error:', error);
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
@@ -6937,7 +5784,7 @@ CRITICAL RULES:
       } else {
         setConsultantAuditTrends(null);
       }
-    } catch (error) {
+        } catch (error) {
       setConsultantAuditError(error instanceof Error ? error.message : 'Unable to load consultant audit events');
       setConsultantAuditTrends(null);
     } finally {
@@ -6971,7 +5818,7 @@ CRITICAL RULES:
         format === 'json' ? `consultant-audit-${Date.now()}.json` : `consultant-audit-${Date.now()}.jsonl`,
         format === 'json' ? 'application/json' : 'application/x-ndjson'
       );
-    } catch (error) {
+        } catch (error) {
       setConsultantAuditError(error instanceof Error ? error.message : 'Unable to export consultant audit events');
     } finally {
       setConsultantAuditExporting(false);
@@ -7239,7 +6086,7 @@ CRITICAL RULES:
       } catch {
         // Ignore replay metadata lookup errors and continue with audit detail rendering
       }
-    } catch (error) {
+        } catch (error) {
       setConsultantAuditLookupEvents([]);
       setConsultantReplayMeta(null);
       setConsultantAuditError(error instanceof Error ? error.message : 'Unable to lookup request ID');
@@ -7352,7 +6199,7 @@ CRITICAL RULES:
           provenance
         }
       ]);
-    } catch (error) {
+        } catch (error) {
       setMessages((prev) => [
         ...prev,
         {
@@ -10400,3 +9247,4 @@ CRITICAL RULES:
 };
 
 export default BWConsultantOS;
+
