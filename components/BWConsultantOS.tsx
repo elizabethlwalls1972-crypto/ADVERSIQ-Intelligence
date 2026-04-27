@@ -21,7 +21,7 @@ import {
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
 import { extractFileTextViaAI } from '../services/geminiService';
-import { AgentToolRegistry, AgentMemoryStore, registerBuiltInTools } from '../services/agent';
+import { AgentToolRegistry } from '../services/agent';
 import { ProfessionalDocumentExporter } from '../services/ProfessionalDocumentExporter';
 import type { ProfessionalDocument, DocumentSection } from '../services/ProfessionalDocumentExporter';
 import { downloadAsDocx } from '../services/DocxExporter';
@@ -45,7 +45,7 @@ import { ReportLengthRouter, type ReportOptionsMenu, type ReportTierKey } from '
 import { PDFAnnotationService } from '../services/PDFAnnotationService';
 import { automaticSearchService } from '../services/AutomaticSearchService';
 import { ReportOrchestrator } from '../services/ReportOrchestrator';
-import AgentOrchestrator, { type OrchestratorProgress } from '../services/AgentOrchestrator';
+import AgentOrchestrator from '../services/AgentOrchestrator';
 // ReasoningPipeline + IssueSolutionPipeline: server handles AI calls;
 // client-side pipeline removed (no API keys available in browser).
 import { ttsService } from '../services/ttsService';
@@ -63,25 +63,19 @@ import { EventBus } from '../services/EventBus';
 import { autonomousScheduler } from '../services/AutonomousScheduler';
 import { MultiAgentOrchestrator, type SynthesizedAnalysis } from '../services/MultiAgentOrchestrator';
 import { PartnerIntelligenceEngine, type PartnerCandidate } from '../services/PartnerIntelligenceEngine';
-import { ReactiveIntelligenceEngine } from '../services/ReactiveIntelligenceEngine';
-import { selfLearningEngine } from '../services/selfLearningEngine';
+
 import { selfImprovementEngine } from '../services/SelfImprovementEngine';
 import { conversationMemoryManager } from '../services/ConversationMemoryManager';
-import { conversationStore } from '../services/ConversationStore';
-import { learnFromConversation } from '../services/SelfLearningLoop';
+
 // webSearch/formatResultsForPrompt: moved to server-only paths.
-import { runWithFunctionCalling } from '../services/NativeFunctionCalling';
-import { quickRegionalIntel } from '../services/RegionalIntelligenceAgent';
-import { outputModerationService } from '../services/OutputModerationService';
-import { piiDetectionService } from '../services/PIIDetectionService';
-import { evaluationFramework } from '../services/EvaluationFramework';
+
 import { monitoringService } from '../services/MonitoringService';
 import { persistentVectorStore } from '../services/PersistentVectorStore';
 import { securityService } from '../services/SecurityHardeningService';
-import { gradientRankingEngine } from '../services/algorithms/GradientRankingEngine';
+
 import { FailureModeGovernanceService } from '../services/FailureModeGovernanceService';
 import { dedupedRequest as _dedupedRequest } from '../services/requestDedup';
-import { checkInputSafety, checkOutputSafety } from '../services/SafetyGuardrailsPipeline';
+import { checkInputSafety } from '../services/SafetyGuardrailsPipeline';
 import { callWithStructuredOutput as _callWithStructuredOutput } from '../services/StructuredOutputPipeline';
 import { ReportsService as _ReportsService } from '../services/ReportsService';
 // import { collectExample } from '../services/FineTuningDataCollector'; // Removed for browser compatibility
@@ -549,12 +543,13 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
   const rafRef = React.useRef<number | null>(null);
   const lastRef = React.useRef(0);
   const startedRef = React.useRef(false);
-  // Use refs for callbacks so inline arrow functions from parent JSX
-  // don't cause the animation useEffect to restart on every parent re-render.
+  // Use refs for callbacks and speed so changes don't restart the animation.
   const onStartRef = React.useRef(onStart);
   const onCompleteRef = React.useRef(onComplete);
+  const speedRef = React.useRef(speed);
   React.useEffect(() => { onStartRef.current = onStart; });
   React.useEffect(() => { onCompleteRef.current = onComplete; });
+  React.useEffect(() => { speedRef.current = speed; });
 
   React.useEffect(() => {
     indexRef.current = 0;
@@ -570,8 +565,9 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
       }
       if (!lastRef.current) lastRef.current = ts;
       const elapsed = ts - lastRef.current;
-      if (elapsed >= speed) {
-        const chars = Math.floor(elapsed / speed);
+      const currentSpeed = speedRef.current;
+      if (elapsed >= currentSpeed) {
+        const chars = Math.floor(elapsed / currentSpeed);
         const nextIdx = Math.min(indexRef.current + chars, text.length);
         indexRef.current = nextIdx;
         setDisplayed(text.slice(0, nextIdx));
@@ -587,7 +583,7 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
 
     rafRef.current = requestAnimationFrame(step);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
-  }, [text, speed]); // ← callbacks intentionally excluded; stable via refs above
+  }, [text]); // speed/callbacks use refs so they update without restarting animation
 
   return (
     <span>
@@ -968,43 +964,43 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [voiceEnabled, setVoiceEnabled] = useState<boolean>(() => ttsService.isEnabled());
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');
-  const [executionTasks, setExecutionTasks] = useState<ExecutionTask[]>([]);
+  const [_executionTasks, _setExecutionTasks] = useState<ExecutionTask[]>([]);
   const [readinessScore, setReadinessScore] = useState(0);
   const [showReportOptions, setShowReportOptions] = useState(false);
-  const [showLettersCatalog, setShowLettersCatalog] = useState(false);
-  const [showUnifiedDocs, setShowUnifiedDocs] = useState(false);
-  const [showAdvancedReport, setShowAdvancedReport] = useState(false);
-  const [showExecSummary, setShowExecSummary] = useState(false);
-  const [showLetters, setShowLetters] = useState(false);
-  const [showMatchmaking, setShowMatchmaking] = useState(false);
-  const [showDocuments, setShowDocuments] = useState(false);
-  const [showIntake, setShowIntake] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [showFeatureDiscovery, setShowFeatureDiscovery] = useState(false);
-  const [activeFeature, setActiveFeature] = useState<string | null>(null);
-  const [showPipelineDeepDive, setShowPipelineDeepDive] = useState(false);
-  const [showFormulas, setShowFormulas] = useState(false);
-  const [showCaseStudy, setShowCaseStudy] = useState(false);
-  const [showOutputDetails, setShowOutputDetails] = useState(false);
-  const [showProtocolDetails, setShowProtocolDetails] = useState(false);
-  const [showBlock2More, setShowBlock2More] = useState(false);
-  const [showBlock3More, setShowBlock3More] = useState(false);
-  const [showBlock4More, setShowBlock4More] = useState(false);
-  const [showBlock5Popup, setShowBlock5Popup] = useState(false);
-  const [showBreakthroughPopup, setShowBreakthroughPopup] = useState(false);
-  const [showProofPopup, setShowProofPopup] = useState(false);
-  const [activeWorkflowStage, setActiveWorkflowStage] = useState<'intake' | 'analysis' | 'output' | null>(null);
-  const [showProtocolLetters, setShowProtocolLetters] = useState(false);
-  const [showUnifiedSystemOverview, setShowUnifiedSystemOverview] = useState(false);
-  const [unifiedActiveTab, setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
-  const [activeDocument, setActiveDocument] = useState<string | null>(null);
-  const [activeLayer, setActiveLayer] = useState<number | null>(null);
-  const [expandedEngine, setExpandedEngine] = useState<string | null>(null);
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+  const [_showLettersCatalog, _setShowLettersCatalog] = useState(false);
+  const [_showUnifiedDocs, _setShowUnifiedDocs] = useState(false);
+  const [_showAdvancedReport, _setShowAdvancedReport] = useState(false);
+  const [_showExecSummary, _setShowExecSummary] = useState(false);
+  const [_showLetters, _setShowLetters] = useState(false);
+  const [_showMatchmaking, _setShowMatchmaking] = useState(false);
+  const [_showDocuments, _setShowDocuments] = useState(false);
+  const [_showIntake, _setShowIntake] = useState(false);
+  const [_showAdmin, _setShowAdmin] = useState(false);
+  const [_showFeatureDiscovery, _setShowFeatureDiscovery] = useState(false);
+  const [_activeFeature, _setActiveFeature] = useState<string | null>(null);
+  const [_showPipelineDeepDive, _setShowPipelineDeepDive] = useState(false);
+  const [_showFormulas, _setShowFormulas] = useState(false);
+  const [_showCaseStudy, _setShowCaseStudy] = useState(false);
+  const [_showOutputDetails, _setShowOutputDetails] = useState(false);
+  const [_showProtocolDetails, _setShowProtocolDetails] = useState(false);
+  const [_showBlock2More, _setShowBlock2More] = useState(false);
+  const [_showBlock3More, _setShowBlock3More] = useState(false);
+  const [_showBlock4More, _setShowBlock4More] = useState(false);
+  const [_showBlock5Popup, _setShowBlock5Popup] = useState(false);
+  const [_showBreakthroughPopup, _setShowBreakthroughPopup] = useState(false);
+  const [_showProofPopup, _setShowProofPopup] = useState(false);
+  const [_activeWorkflowStage, _setActiveWorkflowStage] = useState<'intake' | 'analysis' | 'output' | null>(null);
+  const [_showProtocolLetters, _setShowProtocolLetters] = useState(false);
+  const [_showUnifiedSystemOverview, _setShowUnifiedSystemOverview] = useState(false);
+  const [_unifiedActiveTab, _setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
+  const [_activeDocument, _setActiveDocument] = useState<string | null>(null);
+  const [_activeLayer, _setActiveLayer] = useState<number | null>(null);
+  const [_expandedEngine, _setExpandedEngine] = useState<string | null>(null);
+  const [_expandedCards, _setExpandedCards] = useState<Set<string>>(new Set());
   const [augmentedAISnapshot, setAugmentedAISnapshot] = useState<AugmentedAISnapshot | null>(null);
   const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
-  const [augmentedRecommendedTools, setAugmentedRecommendedTools] = useState<AugmentedRecommendedTool[]>([]);
-  const [augmentedUnresolvedGaps, setAugmentedUnresolvedGaps] = useState<AugmentedGap[]>([]);
+  const [augmentedRecommendedTools, _setAugmentedRecommendedTools] = useState<AugmentedRecommendedTool[]>([]);
+  const [augmentedUnresolvedGaps, _setAugmentedUnresolvedGaps] = useState<AugmentedGap[]>([]);
   const [pendingActions, setPendingActions] = useState<PendingAction[]>([]);
   const [approvalGateAction, setApprovalGateAction] = useState<PendingAction | null>(null);
   const [liveDataCache, setLiveDataCache] = useState<Record<string, { country: string; gdpGrowth: number | null; exchangeRate: number | null; lastUpdated: string }>>({});
@@ -1014,91 +1010,91 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [enableFullCaseTreeMatching, setEnableFullCaseTreeMatching] = useState(false);
   const [quickCountryFocus, setQuickCountryFocus] = useState('');
   const [quickBusinessTarget, setQuickBusinessTarget] = useState('');
-  const [quickCustomSector, setQuickCustomSector] = useState('');
-  const [quickCustomFocus, setQuickCustomFocus] = useState('');
+  const [quickCustomSector, _setQuickCustomSector] = useState('');
+  const [quickCustomFocus, _setQuickCustomFocus] = useState('');
   const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);
-  const [activeGlobalIssuePack, setActiveGlobalIssuePack] = useState<string | null>(null);
+  const [activeGlobalIssuePack, _setActiveGlobalIssuePack] = useState<string | null>(null);
   const [pilotFocusSelections, setPilotFocusSelections] = useState<string[]>([]);
   const [showFinalReport, setShowFinalReport] = useState(false);
   const [generatedDocuments, setGeneratedDocuments] = useState<{ id: string; title: string; content: string; category: 'letter' | 'report'; htmlContent: string }[]>([]);
   const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');
-  const [selectedReportTier, setSelectedReportTier] = useState<ReportTierKey | null>(null);
-  const [selectedReportLength, setSelectedReportLength] = useState<string | null>(null);
-  const [selectedReportStyle, setSelectedReportStyle] = useState<string | null>(null);
-  const [selectedReportAudience, setSelectedReportAudience] = useState<string | null>(null);
+  const [_selectedReportTier, _setSelectedReportTier] = useState<ReportTierKey | null>(null);
+  const [_selectedReportLength, _setSelectedReportLength] = useState<string | null>(null);
+  const [_selectedReportStyle, _setSelectedReportStyle] = useState<string | null>(null);
+  const [_selectedReportAudience, _setSelectedReportAudience] = useState<string | null>(null);
   const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);
-  const [showTierSelection, setShowTierSelection] = useState(false);
-  const [showLengthSelection, setShowLengthSelection] = useState(false);
-  const [showStyleSelection, setShowStyleSelection] = useState(false);
-  const [showAudienceSelection, setShowAudienceSelection] = useState(false);
-  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>(null);
-  const [showDocumentTypeRouter, setShowDocumentTypeRouter] = useState(false);
-  const [showIntelligentDocGen, setShowIntelligentDocGen] = useState(false);
-  const [showPersistentMemory, setShowPersistentMemory] = useState(false);
-  const [showOutcomeLearning, setShowOutcomeLearning] = useState(false);
-  const [showAgenticAI, setShowAgenticAI] = useState(false);
-  const [showCaseStudyAnalyzer, setShowCaseStudyAnalyzer] = useState(false);
-  const [showCaseGraphBuilder, setShowCaseGraphBuilder] = useState(false);
-  const [showRecommendationScorer, setShowRecommendationScorer] = useState(false);
-  const [showMissionGraph, setShowMissionGraph] = useState(false);
-  const [showRegionalOrchestrator, setShowRegionalOrchestrator] = useState(false);
-  const [showBrainIntegration, setShowBrainIntegration] = useState(false);
-  const [showDocumentExporter, setShowDocumentExporter] = useState(false);
-  const [showDocxExporter, setShowDocxExporter] = useState(false);
-  const [showAdaptiveQuestionnaire, setShowAdaptiveQuestionnaire] = useState(false);
-  const [showPDFAnnotation, setShowPDFAnnotation] = useState(false);
-  const [showReportOrchestrator, setShowReportOrchestrator] = useState(false);
-  const [showAgentOrchestrator, setShowAgentOrchestrator] = useState(false);
-  const [showTTSService, setShowTTSService] = useState(false);
-  const [showHistoricalMatcher, setShowHistoricalMatcher] = useState(false);
-  const [showUnbiasedAnalysis, setShowUnbiasedAnalysis] = useState(false);
-  const [showCounterfactual, setShowCounterfactual] = useState(false);
-  const [showSituationAnalysis, setShowSituationAnalysis] = useState(false);
-  const [showNSILIntelligence, setShowNSILIntelligence] = useState(false);
-  const [showMotivationDetector, setShowMotivationDetector] = useState(false);
-  const [showUserSignalDecoder, setShowUserSignalDecoder] = useState(false);
-  const [showAdversarialReasoning, setShowAdversarialReasoning] = useState(false);
-  const [showLocationIntelligence, setShowLocationIntelligence] = useState(false);
-  const [showDecisionPipeline, setShowDecisionPipeline] = useState(false);
-  const [showEventBus, setShowEventBus] = useState(false);
-  const [showAutonomousScheduler, setShowAutonomousScheduler] = useState(false);
-  const [showMultiAgentOrchestrator, setShowMultiAgentOrchestrator] = useState(false);
-  const [showPartnerIntelligence, setShowPartnerIntelligence] = useState(false);
-  const [showReactiveIntelligence, setShowReactiveIntelligence] = useState(false);
-  const [showSelfLearning, setShowSelfLearning] = useState(false);
-  const [showSelfImprovement, setShowSelfImprovement] = useState(false);
-  const [showConversationMemory, setShowConversationMemory] = useState(false);
-  const [showFunctionCalling, setShowFunctionCalling] = useState(false);
-  const [showRegionalIntel, setShowRegionalIntel] = useState(false);
-  const [showOutputModeration, setShowOutputModeration] = useState(false);
-  const [showPIIDetection, setShowPIIDetection] = useState(false);
-  const [showEvaluationFramework, setShowEvaluationFramework] = useState(false);
-  const [showMonitoring, setShowMonitoring] = useState(false);
-  const [showVectorStore, setShowVectorStore] = useState(false);
-  const [showSecurityService, setShowSecurityService] = useState(false);
-  const [showGradientRanking, setShowGradientRanking] = useState(false);
-  const [showFailureMode, setShowFailureMode] = useState(false);
-  const [showSafetyGuardrails, setShowSafetyGuardrails] = useState(false);
-  const [showStructuredOutput, setShowStructuredOutput] = useState(false);
-  const [showDocumentIntegrity, setShowDocumentIntegrity] = useState(false);
-  const [showAgentWorkflow, setShowAgentWorkflow] = useState(false);
-  const [showAutonomousMode, setShowAutonomousMode] = useState(false);
-  const [autonomousSuggestions, setAutonomousSuggestions] = useState<string[]>([]);
-  const [isAutonomousThinking, setIsAutonomousThinking] = useState(false);
-  const [insights, setInsights] = useState<string[]>([]);
-  const [combinedInsights, setCombinedInsights] = useState<string[]>([]);
-  const [reportData, setReportData] = useState<object | null>(null);
-  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-  const [genPhase, setGenPhase] = useState<string | null>(null);
-  const [genProgress, setGenProgress] = useState(0);
-  const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
-  const [showNSILWorkspace, setShowNSILWorkspace] = useState(false);
-  const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
-  const [pendingConsultantQuery, setPendingConsultantQuery] = useState<string | null>(null);
-  const [pendingConsultantContext, setPendingConsultantContext] = useState<{ city?: string; country?: string; summary?: string; profile?: Record<string, unknown>; research?: object | null } | null>(null);
+  const [_showTierSelection, _setShowTierSelection] = useState(false);
+  const [_showLengthSelection, _setShowLengthSelection] = useState(false);
+  const [_showStyleSelection, _setShowStyleSelection] = useState(false);
+  const [_showAudienceSelection, _setShowAudienceSelection] = useState(false);
+  const [_selectedDocumentType, _setSelectedDocumentType] = useState<string | null>(null);
+  const [_showDocumentTypeRouter, _setShowDocumentTypeRouter] = useState(false);
+  const [_showIntelligentDocGen, _setShowIntelligentDocGen] = useState(false);
+  const [_showPersistentMemory, _setShowPersistentMemory] = useState(false);
+  const [_showOutcomeLearning, _setShowOutcomeLearning] = useState(false);
+  const [_showAgenticAI, _setShowAgenticAI] = useState(false);
+  const [_showCaseStudyAnalyzer, _setShowCaseStudyAnalyzer] = useState(false);
+  const [_showCaseGraphBuilder, _setShowCaseGraphBuilder] = useState(false);
+  const [_showRecommendationScorer, _setShowRecommendationScorer] = useState(false);
+  const [_showMissionGraph, _setShowMissionGraph] = useState(false);
+  const [_showRegionalOrchestrator, _setShowRegionalOrchestrator] = useState(false);
+  const [_showBrainIntegration, _setShowBrainIntegration] = useState(false);
+  const [_showDocumentExporter, _setShowDocumentExporter] = useState(false);
+  const [_showDocxExporter, _setShowDocxExporter] = useState(false);
+  const [_showAdaptiveQuestionnaire, _setShowAdaptiveQuestionnaire] = useState(false);
+  const [_showPDFAnnotation, _setShowPDFAnnotation] = useState(false);
+  const [_showReportOrchestrator, _setShowReportOrchestrator] = useState(false);
+  const [_showAgentOrchestrator, _setShowAgentOrchestrator] = useState(false);
+  const [_showTTSService, _setShowTTSService] = useState(false);
+  const [_showHistoricalMatcher, _setShowHistoricalMatcher] = useState(false);
+  const [_showUnbiasedAnalysis, _setShowUnbiasedAnalysis] = useState(false);
+  const [_showCounterfactual, _setShowCounterfactual] = useState(false);
+  const [_showSituationAnalysis, _setShowSituationAnalysis] = useState(false);
+  const [_showNSILIntelligence, _setShowNSILIntelligence] = useState(false);
+  const [_showMotivationDetector, _setShowMotivationDetector] = useState(false);
+  const [_showUserSignalDecoder, _setShowUserSignalDecoder] = useState(false);
+  const [_showAdversarialReasoning, _setShowAdversarialReasoning] = useState(false);
+  const [_showLocationIntelligence, _setShowLocationIntelligence] = useState(false);
+  const [_showDecisionPipeline, _setShowDecisionPipeline] = useState(false);
+  const [_showEventBus, _setShowEventBus] = useState(false);
+  const [_showAutonomousScheduler, _setShowAutonomousScheduler] = useState(false);
+  const [_showMultiAgentOrchestrator, _setShowMultiAgentOrchestrator] = useState(false);
+  const [_showPartnerIntelligence, _setShowPartnerIntelligence] = useState(false);
+  const [_showReactiveIntelligence, _setShowReactiveIntelligence] = useState(false);
+  const [_showSelfLearning, _setShowSelfLearning] = useState(false);
+  const [_showSelfImprovement, _setShowSelfImprovement] = useState(false);
+  const [_showConversationMemory, _setShowConversationMemory] = useState(false);
+  const [_showFunctionCalling, _setShowFunctionCalling] = useState(false);
+  const [_showRegionalIntel, _setShowRegionalIntel] = useState(false);
+  const [_showOutputModeration, _setShowOutputModeration] = useState(false);
+  const [_showPIIDetection, _setShowPIIDetection] = useState(false);
+  const [_showEvaluationFramework, _setShowEvaluationFramework] = useState(false);
+  const [_showMonitoring, _setShowMonitoring] = useState(false);
+  const [_showVectorStore, _setShowVectorStore] = useState(false);
+  const [_showSecurityService, _setShowSecurityService] = useState(false);
+  const [_showGradientRanking, _setShowGradientRanking] = useState(false);
+  const [_showFailureMode, _setShowFailureMode] = useState(false);
+  const [_showSafetyGuardrails, _setShowSafetyGuardrails] = useState(false);
+  const [_showStructuredOutput, _setShowStructuredOutput] = useState(false);
+  const [_showDocumentIntegrity, _setShowDocumentIntegrity] = useState(false);
+  const [_showAgentWorkflow, _setShowAgentWorkflow] = useState(false);
+  const [_showAutonomousMode, _setShowAutonomousMode] = useState(false);
+  const [_autonomousSuggestions, _setAutonomousSuggestions] = useState<string[]>([]);
+  const [_isAutonomousThinking, _setIsAutonomousThinking] = useState(false);
+  const [_insights, setInsights] = useState<string[]>([]);
+  const [_combinedInsights, _setCombinedInsights] = useState<string[]>([]);
+  const [_reportData, _setReportData] = useState<object | null>(null);
+  const [_isGeneratingReport, _setIsGeneratingReport] = useState(false);
+  const [_genPhase, _setGenPhase] = useState<string | null>(null);
+  const [_genProgress, _setGenProgress] = useState(0);
+  const [_savedReports, _setSavedReports] = useState<ReportParameters[]>([]);
+  const [_showNSILWorkspace, _setShowNSILWorkspace] = useState(false);
+  const [_params, _setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
+  const [_pendingConsultantQuery, _setPendingConsultantQuery] = useState<string | null>(null);
+  const [_pendingConsultantContext, _setPendingConsultantContext] = useState<{ city?: string; country?: string; summary?: string; profile?: Record<string, unknown>; research?: object | null } | null>(null);
   const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');
   const [reactiveDraftHint, setReactiveDraftHint] = useState('');
-  const [documentBuilderActive, setDocumentBuilderActive] = useState(false);
+  const [_documentBuilderActive, _setDocumentBuilderActive] = useState(false);
 
   // ── Missing state/ref declarations ─────────────────────────────────────────
   // Refs
@@ -1113,10 +1109,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   // State — access control & mode
   const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(false);
-  const [augmentedCapabilityMode, setAugmentedCapabilityMode] = useState('standard');
-  const [augmentedCapabilityTags, setAugmentedCapabilityTags] = useState<string[]>([]);
+  const [augmentedCapabilityMode, _setAugmentedCapabilityMode] = useState('standard');
+  const [augmentedCapabilityTags, _setAugmentedCapabilityTags] = useState<string[]>([]);
   const [augmentedPanelExpanded, setAugmentedPanelExpanded] = useState(false);
-  const [augmentedReviewLoading, setAugmentedReviewLoading] = useState(false);
+  const [augmentedReviewLoading, _setAugmentedReviewLoading] = useState(false);
   const [showAugmentedPanel, setShowAugmentedPanel] = useState(false);
   const [showAboutBWGA, setShowAboutBWGA] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -1138,12 +1134,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [feedbackMap, setFeedbackMap] = useState<Record<string, string>>({});
 
   // State — case graph
-  const [caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
+  const [_caseGraph, setCaseGraph] = useState<CaseGraph | null>(null);
 
   // State — entity/decision
   const [entityDecisions, setEntityDecisions] = useState<Record<string, string>>({});
-  const [fiveEngineTribunal, setFiveEngineTribunal] = useState<FiveEngineTribunal | null>(null);
-  const [perceptionDelta, setPerceptionDelta] = useState<PerceptionDelta | null>(null);
+  const [fiveEngineTribunal, _setFiveEngineTribunal] = useState<FiveEngineTribunal | null>(null);
+  const [perceptionDelta, _setPerceptionDelta] = useState<PerceptionDelta | null>(null);
   const [missionSnapshot, setMissionSnapshot] = useState<MissionSnapshot | null>(null);
 
   // State — execution timeline
@@ -1155,12 +1151,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [liveInsightFilter, setLiveInsightFilter] = useState('all');
   const [liveInsightLoading, setLiveInsightLoading] = useState(false);
   const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);
-  const [liveInsightRunReason, setLiveInsightRunReason] = useState('');
-  const [liveInsightQueryUsed, setLiveInsightQueryUsed] = useState('');
-  const [liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState<string | null>(null);
+  const [_liveInsightRunReason, setLiveInsightRunReason] = useState('');
+  const [_liveInsightQueryUsed, setLiveInsightQueryUsed] = useState('');
+  const [_liveInsightUpdatedAt, setLiveInsightUpdatedAt] = useState<string | null>(null);
   const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);
   const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');
-  const [liveInsightProviderStatus, setLiveInsightProviderStatus] = useState('');
+  const [_liveInsightProviderStatus, setLiveInsightProviderStatus] = useState('');
   const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);
 
   // State — output & generation
@@ -1172,11 +1168,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [quickDraftLines, setQuickDraftLines] = useState('');
   const [overlookedIntelligence, setOverlookedIntelligence] = useState<OverlookedIntelligence | null>(null);
   const [locale, setLocale] = useState('en');
-  const [skillLevel, setSkillLevel] = useState('professional');
+  const [_skillLevel, setSkillLevel] = useState('professional');
 
   // State — pilot/options
-  const [pilotFocus, setPilotFocus] = useState('');
-  const [pilotModeEnabled, setPilotModeEnabled] = useState(false);
+  const [_pilotFocus, setPilotFocus] = useState('');
+  const [pilotModeEnabled, _setPilotModeEnabled] = useState(false);
   const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});
   const [pilotOptionPreferences, setPilotOptionPreferences] = useState<Record<string, 'include' | 'exclude'>>({});
   const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);
@@ -1193,8 +1189,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // State — strategic apply
   const [strategicApplyError, setStrategicApplyError] = useState<string | null>(null);
   const [strategicApplyLoading, setStrategicApplyLoading] = useState(false);
-  const [strategicApplyUpdatedAt, setStrategicApplyUpdatedAt] = useState<string | null>(null);
-  const [strategicAutoApplyEnabled, setStrategicAutoApplyEnabled] = useState(false);
+  const [_strategicApplyUpdatedAt, setStrategicApplyUpdatedAt] = useState<string | null>(null);
+  const [strategicAutoApplyEnabled, _setStrategicAutoApplyEnabled] = useState(false);
   const [strategicPipeline, setStrategicPipeline] = useState<StrategicPipeline | null>(null);
   const [strictLearningImport, setStrictLearningImport] = useState(false);
   const [topGapQuickInput, setTopGapQuickInput] = useState('');
@@ -1244,7 +1240,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   }, []);
 
   // Stub function for queueAction (needs proper implementation)
-  const queueAction = useCallback((action: { id: string; label: string; description: string; category: 'submit' | 'escalate' | 'document' | 'notify' }) => {
+  const _queueAction = useCallback((action: { id: string; label: string; description: string; category: 'submit' | 'escalate' | 'document' | 'notify' }) => {
     setPendingActions(prev => [...prev, { ...action, status: 'pending' as const }]);
   }, []);
   const voiceSpeakingRef = useRef(false);
@@ -1275,7 +1271,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // Background brain context - updated on every enrichment pass
   const brainCtxRef = useRef<BrainContext | null>(null);
   // Persistent cross-session memory (survives page reload via localStorage)
-  const memoryRef = useRef<PersistentMemorySystem>(new PersistentMemorySystem());
+  const _memoryRef = useRef<PersistentMemorySystem>(new PersistentMemorySystem());
   // Latest CaseStudyAnalyzer output - written synchronously in handleSend,
   // read by buildNaturalFallbackReply (bypasses React async state lag)
   const latestDocAnalysisRef = useRef<{
@@ -1511,7 +1507,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setApprovalGateAction(null);
   }, []);
 
-  const fetchLiveIntelForCountry = useCallback(async (country: string) => {
+  const _fetchLiveIntelForCountry = useCallback(async (country: string) => {
     if (!country || liveDataCache[country.toLowerCase()]) return;
     try {
       const result = await LiveDataService.getCountryIntelligence(country);
@@ -3371,7 +3367,7 @@ ${agentRegistry.current.toManifest()}`;
     return tooShort || placeholderPattern.test(combined) || lowConfidence;
   }, []);
 
-  const filterActionableInsights = useCallback((
+  const _filterActionableInsights = useCallback((
     insights: Array<{ title: string; content: string; confidence?: number; sources?: string[] }>,
     userQuery: string,
     countryHint?: string
@@ -3407,7 +3403,7 @@ ${agentRegistry.current.toManifest()}`;
   }, [isLowSignalInsight]);
 
   // Detect fallback/error messages that should NOT overwrite a valid AI response
-  const isFallbackErrorResponse = useCallback((text: string): boolean => {
+  const _isFallbackErrorResponse = useCallback((text: string): boolean => {
     if (!text) return true;
     return /I was unable to generate a response|Confirm the backend server is running|I encountered an error processing your request|AI Service Not Configured|Rate Limit Reached/.test(text);
   }, []);
@@ -3484,7 +3480,7 @@ ${agentRegistry.current.toManifest()}`;
     uploadedFileContentsRef.length,
   ]);
 
-  const processWithAIStream = useCallback(async (
+  const _processWithAIStream = useCallback(async (
     userInput: string,
     context: string,
     onChunk: (text: string) => void
@@ -4154,7 +4150,7 @@ ${agentRegistry.current.toManifest()}`;
     }
 
     // Capture before files are cleared - used to defer showing ReportOptionsPanel until after AI responds
-    const hadFileUpload = uploadedFiles.length > 0;
+    const _hadFileUpload = uploadedFiles.length > 0;
     const discoveredDocs: DocumentOption[] = [];
 
     // Process uploaded files
@@ -4434,7 +4430,7 @@ ${agentRegistry.current.toManifest()}`;
 
       let responseContent = '';
       const isReportGeneration = userContent.startsWith('GENERATE_REPORT_NOW::');
-      const reportTierLabel = isReportGeneration ? userContent.split('\n')[0].replace('GENERATE_REPORT_NOW::', '').trim() : '';
+      const _reportTierLabel = isReportGeneration ? userContent.split('\n')[0].replace('GENERATE_REPORT_NOW::', '').trim() : '';
       if (shouldPromptForOutputClarification) {
         responseContent = buildOutputClarificationPrompt(caseDraft);
         displayedMsgIds.current.add(assistantMessageId);
@@ -4588,7 +4584,7 @@ ${agentRegistry.current.toManifest()}`;
             ).catch(() => null as IntelligenceReport | null);
 
             // ── Tier 3: Adversarial reasoning at high readiness (>= 60, or document builder intent) ───────
-            const adversarialResult = await Promise.resolve<AdversarialOutputs | null>(
+            const _adversarialResult = await Promise.resolve<AdversarialOutputs | null>(
               liveReadiness >= 60 || isDocBuilderIntent
                 ? AdversarialReasoningService.generate(partialParams as Parameters<typeof AdversarialReasoningService.generate>[0])
                 : null
@@ -4827,7 +4823,7 @@ ${agentRegistry.current.toManifest()}`;
 
         const agenticResults = await agenticInsightsPromise;
         if (agenticResults.length > 0) {
-          setInsights(agenticResults.map((i: { insight?: string }) => i.insight || String(i)));
+          setInsights(agenticResults.map((i) => i.content || i.title));
         }
 
       }
@@ -4838,7 +4834,7 @@ ${agentRegistry.current.toManifest()}`;
     // Cleanup after response
     setIsStreamingResponse(false);
     setIsLoading(false);
-  }, []);
+  }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles]);
 
   // Handle file selection
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -5397,7 +5393,7 @@ ${agentRegistry.current.toManifest()}`;
     
     setCurrentPhase('generation');
     setIsLoading(true);
-    setFeedbackSignal(null);
+    setFeedbackSignal('');
     setFeedbackNote('');
     setFeedbackSubmitted(false);
     setGeneratedDocuments([]);
@@ -6654,7 +6650,7 @@ ${agentRegistry.current.toManifest()}`;
 
   const handleResetLearningSignals = useCallback(() => {
     setRecommendationBoostMap({});
-    setFeedbackSignal(null);
+    setFeedbackSignal('');
     setFeedbackNote('');
     setFeedbackSubmitted(false);
     setMessages(prev => [...prev, {
@@ -6715,7 +6711,7 @@ ${agentRegistry.current.toManifest()}`;
       }, {});
 
       setRecommendationBoostMap(sanitized);
-      setFeedbackSignal(null);
+      setFeedbackSignal('');
       setFeedbackNote('');
       setFeedbackSubmitted(false);
 
