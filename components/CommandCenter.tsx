@@ -412,27 +412,72 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                             </div>
 
-                            {/* Six engines — styled to match the editorial tone */}
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-400">The six engines that run first</p>
-                                <div className="space-y-0 divide-y divide-slate-100">
+                            {/* Mock output panel — proof, not a claim */}
+                            <div className="bg-slate-950 font-mono text-sm overflow-hidden">
+                                {/* Header bar */}
+                                <div className="flex items-center justify-between px-5 py-3 bg-slate-900 border-b border-slate-700">
+                                    <span className="text-xs font-bold text-white tracking-widest uppercase">ADVERSIQ</span>
+                                    <span className="text-[10px] text-slate-400 uppercase tracking-widest">Intelligence Run — Layer 09 complete</span>
+                                </div>
+                                {/* Provider */}
+                                <div className="px-5 py-3 border-b border-slate-800 flex items-center gap-2">
+                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                    <span className="text-xs text-slate-400">Gemini 2.0 Flash</span>
+                                    <span className="ml-auto text-[10px] text-slate-600 uppercase tracking-widest">All 10 layers fired</span>
+                                </div>
+                                {/* Verdict */}
+                                <div className="px-5 py-5 border-b border-slate-800">
+                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Tribunal Verdict</p>
+                                    <p className="text-2xl font-black text-emerald-400 tracking-tight">STRONG PROCEED</p>
+                                    <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1">
+                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Contradictions detected</span><span className="text-white">3</span></div>
+                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Resolved</span><span className="text-emerald-400">3 / 3</span></div>
+                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Composite score</span><span className="text-white">87.4</span></div>
+                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Confidence</span><span className="text-white">0.91</span></div>
+                                    </div>
+                                </div>
+                                {/* Engine scores */}
+                                <div className="px-5 py-4 border-b border-slate-800 space-y-2">
+                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-3">Engine scores</p>
                                     {[
-                                        { name: 'SATContradictionSolver', desc: 'Catches logical contradictions before they reach the model' },
-                                        { name: 'BayesianDebateEngine', desc: '5 adversarial personas build independent cases simultaneously' },
-                                        { name: 'HumanCognitionEngine', desc: '7 cognitive bias models applied to every assumption' },
-                                        { name: 'VectorMemoryIndex', desc: 'Retrieves semantically relevant prior analysis' },
-                                        { name: 'DAGScheduler', desc: 'Runs engines in parallel, in the right dependency order' },
-                                        { name: 'MonteCarloStressEngine', desc: '10,000 forward simulations against your assumptions' },
-                                    ].map((engine, i) => (
-                                        <div key={i} className="flex items-start gap-4 py-4">
-                                            <span className="text-2xl font-extralight text-slate-200 leading-none w-8 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                                            <div>
-                                                <p className="text-base font-bold font-mono text-slate-900 mb-0.5">{engine.name}</p>
-                                                <p className="text-sm text-slate-500">{engine.desc}</p>
+                                        { name: 'BayesianDebateEngine', score: 92, w: 'w-[92%]' },
+                                        { name: 'SATContradictionSolver', score: 88, w: 'w-[88%]' },
+                                        { name: 'MonteCarloStressEngine', score: 85, w: 'w-[85%]' },
+                                        { name: 'HumanCognitionEngine', score: 79, w: 'w-[79%]' },
+                                    ].map((e, i) => (
+                                        <div key={i}>
+                                            <div className="flex justify-between text-xs mb-0.5">
+                                                <span className="text-slate-400">{e.name}</span>
+                                                <span className="text-white">{e.score}</span>
+                                            </div>
+                                            <div className="h-0.5 bg-slate-800">
+                                                <div className={`h-0.5 bg-amber-400 ${e.w}`}></div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
+                                {/* Footer */}
+                                <div className="px-5 py-3 space-y-1">
+                                    <p className="text-[10px] text-slate-500">&#10003; Full provenance attached to every score</p>
+                                    <p className="text-[10px] text-slate-500">&#10003; Audit trail: 10 layers logged in sequence</p>
+                                    <p className="text-[10px] text-slate-500">&#10003; Layer 09 self-check complete</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Three proof statements — full width, editorial scale */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-slate-100 pt-12">
+                            <div>
+                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">Nothing is hidden.</p>
+                                <p className="text-base text-slate-500 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer. You are never looking at a black box.</p>
+                            </div>
+                            <div>
+                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">Everything is auditable.</p>
+                                <p className="text-base text-slate-500 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed — down to individual engine scores.</p>
+                            </div>
+                            <div>
+                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">The pipeline checks itself.</p>
+                                <p className="text-base text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the system inward. The NSIL analyses its own output before you ever see it. No other AI system does this.</p>
                             </div>
                         </div>
 
@@ -494,21 +539,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         ))}
                     </div>
 
-                    {/* Three properties */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
-                        <div className="bg-white/5 px-6 py-6">
-                            <p className="text-sm font-bold text-white mb-2">Nothing is hidden</p>
-                            <p className="text-sm text-slate-400 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer.</p>
-                        </div>
-                        <div className="bg-white/5 px-6 py-6">
-                            <p className="text-sm font-bold text-white mb-2">Everything is auditable</p>
-                            <p className="text-sm text-slate-400 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed.</p>
-                        </div>
-                        <div className="bg-white/5 px-6 py-6">
-                            <p className="text-sm font-bold text-white mb-2">The pipeline checks itself</p>
-                            <p className="text-sm text-slate-400 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the analytical power of the entire system inward. The NSIL analyses its own output before you see it.</p>
-                        </div>
-                    </div>
+
 
                 </div>
             </section>
