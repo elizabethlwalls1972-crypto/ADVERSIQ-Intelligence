@@ -513,11 +513,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             The central brain.<br className="hidden md:block" />
                             <span className="font-black">Everything routes through here.</span>
                         </h2>
-                        <p className="text-lg text-slate-300 leading-relaxed mb-4">
-                            The NSIL — Nexus Strategic Intelligence Layer — is the single master control point that sits above the six pre-processing engines and the three reasoning architectures. Every engine reports through it. Every result is validated, scored, and audited by it before it reaches you.
-                        </p>
-                        <p className="text-sm text-slate-400 leading-relaxed">
-                            It is not a wrapper. It is not an orchestrator in the software-engineering sense. It is a 10-layer verification structure, each layer doing one specific job, each layer challenging the output of the one before it.
+                        <p className="text-lg text-slate-300 leading-relaxed">
+                            It is not a wrapper. It is not an orchestrator in the software-engineering sense. It is a 10-layer verification structure — each layer doing one specific job, each layer challenging the output of the one before it.
                         </p>
                     </div>
 
