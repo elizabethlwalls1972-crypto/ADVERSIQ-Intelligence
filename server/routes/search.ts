@@ -864,4 +864,266 @@ function buildIntelligenceFromFreeAPIs(
   };
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// FREE INTELLIGENCE — Zero-key, zero-cost web research endpoints
+// These work like OpenAI agent browsing tools: search → fetch → extract → return
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * POST /api/search/fetch-url
+ * Convert any URL to clean readable text via Jina Reader.
+ * Free, no API key, no rate limit for standard use.
+ * This is how the system reads full articles and pages — same as OpenAI's browser tool.
+ */
+router.post('/fetch-url', async (req: Request, res: Response) => {
+  try {
+    const { url, maxChars = 6000 } = req.body;
+    if (!url || typeof url !== 'string') {
+      return res.status(400).json({ error: 'url is required' });
+    }
+    // Basic URL validation — must be http(s)
+    if (!/^https?:\/\//i.test(url)) {
+      return res.status(400).json({ error: 'url must start with http:// or https://' });
+    }
+    const sanitised = sanitiseUserInput(url, 2000);
+    if (!sanitised.safe) return res.status(400).json({ error: sanitised.reason });
+
+    const jinaUrl = `https://r.jina.ai/${sanitised.cleaned}`;
+    const response = await fetch(jinaUrl, {
+      signal: AbortSignal.timeout(12000),
+      headers: { 'Accept': 'text/plain', 'X-Return-Format': 'text' },
+    });
+
+    if (!response.ok) {
+      return res.status(502).json({ error: `Jina Reader returned ${response.status}`, url });
+    }
+
+    const raw = await response.text();
+    const text = raw.replace(/\n{3,}/g, '\n\n').trim().slice(0, Number(maxChars) || 6000);
+
+    return res.json({
+      ok: text.length > 50,
+      url,
+      text,
+      chars: text.length,
+      provider: 'jina-reader',
+    });
+  } catch (error) {
+    console.error('fetch-url error:', error);
+    return res.status(500).json({ ok: false, error: 'Failed to fetch URL', provider: 'jina-reader' });
+  }
+});
+
+/**
+ * POST /api/search/worldbank
+ * Pull World Bank open economic data for a country.
+ * Free, no API key. Returns GDP, FDI, inflation, unemployment, trade.
+ */
+router.post('/worldbank', async (req: Request, res: Response) => {
+  try {
+    const { country, countryCode } = req.body;
+    if (!country && !countryCode) {
+      return res.status(400).json({ error: 'country or countryCode required' });
+    }
+
+    const COUNTRY_CODE_MAP: Record<string, string> = {
+      'philippines': 'PH', 'indonesia': 'ID', 'vietnam': 'VN', 'thailand': 'TH',
+      'malaysia': 'MY', 'singapore': 'SG', 'myanmar': 'MM', 'cambodia': 'KH',
+      'nigeria': 'NG', 'kenya': 'KE', 'ghana': 'GH', 'ethiopia': 'ET',
+      'south africa': 'ZA', 'egypt': 'EG', 'morocco': 'MA', 'tanzania': 'TZ',
+      'india': 'IN', 'pakistan': 'PK', 'bangladesh': 'BD', 'sri lanka': 'LK',
+      'brazil': 'BR', 'colombia': 'CO', 'peru': 'PE', 'chile': 'CL', 'mexico': 'MX',
+      'ukraine': 'UA', 'turkey': 'TR', 'saudi arabia': 'SA', 'uae': 'AE',
+      'united arab emirates': 'AE', 'qatar': 'QA', 'jordan': 'JO',
+      'china': 'CN', 'japan': 'JP', 'south korea': 'KR', 'australia': 'AU',
+      'argentina': 'AR', 'kazakhstan': 'KZ', 'uzbekistan': 'UZ',
+    };
+
+    const iso2 = countryCode?.toUpperCase() ||
+      COUNTRY_CODE_MAP[(country as string).toLowerCase().trim()] ||
+      (country as string).toUpperCase().slice(0, 2);
+
+    const indicators = [
+      { code: 'NY.GDP.MKTP.CD', label: 'GDP (USD)' },
+      { code: 'NY.GDP.PCAP.CD', label: 'GDP per capita (USD)' },
+      { code: 'NY.GDP.MKTP.KD.ZG', label: 'GDP growth (%)' },
+      { code: 'FP.CPI.TOTL.ZG', label: 'Inflation (%)' },
+      { code: 'BX.KLT.DINV.CD.WD', label: 'FDI inflows (USD)' },
+      { code: 'SL.UEM.TOTL.ZS', label: 'Unemployment (%)' },
+      { code: 'NE.EXP.GNFS.ZS', label: 'Exports (% of GDP)' },
+      { code: 'NE.IMP.GNFS.ZS', label: 'Imports (% of GDP)' },
+      { code: 'GC.DOD.TOTL.GD.ZS', label: 'Government debt (% of GDP)' },
+    ];
+
+    const results = await Promise.allSettled(
+      indicators.map(async (ind) => {
+        const url = `https://api.worldbank.org/v2/country/${iso2}/indicator/${ind.code}?format=json&mrv=5&per_page=5`;
+        const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
+        if (!r.ok) return null;
+        const d = await r.json();
+        const entries = ((d[1] || []) as Array<{ value: number | null; date: string }>)
+          .filter(e => e.value !== null).slice(0, 3);
+        if (!entries.length) return null;
+        const series = entries.map(e => {
+          const v = e.value as number;
+          const fmt = v > 1e12 ? `$${(v / 1e12).toFixed(2)}T`
+            : v > 1e9 ? `$${(v / 1e9).toFixed(1)}B`
+            : v > 1e6 ? `$${(v / 1e6).toFixed(1)}M`
+            : v.toLocaleString();
+          return `${e.date}: ${fmt}`;
+        }).join(', ');
+        return { label: ind.label, series };
+      })
+    );
+
+    const indicators_data = results
+      .filter((r): r is PromiseFulfilledResult<{ label: string; series: string } | null> =>
+        r.status === 'fulfilled' && r.value !== null)
+      .map(r => r.value as { label: string; series: string });
+
+    return res.json({
+      ok: indicators_data.length > 0,
+      country: country || iso2,
+      countryCode: iso2,
+      indicators: indicators_data,
+      source: 'World Bank Open Data',
+      sourceUrl: `https://data.worldbank.org/country/${iso2}`,
+    });
+  } catch (error) {
+    console.error('worldbank error:', error);
+    return res.status(500).json({ ok: false, error: 'World Bank lookup failed' });
+  }
+});
+
+/**
+ * POST /api/search/free-intel
+ * Comprehensive free intelligence gathering — no API keys needed.
+ * Combines: DuckDuckGo search → Jina page fetch → Wikipedia → World Bank → HN news
+ * This is the agent-style "research" endpoint: give it a question, get back real data.
+ */
+router.post('/free-intel', async (req: Request, res: Response) => {
+  try {
+    const { query, country, fetchPages = true } = req.body;
+    if (!query) return res.status(400).json({ error: 'query required' });
+
+    const sanitised = sanitiseUserInput(query, 1000);
+    if (!sanitised.safe) return res.status(400).json({ error: sanitised.reason });
+    const q = sanitised.cleaned;
+
+    const results: Record<string, unknown> = { query: q, sources: [] as string[], fetchedAt: new Date().toISOString() };
+
+    const [ddg, wiki, news, hn] = await Promise.allSettled([
+      // DuckDuckGo
+      (async () => {
+        const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(q)}&format=json&no_redirect=1&no_html=1`;
+        const r = await fetch(url, { signal: AbortSignal.timeout(7000) });
+        if (!r.ok) return null;
+        const data = await r.json();
+        const urls: string[] = [];
+        if (data?.AbstractURL && !data.AbstractURL.includes('duckduckgo')) urls.push(data.AbstractURL);
+        (data?.RelatedTopics || []).slice(0, 4).forEach((t: Record<string, string>) => {
+          if (t?.FirstURL && !t.FirstURL.includes('duckduckgo.com') && urls.length < 4) urls.push(t.FirstURL);
+        });
+        return {
+          abstract: data?.AbstractText || '',
+          related: (data?.RelatedTopics || []).slice(0, 6).map((t: Record<string, string>) => t?.Text || '').filter(Boolean),
+          source: data?.AbstractSource || '',
+          urls,
+        };
+      })(),
+      // Wikipedia
+      (async () => {
+        const sUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*&srlimit=3`;
+        const sRes = await fetch(sUrl, { signal: AbortSignal.timeout(7000) });
+        if (!sRes.ok) return null;
+        const sData = await sRes.json();
+        const titles = (sData?.query?.search || []).slice(0, 2).map((s: Record<string, string>) => s.title);
+        const extracts = await Promise.allSettled(titles.map(async (title: string) => {
+          const cUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&exintro=false&exchars=2000&format=json&origin=*`;
+          const cRes = await fetch(cUrl, { signal: AbortSignal.timeout(6000) });
+          if (!cRes.ok) return null;
+          const cData = await cRes.json();
+          const pages = cData?.query?.pages || {};
+          const page = Object.values(pages)[0] as Record<string, string> | undefined;
+          return { title, extract: page?.extract || '' };
+        }));
+        return extracts
+          .filter((r): r is PromiseFulfilledResult<{ title: string; extract: string } | null> =>
+            r.status === 'fulfilled' && r.value !== null && (r.value?.extract?.length ?? 0) > 100)
+          .map(r => r.value);
+      })(),
+      // DDG News
+      (async () => {
+        const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(q + ' news 2025')}&format=json&no_redirect=1&no_html=1&ia=news`;
+        const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        if (!r.ok) return null;
+        const data = await r.json();
+        return (data?.RelatedTopics || []).slice(0, 8)
+          .map((t: Record<string, string>) => ({ text: t?.Text || '', url: t?.FirstURL || '' }))
+          .filter((t: { text: string }) => t.text.length > 30);
+      })(),
+      // Hacker News
+      (async () => {
+        const url = `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(q)}&tags=story&hitsPerPage=6&numericFilters=points>5`;
+        const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+        if (!r.ok) return null;
+        const data = await r.json();
+        return (data?.hits || []).slice(0, 6).map((h: Record<string, string | number>) => ({
+          title: h.title, url: h.url, points: h.points, author: h.author,
+        }));
+      })(),
+    ]);
+
+    if (ddg.status === 'fulfilled' && ddg.value) {
+      results['search'] = ddg.value;
+      (results['sources'] as string[]).push('DuckDuckGo');
+    }
+    if (wiki.status === 'fulfilled' && wiki.value) {
+      results['wikipedia'] = wiki.value;
+      (results['sources'] as string[]).push('Wikipedia');
+    }
+    if (news.status === 'fulfilled' && news.value) {
+      results['news'] = news.value;
+      (results['sources'] as string[]).push('DuckDuckGo News');
+    }
+    if (hn.status === 'fulfilled' && hn.value) {
+      results['hackerNews'] = hn.value;
+      (results['sources'] as string[]).push('Hacker News');
+    }
+
+    // Jina Reader: fetch full content of top URLs found by search
+    if (fetchPages) {
+      const ddgVal = ddg.status === 'fulfilled' ? ddg.value : null;
+      const urls: string[] = (ddgVal?.urls || []).filter((u: string) => u.startsWith('http')).slice(0, 3);
+      if (urls.length) {
+        const pages = await Promise.allSettled(
+          urls.map(async (url: string) => {
+            const jinaUrl = `https://r.jina.ai/${url}`;
+            const r = await fetch(jinaUrl, {
+              signal: AbortSignal.timeout(10000),
+              headers: { 'Accept': 'text/plain', 'X-Return-Format': 'text' },
+            });
+            if (!r.ok) return null;
+            const text = (await r.text()).replace(/\n{3,}/g, '\n\n').trim().slice(0, 5000);
+            return text.length > 100 ? { url, text } : null;
+          })
+        );
+        const pageData = pages
+          .filter((r): r is PromiseFulfilledResult<{ url: string; text: string } | null> =>
+            r.status === 'fulfilled' && r.value !== null)
+          .map(r => r.value);
+        if (pageData.length) {
+          results['pages'] = pageData;
+          (results['sources'] as string[]).push('Jina Reader (full page content)');
+        }
+      }
+    }
+
+    return res.json({ ok: true, ...results });
+  } catch (error) {
+    console.error('free-intel error:', error);
+    return res.status(500).json({ ok: false, error: 'Free intelligence gathering failed' });
+  }
+});
+
 export default router;

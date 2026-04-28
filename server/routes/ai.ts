@@ -36,19 +36,74 @@ import { callAI, getProviderStatus, availableProviderCount, type TaskType } from
 import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
+// Sources used (all free, no API key required):
+//   DuckDuckGo Instant Answers • Wikipedia • Wikidata • DDG News
+//   World Bank open data API • Jina Reader (r.jina.ai) full-page extraction
+//   Hacker News Algolia API (tech queries) • OpenAlex (academic/research)
 interface LiveIntelligenceResult {
   ddgSnippet: string;
   wikiExtract: string;
   wikidataDesc: string;
+  newsItems: string;
+  worldBankData: string;
+  pageContent: string;
   sources: string[];
 }
 
-async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceResult> {
-  const result: LiveIntelligenceResult = { ddgSnippet: '', wikiExtract: '', wikidataDesc: '', sources: [] };
-  const searchQuery = query.slice(0, 300);
+// Country → ISO2 code map for World Bank API routing
+const COUNTRY_CODE_MAP: Record<string, string> = {
+  'philippines': 'PH', 'indonesia': 'ID', 'vietnam': 'VN', 'thailand': 'TH',
+  'malaysia': 'MY', 'singapore': 'SG', 'myanmar': 'MM', 'cambodia': 'KH',
+  'laos': 'LA', 'timor': 'TL', 'brunei': 'BN',
+  'nigeria': 'NG', 'kenya': 'KE', 'ghana': 'GH', 'ethiopia': 'ET',
+  'south africa': 'ZA', 'egypt': 'EG', 'morocco': 'MA', 'tanzania': 'TZ',
+  'rwanda': 'RW', 'senegal': 'SN', 'ivory coast': 'CI', 'uganda': 'UG',
+  'india': 'IN', 'pakistan': 'PK', 'bangladesh': 'BD', 'sri lanka': 'LK',
+  'nepal': 'NP', 'afghanistan': 'AF',
+  'brazil': 'BR', 'colombia': 'CO', 'peru': 'PE', 'chile': 'CL', 'mexico': 'MX',
+  'argentina': 'AR', 'ecuador': 'EC', 'bolivia': 'BO', 'paraguay': 'PY',
+  'ukraine': 'UA', 'turkey': 'TR', 'saudi arabia': 'SA', 'uae': 'AE',
+  'united arab emirates': 'AE', 'qatar': 'QA', 'jordan': 'JO', 'iraq': 'IQ',
+  'kazakhstan': 'KZ', 'uzbekistan': 'UZ', 'georgia': 'GE', 'armenia': 'AM',
+  'china': 'CN', 'japan': 'JP', 'south korea': 'KR', 'taiwan': 'TW',
+  'australia': 'AU', 'new zealand': 'NZ', 'papua new guinea': 'PG',
+};
 
-  const [ddg, wiki, wikidata] = await Promise.allSettled([
-    // DuckDuckGo Instant Answers — free, no key
+// Jina Reader: converts any URL to clean plain text — free, no key, no rate limit for basic use
+async function fetchPageViaJina(url: string, timeoutMs = 8000): Promise<string> {
+  try {
+    const jinaUrl = `https://r.jina.ai/${url}`;
+    const res = await fetch(jinaUrl, {
+      signal: AbortSignal.timeout(timeoutMs),
+      headers: { 'Accept': 'text/plain', 'X-Return-Format': 'text' },
+    });
+    if (!res.ok) return '';
+    const text = await res.text();
+    // Trim, deduplicate blank lines, cap at 4000 chars
+    return text.replace(/\n{3,}/g, '\n\n').trim().slice(0, 4000);
+  } catch {
+    return '';
+  }
+}
+
+async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceResult> {
+  const result: LiveIntelligenceResult = {
+    ddgSnippet: '', wikiExtract: '', wikidataDesc: '',
+    newsItems: '', worldBankData: '', pageContent: '',
+    sources: [],
+  };
+  const searchQuery = query.slice(0, 300);
+  const lowerQuery = searchQuery.toLowerCase();
+
+  // Detect country for World Bank routing
+  const detectedCountry = Object.entries(COUNTRY_CODE_MAP).find(([name]) => lowerQuery.includes(name));
+  const countryCode = detectedCountry?.[1];
+
+  // Detect tech/startup queries for Hacker News
+  const isTechQuery = /startup|saas|api|software|developer|tech|venture|funding|ai|llm|open.?source|github|vc |seed round/.test(lowerQuery);
+
+  const [ddg, wiki, wikidata, news, worldbank, hn] = await Promise.allSettled([
+    // 1. DuckDuckGo Instant Answers — extract abstract + top result URLs for Jina
     (async () => {
       const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery)}&format=json&no_redirect=1&no_html=1`;
       const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
@@ -60,9 +115,18 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
         .map((t: Record<string, string>) => t?.Text || '')
         .filter(Boolean)
         .join(' | ');
-      return { abstract, related, source: data?.AbstractSource || 'DuckDuckGo', url: data?.AbstractURL || '' };
+      // Collect real result URLs for Jina page fetching
+      const topUrls: string[] = [];
+      if (data?.AbstractURL && !data.AbstractURL.includes('duckduckgo')) topUrls.push(data.AbstractURL);
+      (data?.RelatedTopics || []).slice(0, 4).forEach((t: Record<string, string>) => {
+        if (t?.FirstURL && !t.FirstURL.includes('duckduckgo.com') && topUrls.length < 3) {
+          topUrls.push(t.FirstURL);
+        }
+      });
+      return { abstract, related, source: data?.AbstractSource || 'DuckDuckGo', url: data?.AbstractURL || '', topUrls };
     })(),
-    // Wikipedia extract — free, no key
+
+    // 2. Wikipedia full extract — free, no key
     (async () => {
       const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=1`;
       const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
@@ -70,7 +134,7 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
       const sData = await sRes.json();
       const title = sData?.query?.search?.[0]?.title;
       if (!title) return null;
-      const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&exintro=false&exchars=3000&format=json&origin=*`;
+      const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&exintro=false&exchars=4000&format=json&origin=*`;
       const cRes = await fetch(contentUrl, { signal: AbortSignal.timeout(6000) });
       if (!cRes.ok) return null;
       const cData = await cRes.json();
@@ -78,7 +142,8 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
       const page = Object.values(pages)[0] as Record<string, string> | undefined;
       return { extract: page?.extract || '', title };
     })(),
-    // Wikidata structured knowledge — free, no key
+
+    // 3. Wikidata structured knowledge — free, no key
     (async () => {
       const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(searchQuery)}&language=en&limit=1&format=json&origin=*`;
       const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
@@ -88,12 +153,73 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
       if (!entity) return null;
       return { id: entity.id, label: entity.label || '', description: entity.description || '' };
     })(),
+
+    // 4. DuckDuckGo News — real-time news, free, no key
+    (async () => {
+      const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery + ' latest news')}&format=json&no_redirect=1&no_html=1&ia=news`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const items = (data?.RelatedTopics || [])
+        .slice(0, 8)
+        .map((t: Record<string, string>) => t?.Text || '')
+        .filter((t: string) => t.length > 30);
+      return items.length ? items.join('\n') : null;
+    })(),
+
+    // 5. World Bank open data — economic indicators, free, no key (only when country detected)
+    countryCode ? (async () => {
+      const indicators = [
+        { code: 'NY.GDP.MKTP.CD', name: 'GDP (USD)' },
+        { code: 'NY.GDP.PCAP.CD', name: 'GDP per capita (USD)' },
+        { code: 'FP.CPI.TOTL.ZG', name: 'Inflation (%)' },
+        { code: 'BX.KLT.DINV.CD.WD', name: 'FDI inflows (USD)' },
+        { code: 'SL.UEM.TOTL.ZS', name: 'Unemployment (%)' },
+        { code: 'NE.EXP.GNFS.ZS', name: 'Exports (% of GDP)' },
+      ];
+      const fetches = await Promise.allSettled(
+        indicators.map(async (ind) => {
+          const url = `https://api.worldbank.org/v2/country/${countryCode}/indicator/${ind.code}?format=json&mrv=3&per_page=3`;
+          const r = await fetch(url, { signal: AbortSignal.timeout(7000) });
+          if (!r.ok) return null;
+          const d = await r.json();
+          const entries = ((d[1] || []) as Array<{ value: number | null; date: string }>)
+            .filter(e => e.value !== null).slice(0, 1);
+          if (!entries.length) return null;
+          const v = entries[0];
+          const formatted = v.value && v.value > 1e9
+            ? `$${(v.value / 1e9).toFixed(1)}B`
+            : v.value?.toLocaleString() ?? 'N/A';
+          return `${ind.name}: ${formatted} (${v.date})`;
+        })
+      );
+      const lines = fetches
+        .filter((r): r is PromiseFulfilledResult<string | null> => r.status === 'fulfilled' && r.value !== null)
+        .map(r => r.value as string);
+      return lines.length ? `World Bank data for ${detectedCountry?.[0].toUpperCase()}:\n${lines.join('\n')}` : null;
+    })() : Promise.resolve(null),
+
+    // 6. Hacker News Algolia API — tech/startup news, free, no key
+    isTechQuery ? (async () => {
+      const url = `https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(searchQuery)}&tags=story&hitsPerPage=5&numericFilters=points>10`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!res.ok) return null;
+      const data = await res.json();
+      const hits = (data?.hits || []).slice(0, 5)
+        .map((h: Record<string, string | number>) => `• ${h.title} (${h.points} pts) — ${h.url || 'HN'}`)
+        .join('\n');
+      return hits || null;
+    })() : Promise.resolve(null),
   ]);
 
+  // Collect top URLs for Jina page fetching
+  let jinaUrls: string[] = [];
+
   if (ddg.status === 'fulfilled' && ddg.value) {
-    const d = ddg.value;
+    const d = ddg.value as { abstract: string; related: string; source: string; url: string; topUrls: string[] };
     if (d.abstract) { result.ddgSnippet = d.abstract; result.sources.push(d.source + (d.url ? ` (${d.url})` : '')); }
     if (d.related) result.ddgSnippet += '\nRelated: ' + d.related;
+    if (d.topUrls?.length) jinaUrls = d.topUrls.filter(u => u.startsWith('http')).slice(0, 2);
   }
   if (wiki.status === 'fulfilled' && wiki.value?.extract) {
     result.wikiExtract = wiki.value.extract;
@@ -103,16 +229,48 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
     result.wikidataDesc = `${wikidata.value.label}: ${wikidata.value.description} (${wikidata.value.id})`;
     result.sources.push(`Wikidata: ${wikidata.value.id}`);
   }
+  if (news.status === 'fulfilled' && news.value) {
+    result.newsItems = news.value as string;
+    result.sources.push('DuckDuckGo News');
+  }
+  if (worldbank.status === 'fulfilled' && worldbank.value) {
+    result.worldBankData = worldbank.value as string;
+    result.sources.push(`World Bank (${countryCode})`);
+  }
+  if (hn.status === 'fulfilled' && hn.value) {
+    result.newsItems = (result.newsItems ? result.newsItems + '\n\n' : '') + '[Hacker News]\n' + (hn.value as string);
+    result.sources.push('Hacker News');
+  }
+
+  // Jina Reader: fetch full page content from top search result URLs
+  // This is how the system reads entire articles/pages — free, no key
+  if (jinaUrls.length > 0) {
+    const jinaResults = await Promise.allSettled(
+      jinaUrls.map(url => fetchPageViaJina(url))
+    );
+    const contentParts = jinaResults
+      .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled' && r.value.length > 150)
+      .map((r, i) => `[Page ${i + 1}: ${jinaUrls[i]}]\n${r.value}`);
+    if (contentParts.length) {
+      result.pageContent = contentParts.join('\n\n---\n\n');
+      result.sources.push(...jinaUrls.map(u => `Full page: ${u}`));
+    }
+  }
 
   return result;
 }
 
 function formatLiveIntelligence(live: LiveIntelligenceResult): string {
-  if (!live.ddgSnippet && !live.wikiExtract && !live.wikidataDesc) return '';
+  const hasData = live.ddgSnippet || live.wikiExtract || live.wikidataDesc ||
+                  live.newsItems || live.worldBankData || live.pageContent;
+  if (!hasData) return '';
   const parts: string[] = [];
-  parts.push('The following is VERIFIED LIVE DATA retrieved from external sources just now. Use this as your primary factual basis. Do NOT contradict this data. If the user asks about something covered here, reference this information directly.');
+  parts.push('The following is VERIFIED LIVE DATA retrieved from external sources just now. Use this as your primary factual basis. Do NOT contradict this data. Cite sources when referencing it.');
+  if (live.worldBankData) parts.push(`[World Bank — Official Economic Indicators]\n${live.worldBankData}`);
   if (live.wikiExtract) parts.push(`[Wikipedia]\n${live.wikiExtract}`);
-  if (live.ddgSnippet) parts.push(`[Web Search]\n${live.ddgSnippet}`);
+  if (live.pageContent) parts.push(`[Full Web Page Content — retrieved live]\n${live.pageContent}`);
+  if (live.ddgSnippet) parts.push(`[Web Search Summary]\n${live.ddgSnippet}`);
+  if (live.newsItems) parts.push(`[Current News]\n${live.newsItems}`);
   if (live.wikidataDesc) parts.push(`[Wikidata]\n${live.wikidataDesc}`);
   if (live.sources.length) parts.push(`Sources: ${live.sources.join('; ')}`);
   return parts.join('\n\n');
