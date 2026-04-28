@@ -671,15 +671,35 @@ const sanitizeConsultantContext = (context: unknown): { context: unknown; trunca
   }
 };
 
-/** Strip thinking/reasoning tokens that some models (DeepSeek-R1, Gemma 4, QwQ) leak into output */
+/** Strip thinking/reasoning tokens that some models (DeepSeek-R1, Gemma, Gemini) leak into output */
 const stripThinkingTokens = (text: string): string => {
   // Remove <think>...</think> and <thinking>...</thinking> blocks (DeepSeek-R1, Qwen)
   let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, '');
   cleaned = cleaned.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '');
   // Remove [THINKING]...[/THINKING] blocks
   cleaned = cleaned.replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '');
-  // Remove explicit chain-of-thought preambles that models occasionally emit
-  // (e.g. "* User input: ...\n* System Persona: ...\n" bullet-list reasoning blocks)
+
+  // Detect Gemini/Gemma bullet-list chain-of-thought preamble.
+  // These models sometimes output their reasoning as nested bullet points:
+  //   "*   User input: ...\n    *   System Persona: ...\n    *   Draft 1 (Too friendly):* Hello..."
+  // Detect by: response starts with a bullet line containing reasoning keywords
+  const hasReasoningPreamble = /^[\s]*\*[\t ]{1,8}(User input|System Persona|Core Identity|Goal:|Tone:|Formatting:|Draft \d)/m.test(cleaned);
+  if (hasReasoningPreamble) {
+    // Try to extract the actual response after the last "Draft N...:*" or "Draft N...:" marker
+    const draftExtract = cleaned.match(/Draft\s+\d+[^:\n]*:[\*\s]*((?:(?!\n\s*\*\s+Draft)[\s\S])+)$/i);
+    if (draftExtract && draftExtract[1].trim().length > 15) {
+      cleaned = draftExtract[1].replace(/^\*\s*/, '').trim();
+    } else {
+      // No clean draft found — strip all bullet-list reasoning lines entirely
+      const lines = cleaned.split('\n');
+      const nonBulletLines = lines.filter(line => !/^[\s]*[\*\-][\t ]+/.test(line));
+      const candidate = nonBulletLines.join('\n').trim();
+      // Only keep non-bullet content if substantial; otherwise signal empty for fallback
+      cleaned = candidate.length > 20 ? candidate : '';
+    }
+  }
+
+  // Remove legacy explicit chain-of-thought preambles
   cleaned = cleaned.replace(/^(\*\s+[^\n]+\n)+(?=\*\s+\[STATUS:|\*\s+CONNECTION|\[STATUS:)/m, '');
   return cleaned.trim();
 };

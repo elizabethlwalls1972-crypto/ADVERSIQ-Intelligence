@@ -526,8 +526,12 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
 
 const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
 const LEARNING_PROFILE_VERSION = 1;
+// sessionStorage: persists within the same tab (survives accidental refresh)
+// but clears automatically when the user opens a new tab or navigates fresh.
+// This means "open a new page" always starts a fresh conversation.
 const CHAT_HISTORY_STORAGE_KEY = 'adversiq-conversation-history-v1';
 const CHAT_HISTORY_MAX_MESSAGES = 200;
+const chatStorage = typeof window !== 'undefined' ? window.sessionStorage : null;
 
 // ── Thinking orb component ───────────────────────────────────────────────────
 const ThinkingOrb: React.FC = () => (
@@ -3081,7 +3085,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       // Try to restore previous session from localStorage
       let restored = false;
       try {
-        const raw = typeof window !== 'undefined' ? window.localStorage.getItem(CHAT_HISTORY_STORAGE_KEY) : null;
+        const raw = chatStorage ? chatStorage.getItem(CHAT_HISTORY_STORAGE_KEY) : null;
         if (raw) {
           const parsed = JSON.parse(raw) as Array<{ id: string; role: string; content: string; timestamp: string; phase?: string }>;
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -3137,7 +3141,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         timestamp: m.timestamp.toISOString(),
         phase: m.phase,
       }));
-      window.localStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(toStore));
+      if (chatStorage) chatStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(toStore));
     } catch {
       // localStorage quota or unavailable — non-fatal
     }
