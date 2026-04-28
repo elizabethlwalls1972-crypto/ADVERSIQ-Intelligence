@@ -184,39 +184,35 @@ const generateWithAI = async (input: string | AIMessage[], systemInstruction?: s
 // System instruction for the AI — domain-switchable
 // Legacy default kept for backward compatibility; active instruction resolved via domainMode.
 const SYSTEM_INSTRUCTION_DEFAULT = `
-You are "ADVERSIQ Intelligence AI" (NEXUS_OS_v4.1), the world's premier Adversarial Intelligence Quorum.
-You are NOT a standard chatbot. You are a deterministic economic modeling engine.
+You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification and intelligence system built for senior executives, government advisors, and investment professionals.
 
-YOUR CORE FUNCTIONS:
-1. SPI™ Engine (Strategic Partnership Index): Calculate compatibility vectors.
-2. IVAS™ Engine (Investment Viability Assessment): Stress-test risk scenarios using Monte Carlo simulation.
-3. SCF™ Engine (Strategic Cash Flow): Model long-term economic impact with probabilistic ranges.
-4. RROI™ Engine: Calculate regional return on investment with 12-component scoring.
-5. SEAM™ Engine: Symbiotic Ecosystem Assessment for partner matching.
+CORE IDENTITY:
+- You are a senior expert with deep cross-sector knowledge: markets, governance, finance, geopolitics, and industry.
+- You verify, cross-check, and stress-test before returning conclusions.
+- You produce substantive, data-anchored intelligence — not generic advice.
 
-DATA SOURCES:
-- World Bank Open Data API (GDP, population, FDI, trade balance)
-- Exchange Rate APIs (live currency rates)
-- REST Countries API (demographics, borders, languages)
+ADAPTIVE RESPONSE FORMAT — THIS IS CRITICAL:
 
-AI ANALYSIS MODULES (6 Specialized):
-1. Historical Pattern Analysis
-2. Government Policy Intelligence
-3. Banking & Finance Assessment
-4. Corporate Strategy Analysis
-5. Market Dynamics Evaluation
-6. Risk Assessment
+For GREETINGS and CASUAL MESSAGES (hi, hello, thanks, ok, yes, etc.):
+- Respond naturally and conversationally like a confident expert consultant.
+- Do NOT launch into structured analysis. Do NOT use headers or formatted sections.
+- Acknowledge what they said and invite them to describe their situation.
 
-TONE & STYLE:
-- Precise, mathematical, and authoritative.
-- Use terminal-like formatting where appropriate (e.g., "CALCULATING...", "VECTOR ANALYSIS COMPLETE").
-- Do not offer vague opinions. Offer calculated probabilities and "Viability Scores".
-- Reference specific data sources when providing market intelligence.
+For SIMPLE QUESTIONS (who is X? tell me about Y? what is Z?):
+- Respond naturally in expert conversational prose.
+- Answer the question directly and substantively.
+- No structured format, no headers.
 
-CONTEXT:
-- You represent ADVERSIQ Intelligence.
-- You operate to close the "100-Year Confidence Gap".
-- Your output should feel like a high-level intelligence dossier backed by real data.
+For COMPLEX DECISIONS (strategy, risk, investment, market entry, multi-factor analysis):
+- Use this structured format:
+  **SITUATION ASSESSMENT** → **VERIFICATION STATUS** → **ANALYSIS** → **RISK FLAGS** → **RECOMMENDED ACTIONS** → **NEXT VERIFICATION STEP**
+
+KEY RULE: Match your format exactly to the complexity of what was asked. A greeting gets a warm, direct reply. A factual question gets a direct expert answer. A complex strategic decision gets the full structured pipeline.
+
+General behavior:
+- Be direct, client-facing, and human. No filler. No robotic formatting for simple inputs.
+- Preserve professional tone suitable for executive and government stakeholders.
+- Extract case signals from natural conversation progressively — never force rigid intake forms.
 `;
 const SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_DEFAULT;
 
@@ -295,7 +291,20 @@ type ConsultantIntent =
   | 'general';
 
 const detectConsultantIntent = (message: string): ConsultantIntent => {
-  const text = message.toLowerCase();
+  const text = message.toLowerCase().trim();
+
+  // Greetings and pure small talk — ALWAYS respond naturally, never with structured analysis
+  if (/^(hi|hello|hey|good\s+(morning|afternoon|evening|day)|howdy|greetings|yo|sup|what'?s up|how are you|how'?s it going|how'?s everything)[!.\s,?]*$/i.test(text)) {
+    return 'simple_question';
+  }
+  // Short acknowledgements and social signals
+  if (/^(thanks|thank you|ok|okay|cool|nice|great|perfect|sure|alright|got it|understood|sounds good|makes sense|good|yes|no|yep|nope)[!.\s,?]*$/i.test(text)) {
+    return 'simple_question';
+  }
+  // Very short inputs with no strategic keywords — treat as conversational
+  if (text.split(/\s+/).filter(Boolean).length <= 4 && !/\b(strategy|investment|risk|market|deal|partner|country|region|report|analysis|evaluate|assess|entry|funding|capital|compliance|regul)\b/.test(text)) {
+    return 'simple_question';
+  }
 
   // Continuation/follow-up queries — respond naturally, continue the thread
   if (/^(proceed|continue|go ahead|carry on|go on|yes|ok|do it|keep going|what did you find|what have you found|tell me what you found|show me|elaborate|expand on|more detail|go deeper)/i.test(text)) {
@@ -373,7 +382,7 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
     case 'clarification':
       return 'Use plain language to clarify user intent and ask one concise clarifying question if needed.';
     default:
-      return 'Provide a concise, actionable response and ask one useful follow-up only if it improves outcomes.';
+      return 'Respond naturally and directly in expert conversational prose. Match the tone of what the user asked — if they are being conversational, be conversational. If the query is strategic, engage analytically. Never apply the structured pipeline format to casual or short messages.';
   }
 };
 
@@ -1045,7 +1054,7 @@ const buildConsultantPrompt = (message: string, intent: ConsultantIntent, contex
     {
       label: '',
       content: intent === 'simple_question'
-        ? `OUTPUT FORMAT:\n1) This is a simple factual question — respond naturally in expert conversational prose.\n2) Do NOT use the structured verification format (Situation Assessment / Verification Status / Risk Flags / etc.).\n3) Just answer the question directly with real information. Be thorough but natural.\n4) If you cannot verify specific facts, say so clearly.\n5) You may ask ONE follow-up question if it would genuinely help the user.`
+        ? `OUTPUT FORMAT:\n1) Respond naturally in expert conversational prose — no structured headers, no pipeline format.\n2) If this is a greeting or casual message, reply warmly and invite the user to describe their situation.\n3) If this is a factual question, answer it directly and substantively.\n4) Never use "SITUATION ASSESSMENT", "VERIFICATION STATUS", "RISK FLAGS" or similar headers for simple inputs.\n5) You may ask ONE natural follow-up question if it would genuinely help move forward.`
         : `OUTPUT FORMAT:\n1) Use the structured intelligence format (Situation Assessment → Verification Status → Analysis → Risk Flags → Recommended Actions → Next Verification Step) for this substantive query.\n2) Always include a confidence level and at least one risk flag when analyzing a decision.\n3) End with one verification question that would materially improve confidence.\n4) Never produce generic report or letter formats unless explicitly requested.`,
       priority: 1,
       minTokens: 100,
@@ -1447,11 +1456,38 @@ router.post('/insights', requireApiKey, async (req: Request, res: Response) => {
 // Chat/copilot message
 router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
   try {
-    const { messages } = req.body;
-    if (!Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ error: 'messages array is required in request body' });
+    const { messages, message, conversationHistory, systemInstruction } = req.body;
+
+    // Support both legacy format (messages array) and new format (message + conversationHistory)
+    let chatMessages: AIMessage[];
+
+    if (Array.isArray(messages) && messages.length > 0) {
+      // Legacy: plain messages array
+      chatMessages = messages;
+    } else if (typeof message === 'string' && message.trim()) {
+      // New format: combine conversationHistory + current message
+      const history: AIMessage[] = Array.isArray(conversationHistory)
+        ? conversationHistory
+            .filter((m: { role?: string; content?: string }) =>
+              m && typeof m.content === 'string' &&
+              (m.role === 'user' || m.role === 'assistant' || m.role === 'system')
+            )
+            .map((m: { role: string; content: string }) => ({
+              role: m.role as AIMessage['role'],
+              content: m.content,
+            }))
+        : [];
+      // Append current user message
+      chatMessages = [...history, { role: 'user' as const, content: message.trim() }];
+    } else {
+      return res.status(400).json({ error: 'Either messages array or message string is required in request body' });
     }
-    const text = await generateWithAI(messages, SYSTEM_INSTRUCTION);
+
+    const effectiveSystem = (typeof systemInstruction === 'string' && systemInstruction.trim())
+      ? systemInstruction.trim()
+      : SYSTEM_INSTRUCTION;
+
+    const text = await generateWithAI(chatMessages, effectiveSystem);
     res.json({
       id: Date.now().toString(),
       type: 'strategy',

@@ -526,6 +526,8 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
 
 const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
 const LEARNING_PROFILE_VERSION = 1;
+const CHAT_HISTORY_STORAGE_KEY = 'adversiq-conversation-history-v1';
+const CHAT_HISTORY_MAX_MESSAGES = 200;
 
 // ── Thinking orb component ───────────────────────────────────────────────────
 const ThinkingOrb: React.FC = () => (
@@ -3073,28 +3075,73 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
   }, [recommendationBoostMap]);
 
-  // Start with onboarding welcome message
+  // Restore conversation history from localStorage, or show welcome message
   useEffect(() => {
     if (messages.length === 0) {
-      const initialMessage: Message = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        content: [
-          'Welcome to ADVERSIQ.',
-          '',
-          'Tell me what you\'re working on — a deal, a market, a region, a partner, a project — in your own words. The system will handle the rest.',
-          '',
-          'Behind this conversation, ten verification layers are standing by: adversarial reasoning engines, contradiction detection, Monte Carlo stress testing, cognitive modelling, entity intelligence, confidence scoring, and a 247-template document factory. Everything you share is verified, cross-checked, and stress-tested before any conclusion is returned.',
-          '',
-          'You don\'t need to know which tools apply. Just describe your situation and the pipeline activates automatically.'
-        ].join('\n'),
-        timestamp: new Date(),
-        phase: 'discovery'
-      };
-      setMessages([initialMessage]);
+      // Try to restore previous session from localStorage
+      let restored = false;
+      try {
+        const raw = typeof window !== 'undefined' ? window.localStorage.getItem(CHAT_HISTORY_STORAGE_KEY) : null;
+        if (raw) {
+          const parsed = JSON.parse(raw) as Array<{ id: string; role: string; content: string; timestamp: string; phase?: string }>;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const validMessages: Message[] = parsed
+              .filter(m => m.id && m.role && typeof m.content === 'string')
+              .map(m => ({
+                id: m.id,
+                role: m.role as Message['role'],
+                content: m.content,
+                timestamp: new Date(m.timestamp || Date.now()),
+                phase: (m.phase as Message['phase']) || undefined,
+              }));
+            if (validMessages.length > 0) {
+              setMessages(validMessages);
+              restored = true;
+            }
+          }
+        }
+      } catch {
+        // localStorage unavailable or corrupt — fall through to welcome message
+      }
+
+      if (!restored) {
+        const initialMessage: Message = {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: [
+            'Welcome to ADVERSIQ.',
+            '',
+            'Tell me what you\'re working on — a deal, a market, a region, a partner, a project — in your own words. The system will handle the rest.',
+            '',
+            'Behind this conversation, ten verification layers are standing by: adversarial reasoning engines, contradiction detection, Monte Carlo stress testing, cognitive modelling, entity intelligence, confidence scoring, and a 247-template document factory. Everything you share is verified, cross-checked, and stress-tested before any conclusion is returned.',
+            '',
+            'You don\'t need to know which tools apply. Just describe your situation and the pipeline activates automatically.'
+          ].join('\n'),
+          timestamp: new Date(),
+          phase: 'discovery'
+        };
+        setMessages([initialMessage]);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
+
+  // Persist conversation history to localStorage on every message change
+  useEffect(() => {
+    if (messages.length === 0) return;
+    try {
+      const toStore = messages.slice(-CHAT_HISTORY_MAX_MESSAGES).map(m => ({
+        id: m.id,
+        role: m.role,
+        content: m.content,
+        timestamp: m.timestamp.toISOString(),
+        phase: m.phase,
+      }));
+      window.localStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify(toStore));
+    } catch {
+      // localStorage quota or unavailable — non-fatal
+    }
+  }, [messages]);
 
   // Read file content - uses Gemini multimodal for binary documents (PDF, DOCX, etc.)
   const readFileContent = useCallback(async (file: File): Promise<string> => {
@@ -3128,6 +3175,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const buildConsultantPrompt = useCallback((userInput: string, context: string) => {
     const policyPack = resolvePolicyPack(caseStudy);
     const caseReadiness = computeReadiness(caseStudy);
+
+    // Include recent conversation turns so the AI remembers context
+    const recentTurns = messages
+      .filter(m => m.role === 'user' || m.role === 'assistant')
+      .slice(-20) // last 20 turns for context
+      .map(m => `${m.role === 'user' ? 'User' : 'ADVERSIQ'}: ${String(m.content).slice(0, 1200)}`)
+      .join('\n');
+
     return `You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification and intelligence system.
 
 ADAPTIVE RESPONSE FORMAT:
@@ -3135,6 +3190,8 @@ ADAPTIVE RESPONSE FORMAT:
 - For COMPLEX decisions, strategy, risk analysis, or multi-factor evaluations — use the structured format:
   **SITUATION ASSESSMENT** → **VERIFICATION STATUS** → **ANALYSIS** → **RISK FLAGS** → **RECOMMENDED ACTIONS** → **NEXT VERIFICATION STEP**
 - Match your depth and format to the complexity of the question. A simple factual question deserves a direct, informative answer — not a full risk assessment pipeline.
+
+${recentTurns ? `RECENT CONVERSATION HISTORY (last 20 turns — use this for continuity):\n${recentTurns}\n` : ''}
 
 Current case context:
 ${JSON.stringify(caseStudy, null, 2)}
@@ -3164,6 +3221,7 @@ Autonomous operating instructions:
 - Never force a rigid scripted questionnaire.
 - Never produce generic report or letter formats unless explicitly requested.
 - For simple questions, just answer them directly and naturally.
+- Remember what was discussed earlier in the conversation — refer back to it naturally when relevant.
 
 Policy pack execution rules:
 - Respect regulatory tone: ${policyPack.regulatoryTone}
@@ -3189,7 +3247,7 @@ When the user has specified a country or region, proactively reference:
 - Key stakeholders and institutional counterparts
 
 ${agentRegistry.current.toManifest()}`;
-  }, [caseStudy, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, quickCountryFocus, quickBusinessTarget, activeIssuePackLabel, quickCustomSector, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary]);
+  }, [caseStudy, messages, resolvePolicyPack, consultantCaseBrief, consultantGateReady, consultantGateMissing, computeReadiness, quickCountryFocus, quickBusinessTarget, activeIssuePackLabel, quickCustomSector, customResearchTopics, preferredOutputMode, enableFullCaseTreeMatching, fullCaseTreeMatchingSummary]);
 
   const _buildNaturalFallbackReply = useCallback((userInput: string) => {
     const trimmed = userInput.trim();
@@ -4793,7 +4851,7 @@ ${agentRegistry.current.toManifest()}`;
             body: JSON.stringify({
               message: userContent,
               systemInstruction: systemContext || undefined,
-              conversationHistory: messages.slice(-8).map((m) => ({
+              conversationHistory: messages.map((m) => ({
                 role: m.role,
                 content: typeof m.content === 'string' ? m.content : String(m.content),
               })),
