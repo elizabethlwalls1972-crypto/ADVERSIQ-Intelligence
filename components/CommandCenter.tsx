@@ -393,79 +393,61 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Statement piece */}
-                    <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-16 max-w-6xl mx-auto">
+                    {/* Not a chatbot — proof section */}
+                    <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-0 max-w-6xl mx-auto">
 
-                        {/* Headline */}
-                        <div className="mb-12">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Architecture</p>
-                            <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-4">
-                                Your question runs through a pipeline.<br className="hidden md:block" />
-                                <span className="font-black text-slate-900">Then three AI models fight over the answer.</span>
-                            </h4>
-                            <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
-                                Every other AI tool skips straight to the language model. ADVERSIQ doesn't. Six deterministic engines process your input first — then three reasoning architectures argue over what it means.
-                            </p>
-                        </div>
-
-                        {/* Step 1 — The pipeline */}
-                        <div className="mb-2">
-                            <div className="flex items-baseline gap-4 mb-4">
-                                <span className="text-4xl font-extralight text-slate-300 leading-none">01</span>
-                                <div>
-                                    <p className="text-base font-bold text-slate-900 uppercase tracking-wide">The pre-processing pipeline</p>
-                                    <p className="text-sm text-slate-500">Runs before any AI model is called</p>
+                        {/* The core distinction */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-12">
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it's different</p>
+                                <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
+                                    Every other AI tool starts with the language model.<br className="hidden md:block" />
+                                    <span className="font-black">This one ends with it.</span>
+                                </h4>
+                                <p className="text-lg text-slate-500 leading-relaxed">
+                                    ChatGPT, Claude, Gemini — send a prompt, get a response. There is nothing happening before the model speaks. No verification. No contradiction checking. No adversarial challenge. Just generation.
+                                </p>
+                            </div>
+                            <div className="space-y-0 border border-slate-200">
+                                <div className="px-6 py-5 border-b border-slate-100">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Every other AI tool</p>
+                                    <p className="text-base text-slate-500">Input → Language model → Output</p>
+                                    <p className="text-sm text-slate-400 mt-2">One step. No verification. No challenge. No audit trail.</p>
+                                </div>
+                                <div className="px-6 py-5 bg-slate-50">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">ADVERSIQ</p>
+                                    <p className="text-base text-slate-800 font-medium">Input → 6-engine pipeline → 3 reasoning architectures → NSIL verification → Output</p>
+                                    <p className="text-sm text-slate-500 mt-2">Every contradiction caught. Every assumption stress-tested. Every claim auditable.</p>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200">
-                                {[
-                                    { name: 'SATContradictionSolver', tag: 'Finds logical contradictions in your input' },
-                                    { name: 'BayesianDebateEngine', tag: '5 adversarial personas, Nash equilibrium' },
-                                    { name: 'HumanCognitionEngine', tag: '7 cognitive bias models per decision' },
-                                    { name: 'VectorMemoryIndex', tag: 'Semantic retrieval from prior analysis' },
-                                    { name: 'DAGScheduler', tag: 'Parallel, dependency-ordered execution' },
-                                    { name: 'MonteCarloStressEngine', tag: '10,000 forward simulations' },
-                                ].map((engine, i) => (
-                                    <div key={i} className="bg-white px-5 py-5">
-                                        <p className="text-sm font-bold font-mono text-slate-900 mb-1">{engine.name}</p>
-                                        <p className="text-sm text-slate-500">{engine.tag}</p>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
 
-                        {/* Step 2 — Three models */}
-                        <div className="mb-2 mt-8">
-                            <div className="flex items-baseline gap-4 mb-4">
-                                <span className="text-4xl font-extralight text-slate-300 leading-none">02</span>
-                                <div>
-                                    <p className="text-base font-bold text-slate-900 uppercase tracking-wide">Three reasoning architectures, one question</p>
-                                    <p className="text-sm text-slate-500">They disagree. The disagreement is the output.</p>
+                        {/* Engine strip — names only, no descriptions needed */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-slate-200 mb-px">
+                            {[
+                                'SATContradictionSolver',
+                                'BayesianDebateEngine',
+                                'HumanCognitionEngine',
+                                'VectorMemoryIndex',
+                                'DAGScheduler',
+                                'MonteCarloStressEngine',
+                            ].map((name, i) => (
+                                <div key={i} className="bg-white px-4 py-4">
+                                    <span className="text-[10px] text-slate-400 font-bold block mb-1">{String(i + 1).padStart(2, '0')}</span>
+                                    <p className="text-xs font-bold font-mono text-slate-800 leading-tight">{name}</p>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-900">
-                                {[
-                                    { label: 'Extended Thinking', desc: 'Safety-aware reasoning. Maps consequences and edge cases. Identifies what could go wrong before anything is recommended.' },
-                                    { label: 'Logical Reasoning', desc: 'Mathematical chain-of-thought. Breaks problems into steps, tests each one. If the logic doesn\'t hold, it says so.' },
-                                    { label: 'Broad Knowledge', desc: 'Pattern recognition across domains — industries, countries, conditions. Surfaces what the other two architectures don\'t see.' },
-                                ].map(({ label, desc }, i) => (
-                                    <div key={i} className="bg-slate-900 px-6 py-6 border-r border-slate-800 last:border-r-0">
-                                        <p className="text-base font-bold text-white mb-2">{label}</p>
-                                        <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
-                                    </div>
-                                ))}
-                            </div>
+                            ))}
                         </div>
 
-                        {/* Result */}
-                        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200">
-                            <div className="bg-white p-6">
-                                <p className="text-sm font-bold text-slate-900 mb-2">Where they agree — you can act on it.</p>
-                                <p className="text-sm text-slate-500 leading-relaxed">Consensus across all three architectures is the highest-confidence signal the system produces. You see the score, not just the conclusion.</p>
+                        {/* Bridge into NSIL */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200">
+                            <div className="bg-slate-900 px-6 py-6 md:col-span-2">
+                                <p className="text-base font-bold text-white mb-2">Then three reasoning architectures fight over the answer</p>
+                                <p className="text-sm text-slate-400 leading-relaxed">Extended Thinking, Logical Reasoning, and Broad Knowledge each build an independent case. Where they agree, confidence is high. Where they diverge, you see exactly why — every contradiction labelled, nothing averaged away.</p>
                             </div>
-                            <div className="bg-white p-6">
-                                <p className="text-sm font-bold text-slate-900 mb-2">Where they disagree — you see exactly why.</p>
-                                <p className="text-sm text-slate-500 leading-relaxed">Every contradiction is preserved. Every divergence is labelled. Nothing is averaged away. No other platform shows you the debate.</p>
+                            <div className="bg-slate-800 px-6 py-6">
+                                <p className="text-base font-bold text-white mb-2">Then the NSIL takes over</p>
+                                <p className="text-sm text-slate-400 leading-relaxed">The Nexus Strategic Intelligence Layer is what orchestrates all of it — and verifies the output before you see it.</p>
                             </div>
                         </div>
                     </div>
