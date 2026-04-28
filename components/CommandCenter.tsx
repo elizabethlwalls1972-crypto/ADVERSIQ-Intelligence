@@ -397,57 +397,54 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-0 max-w-6xl mx-auto">
 
                         {/* The core distinction */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-12">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it's different</p>
                                 <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
                                     Every other AI tool starts with the language model.<br className="hidden md:block" />
                                     <span className="font-black">This one ends with it.</span>
                                 </h4>
-                                <p className="text-lg text-slate-500 leading-relaxed">
+                                <p className="text-lg text-slate-500 leading-relaxed mb-6">
                                     ChatGPT, Claude, Gemini — send a prompt, get a response. There is nothing happening before the model speaks. No verification. No contradiction checking. No adversarial challenge. Just generation.
                                 </p>
+                                <p className="text-base text-slate-600 leading-relaxed">
+                                    ADVERSIQ runs six deterministic engines before any AI model is called. Then three reasoning architectures argue over the output. Then the NSIL verifies the result. The language model is the last step — not the only step.
+                                </p>
                             </div>
-                            <div className="space-y-0 border border-slate-200">
-                                <div className="px-6 py-5 border-b border-slate-100">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Every other AI tool</p>
-                                    <p className="text-base text-slate-500">Input → Language model → Output</p>
-                                    <p className="text-sm text-slate-400 mt-2">One step. No verification. No challenge. No audit trail.</p>
-                                </div>
-                                <div className="px-6 py-5 bg-slate-50">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">ADVERSIQ</p>
-                                    <p className="text-base text-slate-800 font-medium">Input → 6-engine pipeline → 3 reasoning architectures → NSIL verification → Output</p>
-                                    <p className="text-sm text-slate-500 mt-2">Every contradiction caught. Every assumption stress-tested. Every claim auditable.</p>
-                                </div>
-                            </div>
-                        </div>
 
-                        {/* Engine strip — names only, no descriptions needed */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-slate-200 mb-px">
-                            {[
-                                'SATContradictionSolver',
-                                'BayesianDebateEngine',
-                                'HumanCognitionEngine',
-                                'VectorMemoryIndex',
-                                'DAGScheduler',
-                                'MonteCarloStressEngine',
-                            ].map((name, i) => (
-                                <div key={i} className="bg-white px-4 py-4">
-                                    <span className="text-[10px] text-slate-400 font-bold block mb-1">{String(i + 1).padStart(2, '0')}</span>
-                                    <p className="text-xs font-bold font-mono text-slate-800 leading-tight">{name}</p>
+                            {/* Six engines — styled to match the editorial tone */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-400">The six engines that run first</p>
+                                <div className="space-y-0 divide-y divide-slate-100">
+                                    {[
+                                        { name: 'SATContradictionSolver', desc: 'Catches logical contradictions before they reach the model' },
+                                        { name: 'BayesianDebateEngine', desc: '5 adversarial personas build independent cases simultaneously' },
+                                        { name: 'HumanCognitionEngine', desc: '7 cognitive bias models applied to every assumption' },
+                                        { name: 'VectorMemoryIndex', desc: 'Retrieves semantically relevant prior analysis' },
+                                        { name: 'DAGScheduler', desc: 'Runs engines in parallel, in the right dependency order' },
+                                        { name: 'MonteCarloStressEngine', desc: '10,000 forward simulations against your assumptions' },
+                                    ].map((engine, i) => (
+                                        <div key={i} className="flex items-start gap-4 py-4">
+                                            <span className="text-2xl font-extralight text-slate-200 leading-none w-8 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                                            <div>
+                                                <p className="text-base font-bold font-mono text-slate-900 mb-0.5">{engine.name}</p>
+                                                <p className="text-sm text-slate-500">{engine.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
                         </div>
 
                         {/* Bridge into NSIL */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200">
-                            <div className="bg-slate-900 px-6 py-6 md:col-span-2">
-                                <p className="text-base font-bold text-white mb-2">Then three reasoning architectures fight over the answer</p>
-                                <p className="text-sm text-slate-400 leading-relaxed">Extended Thinking, Logical Reasoning, and Broad Knowledge each build an independent case. Where they agree, confidence is high. Where they diverge, you see exactly why — every contradiction labelled, nothing averaged away.</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-900">
+                            <div className="bg-slate-900 px-8 py-8">
+                                <p className="text-lg font-bold text-white mb-3">Then three reasoning architectures fight over the answer</p>
+                                <p className="text-base text-slate-400 leading-relaxed">Extended Thinking, Logical Reasoning, and Broad Knowledge each build an independent case. Where they agree, confidence is high. Where they diverge, you see exactly why — every contradiction labelled, nothing averaged away.</p>
                             </div>
-                            <div className="bg-slate-800 px-6 py-6">
-                                <p className="text-base font-bold text-white mb-2">Then the NSIL takes over</p>
-                                <p className="text-sm text-slate-400 leading-relaxed">The Nexus Strategic Intelligence Layer is what orchestrates all of it — and verifies the output before you see it.</p>
+                            <div className="bg-slate-800 px-8 py-8">
+                                <p className="text-lg font-bold text-white mb-3">Then the NSIL takes over</p>
+                                <p className="text-base text-slate-400 leading-relaxed">The Nexus Strategic Intelligence Layer is the master control point that orchestrates everything — and runs a final 10-layer verification pass before anything reaches you.</p>
                             </div>
                         </div>
                     </div>
