@@ -466,30 +466,34 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* Three proof statements — full width, editorial scale */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-slate-100 pt-12">
-                            <div>
-                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">Nothing is hidden.</p>
-                                <p className="text-base text-slate-500 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer. You are never looking at a black box.</p>
-                            </div>
-                            <div>
-                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">Everything is auditable.</p>
-                                <p className="text-base text-slate-500 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed — down to individual engine scores.</p>
-                            </div>
-                            <div>
-                                <p className="text-2xl md:text-3xl font-black text-slate-900 mb-3">The pipeline checks itself.</p>
-                                <p className="text-base text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the system inward. The NSIL analyses its own output before you ever see it. No other AI system does this.</p>
+                        <div className="border-t-2 border-slate-900 pt-16 mt-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+                                <div>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Nothing<br />is hidden.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer. You are never looking at a black box.</p>
+                                </div>
+                                <div>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Everything<br />is auditable.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed — down to individual engine scores.</p>
+                                </div>
+                                <div>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">The pipeline<br />checks itself.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the system inward. The NSIL analyses its own output before you ever see it. No other AI system does this.</p>
+                                </div>
                             </div>
                         </div>
 
                         {/* Bridge into NSIL */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-900">
-                            <div className="bg-slate-900 px-8 py-8">
-                                <p className="text-lg font-bold text-white mb-3">Then three reasoning architectures fight over the answer</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 mt-16">
+                            <div className="bg-slate-900 px-10 py-12">
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Step 1 of 2</p>
+                                <p className="text-xl md:text-2xl font-bold text-white leading-snug mb-4">Then three reasoning architectures fight over the answer</p>
                                 <p className="text-base text-slate-400 leading-relaxed">Extended Thinking, Logical Reasoning, and Broad Knowledge each build an independent case. Where they agree, confidence is high. Where they diverge, you see exactly why — every contradiction labelled, nothing averaged away.</p>
                             </div>
-                            <div className="bg-slate-800 px-8 py-8">
-                                <p className="text-lg font-bold text-white mb-3">Then the NSIL takes over</p>
-                                <p className="text-base text-slate-400 leading-relaxed">The Nexus Strategic Intelligence Layer is the master control point that orchestrates everything — and runs a final 10-layer verification pass before anything reaches you.</p>
+                            <div className="bg-amber-500 px-10 py-12">
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-900 mb-4">Step 2 of 2</p>
+                                <p className="text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-4">Then the NSIL takes over</p>
+                                <p className="text-base text-amber-900 leading-relaxed">The Nexus Strategic Intelligence Layer is the master control point that orchestrates everything — and runs a final 10-layer verification pass before anything reaches you.</p>
                             </div>
                         </div>
                     </div>
