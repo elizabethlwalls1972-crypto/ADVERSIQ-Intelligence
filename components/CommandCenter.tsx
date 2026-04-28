@@ -395,131 +395,71 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* Statement piece */}
                     <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-16 max-w-6xl mx-auto">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-0">
-                            {/* Left: The honest claim */}
+                        {/* Top: stat + one-line claim */}
+                        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-500">What no other platform has built</p>
-                                <h4 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-none tracking-tight mb-8">
-                                    224 service files.<br className="hidden md:block" /> 4.3MB of logic.<br className="hidden md:block" /><span className="text-slate-400">Not a chatbot.</span>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3 text-amber-500">Architecture</p>
+                                <h4 className="text-4xl md:text-5xl font-black text-slate-900 leading-none tracking-tight">
+                                    224 files. 4.3MB. <span className="text-slate-400">Not a chatbot.</span>
                                 </h4>
-                                <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                    ChatGPT, Claude, Gemini are one model, one prompt, one response. ADVERSIQ runs your question through a deterministic intelligence pipeline that no commercial AI product has attempted — before any language model is even called.
-                                </p>
-                                <p className="text-sm text-slate-600 leading-relaxed">
-                                    The AI in this system is the voice at the end of the process. The work is done by engines that have no equivalent anywhere else — engines that argue, contradict, stress-test, and score before a single word of output is produced.
-                                </p>
                             </div>
-                            {/* Right: The spec sheet */}
-                            <div className="space-y-0 border border-slate-200">
-                                {[
-                                    { name: 'SATContradictionSolver', desc: 'Detects logical contradictions in your input using boolean satisfiability — the same class of algorithms used in formal software verification.' },
-                                    { name: 'BayesianDebateEngine', desc: 'Five adversarial personas each build an independent case. Bayesian inference updates their confidence as evidence arrives. Nash bargaining finds equilibrium.' },
-                                    { name: 'HumanCognitionEngine', desc: '7 cognitive bias models applied to every decision: anchoring, availability heuristic, confirmation bias, framing, sunk cost, status quo, and overconfidence.' },
-                                    { name: 'VectorMemoryIndex', desc: 'Semantic memory that stores and retrieves prior analysis in real time — not keyword search, but meaning-space similarity.' },
-                                    { name: 'DAGScheduler', desc: 'Directed Acyclic Graph task execution. The pipeline does not run linearly — it runs the right engines in the right dependency order, in parallel.' },
-                                    { name: 'MonteCarloStressEngine', desc: '10,000 forward simulations run against your assumptions in real time. You see probability distributions, not point estimates.' },
-                                ].map((engine, i) => (
-                                    <div key={i} className="flex items-start gap-4 p-4 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors">
-                                        <div className="flex-shrink-0 mt-0.5">
-                                            <span className="block w-2 h-2 rounded-full bg-amber-400" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold font-mono text-slate-800 mb-1">{engine.name}</p>
-                                            <p className="text-xs text-slate-500 leading-relaxed">{engine.desc}</p>
-                                        </div>
+                            <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
+                                Deterministic engines run first. The language model speaks last — only to articulate what the pipeline already concluded.
+                            </p>
+                        </div>
+
+                        {/* Engine grid — compact */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 mb-px">
+                            {[
+                                { name: 'SATContradictionSolver', tag: 'Boolean logic verification' },
+                                { name: 'BayesianDebateEngine', tag: '5 adversarial personas + Nash equilibrium' },
+                                { name: 'HumanCognitionEngine', tag: '7 cognitive bias models per decision' },
+                                { name: 'VectorMemoryIndex', tag: 'Meaning-space semantic retrieval' },
+                                { name: 'DAGScheduler', tag: 'Parallel dependency-ordered execution' },
+                                { name: 'MonteCarloStressEngine', tag: '10,000 forward simulations' },
+                            ].map((engine, i) => (
+                                <div key={i} className="bg-white px-5 py-4 flex items-start gap-3">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-xs font-bold font-mono text-slate-900">{engine.name}</p>
+                                        <p className="text-[11px] text-slate-400 mt-0.5">{engine.tag}</p>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
-                        {/* Bottom bar: the three properties */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 mt-12">
-                            <div className="bg-white p-8">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Adversarial by design</p>
-                                <p className="text-sm text-slate-600 leading-relaxed">Five independent reasoning engines argue opposing positions before any conclusion is surfaced. Every disagreement is preserved in the output — you see exactly where the case is uncertain.</p>
+
+                        {/* Three architectures — inline strip */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 mb-px">
+                            {[
+                                { num: '01', label: 'Extended Thinking', desc: 'Safety-aware. Thinks through consequences and edge cases. Finds what could go wrong.' },
+                                { num: '02', label: 'Logical Reasoning', desc: 'Mathematical chain-of-thought. If the logic doesn\'t hold, it says so.' },
+                                { num: '03', label: 'Broad Knowledge', desc: 'Patterns across domains — industries, countries, conditions. Sees what the others miss.' },
+                            ].map(({ num, label, desc }) => (
+                                <div key={num} className="bg-slate-900 px-5 py-5">
+                                    <span className="text-3xl font-extralight text-slate-600 leading-none">{num}</span>
+                                    <p className="text-xs font-bold text-white uppercase tracking-wide mt-2 mb-1">{label}</p>
+                                    <p className="text-[11px] text-slate-400 leading-relaxed">{desc}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Bottom bar */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200">
+                            <div className="bg-white p-6">
+                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Adversarial by design</p>
+                                <p className="text-xs text-slate-500 leading-relaxed">Five engines argue opposing positions. Every disagreement is preserved — you see exactly where the case is uncertain.</p>
                             </div>
-                            <div className="bg-white p-8">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Fully traceable</p>
-                                <p className="text-sm text-slate-600 leading-relaxed">Every score has a formula. Every formula has a source. Every recommendation carries a full vote log, contradiction record, and confidence band. Nothing is invented. Everything traces to a line of code.</p>
+                            <div className="bg-white p-6">
+                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Fully traceable</p>
+                                <p className="text-xs text-slate-500 leading-relaxed">Every score has a formula. Every recommendation carries a vote log, contradiction record, and confidence band.</p>
                             </div>
-                            <div className="bg-white p-8">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Structurally different</p>
-                                <p className="text-sm text-slate-600 leading-relaxed">This is not a better chatbot. The architecture is different in kind — deterministic engines running first, language model used last, only to articulate what the pipeline already concluded.</p>
+                            <div className="bg-white p-6">
+                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Where they agree — trust it. Where they disagree — you see why.</p>
+                                <p className="text-xs text-slate-500 leading-relaxed">No other platform runs three reasoning architectures against the same question and shows you the debate.</p>
                             </div>
                         </div>
                     </div>
 
-                </div>
-            </section>
-
-            
-            <section className="py-20 px-4 bg-slate-50">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Statement */}
-                        <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What No One Has Attempted</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
-                                Three AI architectures.<br className="hidden md:block" />
-                                One question. They fight it out.
-                            </h2>
-                            <p className="text-lg text-slate-500 leading-relaxed mb-4">
-                                Most AI tools use one model to generate an answer. We use three fundamentally different reasoning systems &mdash; each built by a different company, each thinking in a different way &mdash; and make them argue with each other over the same question.
-                            </p>
-                            <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                                These aren&rsquo;t chatbots giving quick opinions. These are reasoning models that think internally for up to 30 seconds before they even respond. Then they&rsquo;re forced to defend their position against the other two.
-                            </p>
-                            <p className="text-sm text-slate-600 leading-relaxed">
-                                Where they agree, you can trust the answer. Where they disagree, you see exactly what&rsquo;s uncertain &mdash; and why. No other platform does this.
-                            </p>
-                        </div>
-
-                        {/* Right — Photo */}
-                        <div>
-                            <div className="h-80 lg:h-[28rem] overflow-hidden">
-                                <img
-                                    src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=900&fit=crop&q=80"
-                                    alt="Robot in a beautiful garden"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Three Judge Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
-                        <div className="border-t-2 border-blue-600 pt-6">
-                            <div className="flex items-baseline gap-3 mb-3">
-                                <span className="text-4xl font-light text-slate-300">01</span>
-                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Extended Thinking</h4>
-                            </div>
-                            <p className="text-sm text-slate-500 leading-relaxed">Careful, safety-aware reasoning. Thinks through consequences and edge cases before responding. Excels at identifying what could go wrong &mdash; the risks others overlook.</p>
-                        </div>
-                        <div className="border-t-2 border-slate-900 pt-6">
-                            <div className="flex items-baseline gap-3 mb-3">
-                                <span className="text-4xl font-light text-slate-300">02</span>
-                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Logical Reasoning</h4>
-                            </div>
-                            <p className="text-sm text-slate-500 leading-relaxed">Mathematical chain-of-thought. Breaks problems into steps, tests each one, builds conclusions from proof. The most precise of the three &mdash; if the logic doesn&rsquo;t hold, it says so.</p>
-                        </div>
-                        <div className="border-t-2 border-emerald-600 pt-6">
-                            <div className="flex items-baseline gap-3 mb-3">
-                                <span className="text-4xl font-light text-slate-300">03</span>
-                                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">Broad-Knowledge</h4>
-                            </div>
-                            <p className="text-sm text-slate-500 leading-relaxed">Draws from the widest knowledge base. Finds patterns across domains &mdash; what worked in similar industries, countries, and conditions. Sees what the other two miss.</p>
-                        </div>
-                    </div>
-
-                    {/* Synthesis — Feature Script */}
-                    <div className="border-t-2 border-slate-300 pt-12 mt-16 max-w-6xl">
-                        <h4 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 uppercase tracking-tight mb-8">The Synthesis</h4>
-                        <p className="text-xl md:text-2xl lg:text-3xl text-slate-700 leading-relaxed mb-6">
-                            After all three judges deliver their verdict, the system identifies where they agree, where they disagree, and produces a unified answer with a confidence score.
-                        </p>
-                        <p className="text-xl md:text-2xl lg:text-3xl text-slate-900 font-semibold leading-relaxed">
-                            You see everything &mdash; not just the conclusion, but the debate that produced it.
-                        </p>
-                    </div>
                 </div>
             </section>
 
