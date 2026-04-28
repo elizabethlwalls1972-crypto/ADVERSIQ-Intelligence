@@ -395,67 +395,77 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     {/* Statement piece */}
                     <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-16 max-w-6xl mx-auto">
-                        {/* Top: stat + one-line claim */}
-                        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-3 text-amber-500">Architecture</p>
-                                <h4 className="text-4xl md:text-5xl font-black text-slate-900 leading-none tracking-tight">
-                                    224 files. 4.3MB. <span className="text-slate-400">Not a chatbot.</span>
-                                </h4>
-                            </div>
-                            <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
-                                Deterministic engines run first. The language model speaks last — only to articulate what the pipeline already concluded.
+
+                        {/* Headline */}
+                        <div className="mb-12">
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Architecture</p>
+                            <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-4">
+                                Your question runs through a pipeline.<br className="hidden md:block" />
+                                <span className="font-black text-slate-900">Then three AI models fight over the answer.</span>
+                            </h4>
+                            <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
+                                Every other AI tool skips straight to the language model. ADVERSIQ doesn't. Six deterministic engines process your input first — then three reasoning architectures argue over what it means.
                             </p>
                         </div>
 
-                        {/* Engine grid — compact */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200 mb-px">
-                            {[
-                                { name: 'SATContradictionSolver', tag: 'Boolean logic verification' },
-                                { name: 'BayesianDebateEngine', tag: '5 adversarial personas + Nash equilibrium' },
-                                { name: 'HumanCognitionEngine', tag: '7 cognitive bias models per decision' },
-                                { name: 'VectorMemoryIndex', tag: 'Meaning-space semantic retrieval' },
-                                { name: 'DAGScheduler', tag: 'Parallel dependency-ordered execution' },
-                                { name: 'MonteCarloStressEngine', tag: '10,000 forward simulations' },
-                            ].map((engine, i) => (
-                                <div key={i} className="bg-white px-5 py-4 flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-xs font-bold font-mono text-slate-900">{engine.name}</p>
-                                        <p className="text-[11px] text-slate-400 mt-0.5">{engine.tag}</p>
+                        {/* Step 1 — The pipeline */}
+                        <div className="mb-2">
+                            <div className="flex items-baseline gap-4 mb-4">
+                                <span className="text-4xl font-extralight text-slate-300 leading-none">01</span>
+                                <div>
+                                    <p className="text-base font-bold text-slate-900 uppercase tracking-wide">The pre-processing pipeline</p>
+                                    <p className="text-sm text-slate-500">Runs before any AI model is called</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200">
+                                {[
+                                    { name: 'SATContradictionSolver', tag: 'Finds logical contradictions in your input' },
+                                    { name: 'BayesianDebateEngine', tag: '5 adversarial personas, Nash equilibrium' },
+                                    { name: 'HumanCognitionEngine', tag: '7 cognitive bias models per decision' },
+                                    { name: 'VectorMemoryIndex', tag: 'Semantic retrieval from prior analysis' },
+                                    { name: 'DAGScheduler', tag: 'Parallel, dependency-ordered execution' },
+                                    { name: 'MonteCarloStressEngine', tag: '10,000 forward simulations' },
+                                ].map((engine, i) => (
+                                    <div key={i} className="bg-white px-5 py-5">
+                                        <p className="text-sm font-bold font-mono text-slate-900 mb-1">{engine.name}</p>
+                                        <p className="text-sm text-slate-500">{engine.tag}</p>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Three architectures — inline strip */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 mb-px">
-                            {[
-                                { num: '01', label: 'Extended Thinking', desc: 'Safety-aware. Thinks through consequences and edge cases. Finds what could go wrong.' },
-                                { num: '02', label: 'Logical Reasoning', desc: 'Mathematical chain-of-thought. If the logic doesn\'t hold, it says so.' },
-                                { num: '03', label: 'Broad Knowledge', desc: 'Patterns across domains — industries, countries, conditions. Sees what the others miss.' },
-                            ].map(({ num, label, desc }) => (
-                                <div key={num} className="bg-slate-900 px-5 py-5">
-                                    <span className="text-3xl font-extralight text-slate-600 leading-none">{num}</span>
-                                    <p className="text-xs font-bold text-white uppercase tracking-wide mt-2 mb-1">{label}</p>
-                                    <p className="text-[11px] text-slate-400 leading-relaxed">{desc}</p>
+                        {/* Step 2 — Three models */}
+                        <div className="mb-2 mt-8">
+                            <div className="flex items-baseline gap-4 mb-4">
+                                <span className="text-4xl font-extralight text-slate-300 leading-none">02</span>
+                                <div>
+                                    <p className="text-base font-bold text-slate-900 uppercase tracking-wide">Three reasoning architectures, one question</p>
+                                    <p className="text-sm text-slate-500">They disagree. The disagreement is the output.</p>
                                 </div>
-                            ))}
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-900">
+                                {[
+                                    { label: 'Extended Thinking', desc: 'Safety-aware reasoning. Maps consequences and edge cases. Identifies what could go wrong before anything is recommended.' },
+                                    { label: 'Logical Reasoning', desc: 'Mathematical chain-of-thought. Breaks problems into steps, tests each one. If the logic doesn\'t hold, it says so.' },
+                                    { label: 'Broad Knowledge', desc: 'Pattern recognition across domains — industries, countries, conditions. Surfaces what the other two architectures don\'t see.' },
+                                ].map(({ label, desc }, i) => (
+                                    <div key={i} className="bg-slate-900 px-6 py-6 border-r border-slate-800 last:border-r-0">
+                                        <p className="text-base font-bold text-white mb-2">{label}</p>
+                                        <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Bottom bar */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200">
+                        {/* Result */}
+                        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200">
                             <div className="bg-white p-6">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Adversarial by design</p>
-                                <p className="text-xs text-slate-500 leading-relaxed">Five engines argue opposing positions. Every disagreement is preserved — you see exactly where the case is uncertain.</p>
+                                <p className="text-sm font-bold text-slate-900 mb-2">Where they agree — you can act on it.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed">Consensus across all three architectures is the highest-confidence signal the system produces. You see the score, not just the conclusion.</p>
                             </div>
                             <div className="bg-white p-6">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Fully traceable</p>
-                                <p className="text-xs text-slate-500 leading-relaxed">Every score has a formula. Every recommendation carries a vote log, contradiction record, and confidence band.</p>
-                            </div>
-                            <div className="bg-white p-6">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-2">Where they agree — trust it. Where they disagree — you see why.</p>
-                                <p className="text-xs text-slate-500 leading-relaxed">No other platform runs three reasoning architectures against the same question and shows you the debate.</p>
+                                <p className="text-sm font-bold text-slate-900 mb-2">Where they disagree — you see exactly why.</p>
+                                <p className="text-sm text-slate-500 leading-relaxed">Every contradiction is preserved. Every divergence is labelled. Nothing is averaged away. No other platform shows you the debate.</p>
                             </div>
                         </div>
                     </div>
