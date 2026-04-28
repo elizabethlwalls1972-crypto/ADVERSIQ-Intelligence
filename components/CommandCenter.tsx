@@ -477,96 +477,60 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="relative text-white overflow-hidden" style={{ backgroundColor: '#1a1a2e' }}>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/15" />
                 <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
-                    {/* Banner headline — full width */}
-                    <div className="mb-16">
-                        <div>
-                            <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">The 10-Layer Pipeline</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                                Ten layers of verification.<br className="hidden md:block" />
-                                Nothing gets through unchecked.
-                            </h2>
-                            <p className="text-lg text-slate-300 leading-relaxed mb-4">
-                                Each layer handles one specific job. The breakthrough is making all ten work together &mdash; challenging each other, catching each other&rsquo;s mistakes, and building on each other&rsquo;s strengths.
-                            </p>
-                            <p className="text-sm text-slate-400 leading-relaxed">
-                                From adversarial reasoning to document generation, every claim passes through contradiction detection, stress testing, cognitive modelling, and confidence scoring before it reaches you.
-                            </p>
-                        </div>
+
+                    {/* Intro */}
+                    <div className="mb-16 max-w-3xl">
+                        <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">The NSIL</p>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
+                            The central brain.<br className="hidden md:block" />
+                            <span className="font-black">Everything routes through here.</span>
+                        </h2>
+                        <p className="text-lg text-slate-300 leading-relaxed mb-4">
+                            The NSIL — Nexus Strategic Intelligence Layer — is the single master control point that sits above the six pre-processing engines and the three reasoning architectures. Every engine reports through it. Every result is validated, scored, and audited by it before it reaches you.
+                        </p>
+                        <p className="text-sm text-slate-400 leading-relaxed">
+                            It is not a wrapper. It is not an orchestrator in the software-engineering sense. It is a 10-layer verification structure, each layer doing one specific job, each layer challenging the output of the one before it.
+                        </p>
                     </div>
 
-                    {/* Pipeline Layers — 5-col sharp corners */}
-                    <style>{`
-                        @keyframes pipeColor1 { 0%,100%{color:#ff3366} 33%{color:#00d4ff} 66%{color:#facc15} }
-                        @keyframes pipeColor2 { 0%,100%{color:#00d4ff} 33%{color:#a855f7} 66%{color:#ff3366} }
-                        @keyframes pipeColor3 { 0%,100%{color:#facc15} 33%{color:#ff3366} 66%{color:#22d3ee} }
-                        @keyframes pipeColor4 { 0%,100%{color:#a855f7} 33%{color:#facc15} 66%{color:#00d4ff} }
-                        @keyframes pipeColor5 { 0%,100%{color:#22d3ee} 33%{color:#ff9500} 66%{color:#a855f7} }
-                        @keyframes pipeBorder1 { 0%,100%{border-color:#ff3366} 33%{border-color:#00d4ff} 66%{border-color:#facc15} }
-                        @keyframes pipeBorder2 { 0%,100%{border-color:#00d4ff} 33%{border-color:#a855f7} 66%{border-color:#ff3366} }
-                        @keyframes pipeBorder3 { 0%,100%{border-color:#facc15} 33%{border-color:#ff3366} 66%{border-color:#22d3ee} }
-                        @keyframes pipeBorder4 { 0%,100%{border-color:#a855f7} 33%{border-color:#facc15} 66%{border-color:#00d4ff} }
-                        @keyframes pipeBorder5 { 0%,100%{border-color:#22d3ee} 33%{border-color:#ff9500} 66%{border-color:#a855f7} }
-                    `}</style>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-20">
+                    {/* 10 layers */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/10 mb-16">
                         {[
-                            'Adversarial Reasoning',
-                            'Contradiction Detection',
-                            'Stress Testing',
-                            'Cognitive Modelling',
-                            'Self-Improving Pipeline',
-                            'Reflexive Oversight',
-                            'Entity Verification',
-                            'Confidence Scoring',
-                            'Parallel Orchestration',
-                            'Document Generation',
-                        ].map((title, i) => {
-                            const cIdx = (i % 5) + 1;
-                            return (
-                                <div key={i} className="group relative bg-white/10 backdrop-blur-sm border-2 px-5 py-6 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/10" style={{ animation: `pipeBorder${cIdx} 3s ease-in-out infinite`, animationDelay: `${i * 0.3}s` }}>
-                                    <span className="block text-4xl font-extralight mb-3" style={{ animation: `pipeColor${cIdx} 3s ease-in-out infinite`, animationDelay: `${i * 0.3}s` }}>{String(i + 1).padStart(2, '0')}</span>
-                                    <h4 className="text-[11px] font-bold uppercase tracking-wider leading-snug" style={{ animation: `pipeColor${cIdx} 3s ease-in-out infinite`, animationDelay: `${i * 0.3 + 0.5}s` }}>{title}</h4>
-                                </div>
-                            );
-                        })}
+                            { num: '00', label: 'Knowledge Architecture', desc: 'Pattern confidence + methodology knowledge base' },
+                            { num: '01', label: 'Input Shield', desc: 'Adversarial input validation before anything runs' },
+                            { num: '02', label: 'Multi-Agent Debate', desc: '5 adversarial personas — independent positions forced' },
+                            { num: '03', label: 'Formula Scoring', desc: '21 DAG-scheduled formulas + 8 autonomous indices' },
+                            { num: '04', label: 'Stress Testing', desc: 'Counterfactual engine + Monte Carlo simulation' },
+                            { num: '05', label: 'Human Cognition', desc: '7 cognitive bias models applied to every output' },
+                            { num: '06', label: 'Autonomous Intelligence', desc: 'Creative synthesis, cross-domain transfer, ethical reasoning' },
+                            { num: '07', label: 'Proactive Layer', desc: 'Continuous monitoring, drift detection, backtesting' },
+                            { num: '08', label: 'Output Synthesis', desc: 'Provenance, full audit trail, document generation' },
+                            { num: '09', label: 'Reflexive Intelligence', desc: '7 engines that turn the analytical power inward' },
+                        ].map(({ num, label, desc }, i) => (
+                            <div key={i} className="bg-white/5 border border-white/10 px-5 py-6 hover:bg-white/10 transition-colors">
+                                <span className="block text-3xl font-extralight text-white/30 mb-3 leading-none">{num}</span>
+                                <p className="text-sm font-bold text-white mb-1">{label}</p>
+                                <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
+                            </div>
+                        ))}
                     </div>
 
-                    {/* Deep Dive — Engine Architecture */}
-                    <div>
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="h-px flex-1 bg-gradient-to-r from-indigo-400/50 to-transparent" />
-                            <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em]">Deep Dive &mdash; Engine Architecture</p>
-                            <div className="h-px flex-1 bg-gradient-to-l from-indigo-400/50 to-transparent" />
+                    {/* Three properties */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
+                        <div className="bg-white/5 px-6 py-6">
+                            <p className="text-sm font-bold text-white mb-2">Nothing is hidden</p>
+                            <p className="text-sm text-slate-400 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer.</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
-                            {(['a', 'b', 'c', 'd', 'e'] as const).map((key, idx) => {
-                                const cat = categoryDetails[key];
-                                const cIdx = idx + 1;
-                                return (
-                                    <button
-                                        key={key}
-                                        onClick={() => setExpandedEngine(key)}
-                                        className="group relative text-left bg-white/10 backdrop-blur-sm border-2 px-5 py-5 transition-all duration-300 hover:shadow-lg overflow-hidden"
-                                        style={{ animation: `pipeBorder${cIdx} 3s ease-in-out infinite`, animationDelay: `${idx * 0.4}s` }}
-                                    >
-                                        <span className="block text-2xl font-extralight mb-2" style={{ animation: `pipeColor${cIdx} 3s ease-in-out infinite`, animationDelay: `${idx * 0.4}s` }}>{cat.icon}</span>
-                                        <span className="block text-sm font-semibold leading-snug" style={{ animation: `pipeColor${cIdx} 3s ease-in-out infinite`, animationDelay: `${idx * 0.4 + 0.3}s` }}>{cat.title}</span>
-                                        <span className="block text-[10px] mt-2 uppercase tracking-wider" style={{ animation: `pipeColor${cIdx} 3s ease-in-out infinite`, animationDelay: `${idx * 0.4 + 0.6}s` }}>Explore &rarr;</span>
-                                    </button>
-                                );
-                            })}
+                        <div className="bg-white/5 px-6 py-6">
+                            <p className="text-sm font-bold text-white mb-2">Everything is auditable</p>
+                            <p className="text-sm text-slate-400 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed.</p>
                         </div>
-                        {/* Full Architecture — focus card */}
-                        <button
-                            onClick={() => setShowFormulas(true)}
-                            className="group w-full text-left relative overflow-hidden px-8 py-7 transition-all duration-300 shadow-sm hover:shadow-lg flex items-center justify-between bg-indigo-600 hover:bg-indigo-500"
-                        >
-                            <div className="relative z-10">
-                                <span className="block text-[10px] font-bold text-indigo-200 uppercase tracking-[0.25em] mb-1.5">Complete System</span>
-                                <span className="block text-xl md:text-2xl font-light text-white">Explore the Full Architecture &rarr;</span>
-                            </div>
-                            <span className="relative z-10 hidden sm:block text-6xl font-extralight text-white/15 group-hover:text-white/25 transition-colors">&#9670;</span>
-                        </button>
+                        <div className="bg-white/5 px-6 py-6">
+                            <p className="text-sm font-bold text-white mb-2">The pipeline checks itself</p>
+                            <p className="text-sm text-slate-400 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the analytical power of the entire system inward. The NSIL analyses its own output before you see it.</p>
+                        </div>
                     </div>
+
                 </div>
             </section>
 
