@@ -394,23 +394,56 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
 
                     {/* Statement piece */}
-                    <div className="border-t-2 border-slate-300 pt-12 mt-16 mb-16 max-w-6xl mx-auto">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-slate-500">Built for decisions that actually matter</p>
-                        <h4 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-none tracking-tight mb-10">
-                            Every answer<br className="hidden md:block" /> is a verdict.<br className="hidden md:block" /> Not a guess.
-                        </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-300">
+                    <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-16 max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-0">
+                            {/* Left: The honest claim */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-500">What no other platform has built</p>
+                                <h4 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-none tracking-tight mb-8">
+                                    224 service files.<br className="hidden md:block" /> 4.3MB of logic.<br className="hidden md:block" /><span className="text-slate-400">Not a chatbot.</span>
+                                </h4>
+                                <p className="text-lg text-slate-500 leading-relaxed mb-6">
+                                    ChatGPT, Claude, Gemini are one model, one prompt, one response. ADVERSIQ runs your question through a deterministic intelligence pipeline that no commercial AI product has attempted — before any language model is even called.
+                                </p>
+                                <p className="text-sm text-slate-600 leading-relaxed">
+                                    The AI in this system is the voice at the end of the process. The work is done by engines that have no equivalent anywhere else — engines that argue, contradict, stress-test, and score before a single word of output is produced.
+                                </p>
+                            </div>
+                            {/* Right: The spec sheet */}
+                            <div className="space-y-0 border border-slate-200">
+                                {[
+                                    { name: 'SATContradictionSolver', desc: 'Detects logical contradictions in your input using boolean satisfiability — the same class of algorithms used in formal software verification.' },
+                                    { name: 'BayesianDebateEngine', desc: 'Five adversarial personas each build an independent case. Bayesian inference updates their confidence as evidence arrives. Nash bargaining finds equilibrium.' },
+                                    { name: 'HumanCognitionEngine', desc: '7 cognitive bias models applied to every decision: anchoring, availability heuristic, confirmation bias, framing, sunk cost, status quo, and overconfidence.' },
+                                    { name: 'VectorMemoryIndex', desc: 'Semantic memory that stores and retrieves prior analysis in real time — not keyword search, but meaning-space similarity.' },
+                                    { name: 'DAGScheduler', desc: 'Directed Acyclic Graph task execution. The pipeline does not run linearly — it runs the right engines in the right dependency order, in parallel.' },
+                                    { name: 'MonteCarloStressEngine', desc: '10,000 forward simulations run against your assumptions in real time. You see probability distributions, not point estimates.' },
+                                ].map((engine, i) => (
+                                    <div key={i} className="flex items-start gap-4 p-4 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 transition-colors">
+                                        <div className="flex-shrink-0 mt-0.5">
+                                            <span className="block w-2 h-2 rounded-full bg-amber-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-bold font-mono text-slate-800 mb-1">{engine.name}</p>
+                                            <p className="text-xs text-slate-500 leading-relaxed">{engine.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        {/* Bottom bar: the three properties */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 mt-12">
                             <div className="bg-white p-8">
                                 <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Adversarial by design</p>
-                                <p className="text-base text-slate-600 leading-relaxed">Five independent AI reasoning engines argue your decision from opposing positions before any conclusion is surfaced. Disagreement is a feature, not a bug.</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">Five independent reasoning engines argue opposing positions before any conclusion is surfaced. Every disagreement is preserved in the output — you see exactly where the case is uncertain.</p>
                             </div>
                             <div className="bg-white p-8">
                                 <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Fully traceable</p>
-                                <p className="text-base text-slate-600 leading-relaxed">Every score has a formula. Every formula has a source. Every recommendation carries a full vote log, contradiction record, and confidence band — nothing hidden.</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">Every score has a formula. Every formula has a source. Every recommendation carries a full vote log, contradiction record, and confidence band. Nothing is invented. Everything traces to a line of code.</p>
                             </div>
                             <div className="bg-white p-8">
-                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Stress-tested at scale</p>
-                                <p className="text-base text-slate-600 leading-relaxed">10,000 Monte Carlo simulations run against your assumptions in real time. You see not just what is likely — but what happens when things go wrong.</p>
+                                <p className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-3">Structurally different</p>
+                                <p className="text-sm text-slate-600 leading-relaxed">This is not a better chatbot. The architecture is different in kind — deterministic engines running first, language model used last, only to articulate what the pipeline already concluded.</p>
                             </div>
                         </div>
                     </div>

@@ -7622,168 +7622,219 @@ ${agentRegistry.current.toManifest()}`;
               </button>
             )}
             <div className="p-4 border-b border-slate-200 bg-white">
-              <h2 className="text-xs font-bold text-blue-600 uppercase tracking-[0.15em] flex items-center gap-2">
-                <FileText size={14} className="text-blue-600" />
-                Verification Intelligence
-              </h2>
-              <div className="mt-2 grid grid-cols-1 gap-1 text-[11px]">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2 py-1 bg-blue-100 text-blue-700 border border-blue-200 font-semibold">
-                    Pipeline: {liveDraftStatus}
-                  </span>
-                  <span className="px-2 py-1 bg-white text-slate-700 border border-stone-300">
-                    Confidence: {liveDraftReadiness}%
-                  </span>
-                  <span className="px-2 py-1 bg-slate-100 text-slate-600 border border-slate-200">
-                    Jurisdiction: {resolvePolicyPack(caseStudy).id === 'global-default' ? 'Pending' : resolvePolicyPack(caseStudy).label}
-                  </span>
-                </div>
-                <div className="h-1.5 bg-stone-200 border border-stone-300 overflow-hidden">
-                  <div
-                    className="h-full bg-blue-500"
-                    style={{ width: `${liveDraftReadiness}%` }}
-                  />
-                </div>
+              {/* Panel header */}
+              <div className="bg-slate-900 -mx-4 -mt-4 px-4 py-3 mb-4">
+                <h2 className="text-xs font-bold text-amber-400 uppercase tracking-[0.15em] flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isLoading ? 'bg-amber-400 animate-pulse' : augmentedAISnapshot ? 'bg-green-400' : 'bg-slate-600'}`} />
+                  Intelligence Run
+                </h2>
+                <p className="mt-1 text-[10px] text-slate-400">
+                  {isLoading ? 'Pipeline executing…' : augmentedAISnapshot ? 'Last analysis complete' : 'Waiting for first query'}
+                </p>
               </div>
-              <p className="mt-2 text-[11px] text-slate-600">Real-time verification status. The pipeline builds context as the conversation develops.</p>
-              <p className="mt-1 text-[10px] text-slate-500">
-                {!isCaseStudyComplete
-                  ? 'Full pipeline assessment unlocks when sufficient context has been verified.'
-                  : 'All verification layers active. Full intelligence output available.'}
-              </p>
 
-              <div className="mt-3 border border-stone-200 bg-white p-3 min-h-[760px]">
-                {!hasLiveDraftSignals ? (
-                  <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
-                    <p className="text-[11px] font-semibold text-slate-800">Verification Profile — Awaiting Input</p>
-                    <p className="mt-1 text-[10px] text-slate-500">The pipeline extracts these signals from your conversation automatically. No forms required.</p>
-                    <div className="mt-3 space-y-2">
-                      {[
-                        { label: 'Entity', desc: 'Who you are and who you\'re dealing with', icon: '○' },
-                        { label: 'Jurisdiction', desc: 'Country, regulatory framework, compliance zone', icon: '○' },
-                        { label: 'Decision', desc: 'What needs to be verified or stress-tested', icon: '○' },
-                        { label: 'Risk Surface', desc: 'Constraints, deadlines, threat vectors', icon: '○' },
-                        { label: 'Audience', desc: 'Board, regulator, investor, counterparty', icon: '○' },
-                      ].map((item, idx) => (
-                        <div key={idx} className="flex items-start gap-2 border border-stone-200 px-3 py-2">
-                          <span className="text-[10px] text-slate-300 mt-0.5">{item.icon}</span>
-                          <div>
-                            <p className="text-[10px] font-semibold text-slate-700">{item.label}</p>
-                            <p className="text-[9px] text-slate-400">{item.desc}</p>
-                          </div>
+              {/* ── LIVE VERDICT BLOCK ── shown only after first response */}
+              {augmentedAISnapshot && (() => {
+                const snap = augmentedAISnapshot as unknown as Record<string, unknown>;
+                const tribunal = snap?.tribunal as Record<string, unknown> | undefined;
+                const brain = snap?.brainIntelligence as Record<string, unknown> | undefined;
+                const perception = snap?.perceptionDelta as Record<string, unknown> | undefined;
+                const overlooked = snap?.overlookedIntelligence as Record<string, unknown> | undefined;
+                const strategic = snap?.strategicPipeline as Record<string, unknown> | undefined;
+                const verdict = String(tribunal?.verdict ?? '—');
+                const contradictions = Array.isArray(tribunal?.contradictions) ? tribunal.contradictions.length : 0;
+                const engineScores = tribunal?.engines as Record<string, unknown> | undefined;
+                const compositeScore = typeof brain?.compositeScore === 'number' ? brain.compositeScore : null;
+                const deltaIndex = typeof perception?.deltaIndex === 'number' ? perception.deltaIndex : null;
+                const evidenceCred = typeof overlooked?.evidenceCredibility === 'number' ? overlooked.evidenceCredibility : null;
+                const readiness = typeof strategic?.readinessScore === 'number' ? strategic.readinessScore : null;
+                const provider = String(snap?.provider ?? '');
+                const confidence = typeof snap?.confidence === 'number' ? snap.confidence : null;
+                const verdictColor = verdict.startsWith('PROCEED') && !verdict.includes('CONDITION') ? 'text-green-600' : verdict.includes('CONDITION') ? 'text-amber-500' : verdict === 'REJECT' ? 'text-red-600' : 'text-slate-700';
+                const verdictBg = verdict.startsWith('PROCEED') && !verdict.includes('CONDITION') ? 'bg-green-50 border-green-200' : verdict.includes('CONDITION') ? 'bg-amber-50 border-amber-200' : verdict === 'REJECT' ? 'bg-red-50 border-red-200' : 'bg-slate-50 border-slate-200';
+                return (
+                  <div className="space-y-3 mt-3">
+                    {/* Tribunal verdict */}
+                    {tribunal && (
+                      <div className={`border px-4 py-3 ${verdictBg}`}>
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1">Tribunal Verdict</p>
+                        <p className={`text-lg font-black leading-none tracking-tight ${verdictColor}`}>{verdict}</p>
+                        {contradictions > 0 && (
+                          <p className="mt-1 text-[10px] text-amber-600">{contradictions} contradiction{contradictions !== 1 ? 's' : ''} flagged</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Score row */}
+                    <div className="grid grid-cols-3 gap-px bg-slate-200">
+                      {compositeScore !== null && (
+                        <div className="bg-white px-3 py-2">
+                          <p className="text-[9px] text-slate-500 uppercase tracking-widest">Score</p>
+                          <p className="text-sm font-black text-slate-900">{Math.round(compositeScore * 100)}%</p>
                         </div>
-                      ))}
+                      )}
+                      {confidence !== null && (
+                        <div className="bg-white px-3 py-2">
+                          <p className="text-[9px] text-slate-500 uppercase tracking-widest">Conf.</p>
+                          <p className="text-sm font-black text-slate-900">{Math.round(confidence * 100)}%</p>
+                        </div>
+                      )}
+                      {evidenceCred !== null && (
+                        <div className="bg-white px-3 py-2">
+                          <p className="text-[9px] text-slate-500 uppercase tracking-widest">Evidence</p>
+                          <p className="text-sm font-black text-slate-900">{Math.round(evidenceCred * 100)}%</p>
+                        </div>
+                      )}
                     </div>
-                    <div className="mt-4 border-t border-stone-200 pt-3">
-                      <p className="text-[10px] font-semibold text-slate-600">10-Layer Pipeline Status</p>
-                      <div className="mt-2 grid grid-cols-2 gap-1">
-                        {[
-                          'Adversarial Reasoning', 'Contradiction Detection',
-                          'Stress Testing', 'Cognitive Modelling',
-                          'Self-Optimisation', 'Reflexive Oversight',
-                          'Entity Verification', 'Confidence Scoring',
-                          'Parallel Orchestration', 'Document Generation'
-                        ].map((layer, idx) => (
-                          <div key={idx} className="flex items-center gap-1.5 px-2 py-1 border border-stone-100 bg-stone-50">
-                            <span className="w-1.5 h-1.5 bg-slate-300 rounded-full flex-shrink-0" />
-                            <span className="text-[9px] text-slate-400">{layer}</span>
+
+                    {/* Perception delta */}
+                    {deltaIndex !== null && (
+                      <div className="border border-slate-200 bg-slate-50 px-3 py-2">
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-0.5">Perception Gap</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1.5 bg-slate-200 overflow-hidden">
+                            <div className="h-full bg-amber-400" style={{ width: `${Math.min(100, Math.abs(deltaIndex) * 100)}%` }} />
                           </div>
+                          <span className="text-[10px] font-bold text-amber-600">{(deltaIndex * 100).toFixed(0)}%</span>
+                        </div>
+                        <p className="text-[9px] text-slate-400 mt-1">Reality vs. stated position divergence</p>
+                      </div>
+                    )}
+
+                    {/* Readiness */}
+                    {readiness !== null && (
+                      <div className="border border-slate-200 bg-slate-50 px-3 py-2">
+                        <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-0.5">Strategic Readiness</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1.5 bg-slate-200 overflow-hidden">
+                            <div className="h-full bg-blue-500" style={{ width: `${Math.min(100, readiness)}%` }} />
+                          </div>
+                          <span className="text-[10px] font-bold text-blue-600">{readiness}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Engines fired */}
+                    <div className="border border-slate-200 bg-white px-3 py-2">
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-2">Engines Fired</p>
+                      <div className="space-y-1">
+                        {[
+                          { key: 'adversarial', label: 'BayesianDebateEngine' },
+                          { key: 'contradiction', label: 'SATContradictionSolver' },
+                          { key: 'montecarlo', label: 'MonteCarloStressEngine' },
+                          { key: 'cognitive', label: 'HumanCognitionEngine' },
+                          { key: 'vector', label: 'VectorMemoryIndex' },
+                          { key: 'dag', label: 'DAGScheduler' },
+                          { key: 'entity', label: 'EntityVerifier' },
+                          { key: 'confidence', label: 'ConfidenceScorer' },
+                          { key: 'perception', label: 'PerceptionDeltaEngine' },
+                          { key: 'strategic', label: 'StrategicPipeline' },
+                        ].map(({ key, label }) => {
+                          const score = engineScores ? (engineScores[key] as number | undefined) : undefined;
+                          const fired = score !== undefined || (key === 'adversarial' && tribunal) || (key === 'perception' && deltaIndex !== null) || (key === 'strategic' && readiness !== null);
+                          return (
+                            <div key={key} className="flex items-center gap-2">
+                              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${fired ? 'bg-green-500' : 'bg-slate-200'}`} />
+                              <span className={`text-[9px] font-mono ${fired ? 'text-slate-800' : 'text-slate-400'}`}>{label}</span>
+                              {typeof score === 'number' && (
+                                <span className="ml-auto text-[9px] font-bold text-slate-500">{Math.round(score * 100)}</span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Provider */}
+                    {provider && (
+                      <div className="flex items-center gap-2 px-3 py-2 bg-slate-900">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+                        <span className="text-[9px] text-slate-300">Answered by</span>
+                        <span className="text-[9px] font-bold text-white ml-auto">{provider}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* ── IDLE STATE ── before first response */}
+              {!augmentedAISnapshot && (
+                <div className="mt-3 space-y-2">
+                  <div className="border border-slate-100 bg-slate-50 px-4 py-3">
+                    <p className="text-[10px] font-semibold text-slate-800 mb-1">Intelligence panel activates after your first message.</p>
+                    <p className="text-[9px] text-slate-400 leading-relaxed">Every response runs through a multi-engine pipeline before any AI model is called. This panel will show you exactly what ran and what it found.</p>
+                  </div>
+                  <div className="border border-slate-100 bg-white px-3 py-2">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-2">Engines standing by</p>
+                    {[
+                      'BayesianDebateEngine',
+                      'SATContradictionSolver',
+                      'MonteCarloStressEngine',
+                      'HumanCognitionEngine (×7)',
+                      'VectorMemoryIndex',
+                      'DAGScheduler',
+                      'EntityVerifier',
+                      'ConfidenceScorer',
+                      'PerceptionDeltaEngine',
+                      'StrategicPipeline',
+                    ].map((name) => (
+                      <div key={name} className="flex items-center gap-2 py-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-200 flex-shrink-0" />
+                        <span className="text-[9px] font-mono text-slate-400">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Current session pipeline status */}
+                  <div className="border border-slate-200 px-3 py-2 bg-white">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Session pipeline</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 text-[9px] font-bold border border-blue-200 bg-blue-50 text-blue-700">{liveDraftStatus}</span>
+                      <span className="text-[9px] text-slate-500">{liveDraftReadiness}% ready</span>
+                    </div>
+                    <div className="h-1 bg-slate-100 overflow-hidden">
+                      <div className="h-full bg-blue-400 transition-all duration-500" style={{ width: `${liveDraftReadiness}%` }} />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── VERIFICATION PROFILE (always shown below the intelligence) ── */}
+              {hasLiveDraftSignals && (
+                <div className="mt-4 border border-stone-200 bg-white px-3 py-3">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Verification Profile</p>
+                  <div className="space-y-2 text-[10px]">
+                    {(caseStudy.userName || caseStudy.organizationName) && (
+                      <div className="flex items-start gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-0.5 flex-shrink-0" />
+                        <div>
+                          {caseStudy.userName && <p className="text-slate-700">{caseStudy.userName}{caseStudy.contactRole ? ` — ${caseStudy.contactRole}` : ''}</p>}
+                          {caseStudy.organizationName && <p className="text-slate-500 text-[9px]">{caseStudy.organizationName}</p>}
+                        </div>
+                      </div>
+                    )}
+                    {(caseStudy.country || caseStudy.jurisdiction) && (
+                      <div className="flex items-start gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 mt-0.5 flex-shrink-0" />
+                        <p className="text-slate-700">{[caseStudy.country, caseStudy.jurisdiction].filter(Boolean).join(' · ')}</p>
+                      </div>
+                    )}
+                    {caseStudy.currentMatter && (
+                      <div className="flex items-start gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-0.5 flex-shrink-0" />
+                        <p className="text-slate-700 text-[9px] leading-relaxed">{caseStudy.currentMatter.length > 140 ? caseStudy.currentMatter.slice(0, 140) + '…' : caseStudy.currentMatter}</p>
+                      </div>
+                    )}
+                    {caseStudy.aiInsights.length > 0 && (
+                      <div className="border-t border-slate-100 pt-2 mt-2">
+                        <p className="text-[9px] text-slate-400 mb-1">Pipeline Intelligence ({caseStudy.aiInsights.length})</p>
+                        {caseStudy.aiInsights.slice(-4).map((insight, idx) => (
+                          <p key={idx} className="text-[9px] text-slate-500 leading-tight mb-0.5">• {insight.length > 120 ? insight.slice(0, 120) + '…' : insight}</p>
                         ))}
                       </div>
-                    </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="border border-stone-200 bg-white px-4 py-4 min-h-[700px]">
-                    <p className="text-[11px] font-semibold text-slate-800">Verification Profile — Live</p>
-                    <p className="mt-1 text-[10px] text-slate-500">Auto-captured from conversation. Pipeline layers activate as context builds.</p>
-                    <div className="mt-3 space-y-2 text-[10px] text-slate-700">
-                      {/* Entity Profile */}
-                      {(caseStudy.userName || caseStudy.contactRole || caseStudy.organizationName) && (
-                        <div className="border border-stone-200 px-3 py-2">
-                          <p className="font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                            Entity Profile
-                          </p>
-                          {caseStudy.userName && <p className="text-[9px] text-slate-600">• {caseStudy.userName}</p>}
-                          {caseStudy.contactRole && <p className="text-[9px] text-slate-600">• {caseStudy.contactRole}</p>}
-                          {caseStudy.organizationName && <p className="text-[9px] text-slate-600">• {caseStudy.organizationName}</p>}
-                          {caseStudy.organizationType && <p className="text-[9px] text-slate-600">• {caseStudy.organizationType}</p>}
-                        </div>
-                      )}
-                      {/* Jurisdiction */}
-                      {(caseStudy.country || caseStudy.jurisdiction) && (
-                        <div className="border border-stone-200 px-3 py-2">
-                          <p className="font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                            Jurisdiction Verified
-                          </p>
-                          {caseStudy.country && <p className="text-[9px] text-slate-600">• {caseStudy.country}</p>}
-                          {caseStudy.jurisdiction && <p className="text-[9px] text-slate-600">• {caseStudy.jurisdiction}</p>}
-                        </div>
-                      )}
-                      {/* Decision & Risk Surface */}
-                      {(caseStudy.currentMatter || caseStudy.objectives) && (
-                        <div className="border border-stone-200 px-3 py-2">
-                          <p className="font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                            Decision Under Verification
-                          </p>
-                          {caseStudy.currentMatter && <p className="text-[9px] text-slate-600">• {caseStudy.currentMatter}</p>}
-                          {caseStudy.objectives && <p className="text-[9px] text-slate-600">• Objective: {caseStudy.objectives}</p>}
-                          {caseStudy.targetAudience && <p className="text-[9px] text-slate-600">• Audience: {caseStudy.targetAudience}</p>}
-                          {caseStudy.constraints && <p className="text-[9px] text-slate-600">• Constraints: {caseStudy.constraints}</p>}
-                          {caseStudy.decisionDeadline && <p className="text-[9px] text-slate-600">• Deadline: {caseStudy.decisionDeadline}</p>}
-                        </div>
-                      )}
-                      {/* Pipeline Intelligence */}
-                      {caseStudy.aiInsights.length > 0 && (
-                        <div className="border border-stone-200 px-3 py-2">
-                          <p className="font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                            Pipeline Intelligence ({caseStudy.aiInsights.length})
-                          </p>
-                          {caseStudy.aiInsights.slice(-8).map((insight, idx) => (
-                            <p key={`note-${idx}`} className="text-[9px] text-slate-600 leading-tight">• {insight.length > 200 ? insight.slice(0, 200) + '...' : insight}</p>
-                          ))}
-                        </div>
-                      )}
-                      {/* Conversation Signals */}
-                      {caseStudy.additionalContext.length > 0 && (
-                        <div className="border border-stone-200 px-3 py-2">
-                          <p className="font-semibold text-slate-800 mb-0.5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-                            Signal Extraction ({caseStudy.additionalContext.length})
-                          </p>
-                          {caseStudy.additionalContext.slice(-6).map((ctx, idx) => (
-                            <p key={`ctx-${idx}`} className="text-[9px] text-slate-600 leading-tight">• {ctx.length > 200 ? ctx.slice(0, 200) + '...' : ctx}</p>
-                          ))}
-                        </div>
-                      )}
-                      {/* Pipeline Layer Status */}
-                      <div className="border-t border-stone-200 pt-2">
-                        <p className="font-semibold text-slate-600 mb-1">Active Layers</p>
-                        <div className="grid grid-cols-2 gap-1">
-                          {[
-                            'Adversarial Reasoning', 'Contradiction Detection',
-                            'Stress Testing', 'Cognitive Modelling',
-                            'Self-Optimisation', 'Reflexive Oversight',
-                            'Entity Verification', 'Confidence Scoring',
-                            'Parallel Orchestration', 'Document Generation'
-                          ].map((layer, idx) => {
-                            const isActive = liveDraftReadiness > (idx + 1) * 10;
-                            return (
-                              <div key={idx} className="flex items-center gap-1.5 px-2 py-1 border border-stone-100 bg-stone-50">
-                                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? 'bg-green-500' : 'bg-slate-300'}`} />
-                                <span className={`text-[9px] ${isActive ? 'text-slate-700' : 'text-slate-400'}`}>{layer}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Document Recommendations */}
