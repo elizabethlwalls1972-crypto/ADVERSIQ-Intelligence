@@ -513,8 +513,22 @@ const sanitizeConsultantContext = (context: unknown): { context: unknown; trunca
   }
 };
 
+/** Strip thinking/reasoning tokens that some models (DeepSeek-R1, Gemma 4, QwQ) leak into output */
+const stripThinkingTokens = (text: string): string => {
+  // Remove <think>...</think> and <thinking>...</thinking> blocks (DeepSeek-R1, Qwen)
+  let cleaned = text.replace(/<think>[\s\S]*?<\/think>/gi, '');
+  cleaned = cleaned.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '');
+  // Remove [THINKING]...[/THINKING] blocks
+  cleaned = cleaned.replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '');
+  // Remove explicit chain-of-thought preambles that models occasionally emit
+  // (e.g. "* User input: ...\n* System Persona: ...\n" bullet-list reasoning blocks)
+  cleaned = cleaned.replace(/^(\*\s+[^\n]+\n)+(?=\*\s+\[STATUS:|\*\s+CONNECTION|\[STATUS:)/m, '');
+  return cleaned.trim();
+};
+
 const normalizeConsultantOutput = (rawText: string): string => {
-  const text = rawText.trim().slice(0, CONSULTANT_MAX_RESPONSE_CHARS);
+  const cleaned = stripThinkingTokens(rawText);
+  const text = cleaned.trim().slice(0, CONSULTANT_MAX_RESPONSE_CHARS);
   if (!text) {
     return 'I can assist with your report and next actions. Share the exact objective, jurisdiction, and decision deadline, and I will proceed.';
   }
@@ -1487,7 +1501,8 @@ router.post('/chat', requireApiKey, async (req: Request, res: Response) => {
       ? systemInstruction.trim()
       : SYSTEM_INSTRUCTION;
 
-    const text = await generateWithAI(chatMessages, effectiveSystem);
+    const rawText = await generateWithAI(chatMessages, effectiveSystem);
+    const text = stripThinkingTokens(rawText);
     res.json({
       id: Date.now().toString(),
       type: 'strategy',

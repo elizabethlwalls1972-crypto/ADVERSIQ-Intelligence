@@ -4843,6 +4843,16 @@ ${agentRegistry.current.toManifest()}`;
         ].filter(Boolean);
         const systemContext = contextParts.join('\n\n---\n\n');
 
+        // For greetings and pure small talk, respond directly without calling the AI.
+        // This avoids the model reasoning out loud about which persona to adopt.
+        if (isGreetingOnly) {
+          const greetingReplies = [
+            'Hello! Tell me what you\'re working on — a deal, a market entry, a partner assessment, or a strategic decision — and I\'ll focus the analysis on what matters most.',
+            'Hi there. What situation are you looking at? Describe it in your own words and I\'ll get the relevant intelligence running.',
+            'Good to have you here. What\'s the project or decision you need help thinking through?',
+          ];
+          responseContent = greetingReplies[Math.floor(Math.random() * greetingReplies.length)];
+        } else {
         setIsStreamingResponse(true);
         try {
           const res = await fetch('/api/ai/chat', {
@@ -4863,6 +4873,7 @@ ${agentRegistry.current.toManifest()}`;
           }
         } catch (aiErr) {
           console.warn('[handleSend] AI call error:', aiErr);
+        }
         }
 
         if (!responseContent) {
