@@ -532,35 +532,46 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Bridge into NSIL */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 mt-16">
-                            <div className="bg-slate-900 px-10 py-12">
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Step 1 of 2</p>
-                                <p className="text-xl md:text-2xl font-bold text-white leading-snug mb-4">Then three reasoning architectures fight over the answer</p>
-                                <p className="text-base text-slate-400 leading-relaxed">Extended Thinking, Logical Reasoning, and Broad Knowledge each build an independent case. Where they agree, confidence is high. Where they diverge, you see exactly why — every contradiction labelled, nothing averaged away.</p>
-                            </div>
-                            <div className="bg-amber-500 px-10 py-12">
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-900 mb-4">Step 2 of 2</p>
-                                <p className="text-xl md:text-2xl font-bold text-slate-900 leading-snug mb-4">Then the NSIL takes over</p>
-                                <p className="text-base text-amber-900 leading-relaxed">The Nexus Strategic Intelligence Layer is the master control point that orchestrates everything — and runs a final 10-layer verification pass before anything reaches you.</p>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
             </section>
 
-            {/* Architecture bridge — the correct framing */}
-            <section className="py-16 px-4 bg-white border-t-2 border-b-2 border-slate-100">
-                <div className="max-w-4xl mx-auto text-center">
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-slate-400">The Architecture</p>
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
-                        ADVERSIQ doesn&rsquo;t try to replicate a language model.<br />
-                        <span className="font-black">It wraps language models with structured intelligence that makes them trustworthy.</span>
-                    </h3>
-                    <p className="text-lg text-slate-500 leading-relaxed max-w-3xl mx-auto">
-                        ChatGPT, Claude, Gemini — all raw generation. Prompt in, response out. ADVERSIQ uses those same models as the final step of a system that has already validated, stress-tested, and adversarially debated every claim. This is the correct architecture.
-                    </p>
+            {/* Architecture — 2-col with photo */}
+            <section className="bg-white border-t-2 border-slate-100 overflow-hidden">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
+                    {/* Left: photo */}
+                    <div className="h-72 lg:h-auto overflow-hidden">
+                        <img
+                            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=700&fit=crop&q=80"
+                            alt="Intelligence architecture"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                    {/* Right: text */}
+                    <div className="px-10 lg:px-16 py-16 lg:py-24 flex flex-col justify-center">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">The Architecture</p>
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
+                            ADVERSIQ doesn&rsquo;t try to replicate a language model.<br />
+                            <span className="font-black">It wraps language models with structured intelligence that makes them trustworthy.</span>
+                        </h3>
+                        <p className="text-lg text-slate-500 leading-relaxed mb-8">
+                            ChatGPT, Claude, Gemini — all raw generation. Prompt in, response out. ADVERSIQ uses those same models as the final step of a system that has already validated, stress-tested, and adversarially debated every claim. This is the correct architecture.
+                        </p>
+                        <div className="border-t-2 border-slate-100 pt-6 grid grid-cols-2 gap-x-8 gap-y-5">
+                            {[
+                                { label: '21 scoring formulas', sub: 'DAG-scheduled, independently verified' },
+                                { label: '5 adversarial personas', sub: 'Arguing every conclusion before output' },
+                                { label: '247 document templates', sub: 'Built from verified pipeline output only' },
+                                { label: '10 NSIL layers', sub: 'Each one challenges the layer before it' },
+                            ].map((item, i) => (
+                                <div key={i}>
+                                    <p className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">{item.label}</p>
+                                    <p className="text-sm text-slate-500">{item.sub}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -614,18 +625,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-base text-slate-400 leading-relaxed mb-8">
                                 Other AI tools send your prompt to a model. ADVERSIQ sends it through a 10-layer intelligence structure — and only calls the language model after the system has already validated, stress-tested, contradiction-solved, and adversarially challenged every claim. The model doesn&rsquo;t generate the answer. It narrates a finding that was already computed.
                             </p>
-                            <div className="grid grid-cols-3 gap-px bg-white/10">
-                                {[
-                                    { stat: '10', label: 'Verification layers before output' },
-                                    { stat: '6×', label: 'Faster than sequential processing' },
-                                    { stat: '100%', label: 'Of outputs carry full provenance' },
-                                ].map((s, i) => (
-                                    <div key={i} className="bg-white/5 px-5 py-6">
-                                        <p className="text-4xl font-black text-amber-400 mb-2">{s.stat}</p>
-                                        <p className="text-sm text-slate-400 leading-snug">{s.label}</p>
-                                    </div>
-                                ))}
-                            </div>
+                            <p className="text-xs font-mono text-white/30 tracking-[0.18em] border-t border-white/10 pt-6 leading-relaxed">
+                                21 formulas &nbsp;&middot;&nbsp; 10 verification layers &nbsp;&middot;&nbsp; 5 adversarial personas &nbsp;&middot;&nbsp; 247 documents &nbsp;&middot;&nbsp; full provenance on every output
+                            </p>
                         </div>
                     </div>
 
