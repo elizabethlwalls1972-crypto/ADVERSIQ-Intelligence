@@ -412,55 +412,104 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                             </div>
 
-                            {/* Mock output panel — proof, not a claim */}
-                            <div className="bg-slate-950 font-mono text-sm overflow-hidden">
-                                {/* Header bar */}
-                                <div className="flex items-center justify-between px-5 py-3 bg-slate-900 border-b border-slate-700">
-                                    <span className="text-xs font-bold text-white tracking-widest uppercase">ADVERSIQ</span>
-                                    <span className="text-[10px] text-slate-400 uppercase tracking-widest">Intelligence Run — Layer 09 complete</span>
-                                </div>
-                                {/* Provider */}
-                                <div className="px-5 py-3 border-b border-slate-800 flex items-center gap-2">
-                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                    <span className="text-xs text-slate-400">Gemini 2.0 Flash</span>
-                                    <span className="ml-auto text-[10px] text-slate-600 uppercase tracking-widest">All 10 layers fired</span>
-                                </div>
-                                {/* Verdict */}
-                                <div className="px-5 py-5 border-b border-slate-800">
-                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">Tribunal Verdict</p>
-                                    <p className="text-2xl font-black text-emerald-400 tracking-tight">STRONG PROCEED</p>
-                                    <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1">
-                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Contradictions detected</span><span className="text-white">3</span></div>
-                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Resolved</span><span className="text-emerald-400">3 / 3</span></div>
-                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Composite score</span><span className="text-white">87.4</span></div>
-                                        <div className="flex justify-between text-xs"><span className="text-slate-500">Confidence</span><span className="text-white">0.91</span></div>
+                            {/* Pipeline visualization — the architecture made visual */}
+                            <div className="bg-slate-950 font-mono overflow-hidden">
+                                {/* Header */}
+                                <div className="flex items-center justify-between px-5 py-3 bg-slate-900 border-b border-slate-800">
+                                    <span className="text-xs font-bold text-white tracking-[0.15em] uppercase">ADVERSIQ</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
+                                        <span className="text-[10px] text-emerald-400 uppercase tracking-widest">Live — Layer 09 complete</span>
                                     </div>
                                 </div>
-                                {/* Engine scores */}
-                                <div className="px-5 py-4 border-b border-slate-800 space-y-2">
-                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-3">Engine scores</p>
-                                    {[
-                                        { name: 'BayesianDebateEngine', score: 92, w: 'w-[92%]' },
-                                        { name: 'SATContradictionSolver', score: 88, w: 'w-[88%]' },
-                                        { name: 'MonteCarloStressEngine', score: 85, w: 'w-[85%]' },
-                                        { name: 'HumanCognitionEngine', score: 79, w: 'w-[79%]' },
-                                    ].map((e, i) => (
-                                        <div key={i}>
-                                            <div className="flex justify-between text-xs mb-0.5">
-                                                <span className="text-slate-400">{e.name}</span>
-                                                <span className="text-white">{e.score}</span>
-                                            </div>
-                                            <div className="h-0.5 bg-slate-800">
-                                                <div className={`h-0.5 bg-amber-400 ${e.w}`}></div>
-                                            </div>
+
+                                <div className="p-5 space-y-2">
+                                    {/* Input */}
+                                    <div className="border border-slate-700 px-3 py-2 text-center">
+                                        <span className="text-[9px] text-slate-400 uppercase tracking-[0.15em]">Query enters the system</span>
+                                    </div>
+
+                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; no language model yet &nbsp; &#8595;</p>
+
+                                    {/* Phase 1 */}
+                                    <div className="border border-amber-800/50 bg-amber-950/10 px-3 py-3">
+                                        <p className="text-[9px] text-amber-400 uppercase tracking-[0.15em] mb-2">Phase 1 — 6 Deterministic Engines</p>
+                                        <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                                            {[
+                                                'SAT Contradiction Solver',
+                                                'Bayesian Debate Engine',
+                                                'Monte Carlo Stress Test',
+                                                'DAG Formula Scheduler',
+                                                'Human Cognition Engine',
+                                                'Vector Memory Index',
+                                            ].map((eng, i) => (
+                                                <div key={i} className="flex items-center gap-1.5">
+                                                    <span className="w-1 h-1 bg-amber-400 flex-shrink-0"></span>
+                                                    <span className="text-[9px] text-slate-400">{eng}</span>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
-                                {/* Footer */}
-                                <div className="px-5 py-3 space-y-1">
-                                    <p className="text-[10px] text-slate-500">&#10003; Full provenance attached to every score</p>
-                                    <p className="text-[10px] text-slate-500">&#10003; Audit trail: 10 layers logged in sequence</p>
-                                    <p className="text-[10px] text-slate-500">&#10003; Layer 09 self-check complete</p>
+                                    </div>
+
+                                    <p className="text-[9px] text-slate-600 text-center">&#8595;</p>
+
+                                    {/* Phase 2 */}
+                                    <div className="border border-blue-800/50 bg-blue-950/10 px-3 py-3">
+                                        <p className="text-[9px] text-blue-400 uppercase tracking-[0.15em] mb-2">Phase 2 — 3 Reasoning Architectures Argue</p>
+                                        <div className="grid grid-cols-3 gap-1">
+                                            {['Extended Thinking', 'Logical Reasoning', 'Broad Knowledge'].map((arch, i) => (
+                                                <div key={i} className="border border-blue-800/40 px-1.5 py-1.5 text-center">
+                                                    <span className="text-[9px] text-slate-300">{arch}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; contradictions resolved: 3/3 &nbsp; &#8595;</p>
+
+                                    {/* Phase 3 — NSIL */}
+                                    <div className="border border-indigo-600/40 bg-indigo-950/20 px-3 py-3">
+                                        <p className="text-[9px] text-indigo-400 uppercase tracking-[0.15em] mb-2">Phase 3 — NSIL 10-Layer Verification</p>
+                                        <div className="flex flex-wrap gap-1">
+                                            {['00','01','02','03','04','05','06','07','08','09'].map(n => (
+                                                <span key={n} className="text-[9px] font-mono text-white border border-indigo-700/40 px-1.5 py-0.5 bg-indigo-900/20">{n} &#10003;</span>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; only now &nbsp; &#8595;</p>
+
+                                    {/* Phase 4 — LLM last */}
+                                    <div className="border border-slate-600 bg-slate-900/50 px-3 py-2">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[9px] text-slate-400 uppercase tracking-[0.15em]">Phase 4 — Language Model</span>
+                                            <span className="text-[9px] text-slate-500">last step only</span>
+                                        </div>
+                                        <p className="text-[10px] text-white mt-1">Gemini 2.0 Flash</p>
+                                    </div>
+
+                                    <p className="text-[9px] text-slate-600 text-center">&#8595;</p>
+
+                                    {/* Verdict */}
+                                    <div className="border border-emerald-700/40 bg-emerald-950/20 px-3 py-3">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-[9px] text-emerald-400 uppercase tracking-[0.15em]">Tribunal Verdict</span>
+                                            <span className="text-lg font-black text-emerald-400 tracking-tight">STRONG PROCEED</span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-5 gap-y-0.5">
+                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Composite score</span><span className="text-white">87.4</span></div>
+                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Confidence</span><span className="text-white">0.91</span></div>
+                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Contradictions</span><span className="text-emerald-400">3 / 3 resolved</span></div>
+                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Layers fired</span><span className="text-white">10 / 10</span></div>
+                                        </div>
+                                    </div>
+
+                                    {/* Footer */}
+                                    <div className="border-t border-slate-800 pt-2 space-y-0.5">
+                                        <p className="text-[9px] text-slate-500">&#10003; Full provenance attached to every score</p>
+                                        <p className="text-[9px] text-slate-500">&#10003; Audit trail: 10 layers logged in sequence</p>
+                                        <p className="text-[9px] text-slate-500">&#10003; Layer 09 self-check complete</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -498,6 +547,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
+                </div>
+            </section>
+
+            {/* Architecture bridge — the correct framing */}
+            <section className="py-16 px-4 bg-white border-t-2 border-b-2 border-slate-100">
+                <div className="max-w-4xl mx-auto text-center">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-slate-400">The Architecture</p>
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
+                        ADVERSIQ doesn&rsquo;t try to replicate a language model.<br />
+                        <span className="font-black">It wraps language models with structured intelligence that makes them trustworthy.</span>
+                    </h3>
+                    <p className="text-lg text-slate-500 leading-relaxed max-w-3xl mx-auto">
+                        ChatGPT, Claude, Gemini — all raw generation. Prompt in, response out. ADVERSIQ uses those same models as the final step of a system that has already validated, stress-tested, and adversarially debated every claim. This is the correct architecture.
+                    </p>
                 </div>
             </section>
 
@@ -540,7 +603,78 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         ))}
                     </div>
 
+                    {/* Proof finale — after the 10 layers */}
+                    <div className="border-t border-white/10 pt-12 pb-4">
+                        <div className="max-w-3xl mx-auto text-center mb-12">
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-4">What no other system does</p>
+                            <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-5">
+                                Ten layers of verification.<br />
+                                <span className="font-black">Then the language model speaks.</span>
+                            </h3>
+                            <p className="text-base text-slate-400 leading-relaxed mb-8">
+                                Other AI tools send your prompt to a model. ADVERSIQ sends it through a 10-layer intelligence structure — and only calls the language model after the system has already validated, stress-tested, contradiction-solved, and adversarially challenged every claim. The model doesn&rsquo;t generate the answer. It narrates a finding that was already computed.
+                            </p>
+                            <div className="grid grid-cols-3 gap-px bg-white/10">
+                                {[
+                                    { stat: '10', label: 'Verification layers before output' },
+                                    { stat: '6×', label: 'Faster than sequential processing' },
+                                    { stat: '100%', label: 'Of outputs carry full provenance' },
+                                ].map((s, i) => (
+                                    <div key={i} className="bg-white/5 px-5 py-6">
+                                        <p className="text-4xl font-black text-amber-400 mb-2">{s.stat}</p>
+                                        <p className="text-sm text-slate-400 leading-snug">{s.label}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
+                    {/* 3 Highest-Impact Additions — Roadmap */}
+                    <div className="border-t border-white/10 pt-12">
+                        <div className="mb-10 text-center">
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-3">What&rsquo;s Being Added Next</p>
+                            <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-3">
+                                Three additions that push the ceiling<br />
+                                <span className="font-black">beyond anything currently available.</span>
+                            </h3>
+                            <p className="text-base text-slate-400 max-w-2xl mx-auto">The current architecture is already without precedent. These three additions take it to a level no advisory platform has reached.</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
+                            {[
+                                {
+                                    num: '01',
+                                    title: 'Persistent Vector Memory',
+                                    subtitle: 'Every case. Every output. Permanently searchable.',
+                                    desc: 'Every case study, formula output, and intelligence finding stored in a vector database. Every new analysis automatically enriched by everything that came before it. The system gets measurably smarter with every run — the opposite of amnesia.',
+                                    tag: 'Architecture',
+                                },
+                                {
+                                    num: '02',
+                                    title: 'Multi-Model Routing',
+                                    subtitle: 'Right model. Right task. Every time.',
+                                    desc: 'Different reasoning tasks routed to the optimal model in real time. Fast contradiction-checking to Groq. Deep analysis to Gemini. Domain-specific logic to fine-tuned models. Speed without sacrificing depth.',
+                                    tag: 'Intelligence',
+                                },
+                                {
+                                    num: '03',
+                                    title: 'Fine-Tuned Domain Model',
+                                    subtitle: 'A model that reasons like a BWGA consultant.',
+                                    desc: 'An open-source base model fine-tuned on real BWGA case inputs, formula outputs, and advisory documents. Not prompted to act like an advisor — trained to reason like one from first principles. The difference is architectural.',
+                                    tag: 'Foundation',
+                                },
+                            ].map((item, i) => (
+                                <div key={i} className="bg-white/5 px-7 py-8">
+                                    <div className="flex items-center justify-between mb-5">
+                                        <span className="text-3xl font-extralight text-white/20">{item.num}</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 border border-amber-600/40 text-amber-400">{item.tag}</span>
+                                    </div>
+                                    <p className="text-base font-bold text-white mb-1.5 leading-snug">{item.title}</p>
+                                    <p className="text-sm text-amber-300/80 mb-3 leading-snug">{item.subtitle}</p>
+                                    <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
                 </div>
             </section>
