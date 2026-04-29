@@ -33,6 +33,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [showBreakthroughPopup, setShowBreakthroughPopup] = useState(false);
     const [showProofPopup, setShowProofPopup] = useState(false);
     const [showFounderLetter, setShowFounderLetter] = useState(false);
+    const [showArchitecture, setShowArchitecture] = useState(false);
     const [activeWorkflowStage, setActiveWorkflowStage] = useState<'intake' | 'analysis' | 'output' | null>(null);
     const [showProtocolLetters, setShowProtocolLetters] = useState(false);
     const [showUnifiedSystemOverview, setShowUnifiedSystemOverview] = useState(false);
@@ -433,12 +434,19 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             This was built for the organisations that have always had the ambition.<br />
                             <span className="text-amber-400">Now they have the proof to match it.</span>
                         </p>
-                        <div className="mt-10">
+                        <div className="mt-10 flex flex-wrap gap-4">
                             <button
                                 onClick={() => setShowFounderLetter(true)}
                                 className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-900 text-sm font-bold uppercase tracking-[0.15em] hover:bg-amber-300 transition-colors"
                             >
                                 The Proof
+                                <ArrowRight size={16} />
+                            </button>
+                            <button
+                                onClick={() => setShowArchitecture(true)}
+                                className="inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white text-sm font-bold uppercase tracking-[0.15em] hover:border-white/70 hover:bg-white/5 transition-colors"
+                            >
+                                The Architecture
                                 <ArrowRight size={16} />
                             </button>
                         </div>
@@ -3092,6 +3100,121 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             >
                                 Close
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Architecture Modal */}
+            {showArchitecture && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowArchitecture(false)}>
+                    <div className="bg-slate-950 max-w-5xl w-full my-8 shadow-2xl" onClick={e => e.stopPropagation()}>
+
+                        {/* Header */}
+                        <div className="px-8 md:px-14 pt-12 pb-10 border-b border-white/10 relative">
+                            <button onClick={() => setShowArchitecture(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/30 hover:text-white transition-colors"><X size={20} /></button>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Architecture</p>
+                            <h2 className="text-3xl md:text-5xl font-light text-white leading-tight">
+                                A system built from six disciplines<br />
+                                <span className="font-black">that no single field had ever combined.</span>
+                            </h2>
+                            <p className="text-base text-white/40 mt-6 max-w-3xl leading-relaxed">
+                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture &mdash; all enforced as a deterministic, auditable pipeline. Every layer has explicit input and output contracts. Nothing moves forward until the previous layer is satisfied.
+                            </p>
+                        </div>
+
+                        <div className="px-8 md:px-14 py-12 space-y-16">
+
+                            {/* World Firsts callout */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Has Never Been Combined Before</p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
+                                    {[
+                                        { n: '01', title: 'SAT Contradiction Solving applied to investment intelligence', body: 'Boolean satisfiability — a tool from computer science used to verify microchip logic — applied to investment proposals. Every assumption a user submits is converted to propositional logic and tested for internal contradiction before a single formula runs. If two inputs are logically incompatible, the system halts and tells you why.' },
+                                        { n: '02', title: 'Bayesian adversarial debate as a verification gate', body: 'Five distinct expert personas (Skeptic, Advocate, Regulator, Accountant, Operator) run a structured adversarial debate with Bayesian belief updating after every round. The debate continues until one position achieves a 75% consensus threshold — or the system classifies the proposal as unresolvable. No output is released until the debate is settled.' },
+                                        { n: '03', title: 'Neuroscience-derived cognitive bias modelling in decision pipelines', body: 'Cognitive distortions — overconfidence, anchoring, optimism bias, availability heuristic — are not just mentioned as risks. They are modelled as quantifiable signals applied to the user\'s own inputs, scored, and surfaced as findings before they can corrupt the downstream analysis.' },
+                                        { n: '04', title: 'Directed Acyclic Graph scheduling of proprietary formula suites', body: 'The 27+ formulas do not run sequentially or in isolation. A DAG scheduler maps every dependency between formulas — where Formula B requires Formula A\'s output, and Formula C requires both — and executes them in the minimum number of parallel passes. Results are memoised: no formula ever runs twice in the same session.' },
+                                        { n: '05', title: 'Reflexive self-audit before output release', body: 'Before any analysis reaches the user, a dedicated reflexive layer examines the full reasoning chain produced by every upstream layer. It scores internal coherence, checks for logical gaps, and returns a release verdict. If the system is not confident in its own conclusions, it suppresses them and reports the uncertainty instead.' },
+                                        { n: '06', title: 'A 10-layer pipeline enforced with explicit contracts', body: 'Each of the 10 layers has a defined input contract and a defined output contract. No layer begins until its required inputs are validated. This is not a design choice for elegance — it is a structural guarantee that the output is traceable to its inputs, every time, without exception.' },
+                                    ].map(item => (
+                                        <div key={item.n} className="bg-slate-900 px-6 py-8">
+                                            <p className="text-3xl font-black text-white/10 mb-3">{item.n}</p>
+                                            <p className="text-sm font-black text-amber-400 uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
+                                            <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* The 10-Layer pipeline */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-amber-400">The NSIL — Nexus Strategic Intelligence Layer</p>
+                                <p className="text-sm text-white/40 mb-8 leading-relaxed max-w-3xl">Ten sequential layers. Each one with a single, non-negotiable job. Parallelism occurs within layers. Every result is memoised. The full audit trail is preserved from input to output.</p>
+                                <div className="space-y-px">
+                                    {[
+                                        { layer: 'Layer 0', name: 'The Laws', role: 'Formula instantiation & DAG construction', detail: '38+ proprietary formulas are instantiated as immutable rules. The dependency graph between them is resolved. No formula runs until this map is complete.' },
+                                        { layer: 'Layer 1', name: 'The Shield', role: 'Contradiction detection & input audit', detail: 'Every user input is converted to propositional logic. The SAT solver tests for internal contradictions. Conflicting assumptions are flagged with severity scores before any reasoning begins.' },
+                                        { layer: 'Layer 2', name: 'The Boardroom', role: 'Adversarial debate & consensus resolution', detail: 'Five expert personas debate the validated inputs using Bayesian belief updating. Debate stops when 75% consensus is reached or the proposal is classified as unresolvable. No output advances until debate closes.' },
+                                        { layer: 'Layer 3', name: 'The Engine', role: 'Formula scoring suite', detail: '27+ formulas execute via the DAG scheduler. SPI, RROI, CRI, BARNA, SCF, SEAM, IVAS and all derivative indices run in dependency order. Every score includes a confidence interval.' },
+                                        { layer: 'Layer 4', name: 'The Stress Test', role: 'Monte Carlo scenario simulation', detail: '10,000-iteration probabilistic simulation across all formula outputs. Value-at-Risk (P95), expected shortfall, probability of loss, and regret analysis — the cost of inaction — are all calculated.' },
+                                        { layer: 'Layer 5', name: 'The Brain', role: 'Cognitive bias modelling', detail: 'The user\'s own inputs are analysed for cognitive distortion signatures. Overconfidence, anchoring, optimism bias, and availability heuristic are scored and reported as named, quantified findings.' },
+                                        { layer: 'Layer 6', name: 'The Autonomous', role: 'Novel insight generation & ethical constraint', detail: 'Draws from cross-domain analogies, historical precedents, and comparative case libraries to surface insights that the formula layer cannot reach. Applies Rawlsian fairness and Gini coefficient scoring to every recommendation.' },
+                                        { layer: 'Layer 7', name: 'The Proactive', role: 'Signal monitoring & drift detection', detail: 'Backtests the proposal against historical investment patterns. Detects assumption drift between the user\'s declared intent and their submitted data. Issues forward warnings on known failure modes.' },
+                                        { layer: 'Layer 8', name: 'The Output', role: 'Document synthesis & formatting', detail: 'Compiles every score, debate transcript, bias report, risk flag, and audit trail into board-ready documents. 156 letter templates and 247 document types are available. No content is invented — every sentence traces to a formula result or a debate position.' },
+                                        { layer: 'Layer 9', name: 'The Reflexive', role: 'Self-audit & release gate', detail: 'The system reviews its own reasoning chain before releasing output. Scores internal coherence. If confidence falls below threshold, output is suppressed and uncertainty is reported. This is the only layer that can halt the entire pipeline.' },
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex gap-0 border-t border-white/5">
+                                            <div className="w-24 flex-shrink-0 bg-white/5 px-4 py-5 flex flex-col justify-start">
+                                                <p className="text-xs font-bold text-white/25 uppercase tracking-widest">{item.layer}</p>
+                                            </div>
+                                            <div className="flex-1 px-6 py-5">
+                                                <div className="flex flex-wrap items-baseline gap-3 mb-1">
+                                                    <p className="text-sm font-black text-white uppercase tracking-wide">{item.name}</p>
+                                                    <p className="text-xs text-amber-400 font-medium">{item.role}</p>
+                                                </div>
+                                                <p className="text-sm text-white/40 leading-relaxed">{item.detail}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* One-off developments */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">Developments That Did Not Exist Before This Was Built</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {[
+                                        { title: 'SPI™ — Strategic Positioning Index', body: 'A composite score that evaluates an opportunity\'s strategic position across market readiness, competitive differentiation, stakeholder alignment, and execution capability. Outputs a 0–100 score with a confidence interval. No existing advisory framework produces this as a single, auditable number.' },
+                                        { title: 'RROI™ — Risk-Adjusted Return on Investment', body: 'Not standard ROI. RROI incorporates contradiction scores, Monte Carlo P95 loss estimates, and bias-adjusted optimism correction into the return calculation. The same project with confident assumptions and identical numbers will return a different RROI if those assumptions were flagged as contradictory.' },
+                                        { title: 'Release Gate Protocol', body: 'A structural enforcement mechanism — not a feature — that prevents any analysis from reaching the user until every upstream layer has returned a passing verdict. There is no override. If the reflexive layer suppresses output, the output is suppressed.' },
+                                        { title: 'Cross-Domain Analogical Reasoning Engine', body: 'Every proposal is compared against historical transformations from other sectors and geographies — how Penang built its electronics corridor, how Medellín reversed urban decay, how Rwanda rebuilt its governance layer. Pattern-matching across decades of documented precedent to surface what the formula layer cannot calculate.' },
+                                        { title: 'Provenance Chain Preservation', body: 'Every conclusion in every document traces back through the layer that produced it, the formula that scored it, the debate position that challenged it, and the input that seeded it. Not as a log. As a navigable, structured audit trail embedded in the output itself.' },
+                                        { title: 'Bias-Corrected Document Generation', body: 'Documents are not generated from the user\'s stated position. They are generated from the bias-corrected position — the analysis after the cognitive modelling layer has adjusted for overconfidence, anchoring, and optimism. The document reflects reality, not aspiration.' },
+                                    ].map((item, i) => (
+                                        <div key={i} className="border-t border-white/10 pt-5">
+                                            <p className="text-sm font-black text-white mb-2">{item.title}</p>
+                                            <p className="text-sm text-white/40 leading-relaxed">{item.body}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Closing */}
+                            <div className="border-t border-white/10 pt-10">
+                                <p className="text-2xl md:text-3xl font-black text-white leading-tight max-w-3xl">
+                                    Six fields. Ten layers. One pipeline.<br />
+                                    <span className="text-amber-400">Built by one person, in sixteen months, from nothing.</span>
+                                </p>
+                                <p className="text-sm text-white/40 mt-4 max-w-2xl leading-relaxed">
+                                    The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. The system you are looking at is the system described here.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="px-8 md:px-14 py-6 border-t border-white/10 flex justify-between items-center">
+                            <p className="text-xs text-white/20 font-medium uppercase tracking-widest">ADVERSIQ Intelligence &mdash; ABN 55 978 113 300</p>
+                            <button onClick={() => setShowArchitecture(false)} className="px-8 py-3 bg-amber-400 text-slate-900 text-sm font-bold hover:bg-amber-300 transition-all">Close</button>
                         </div>
                     </div>
                 </div>
