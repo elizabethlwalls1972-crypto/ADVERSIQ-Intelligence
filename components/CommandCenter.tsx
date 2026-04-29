@@ -399,16 +399,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Headline + photo */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it&rsquo;s different</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it&rsquo;s never been done before</p>
                                 <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
-                                    Standard AI tools pass your question directly to a language model.<br className="hidden md:block" />
-                                    <span className="font-black">This one hasn&rsquo;t reached the model yet.</span>
+                                    Building this required expertise in six disciplines<br className="hidden md:block" />
+                                    <span className="font-black">that don&rsquo;t normally intersect.</span>
                                 </h4>
                                 <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                    Most advisory AI has a single-step architecture: your prompt goes in, a generated response comes out. There is no structure before the model speaks. No check that your assumptions are logically consistent. No adversarial challenge to what the model produces. No verification layer of any kind.
+                                    Boolean satisfiability for contradiction detection. Bayesian game theory with Nash equilibria for adversarial debate. Computational neuroscience — Wilson-Cowan and Friston — for cognitive bias modelling. Monte Carlo simulation for probabilistic risk. Graph-theoretic scheduling for formula dependency order. A reflexive layer that turns all of it inward.
                                 </p>
                                 <p className="text-base text-slate-600 leading-relaxed">
-                                    ADVERSIQ runs six deterministic engines, an adversarial debate between five independent personas, and a 10-layer verification structure — before any language model produces a single word. The model is the last step. Everything before it is structured intelligence that the model then narrates.
+                                    Each of these is a deep field in its own right. Assembling them into a single pipeline — where each layer&rsquo;s output informs the next — is the engineering challenge nobody had attempted, because no product had demanded it until now.
                                 </p>
                             </div>
 
@@ -432,26 +432,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* The Architecture — 2-col with photo */}
+            {/* The Problem This System Solves — 2-col with photo */}
             <section className="bg-white border-t-2 border-slate-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
                     <div className="h-72 lg:h-auto overflow-hidden">
                         <img
                             src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=700&fit=crop&q=80"
-                            alt="Intelligence architecture"
+                            alt="The problem this system solves"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="px-10 lg:px-16 py-16 lg:py-24 flex flex-col justify-center">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">The Architecture</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">The Problem</p>
                         <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
-                            Language models are powerful.<br />
-                            <span className="font-black">They&rsquo;re also the last thing that runs.</span>
+                            Regional organizations have world-class opportunities.<br />
+                            <span className="font-black">They lack the tools to prove it.</span>
                         </h3>
-                        <p className="text-lg text-slate-500 leading-relaxed mb-8">
-                            ADVERSIQ uses language models as the final narration layer of a system that has already done the analytical work. By the time the model produces output, the claim has been checked for logical impossibility, argued over by five adversarial personas, scored by 21 deterministic formulas, stress-tested across 10,000 simulated scenarios, and reviewed by a layer that audits the system&rsquo;s own reasoning. The model narrates a finding that was already computed.
+                        <p className="text-lg text-slate-500 leading-relaxed">
+                            A traditional advisory engagement — the kind that produces the structured analysis investors require — costs $25,000 to $200,000 per project, takes 4 to 6 weeks, and is only available from capital-city firms. Regional councils, development agencies, and first-time exporters are left making the case with optimistic projections that sophisticated investors see through immediately. The gap isn&rsquo;t ambition. It&rsquo;s access to the right analytical infrastructure.
                         </p>
-
                     </div>
                 </div>
             </section>
@@ -513,21 +512,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     num: '01',
                                     title: 'Persistent Vector Memory',
                                     subtitle: 'Every case. Every output. Permanently searchable.',
-                                    desc: 'Every case study, formula output, and intelligence finding stored in a vector database. Every new analysis automatically enriched by everything that came before it. The system gets measurably smarter with every run — the opposite of amnesia.',
+                                    desc: 'Every analysis automatically enriched by all previous cases. The system learns from its own output — measurably smarter with every run.',
                                     tag: 'Architecture',
                                 },
                                 {
                                     num: '02',
                                     title: 'Multi-Model Routing',
                                     subtitle: 'Right model. Right task. Every time.',
-                                    desc: 'Different reasoning tasks routed to the optimal model in real time. Fast tasks to the fastest available provider. Deep analysis to the most capable. Domain-specific logic to fine-tuned models. Speed without sacrificing depth.',
+                                    desc: 'Each reasoning task routed to the model built for it. Speed and depth at the same time — not traded off against each other.',
                                     tag: 'Intelligence',
                                 },
                                 {
                                     num: '03',
                                     title: 'Fine-Tuned Domain Model',
                                     subtitle: 'Trained to reason, not prompted to act.',
-                                    desc: 'An open-source base model fine-tuned on real case inputs, formula outputs, and advisory documents. Not prompted to act like an advisor — trained to reason like one from first principles. The difference is architectural.',
+                                    desc: 'An open-source model trained on real case inputs and formula outputs. Not prompted to advise — trained to reason from first principles.',
                                     tag: 'Foundation',
                                 },
                             ].map((item, i) => (
@@ -538,7 +537,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                     <p className="text-base font-bold text-white mb-1.5 leading-snug">{item.title}</p>
                                     <p className="text-sm text-amber-300/80 mb-3 leading-snug">{item.subtitle}</p>
-                                    <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+                                    <p className="text-sm text-white/60 leading-relaxed">{item.desc}</p>
                                 </div>
                             ))}
                         </div>
