@@ -412,105 +412,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 </p>
                             </div>
 
-                            {/* Pipeline visualization — the architecture made visual */}
-                            <div className="bg-slate-950 font-mono overflow-hidden">
-                                {/* Header */}
-                                <div className="flex items-center justify-between px-5 py-3 bg-slate-900 border-b border-slate-800">
-                                    <span className="text-xs font-bold text-white tracking-[0.15em] uppercase">ADVERSIQ</span>
-                                    <div className="flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0"></span>
-                                        <span className="text-[10px] text-emerald-400 uppercase tracking-widest">Live — Layer 09 complete</span>
-                                    </div>
-                                </div>
-
-                                <div className="p-5 space-y-2">
-                                    {/* Input */}
-                                    <div className="border border-slate-700 px-3 py-2 text-center">
-                                        <span className="text-[9px] text-slate-400 uppercase tracking-[0.15em]">Query enters the system</span>
-                                    </div>
-
-                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; no language model yet &nbsp; &#8595;</p>
-
-                                    {/* Phase 1 */}
-                                    <div className="border border-amber-800/50 bg-amber-950/10 px-3 py-3">
-                                        <p className="text-[9px] text-amber-400 uppercase tracking-[0.15em] mb-2">Phase 1 — 6 Deterministic Engines</p>
-                                        <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-                                            {[
-                                                'SAT Contradiction Solver',
-                                                'Bayesian Debate Engine',
-                                                'Monte Carlo Stress Test',
-                                                'DAG Formula Scheduler',
-                                                'Human Cognition Engine',
-                                                'Vector Memory Index',
-                                            ].map((eng, i) => (
-                                                <div key={i} className="flex items-center gap-1.5">
-                                                    <span className="w-1 h-1 bg-amber-400 flex-shrink-0"></span>
-                                                    <span className="text-[9px] text-slate-400">{eng}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <p className="text-[9px] text-slate-600 text-center">&#8595;</p>
-
-                                    {/* Phase 2 */}
-                                    <div className="border border-blue-800/50 bg-blue-950/10 px-3 py-3">
-                                        <p className="text-[9px] text-blue-400 uppercase tracking-[0.15em] mb-2">Phase 2 — 3 Reasoning Architectures Argue</p>
-                                        <div className="grid grid-cols-3 gap-1">
-                                            {['Extended Thinking', 'Logical Reasoning', 'Broad Knowledge'].map((arch, i) => (
-                                                <div key={i} className="border border-blue-800/40 px-1.5 py-1.5 text-center">
-                                                    <span className="text-[9px] text-slate-300">{arch}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; contradictions resolved: 3/3 &nbsp; &#8595;</p>
-
-                                    {/* Phase 3 — NSIL */}
-                                    <div className="border border-indigo-600/40 bg-indigo-950/20 px-3 py-3">
-                                        <p className="text-[9px] text-indigo-400 uppercase tracking-[0.15em] mb-2">Phase 3 — NSIL 10-Layer Verification</p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {['00','01','02','03','04','05','06','07','08','09'].map(n => (
-                                                <span key={n} className="text-[9px] font-mono text-white border border-indigo-700/40 px-1.5 py-0.5 bg-indigo-900/20">{n} &#10003;</span>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <p className="text-[9px] text-slate-600 text-center">&#8595; &nbsp; only now &nbsp; &#8595;</p>
-
-                                    {/* Phase 4 — LLM last */}
-                                    <div className="border border-slate-600 bg-slate-900/50 px-3 py-2">
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[9px] text-slate-400 uppercase tracking-[0.15em]">Phase 4 — Language Model</span>
-                                            <span className="text-[9px] text-slate-500">last step only</span>
-                                        </div>
-                                        <p className="text-[10px] text-white mt-1">Gemini 2.0 Flash</p>
-                                    </div>
-
-                                    <p className="text-[9px] text-slate-600 text-center">&#8595;</p>
-
-                                    {/* Verdict */}
-                                    <div className="border border-emerald-700/40 bg-emerald-950/20 px-3 py-3">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-[9px] text-emerald-400 uppercase tracking-[0.15em]">Tribunal Verdict</span>
-                                            <span className="text-lg font-black text-emerald-400 tracking-tight">STRONG PROCEED</span>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-x-5 gap-y-0.5">
-                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Composite score</span><span className="text-white">87.4</span></div>
-                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Confidence</span><span className="text-white">0.91</span></div>
-                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Contradictions</span><span className="text-emerald-400">3 / 3 resolved</span></div>
-                                            <div className="flex justify-between text-[10px]"><span className="text-slate-500">Layers fired</span><span className="text-white">10 / 10</span></div>
-                                        </div>
-                                    </div>
-
-                                    {/* Footer */}
-                                    <div className="border-t border-slate-800 pt-2 space-y-0.5">
-                                        <p className="text-[9px] text-slate-500">&#10003; Full provenance attached to every score</p>
-                                        <p className="text-[9px] text-slate-500">&#10003; Audit trail: 10 layers logged in sequence</p>
-                                        <p className="text-[9px] text-slate-500">&#10003; Layer 09 self-check complete</p>
-                                    </div>
-                                </div>
+                            {/* Photo */}
+                            <div className="h-80 lg:h-auto overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=800&fit=crop&q=80"
+                                    alt="Strategic intelligence analysis"
+                                    className="w-full h-full object-cover"
+                                />
                             </div>
                         </div>
 
