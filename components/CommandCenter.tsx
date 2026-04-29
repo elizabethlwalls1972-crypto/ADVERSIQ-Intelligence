@@ -393,26 +393,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Not a chatbot — proof section */}
+                    {/* Why it's different */}
                     <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-0 max-w-6xl mx-auto">
 
-                        {/* The core distinction */}
+                        {/* Headline + photo */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it's different</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it&rsquo;s different</p>
                                 <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
-                                    Every other AI tool starts with the language model.<br className="hidden md:block" />
-                                    <span className="font-black">This one ends with it.</span>
+                                    Standard AI tools pass your question directly to a language model.<br className="hidden md:block" />
+                                    <span className="font-black">This one hasn&rsquo;t reached the model yet.</span>
                                 </h4>
                                 <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                    ChatGPT, Claude, Gemini — send a prompt, get a response. There is nothing happening before the model speaks. No verification. No contradiction checking. No adversarial challenge. Just generation.
+                                    Most advisory AI has a single-step architecture: your prompt goes in, a generated response comes out. There is no structure before the model speaks. No check that your assumptions are logically consistent. No adversarial challenge to what the model produces. No verification layer of any kind.
                                 </p>
                                 <p className="text-base text-slate-600 leading-relaxed">
-                                    ADVERSIQ runs six deterministic engines before any AI model is called. Then three reasoning architectures argue over the output. Then the NSIL verifies the result. The language model is the last step — not the only step.
+                                    ADVERSIQ runs six deterministic engines, an adversarial debate between five independent personas, and a 10-layer verification structure — before any language model produces a single word. The model is the last step. Everything before it is structured intelligence that the model then narrates.
                                 </p>
                             </div>
 
-                            {/* Photo */}
                             <div className="h-80 lg:h-auto overflow-hidden">
                                 <img
                                     src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=800&fit=crop&q=80"
@@ -422,20 +421,20 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Three proof statements — full width, editorial scale */}
+                        {/* Three proof statements */}
                         <div className="border-t-2 border-slate-900 pt-16 mt-4">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
                                 <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Nothing<br />is hidden.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">Every public method returns a typed result with full provenance. Every score traces back to a formula. Every formula traces back to a layer. You are never looking at a black box.</p>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Every score<br />has a source.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">No output is generated from thin air. Every number traces back to a formula. Every formula traces back to a layer. Every layer is logged with exactly what it changed. You can follow any conclusion all the way to its original inputs.</p>
                                 </div>
                                 <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Everything<br />is auditable.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 08 produces a complete audit trail on every run. You can see exactly which layers fired, in what order, and what each one changed — down to individual engine scores.</p>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Disagreements<br />are preserved.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">Five adversarial personas argue every claim. Where they agree, confidence is high. Where they don&rsquo;t, you see the exact point of disagreement — labelled, attributed, and kept. Nothing is averaged away to produce false consensus.</p>
                                 </div>
                                 <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">The pipeline<br />checks itself.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the system inward. The NSIL analyses its own output before you ever see it. No other AI system does this.</p>
+                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">The system<br />checks itself.</p>
+                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the pipeline inward. It audits its own output for overconfidence, confirmation bias, and missing counterfactuals before you see a single word.</p>
                                 </div>
                             </div>
                         </div>
@@ -445,10 +444,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* Architecture — 2-col with photo */}
+            {/* The Architecture — 2-col with photo */}
             <section className="bg-white border-t-2 border-slate-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
-                    {/* Left: photo */}
                     <div className="h-72 lg:h-auto overflow-hidden">
                         <img
                             src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=700&fit=crop&q=80"
@@ -456,22 +454,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             className="w-full h-full object-cover"
                         />
                     </div>
-                    {/* Right: text */}
                     <div className="px-10 lg:px-16 py-16 lg:py-24 flex flex-col justify-center">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">The Architecture</p>
                         <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
-                            ADVERSIQ doesn&rsquo;t try to replicate a language model.<br />
-                            <span className="font-black">It wraps language models with structured intelligence that makes them trustworthy.</span>
+                            Language models are powerful.<br />
+                            <span className="font-black">They&rsquo;re also the last thing that runs.</span>
                         </h3>
                         <p className="text-lg text-slate-500 leading-relaxed mb-8">
-                            ChatGPT, Claude, Gemini — all raw generation. Prompt in, response out. ADVERSIQ uses those same models as the final step of a system that has already validated, stress-tested, and adversarially debated every claim. This is the correct architecture.
+                            ADVERSIQ uses language models as the final narration layer of a system that has already done the analytical work. By the time the model produces output, the claim has been checked for logical impossibility, argued over by five adversarial personas, scored by 21 deterministic formulas, stress-tested across 10,000 simulated scenarios, and reviewed by a layer that audits the system&rsquo;s own reasoning. The model narrates a finding that was already computed.
                         </p>
                         <div className="border-t-2 border-slate-100 pt-6 grid grid-cols-2 gap-x-8 gap-y-5">
                             {[
-                                { label: '21 scoring formulas', sub: 'DAG-scheduled, independently verified' },
-                                { label: '5 adversarial personas', sub: 'Arguing every conclusion before output' },
-                                { label: '247 document templates', sub: 'Built from verified pipeline output only' },
-                                { label: '10 NSIL layers', sub: 'Each one challenges the layer before it' },
+                                { label: '21 scoring formulas', sub: 'Deterministic — same inputs always produce same outputs' },
+                                { label: '5 adversarial personas', sub: 'Independent positions, disagreements preserved not averaged' },
+                                { label: '247 document templates', sub: 'Built from verified pipeline output, not from generation' },
+                                { label: '10 NSIL layers', sub: 'Each one challenges the output of the one before it' },
                             ].map((item, i) => (
                                 <div key={i}>
                                     <p className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">{item.label}</p>
@@ -488,50 +485,72 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/15" />
                 <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
 
-                    {/* Intro */}
-                    <div className="mb-16 max-w-3xl">
+                    {/* NSIL intro */}
+                    <div className="mb-20 max-w-3xl">
                         <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">The NSIL</p>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                            The central brain.<br className="hidden md:block" />
-                            <span className="font-black">Everything routes through here.</span>
+                            Ten layers of structured intelligence.<br className="hidden md:block" />
+                            <span className="font-black">Each one challenges the output of the one before it.</span>
                         </h2>
                         <p className="text-lg text-slate-300 leading-relaxed">
-                            It is not a wrapper. It is not an orchestrator in the software-engineering sense. It is a 10-layer verification structure — each layer doing one specific job, each layer challenging the output of the one before it.
+                            The Nexus Strategic Intelligence Layer is the verification core of the system. It is not a wrapper around a language model — it is a sequential pipeline of 10 specialised layers. Each layer does one specific job. Each one checks and refines the work of everything that came before.
                         </p>
                     </div>
 
-                    {/* 10 layers */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/10 mb-16">
-                        {[
-                            { num: '00', label: 'Knowledge Architecture', desc: 'Pattern confidence + methodology knowledge base' },
-                            { num: '01', label: 'Input Shield', desc: 'Adversarial input validation before anything runs' },
-                            { num: '02', label: 'Multi-Agent Debate', desc: '5 adversarial personas — independent positions forced' },
-                            { num: '03', label: 'Formula Scoring', desc: '21 DAG-scheduled formulas + 8 autonomous indices' },
-                            { num: '04', label: 'Stress Testing', desc: 'Counterfactual engine + Monte Carlo simulation' },
-                            { num: '05', label: 'Human Cognition', desc: '7 cognitive bias models applied to every output' },
-                            { num: '06', label: 'Autonomous Intelligence', desc: 'Creative synthesis, cross-domain transfer, ethical reasoning' },
-                            { num: '07', label: 'Proactive Layer', desc: 'Continuous monitoring, drift detection, backtesting' },
-                            { num: '08', label: 'Output Synthesis', desc: 'Provenance, full audit trail, document generation' },
-                            { num: '09', label: 'Reflexive Intelligence', desc: '7 engines that turn the analytical power inward' },
-                        ].map(({ num, label, desc }, i) => (
-                            <div key={i} className="bg-white/5 border border-white/10 px-5 py-6 hover:bg-white/10 transition-colors">
-                                <span className="block text-3xl font-extralight text-white/30 mb-3 leading-none">{num}</span>
-                                <p className="text-sm font-bold text-white mb-1">{label}</p>
-                                <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
-                            </div>
-                        ))}
+                    {/* How a case moves through the system — 5 stages */}
+                    <div className="mb-20">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">How a case moves through the system</p>
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-white/10">
+                            {[
+                                { n: '01', label: 'Contradiction check', desc: 'Your inputs are converted to propositional logic. Logically impossible combinations are caught here — mathematically, before any resources are spent.' },
+                                { n: '02', label: 'Adversarial debate', desc: '5 personas argue independently. Bayesian belief updating. Nash bargaining resolves deadlocks. Disagreements are preserved, not averaged away.' },
+                                { n: '03', label: 'Formula scoring', desc: '21 deterministic formulas run as a dependency graph. Independent calculations execute in parallel. Same inputs always produce the same outputs.' },
+                                { n: '04', label: 'Stress testing', desc: '10,000 Monte Carlo simulations. Output: probability distributions with Value-at-Risk — not single-point estimates you have to trust blindly.' },
+                                { n: '05', label: 'Language model', desc: 'Only now. The model narrates a finding the pipeline has already computed, verified, stress-tested, and checked for internal consistency.' },
+                            ].map((stage, i) => (
+                                <div key={i} className="bg-white/5 px-5 py-6">
+                                    <span className="block text-[10px] font-mono text-amber-400/60 mb-3 tracking-widest uppercase">Stage {stage.n}</span>
+                                    <p className="text-sm font-bold text-white mb-2 leading-snug">{stage.label}</p>
+                                    <p className="text-xs text-slate-400 leading-relaxed">{stage.desc}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Proof finale — after the 10 layers */}
-                    <div className="border-t border-white/10 pt-12 pb-4">
-                        <div className="max-w-3xl mx-auto text-center mb-12">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-4">What no other system does</p>
+                    {/* 10-layer grid with real mechanism descriptions */}
+                    <div className="mb-20">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">The 10 verification layers</p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/10">
+                            {[
+                                { num: '00', label: 'Knowledge Architecture', desc: 'Loads historical accuracy by country and sector before anything runs. The system knows its own reliability — per market, per industry.' },
+                                { num: '01', label: 'Input Shield', desc: 'Propositional logic check. \'Low risk + 40% ROI\' — caught here mathematically before any formula or model processes the case.' },
+                                { num: '02', label: 'Adversarial Debate', desc: 'Skeptic, Advocate, Regulator, Accountant, Operator argue independently. Bayesian belief updating. Nash bargaining for deadlocks. Disagreements kept.' },
+                                { num: '03', label: 'Formula Scoring', desc: '21 DAG-scheduled formulas + 8 autonomous indices. Topologically sorted, parallel where independent, memoised. Fully traceable to inputs.' },
+                                { num: '04', label: 'Stress Testing', desc: '10,000 Monte Carlo iterations across policy, currency, demand, and partners. Value-at-Risk at 95th percentile. Regret analysis: cost of doing nothing.' },
+                                { num: '05', label: 'Human Cognition', desc: 'Wilson-Cowan neural field equations and Friston\'s Free Energy Principle model how the decision-maker reading the output will actually respond.' },
+                                { num: '06', label: 'Autonomous Intelligence', desc: 'Cross-domain analogies from ecology, medicine, and history applied to your case. Ethical scoring using Rawlsian fairness principles.' },
+                                { num: '07', label: 'Proactive Layer', desc: 'Backtests all formulas against 200+ historical cases with known outcomes. Welch\'s t-test detects model drift and triggers automatic recalibration.' },
+                                { num: '08', label: 'Output Synthesis', desc: 'Full provenance attached to every score. Every formula traceable to its source. Complete audit trail: what fired, in what order, what it changed.' },
+                                { num: '09', label: 'Reflexive Intelligence', desc: 'Turns all analytical power inward. Checks the system\'s own output for overconfidence, confirmation bias, and missing counterfactuals.' },
+                            ].map(({ num, label, desc }, i) => (
+                                <div key={i} className="bg-white/5 border border-white/10 px-5 py-6 hover:bg-white/10 transition-colors">
+                                    <span className="block text-3xl font-extralight text-white/30 mb-3 leading-none">{num}</span>
+                                    <p className="text-sm font-bold text-white mb-2">{label}</p>
+                                    <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Finale */}
+                    <div className="border-t border-white/10 pt-12 pb-4 mb-16">
+                        <div className="max-w-3xl mx-auto text-center">
                             <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-5">
                                 Ten layers of verification.<br />
                                 <span className="font-black">Then the language model speaks.</span>
                             </h3>
                             <p className="text-base text-slate-400 leading-relaxed mb-8">
-                                Other AI tools send your prompt to a model. ADVERSIQ sends it through a 10-layer intelligence structure — and only calls the language model after the system has already validated, stress-tested, contradiction-solved, and adversarially challenged every claim. The model doesn&rsquo;t generate the answer. It narrates a finding that was already computed.
+                                Every claim has been checked for logical consistency, argued by five independent adversarial personas, scored by 21 deterministic formulas, stress-tested across 10,000 simulations, and reviewed by a layer that audits the system&rsquo;s own reasoning for bias and overconfidence. The model doesn&rsquo;t generate the answer. It narrates a finding that was already computed.
                             </p>
                             <p className="text-xs font-mono text-white/30 tracking-[0.18em] border-t border-white/10 pt-6 leading-relaxed">
                                 21 formulas &nbsp;&middot;&nbsp; 10 verification layers &nbsp;&middot;&nbsp; 5 adversarial personas &nbsp;&middot;&nbsp; 247 documents &nbsp;&middot;&nbsp; full provenance on every output
@@ -539,15 +558,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* 3 Highest-Impact Additions — Roadmap */}
+                    {/* 3 additions roadmap */}
                     <div className="border-t border-white/10 pt-12">
-                        <div className="mb-10 text-center">
+                        <div className="mb-10">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-3">What&rsquo;s Being Added Next</p>
                             <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-3">
-                                Three additions that push the ceiling<br />
-                                <span className="font-black">beyond anything currently available.</span>
+                                Three additions that extend the ceiling<br />
+                                <span className="font-black">beyond anything currently deployed.</span>
                             </h3>
-                            <p className="text-base text-slate-400 max-w-2xl mx-auto">The current architecture is already without precedent. These three additions take it to a level no advisory platform has reached.</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
                             {[
@@ -562,14 +580,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     num: '02',
                                     title: 'Multi-Model Routing',
                                     subtitle: 'Right model. Right task. Every time.',
-                                    desc: 'Different reasoning tasks routed to the optimal model in real time. Fast contradiction-checking to Groq. Deep analysis to Gemini. Domain-specific logic to fine-tuned models. Speed without sacrificing depth.',
+                                    desc: 'Different reasoning tasks routed to the optimal model in real time. Fast tasks to the fastest available provider. Deep analysis to the most capable. Domain-specific logic to fine-tuned models. Speed without sacrificing depth.',
                                     tag: 'Intelligence',
                                 },
                                 {
                                     num: '03',
                                     title: 'Fine-Tuned Domain Model',
-                                    subtitle: 'A model that reasons like a BWGA consultant.',
-                                    desc: 'An open-source base model fine-tuned on real BWGA case inputs, formula outputs, and advisory documents. Not prompted to act like an advisor — trained to reason like one from first principles. The difference is architectural.',
+                                    subtitle: 'Trained to reason, not prompted to act.',
+                                    desc: 'An open-source base model fine-tuned on real case inputs, formula outputs, and advisory documents. Not prompted to act like an advisor — trained to reason like one from first principles. The difference is architectural.',
                                     tag: 'Foundation',
                                 },
                             ].map((item, i) => (
