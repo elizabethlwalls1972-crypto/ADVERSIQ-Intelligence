@@ -393,22 +393,21 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Why it's different */}
+                    {/* What ADVERSIQ actually does */}
                     <div className="border-t-2 border-slate-900 pt-12 mt-16 mb-0 max-w-6xl mx-auto">
 
-                        {/* Headline + photo */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-16">
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">Why it&rsquo;s never been done before</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">What this actually does</p>
                                 <h4 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
-                                    Building this required expertise in six disciplines<br className="hidden md:block" />
-                                    <span className="font-black">that don&rsquo;t normally intersect.</span>
+                                    You get the analysis a<br className="hidden md:block" />
+                                    <span className="font-black">top-tier consulting firm would charge $150,000 to produce. In minutes.</span>
                                 </h4>
                                 <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                    Boolean satisfiability for contradiction detection. Bayesian game theory with Nash equilibria for adversarial debate. Computational neuroscience — Wilson-Cowan and Friston — for cognitive bias modelling. Monte Carlo simulation for probabilistic risk. Graph-theoretic scheduling for formula dependency order. A reflexive layer that turns all of it inward.
+                                    Describe your situation — an overseas investment, a market entry, a government partnership — and the system produces financial projections, risk scores, compliance mapping, entity verification, and board-ready documents. Every number is traceable. Every risk is stress-tested. Every recommendation has been argued by five independent positions before you see it.
                                 </p>
                                 <p className="text-base text-slate-600 leading-relaxed">
-                                    Each of these is a deep field in its own right. Assembling them into a single pipeline — where each layer&rsquo;s output informs the next — is the engineering challenge nobody had attempted, because no product had demanded it until now.
+                                    The output is not generated. It is computed — by deterministic formulas, adversarial debate engines, and a verification layer that checks the system&rsquo;s own conclusions for bias before you read them. If a consultant gave you this, you&rsquo;d ask how they did it. Here, every step is logged and auditable.
                                 </p>
                             </div>
 
@@ -423,7 +422,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                         <div className="border-t-2 border-slate-900 pt-16 mt-4">
                             <p className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.1] max-w-4xl">
-                                The model comes last.<br />Everything before it is verifiable, traceable, and adversarially tested.
+                                Institutional-grade intelligence. No consulting invoice. No six-week wait.
                             </p>
                         </div>
 
@@ -432,7 +431,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* The Problem This System Solves — 2-col with photo */}
+            {/* The Problem — 2-col with photo */}
             <section className="bg-white border-t-2 border-slate-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
                     <div className="h-72 lg:h-auto overflow-hidden">
@@ -443,14 +442,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         />
                     </div>
                     <div className="px-10 lg:px-16 py-16 lg:py-24 flex flex-col justify-center">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">The Problem</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-500">Who it&rsquo;s built for</p>
                         <h3 className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-900 leading-tight mb-6">
-                            Regional organizations have world-class opportunities.<br />
-                            <span className="font-black">They lack the tools to prove it.</span>
+                            You have a real opportunity.<br />
+                            <span className="font-black">You need the evidence to back it up.</span>
                         </h3>
-                        <p className="text-lg text-slate-500 leading-relaxed">
-                            A traditional advisory engagement — the kind that produces the structured analysis investors require — costs $25,000 to $200,000 per project, takes 4 to 6 weeks, and is only available from capital-city firms. Regional councils, development agencies, and first-time exporters are left making the case with optimistic projections that sophisticated investors see through immediately. The gap isn&rsquo;t ambition. It&rsquo;s access to the right analytical infrastructure.
+                        <p className="text-lg text-slate-500 leading-relaxed mb-8">
+                            Regional councils pitching to investors. Government agencies evaluating partnerships. Businesses entering new markets. Entrepreneurs writing their first serious proposal. You know your opportunity is real — but the people you need to convince require structured evidence, stress-tested projections, and documented risk assessment. ADVERSIQ produces that in minutes, not weeks.
                         </p>
+                        <div className="grid grid-cols-2 gap-4">
+                            {[
+                                { stat: 'Minutes', label: 'Not 4–6 weeks to get a structured analysis' },
+                                { stat: '$0', label: 'Consulting invoice. Full output with every run.' },
+                                { stat: '247', label: 'Board-ready document types built from pipeline output' },
+                                { stat: '100%', label: 'Auditable — every number traces to its formula' },
+                            ].map((item, i) => (
+                                <div key={i} className="border-t-2 border-slate-900 pt-3">
+                                    <p className="text-2xl font-black text-slate-900 mb-1">{item.stat}</p>
+                                    <p className="text-xs text-slate-500 leading-snug">{item.label}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -461,15 +473,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
 
                     {/* NSIL intro */}
-                    <div className="mb-20 max-w-3xl">
-                        <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">The NSIL</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                            Ten layers of structured intelligence.<br className="hidden md:block" />
-                            <span className="font-black">Each one challenges the output of the one before it.</span>
+                    <div className="mb-20 max-w-4xl">
+                        <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">How it works</p>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-8">
+                            Before you see a single number,<br className="hidden md:block" />
+                            <span className="font-black">the system has already done 10 things your consultant doesn&rsquo;t.</span>
                         </h2>
-                        <p className="text-lg text-slate-300 leading-relaxed">
-                            The Nexus Strategic Intelligence Layer is the verification core of the system. It is not a wrapper around a language model — it is a sequential pipeline of 10 specialised layers. Each layer does one specific job. Each one checks and refines the work of everything that came before.
-                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="border-t border-white/20 pt-5">
+                                <p className="text-lg font-bold text-white mb-2">Your assumptions are checked for logical impossibility</p>
+                                <p className="text-sm text-white/60 leading-relaxed">Before any formula runs, the system converts your inputs to formal logic and catches contradictions mathematically. &ldquo;Low risk and 40% ROI&rdquo; doesn&rsquo;t get past Layer 01.</p>
+                            </div>
+                            <div className="border-t border-white/20 pt-5">
+                                <p className="text-lg font-bold text-white mb-2">Five independent positions argue your case</p>
+                                <p className="text-sm text-white/60 leading-relaxed">A Skeptic, Advocate, Regulator, Accountant, and Operator argue every claim independently. Where they agree, confidence is high. Where they don&rsquo;t, you see the exact disagreement — not an average.</p>
+                            </div>
+                            <div className="border-t border-white/20 pt-5">
+                                <p className="text-lg font-bold text-white mb-2">10,000 scenarios stress-test the outcome</p>
+                                <p className="text-sm text-white/60 leading-relaxed">Monte Carlo simulation runs your case across 10,000 variations of policy, currency, demand, and partner risk. You get a probability range and a Value-at-Risk figure — not a single number to trust blindly.</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* 10-layer grid with real mechanism descriptions */}
@@ -500,33 +523,33 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     {/* 3 additions roadmap */}
                     <div className="border-t border-white/10 pt-12">
                         <div className="mb-10">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-3">What&rsquo;s Being Added Next</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-3">Coming Next</p>
                             <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-3">
-                                Three additions that extend the ceiling<br />
-                                <span className="font-black">beyond anything currently deployed.</span>
+                                Three capabilities that make it<br />
+                                <span className="font-black">harder to justify using anything else.</span>
                             </h3>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
                             {[
                                 {
                                     num: '01',
-                                    title: 'Persistent Vector Memory',
-                                    subtitle: 'Every case. Every output. Permanently searchable.',
-                                    desc: 'Every analysis automatically enriched by all previous cases. The system learns from its own output — measurably smarter with every run.',
+                                    title: 'The system remembers every case it has ever run.',
+                                    subtitle: 'Persistent Vector Memory',
+                                    desc: 'Right now, every analysis starts fresh. With vector memory, every new case is automatically matched against every prior case with a similar profile. The system surfaces what worked, what didn’t, and what changed. It compounds its own experience — the way a consultant with 10 years of cases would.',
                                     tag: 'Architecture',
                                 },
                                 {
                                     num: '02',
-                                    title: 'Multi-Model Routing',
-                                    subtitle: 'Right model. Right task. Every time.',
-                                    desc: 'Each reasoning task routed to the model built for it. Speed and depth at the same time — not traded off against each other.',
+                                    title: 'The right AI model handles each task.',
+                                    subtitle: 'Multi-Model Routing',
+                                    desc: 'Not every reasoning task needs the same model. Contradiction checking needs speed. Adversarial debate needs depth. Domain scoring needs specialisation. Multi-model routing sends each task to the model built for it — so nothing is slow and nothing is shallow.',
                                     tag: 'Intelligence',
                                 },
                                 {
                                     num: '03',
-                                    title: 'Fine-Tuned Domain Model',
-                                    subtitle: 'Trained to reason, not prompted to act.',
-                                    desc: 'An open-source model trained on real case inputs and formula outputs. Not prompted to advise — trained to reason from first principles.',
+                                    title: 'A model trained on this domain’s actual data.',
+                                    subtitle: 'Fine-Tuned Domain Model',
+                                    desc: 'General-purpose AI models are trained on everything. This one will be trained specifically on investment analysis, regional development cases, and advisory findings produced by this pipeline. The result is a model that reasons like a domain expert — not one that approximates what an expert sounds like.',
                                     tag: 'Foundation',
                                 },
                             ].map((item, i) => (
@@ -536,7 +559,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 border border-amber-600/40 text-amber-400">{item.tag}</span>
                                     </div>
                                     <p className="text-base font-bold text-white mb-1.5 leading-snug">{item.title}</p>
-                                    <p className="text-sm text-amber-300/80 mb-3 leading-snug">{item.subtitle}</p>
+                                    <p className="text-xs font-bold text-amber-400/70 uppercase tracking-widest mb-3">{item.subtitle}</p>
                                     <p className="text-sm text-white/60 leading-relaxed">{item.desc}</p>
                                 </div>
                             ))}
