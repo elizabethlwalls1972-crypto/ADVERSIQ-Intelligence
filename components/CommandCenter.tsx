@@ -566,6 +566,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
+                    {/* Closing statement */}
+                    <div className="border-t border-white/10 mt-16 pt-16">
+                        <p className="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.05] max-w-5xl">
+                            No consultant does this.<br />
+                            No other platform does this.<br />
+                            <span className="text-amber-400">Nothing else comes close.</span>
+                        </p>
+                    </div>
+
                 </div>
             </section>
 
