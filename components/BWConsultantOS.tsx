@@ -7959,7 +7959,7 @@ ${agentRegistry.current.toManifest()}`;
                 </div>
               )}
               {/* end sidebarTab === 'intelligence' */}
-              </>}
+              </>)}
 
               {/* ── DEEP ANALYSIS TAB ─────────────────────────────────────────── */}
               {sidebarTab === 'deep' && (
