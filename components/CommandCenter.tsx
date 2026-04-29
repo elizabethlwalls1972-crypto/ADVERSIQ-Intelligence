@@ -368,7 +368,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 that checks its own work.
                             </h2>
                             <p className="text-lg text-slate-500 leading-relaxed">
-                                ADVERSIQ is an AI-powered advisory platform for high-stakes business decisions. You describe your situation &mdash; an overseas investment, a market entry, a public-private partnership &mdash; and the system produces a complete strategic analysis: financial projections, risk assessments, entity verification, compliance mapping, and board-ready documents.
+                                Most advisory tools generate answers. ADVERSIQ generates verified ones. Every analysis passes through multiple independent reasoning layers that interrogate, challenge, and stress-test each other&rsquo;s conclusions &mdash; surfacing contradictions, flagging buried assumptions, and returning a position that has survived adversarial challenge before it reaches you.
                             </p>
                         </div>
 
@@ -393,50 +393,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                </div>
-            </section>
-
-            
-{/* The Problem This System Solves */}
-            <section className="bg-white border-t-2 border-slate-100 py-20 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <div className="max-w-3xl mb-16">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">The Problem This System Solves</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
-                            The intelligence exists.<br />
-                            <span className="font-black">It was never accessible — until now.</span>
-                        </h2>
-                        <p className="text-lg text-slate-500 leading-relaxed">
-                            A government agency evaluating a foreign partnership. A regional council making the case for infrastructure investment. A business entering a new market for the first time. Every one of them needs the same thing: structured, stress-tested, credible evidence that their opportunity is real. That evidence has always existed — but only for organisations that could afford to commission it.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-100">
-                        {[
-                            {
-                                heading: 'It costs $25,000–$200,000',
-                                sub: 'Per engagement. Per project. Per question.',
-                                body: 'A structured advisory analysis from a qualified firm — the kind that holds up under investor or government scrutiny — starts at $25,000 and routinely reaches $200,000. That cost alone disqualifies most regional and public-sector organisations before the conversation begins.',
-                            },
-                            {
-                                heading: 'It takes 4–6 weeks',
-                                sub: 'Minimum. Often longer.',
-                                body: 'By the time a traditional engagement is complete, the window has moved. Investment decisions don\'t wait. Government tender deadlines don\'t move. The organisations that can produce structured evidence in days win — and they\'ve always been the same organisations.',
-                            },
-                            {
-                                heading: 'Most decisions happen without it',
-                                sub: 'Because there was no other option.',
-                                body: 'Regional councils, first-time exporters, and public agencies have been making high-stakes decisions on spreadsheets, PowerPoint decks, and optimistic projections for decades. Not through incompetence — through lack of access. ADVERSIQ closes that gap permanently.',
-                            },
-                        ].map((item, i) => (
-                            <div key={i} className="bg-white px-8 py-10">
-                                <div className="border-t-2 border-slate-900 pt-5 mb-4">
-                                    <p className="text-xl font-black text-slate-900 leading-tight mb-1">{item.heading}</p>
-                                    <p className="text-xs font-bold uppercase tracking-widest text-amber-500">{item.sub}</p>
-                                </div>
-                                <p className="text-sm text-slate-500 leading-relaxed">{item.body}</p>
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </section>
 
