@@ -1,4 +1,4 @@
-ï»¿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
 // OSINT search removed - using unified location research
@@ -96,10 +96,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'b': {
             title: 'Agentic & Autonomous Systems',
-            subtitle: '50+ parallel engines orchestrated as a unified brain with anticipatory thinking â€” adversarial analysis, 20+ live external sources, quantum risk simulation, multi-provider AI orchestration, and adaptive runtime control.',
+            subtitle: '50+ parallel engines orchestrated as a unified brain with anticipatory thinking — adversarial analysis, 20+ live external sources, quantum risk simulation, multi-provider AI orchestration, and adaptive runtime control.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 50+ engine parallel brain fires on every query with anticipatory intelligence â€” formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, cognitive reasoning, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with intelligent provider load-balancing, graceful degradation and full audit trail.',
+            summary: 'A 50+ engine parallel brain fires on every query with anticipatory intelligence — formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, cognitive reasoning, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with intelligent provider load-balancing, graceful degradation and full audit trail.',
             full: (
                 <div className="space-y-6">
                     <p className="text-lg text-slate-500 leading-relaxed mb-4">These systems provide goal-directed autonomy for research, synthesis, and live intelligence gathering. Fifty-plus engines fire in parallel on every query via the Brain Integration Service &mdash; each contributing a different analytical dimension, including three quantum-inspired engines (Monte Carlo risk simulation, pattern discovery, and cognitive bias modelling) and a 12-layer Cognitive Reasoning Engine that models human decision-making. An anticipatory thinking system predicts what the user will need next and pre-loads engines before they are requested. An intelligent multi-provider AI Orchestrator distributes workload across available providers (Groq, Together, OpenAI, Anthropic) with automatic failover, health tracking, and rate-limit-aware load balancing. Specialist agents spawn on demand, external data providers are queried in real time, and governance gates (red/amber/green) enforce control at every step. Output quality and freshness depend on provider availability, API configuration, and release-gate verdicts.</p>
@@ -168,7 +168,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'c': {
             title: 'Reflexive Intelligence',
-            subtitle: 'The system analyses the user, not just the market â€” detecting what youâ€”re not saying, modelling cognitive intent, and reframing for every audience.',
+            subtitle: 'The system analyses the user, not just the market — detecting what you—re not saying, modelling cognitive intent, and reframing for every audience.',
             icon: 'C',
             color: 'from-amber-600 to-amber-800',
             summary: 'Identity reality-checking using post-structuralist theory, latent advantage mining from casual mentions, audience-adaptive translation, and hidden motivation detection.',
@@ -360,7 +360,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Statement */}
+                        {/* Left — Statement */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
@@ -372,7 +372,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right â€” Feature words with color cycling */}
+                        {/* Right — Feature words with color cycling */}
                         <div className="flex flex-col justify-center">
                             <style>{`
                                 @keyframes colorCycle1 { 0%,100%{color:#ff3366} 20%{color:#ff9500} 40%{color:#00d4ff} 60%{color:#a855f7} 80%{color:#22d3ee} }
@@ -404,10 +404,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <span className="font-black">top-tier consulting firm would charge $150,000 to produce. In minutes.</span>
                                 </h4>
                                 <p className="text-lg text-slate-500 leading-relaxed mb-6">
-                                    Describe your situation â€” an overseas investment, a market entry, a government partnership â€” and the system produces financial projections, risk scores, compliance mapping, entity verification, and board-ready documents. Every number is traceable. Every risk is stress-tested. Every recommendation has been argued by five independent positions before you see it.
+                                    Describe your situation — an overseas investment, a market entry, a government partnership — and the system produces financial projections, risk scores, compliance mapping, entity verification, and board-ready documents. Every number is traceable. Every risk is stress-tested. Every recommendation has been argued by five independent positions before you see it.
                                 </p>
                                 <p className="text-base text-slate-600 leading-relaxed">
-                                    The output is not generated. It is computed â€” by deterministic formulas, adversarial debate engines, and a verification layer that checks the system&rsquo;s own conclusions for bias before you read them. If a consultant gave you this, you&rsquo;d ask how they did it. Here, every step is logged and auditable.
+                                    The output is not generated. It is computed — by deterministic formulas, adversarial debate engines, and a verification layer that checks the system&rsquo;s own conclusions for bias before you read them. If a consultant gave you this, you&rsquo;d ask how they did it. Here, every step is logged and auditable.
                                 </p>
                             </div>
 
@@ -431,7 +431,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             </section>
 
-            {/* The Problem â€” 2-col with photo */}
+            {/* The Problem — 2-col with photo */}
             <section className="bg-white border-t-2 border-slate-100 overflow-hidden">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2">
                     <div className="h-72 lg:h-auto overflow-hidden">
@@ -448,14 +448,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <span className="font-black">You need the evidence to back it up.</span>
                         </h3>
                         <p className="text-lg text-slate-500 leading-relaxed mb-8">
-                            Regional councils pitching to investors. Government agencies evaluating partnerships. Businesses entering new markets. Entrepreneurs writing their first serious proposal. You know your opportunity is real â€” but the people you need to convince require structured evidence, stress-tested projections, and documented risk assessment. ADVERSIQ produces that in minutes, not weeks.
+                            Regional councils pitching to investors. Government agencies evaluating partnerships. Businesses entering new markets. Entrepreneurs writing their first serious proposal. You know your opportunity is real — but the people you need to convince require structured evidence, stress-tested projections, and documented risk assessment. ADVERSIQ produces that in minutes, not weeks.
                         </p>
                         <div className="grid grid-cols-2 gap-4">
                             {[
-                                { stat: 'Minutes', label: 'Not 4â€“6 weeks to get a structured analysis' },
+                                { stat: 'Minutes', label: 'Not 4–6 weeks to get a structured analysis' },
                                 { stat: '$0', label: 'Consulting invoice. Full output with every run.' },
                                 { stat: '247', label: 'Board-ready document types built from pipeline output' },
-                                { stat: '100%', label: 'Auditable â€” every number traces to its formula' },
+                                { stat: '100%', label: 'Auditable — every number traces to its formula' },
                             ].map((item, i) => (
                                 <div key={i} className="border-t-2 border-slate-900 pt-3">
                                     <p className="text-2xl font-black text-slate-900 mb-1">{item.stat}</p>
@@ -468,145 +468,35 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             </section>
 
             
-            <section className="relative text-white overflow-hidden" style={{ backgroundColor: '#1a1a2e' }}>
-                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/15" />
-                <div className="relative z-10 max-w-6xl mx-auto px-4 py-24 lg:py-32">
-
-                    {/* NSIL intro */}
-                    <div className="mb-20 max-w-4xl">
-                        <p className="text-xs font-bold text-indigo-300 uppercase tracking-[0.2em] mb-4">How it works</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-8">
-                            Before you see a single number,<br className="hidden md:block" />
-                            <span className="font-black">the system has already done 10 things your consultant doesn&rsquo;t.</span>
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="border-t border-white/20 pt-5">
-                                <p className="text-lg font-bold text-white mb-2">Your assumptions are checked for logical impossibility</p>
-                                <p className="text-sm text-white/60 leading-relaxed">Before any formula runs, the system converts your inputs to formal logic and catches contradictions mathematically. &ldquo;Low risk and 40% ROI&rdquo; doesn&rsquo;t get past Layer 01.</p>
-                            </div>
-                            <div className="border-t border-white/20 pt-5">
-                                <p className="text-lg font-bold text-white mb-2">Five independent positions argue your case</p>
-                                <p className="text-sm text-white/60 leading-relaxed">A Skeptic, Advocate, Regulator, Accountant, and Operator argue every claim independently. Where they agree, confidence is high. Where they don&rsquo;t, you see the exact disagreement â€” not an average.</p>
-                            </div>
-                            <div className="border-t border-white/20 pt-5">
-                                <p className="text-lg font-bold text-white mb-2">10,000 scenarios stress-test the outcome</p>
-                                <p className="text-sm text-white/60 leading-relaxed">Monte Carlo simulation runs your case across 10,000 variations of policy, currency, demand, and partner risk. You get a probability range and a Value-at-Risk figure â€” not a single number to trust blindly.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* 10-layer grid with real mechanism descriptions */}
-                    <div className="mb-20">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">The 10 verification layers</p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/10">
-                            {[
-                                { num: '00', label: 'Knowledge Architecture', desc: 'Loads historical accuracy by country and sector before anything runs. The system knows its own reliability â€” per market, per industry.' },
-                                { num: '01', label: 'Input Shield', desc: 'Propositional logic check. \'Low risk + 40% ROI\' â€” caught here mathematically before any formula or model processes the case.' },
-                                { num: '02', label: 'Adversarial Debate', desc: 'Skeptic, Advocate, Regulator, Accountant, Operator argue independently. Bayesian belief updating. Nash bargaining for deadlocks. Disagreements kept.' },
-                                { num: '03', label: 'Formula Scoring', desc: '21 DAG-scheduled formulas + 8 autonomous indices. Topologically sorted, parallel where independent, memoised. Fully traceable to inputs.' },
-                                { num: '04', label: 'Stress Testing', desc: '10,000 Monte Carlo iterations across policy, currency, demand, and partners. Value-at-Risk at 95th percentile. Regret analysis: cost of doing nothing.' },
-                                { num: '05', label: 'Human Cognition', desc: 'Wilson-Cowan neural field equations and Friston\'s Free Energy Principle model how the decision-maker reading the output will actually respond.' },
-                                { num: '06', label: 'Autonomous Intelligence', desc: 'Cross-domain analogies from ecology, medicine, and history applied to your case. Ethical scoring using Rawlsian fairness principles.' },
-                                { num: '07', label: 'Proactive Layer', desc: 'Backtests all formulas against 200+ historical cases with known outcomes. Welch\'s t-test detects model drift and triggers automatic recalibration.' },
-                                { num: '08', label: 'Output Synthesis', desc: 'Full provenance attached to every score. Every formula traceable to its source. Complete audit trail: what fired, in what order, what it changed.' },
-                                { num: '09', label: 'Reflexive Intelligence', desc: 'Turns all analytical power inward. Checks the system\'s own output for overconfidence, confirmation bias, and missing counterfactuals.' },
-                            ].map(({ num, label, desc }, i) => (
-                                <div key={i} className="bg-white/5 border border-white/10 px-5 py-6 hover:bg-white/10 transition-colors">
-                                    <span className="block text-3xl font-extralight text-white/30 mb-3 leading-none">{num}</span>
-                                    <p className="text-sm font-bold text-white mb-2">{label}</p>
-                                    <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* 3 additions roadmap */}
-                    <div className="border-t border-white/10 pt-12">
-                        <div className="mb-10">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-300 mb-3">Coming Next</p>
-                            <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-3">
-                                Three capabilities that make it<br />
-                                <span className="font-black">harder to justify using anything else.</span>
-                            </h3>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
-                            {[
-                                {
-                                    num: '01',
-                                    title: 'The system remembers every case it has ever run.',
-                                    subtitle: 'Persistent Vector Memory',
-                                    desc: 'Right now, every analysis starts fresh. With vector memory, every new case is automatically matched against every prior case with a similar profile. The system surfaces what worked, what didnâ€™t, and what changed. It compounds its own experience â€” the way a consultant with 10 years of cases would.',
-                                    tag: 'Architecture',
-                                },
-                                {
-                                    num: '02',
-                                    title: 'The right AI model handles each task.',
-                                    subtitle: 'Multi-Model Routing',
-                                    desc: 'Not every reasoning task needs the same model. Contradiction checking needs speed. Adversarial debate needs depth. Domain scoring needs specialisation. Multi-model routing sends each task to the model built for it â€” so nothing is slow and nothing is shallow.',
-                                    tag: 'Intelligence',
-                                },
-                                {
-                                    num: '03',
-                                    title: 'A model trained on this domainâ€™s actual data.',
-                                    subtitle: 'Fine-Tuned Domain Model',
-                                    desc: 'General-purpose AI models are trained on everything. This one will be trained specifically on investment analysis, regional development cases, and advisory findings produced by this pipeline. The result is a model that reasons like a domain expert â€” not one that approximates what an expert sounds like.',
-                                    tag: 'Foundation',
-                                },
-                            ].map((item, i) => (
-                                <div key={i} className="bg-white/5 px-7 py-8">
-                                    <div className="flex items-center justify-between mb-5">
-                                        <span className="text-3xl font-extralight text-white/20">{item.num}</span>
-                                        <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 border border-amber-600/40 text-amber-400">{item.tag}</span>
-                                    </div>
-                                    <p className="text-base font-bold text-white mb-1.5 leading-snug">{item.title}</p>
-                                    <p className="text-xs font-bold text-amber-400/70 uppercase tracking-widest mb-3">{item.subtitle}</p>
-                                    <p className="text-sm text-white/60 leading-relaxed">{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Closing statement */}
-                    <div className="border-t border-white/10 mt-16 pt-16">
-                        <p className="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.05] max-w-5xl">
-                            No consultant does this.<br />
-                            No other platform does this.<br />
-                            <span className="text-amber-400">Nothing else comes close.</span>
-                        </p>
-                    </div>
-
-                </div>
-            </section>
-
-            {/* The Problem This System Solves */}
+{/* The Problem This System Solves */}
             <section className="bg-white border-t-2 border-slate-100 py-20 px-4">
                 <div className="max-w-6xl mx-auto">
                     <div className="max-w-3xl mb-16">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">The Problem This System Solves</p>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
                             The intelligence exists.<br />
-                            <span className="font-black">It was never accessible â€” until now.</span>
+                            <span className="font-black">It was never accessible — until now.</span>
                         </h2>
                         <p className="text-lg text-slate-500 leading-relaxed">
-                            A government agency evaluating a foreign partnership. A regional council making the case for infrastructure investment. A business entering a new market for the first time. Every one of them needs the same thing: structured, stress-tested, credible evidence that their opportunity is real. That evidence has always existed â€” but only for organisations that could afford to commission it.
+                            A government agency evaluating a foreign partnership. A regional council making the case for infrastructure investment. A business entering a new market for the first time. Every one of them needs the same thing: structured, stress-tested, credible evidence that their opportunity is real. That evidence has always existed — but only for organisations that could afford to commission it.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-100">
                         {[
                             {
-                                heading: 'It costs $25,000â€“$200,000',
+                                heading: 'It costs $25,000–$200,000',
                                 sub: 'Per engagement. Per project. Per question.',
-                                body: 'A structured advisory analysis from a qualified firm â€” the kind that holds up under investor or government scrutiny â€” starts at $25,000 and routinely reaches $200,000. That cost alone disqualifies most regional and public-sector organisations before the conversation begins.',
+                                body: 'A structured advisory analysis from a qualified firm — the kind that holds up under investor or government scrutiny — starts at $25,000 and routinely reaches $200,000. That cost alone disqualifies most regional and public-sector organisations before the conversation begins.',
                             },
                             {
-                                heading: 'It takes 4â€“6 weeks',
+                                heading: 'It takes 4–6 weeks',
                                 sub: 'Minimum. Often longer.',
-                                body: 'By the time a traditional engagement is complete, the window has moved. Investment decisions don\'t wait. Government tender deadlines don\'t move. The organisations that can produce structured evidence in days win â€” and they\'ve always been the same organisations.',
+                                body: 'By the time a traditional engagement is complete, the window has moved. Investment decisions don\'t wait. Government tender deadlines don\'t move. The organisations that can produce structured evidence in days win — and they\'ve always been the same organisations.',
                             },
                             {
                                 heading: 'Most decisions happen without it',
                                 sub: 'Because there was no other option.',
-                                body: 'Regional councils, first-time exporters, and public agencies have been making high-stakes decisions on spreadsheets, PowerPoint decks, and optimistic projections for decades. Not through incompetence â€” through lack of access. ADVERSIQ closes that gap permanently.',
+                                body: 'Regional councils, first-time exporters, and public agencies have been making high-stakes decisions on spreadsheets, PowerPoint decks, and optimistic projections for decades. Not through incompetence — through lack of access. ADVERSIQ closes that gap permanently.',
                             },
                         ].map((item, i) => (
                             <div key={i} className="bg-white px-8 py-10">
@@ -632,15 +522,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black">existed before. Built for decisions that can&rsquo;t afford to be wrong.</span>
                             </h2>
                             <p className="text-lg text-white/60 leading-relaxed mb-6">
-                                ADVERSIQ is not a chatbot with a professional interface. It is not a template generator. It is not a model wrapper with a dashboard. It is a structured intelligence pipeline â€” built from the ground up to produce analysis that is mathematically verifiable, adversarially tested, and fully auditable before it reaches you.
+                                ADVERSIQ is not a chatbot with a professional interface. It is not a template generator. It is not a model wrapper with a dashboard. It is a structured intelligence pipeline — built from the ground up to produce analysis that is mathematically verifiable, adversarially tested, and fully auditable before it reaches you.
                             </p>
                             <p className="text-base text-white/50 leading-relaxed">
-                                No other platform combines deterministic formula scoring, adversarial debate, cognitive bias modelling, and reflexive self-checking in a single integrated pipeline. Every piece of that architecture was built specifically because decisions made with this kind of evidence â€” government partnerships, cross-border investments, market entries â€” require more than a confident-sounding answer.
+                                No other platform combines deterministic formula scoring, adversarial debate, cognitive bias modelling, and reflexive self-checking in a single integrated pipeline. Every piece of that architecture was built specifically because decisions made with this kind of evidence — government partnerships, cross-border investments, market entries — require more than a confident-sounding answer.
                             </p>
                         </div>
                         <div className="space-y-0">
                             {[
-                                { label: 'What it is', text: 'A strategic intelligence workflow that validates inputs, runs adversarial debate, applies 27+ deterministic formulas, stress-tests outcomes, and generates board-ready documents â€” all in a single run.' },
+                                { label: 'What it is', text: 'A strategic intelligence workflow that validates inputs, runs adversarial debate, applies 27+ deterministic formulas, stress-tests outcomes, and generates board-ready documents — all in a single run.' },
                                 { label: 'What it is not', text: 'A replacement for legal, financial, or engineering advice. A promise of outcome. A chatbot that generates plausible-sounding recommendations without showing its working.' },
                                 { label: 'Why it was built', text: 'Because regional communities, government agencies, and first-time operators were making multi-million dollar decisions without access to the tools that were standard practice for organisations ten times their size.' },
                                 { label: 'Why it has never been done before', text: 'Combining contradiction detection, Bayesian adversarial debate, neuroscience-derived bias modelling, Monte Carlo stress testing, and reflexive self-audit in one pipeline required expertise across six fields simultaneously. No commercial product had demanded it until this one.' },
@@ -666,7 +556,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Photo */}
+                        {/* Left — Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
@@ -677,7 +567,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Right â€” Text */}
+                        {/* Right — Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Who This Is For</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">You don&rsquo;t need to be an expert. The system already is.</h2>
@@ -713,7 +603,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {expandedEngine && categoryDetails[expandedEngine] && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setExpandedEngine(null)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setExpandedEngine(null)} 
@@ -743,7 +633,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showPipelineDeepDive && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setShowPipelineDeepDive(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button onClick={() => setShowPipelineDeepDive(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">10-Layer Architecture</p>
@@ -793,7 +683,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Text */}
+                        {/* Left — Text */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Experience</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
@@ -804,7 +694,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right â€” Photo */}
+                        {/* Right — Photo */}
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
@@ -838,7 +728,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Text */}
+                        {/* Left — Text */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Deliverables</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">What you walk away with.</h2>
@@ -847,7 +737,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right â€” Photo */}
+                        {/* Right — Photo */}
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=900&fit=crop&q=80" alt="Person walking with confidence" className="w-full h-full object-cover" />
@@ -880,14 +770,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="partnerships" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Photo */}
+                        {/* Left — Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&h=900&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
-                        {/* Right â€” Text */}
+                        {/* Right — Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Partnerships</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Early partners shape what this becomes.</h2>
@@ -917,14 +807,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left â€” Photo */}
+                        {/* Left — Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=900&fit=crop&q=80" alt="Accessible intelligence pricing" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
-                        {/* Right â€” Text */}
+                        {/* Right — Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Pricing</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Verified decisions for everyone.</h2>
@@ -1047,7 +937,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showOutputDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowOutputDetails(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setShowOutputDetails(false)} 
@@ -1519,7 +1409,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showProtocolDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowProtocolDetails(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setShowProtocolDetails(false)} 
@@ -2158,7 +2048,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showUnifiedSystemOverview && (
                 <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowUnifiedSystemOverview(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 md:px-12 pt-10 pb-6">
                             <button onClick={() => setShowUnifiedSystemOverview(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
                                 <X size={20} />
@@ -2684,7 +2574,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock5Popup(false)}>
                     <div className="bg-white max-w-5xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 relative">
                             <button onClick={() => setShowBlock5Popup(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What You Get</p>
@@ -2775,7 +2665,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowProofPopup(false)}>
                     <div className="bg-white max-w-5xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 relative">
                             <button onClick={() => setShowProofPopup(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Proof of Capability</p>
@@ -3316,7 +3206,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showFormulas && (
                 <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowFormulas(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
-                        {/* Header â€” Landing page style */}
+                        {/* Header — Landing page style */}
                         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 md:px-12 pt-10 pb-8">
                             <button onClick={() => setShowFormulas(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
                                 <X size={20} />
