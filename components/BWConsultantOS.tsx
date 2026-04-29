@@ -62,7 +62,7 @@ import { DecisionPipeline, type DecisionPacket } from '../services/DecisionPipel
 import { EventBus } from '../services/EventBus';
 import { autonomousScheduler } from '../services/AutonomousScheduler';
 import { MultiAgentOrchestrator, type SynthesizedAnalysis } from '../services/MultiAgentOrchestrator';
-import { PartnerIntelligenceEngine, type PartnerCandidate } from '../services/PartnerIntelligenceEngine';
+import { PartnerIntelligenceEngine, type PartnerCandidate, type RankedPartner } from '../services/PartnerIntelligenceEngine';
 
 import { selfImprovementEngine } from '../services/SelfImprovementEngine';
 import { conversationMemoryManager } from '../services/ConversationMemoryManager';
@@ -1005,6 +1005,16 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const [_expandedCards, _setExpandedCards] = useState<Set<string>>(new Set());
   const [augmentedAISnapshot, setAugmentedAISnapshot] = useState<AugmentedAISnapshot | null>(null);
   const [augmentedReviewState, setAugmentedReviewState] = useState<'idle' | 'accept' | 'modify' | 'reject'>('idle');
+  // Right sidebar tabs
+  const [sidebarTab, setSidebarTab] = useState<'intelligence' | 'deep' | 'adversarial' | 'partners'>('intelligence');
+  // Deep Analysis panel state
+  const [deepAnalysisRunning, setDeepAnalysisRunning] = useState(false);
+  const [historicalMatches, setHistoricalMatches] = useState<ParallelMatchResult | null>(null);
+  const [counterfactualResult, setCounterfactualResult] = useState<CounterfactualAnalysis | null>(null);
+  const [adversarialResult, setAdversarialResult] = useState<AdversarialOutputs | null>(null);
+  const [adversarialRunning, setAdversarialRunning] = useState(false);
+  const [partnerCandidates, setPartnerCandidates] = useState<PartnerCandidate[]>([]);
+  const [rankedPartners, setRankedPartners] = useState<RankedPartner[]>([]);
   const [augmentedRecommendedTools, _setAugmentedRecommendedTools] = useState<AugmentedRecommendedTool[]>([]);
   const [augmentedUnresolvedGaps, _setAugmentedUnresolvedGaps] = useState<AugmentedGap[]>([]);
   const [pendingActions, setPendingActions] = useState<PendingAction[]>([]);
@@ -1245,10 +1255,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setAugmentedAISnapshot(payload as unknown as AugmentedAISnapshot);
   }, []);
 
-  // Stub function for queueAction (needs proper implementation)
-  const _queueAction = useCallback((action: { id: string; label: string; description: string; category: 'submit' | 'escalate' | 'document' | 'notify' }) => {
-    setPendingActions(prev => [...prev, { ...action, status: 'pending' as const }]);
+  // Queue an action for user approval before execution
+  const queueAction = useCallback((action: { id: string; label: string; description: string; category: 'submit' | 'escalate' | 'document' | 'notify' }) => {
+    setPendingActions(prev => [
+      ...prev.filter(a => a.id !== action.id),
+      { ...action, status: 'pending' as const }
+    ]);
   }, []);
+  const _queueAction = queueAction; // alias kept for compatibility
   const voiceSpeakingRef = useRef(false);
   const displayedMsgIds = useRef<Set<string>>(new Set());
   const spokenMsgIds = useRef<Set<string>>(new Set());
@@ -1508,8 +1522,28 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   const executeAction = useCallback(async (action: PendingAction) => {
     setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'executing' } : a));
-    // Execute immediately - no artificial delay
-    setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'done' } : a));
+    try {
+      if (action.category === 'document') {
+        // Trigger document generation for this action
+        const docPrompt = `${action.label}: ${action.description}`;
+        await handleSendMessage(docPrompt);
+      } else if (action.category === 'submit') {
+        // Submit the current case to the AI pipeline
+        const submitMsg = `Proceed with: ${action.label}. ${action.description}`;
+        await handleSendMessage(submitMsg);
+      } else if (action.category === 'escalate') {
+        // Add to chat as an escalation signal
+        const escalateMsg = `ESCALATION REQUIRED — ${action.label}: ${action.description}. Please provide priority guidance.`;
+        await handleSendMessage(escalateMsg);
+      } else if (action.category === 'notify') {
+        // Log the notification as an insight
+        appendEventInsight('ACTION_NOTIFY', `${action.label}: ${action.description}`);
+      }
+      setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'done' } : a));
+    } catch (err) {
+      setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'pending' } : a));
+      console.error('[executeAction] failed:', err);
+    }
     setApprovalGateAction(null);
   }, []);
 
@@ -1532,6 +1566,59 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       // silent - live data is enrichment, not critical
     }
   }, [liveDataCache]);
+
+  // ── Deep Analysis: Historical + Counterfactual (client-side, instant) ────────
+  const runDeepAnalysis = useCallback(() => {
+    setDeepAnalysisRunning(true);
+    try {
+      const params = {
+        country: caseStudy.country,
+        sector: caseStudy.sector,
+        currentMatter: caseStudy.currentMatter,
+        organizationName: caseStudy.organizationName,
+        additionalContext: caseStudy.additionalContext,
+      };
+      const historical = HistoricalParallelMatcher.match(params);
+      const counterfactual = CounterfactualEngine.analyze(params);
+      setHistoricalMatches(historical);
+      setCounterfactualResult(counterfactual);
+      // Partner intelligence
+      const rankedPartnerList = PartnerIntelligenceEngine.rankPartners({
+        country: caseStudy.country || '',
+        sector: caseStudy.sector || '',
+        objective: caseStudy.currentMatter || '',
+        constraints: caseStudy.additionalContext || '',
+        candidates: REGIONAL_PARTNER_CANDIDATES,
+      });
+      setRankedPartners(rankedPartnerList.slice(0, 6));
+    } catch (err) {
+      console.error('[DeepAnalysis]', err);
+    } finally {
+      setDeepAnalysisRunning(false);
+    }
+  }, [caseStudy]);
+
+  // ── Adversarial Reasoning: 5-persona battle + counterfactual lab ─────────────
+  const runAdversarialAnalysis = useCallback(async () => {
+    if (adversarialRunning) return;
+    setAdversarialRunning(true);
+    try {
+      const params = {
+        country: caseStudy.country,
+        sector: caseStudy.sector,
+        currentMatter: caseStudy.currentMatter,
+        organizationName: caseStudy.organizationName,
+        additionalContext: caseStudy.additionalContext,
+        projectStage: 'analysis',
+      } as Parameters<typeof AdversarialReasoningService.generate>[0];
+      const result = await AdversarialReasoningService.generate(params);
+      setAdversarialResult(result);
+    } catch (err) {
+      console.error('[AdversarialReasoning]', err);
+    } finally {
+      setAdversarialRunning(false);
+    }
+  }, [adversarialRunning, caseStudy]);
 
   const resolvePolicyPack = useCallback((draft: CaseStudy): JurisdictionPolicyPack => {
     const context = `${draft.country} ${draft.jurisdiction}`.toLowerCase();
@@ -2748,12 +2835,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
 
     try {
-      const [newsRes, govRes, financeRes, entityRes] = await Promise.all([
+      const [newsRes, govRes, financeRes, entityRes, freeIntelRes] = await Promise.all([
         fetch('/api/search/news', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            query: `${query} energy transition government policy investment partnership`,
+            query: `${query} government policy investment partnership`,
             country: quickCountryFocus || undefined
           })
         }),
@@ -2783,6 +2870,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
             num: 6,
             type: 'search'
           })
+        }),
+        // Free intelligence fallback — always runs regardless of API keys
+        fetch('/api/search/free-intel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query })
         })
       ]);
 
@@ -2790,6 +2883,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       const govData = govRes.ok ? await govRes.json() : { organic: [] as SerperLikeItem[], providerStatus: { serper: 'error' }, reason: 'Government search failed' };
       const financeData = financeRes.ok ? await financeRes.json() : { organic: [] as SerperLikeItem[], providerStatus: { serper: 'error' }, reason: 'Finance search failed' };
       const entityData = entityRes.ok ? await entityRes.json() : { organic: [] as SerperLikeItem[], providerStatus: { serper: 'error' }, reason: 'Entity search failed' };
+      const freeIntelData = freeIntelRes.ok ? await freeIntelRes.json() : { items: [] as SerperLikeItem[] };
 
       const providerStatuses = [govData, financeData, entityData]
         .map((item) => item?.providerStatus?.serper)
@@ -2799,10 +2893,16 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       const reasonMessages = [newsData?.reason, govData?.reason, financeData?.reason, entityData?.reason]
         .filter((reason): reason is string => Boolean(reason && reason !== 'Provider returned zero matches for this query.'));
 
-      const newsInsights: LiveInsightResult[] = (Array.isArray(newsData.articles) ? newsData.articles : [])
-        .filter((article: { title?: string; url?: string; description?: string; source?: string; publishedAt?: string }) => article.title && article.url)
-        .slice(0, 4)
-        .map((article: { title?: string; url?: string; description?: string; source?: string; publishedAt?: string }) => ({
+      // News: prefer paid News API, fall back to free-intel items
+      const rawNewsArticles: Array<{ title?: string; url?: string; description?: string; source?: string; publishedAt?: string }> =
+        Array.isArray(newsData.articles) && newsData.articles.length > 0
+          ? newsData.articles
+          : (Array.isArray(freeIntelData.items) ? freeIntelData.items.map((i: SerperLikeItem) => ({ title: i.title, url: i.link, description: i.snippet, source: i.source })) : []);
+
+      const newsInsights: LiveInsightResult[] = rawNewsArticles
+        .filter((article) => article.title && article.url)
+        .slice(0, 5)
+        .map((article) => ({
           title: article.title || '',
           link: article.url || '',
           snippet: article.description || '',
@@ -7623,7 +7723,7 @@ ${agentRegistry.current.toManifest()}`;
             )}
             <div className="p-4 border-b border-slate-200 bg-white">
               {/* Panel header */}
-              <div className="bg-slate-900 -mx-4 -mt-4 px-4 py-3 mb-4">
+              <div className="bg-slate-900 -mx-4 -mt-4 px-4 py-3 mb-3">
                 <h2 className="text-xs font-bold text-amber-400 uppercase tracking-[0.15em] flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full flex-shrink-0 ${isLoading ? 'bg-amber-400 animate-pulse' : augmentedAISnapshot ? 'bg-green-400' : 'bg-slate-600'}`} />
                   Intelligence Run
@@ -7633,7 +7733,30 @@ ${agentRegistry.current.toManifest()}`;
                 </p>
               </div>
 
+              {/* Sidebar tab switcher */}
+              <div className="grid grid-cols-4 gap-px bg-slate-200 mb-3 -mx-4 px-4">
+                {([
+                  { id: 'intelligence', label: 'Intel' },
+                  { id: 'deep', label: 'Deep' },
+                  { id: 'adversarial', label: 'Adversarial' },
+                  { id: 'partners', label: 'Partners' },
+                ] as Array<{ id: typeof sidebarTab; label: string }>).map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setSidebarTab(tab.id)}
+                    className={`py-1.5 text-[9px] font-bold uppercase tracking-widest transition-colors ${
+                      sidebarTab === tab.id
+                        ? 'bg-slate-900 text-amber-400'
+                        : 'bg-white text-slate-500 hover:bg-slate-50'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
               {/* ── LIVE VERDICT BLOCK ── shown only after first response */}
+              {sidebarTab === 'intelligence' && (<>
               {augmentedAISnapshot && (() => {
                 const snap = augmentedAISnapshot as unknown as Record<string, unknown>;
                 const tribunal = snap?.tribunal as Record<string, unknown> | undefined;
@@ -7833,6 +7956,183 @@ ${agentRegistry.current.toManifest()}`;
                       </div>
                     )}
                   </div>
+                </div>
+              )}
+              {/* end sidebarTab === 'intelligence' */}
+              </>}
+
+              {/* ── DEEP ANALYSIS TAB ─────────────────────────────────────────── */}
+              {sidebarTab === 'deep' && (
+                <div className="space-y-3 mt-1">
+                  <p className="text-[10px] text-slate-500 leading-relaxed">
+                    Runs the Historical Parallel Matcher and Counterfactual Engine client-side against your current case parameters. No token cost.
+                  </p>
+                  <button
+                    onClick={runDeepAnalysis}
+                    disabled={deepAnalysisRunning || !caseStudy.country}
+                    className="w-full py-2 text-[11px] font-bold uppercase tracking-widest bg-slate-900 text-amber-400 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {deepAnalysisRunning ? 'Analysing…' : '⚡ Run Deep Analysis'}
+                  </button>
+                  {!caseStudy.country && (
+                    <p className="text-[10px] text-amber-600">Set a country in your case parameters first.</p>
+                  )}
+
+                  {historicalMatches && (
+                    <div className="border border-slate-200 bg-white p-3">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Historical Parallels</p>
+                      <p className="text-[9px] text-slate-400 mb-2">{Math.round(historicalMatches.successRate)}% success rate across similar cases</p>
+                      {historicalMatches.matches.slice(0, 4).map((m, i) => (
+                        <div key={i} className="mb-2 pb-2 border-b border-slate-100 last:border-0">
+                          <div className="flex items-center justify-between mb-0.5">
+                            <span className="text-[10px] font-semibold text-slate-800">{m.title}</span>
+                            <span className="text-[9px] font-mono text-amber-600">{m.relevanceScore}%</span>
+                          </div>
+                          <p className="text-[9px] text-slate-400 mb-0.5">{m.country} · {m.year} · {m.outcome}</p>
+                          {m.lessonsLearned.slice(0, 2).map((l, li) => (
+                            <p key={li} className="text-[9px] text-blue-600">↳ {l}</p>
+                          ))}
+                        </div>
+                      ))}
+                      {historicalMatches.synthesisInsight && (
+                        <p className="text-[9px] text-slate-500 border-t border-slate-100 pt-2 mt-1 leading-relaxed">{historicalMatches.synthesisInsight}</p>
+                      )}
+                    </div>
+                  )}
+
+                  {counterfactualResult && (
+                    <div className="border border-slate-200 bg-white p-3">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Counterfactual Scenarios</p>
+                      {counterfactualResult.alternativeScenarios.slice(0, 3).map((s, i) => (
+                        <div key={i} className="mb-2 pb-2 border-b border-slate-100 last:border-0">
+                          <p className="text-[10px] font-semibold text-slate-800 mb-0.5">{s.name}</p>
+                          <p className="text-[9px] text-slate-500 mb-1">{s.description}</p>
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 h-1 bg-slate-100"><div className="h-full bg-amber-400" style={{ width: `${s.probability}%` }} /></div>
+                            <span className="text-[9px] font-mono text-slate-500">{s.probability}%</span>
+                          </div>
+                        </div>
+                      ))}
+                      {counterfactualResult.recommendation && (
+                        <p className="text-[9px] text-blue-700 border-t border-slate-100 pt-2 mt-1 leading-relaxed">{counterfactualResult.recommendation}</p>
+                      )}
+                      <div className="mt-2 border-t border-slate-100 pt-2">
+                        <p className="text-[9px] font-bold text-slate-500 mb-1">Robustness</p>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 h-1 bg-slate-100"><div className="h-full bg-green-400" style={{ width: `${counterfactualResult.robustness.score}%` }} /></div>
+                          <span className="text-[9px] font-mono text-slate-500">{counterfactualResult.robustness.score}/100</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* ── ADVERSARIAL TAB ───────────────────────────────────────────── */}
+              {sidebarTab === 'adversarial' && (
+                <div className="space-y-3 mt-1">
+                  <p className="text-[10px] text-slate-500 leading-relaxed">
+                    Five adversarial personas each challenge the dominant thesis. Surfaces hidden contradictions before any report is drafted.
+                  </p>
+                  <button
+                    onClick={runAdversarialAnalysis}
+                    disabled={adversarialRunning || !caseStudy.country}
+                    className="w-full py-2 text-[11px] font-bold uppercase tracking-widest bg-slate-900 text-red-400 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {adversarialRunning ? 'Generating…' : '⚡ Run Adversarial Reasoning'}
+                  </button>
+                  {!caseStudy.country && (
+                    <p className="text-[10px] text-amber-600">Set a country in your case parameters first.</p>
+                  )}
+
+                  {adversarialResult && (
+                    <>
+                      {/* Consensus badge */}
+                      <div className={`border p-2 mb-1 ${
+                        adversarialResult.personaPanel.consensus === 'go' ? 'border-green-200 bg-green-50' :
+                        adversarialResult.personaPanel.consensus === 'hold' ? 'border-amber-200 bg-amber-50' :
+                        'border-red-200 bg-red-50'
+                      }`}>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-700">
+                            Panel Verdict: {adversarialResult.personaPanel.consensus.toUpperCase()}
+                          </span>
+                          <span className="text-[9px] font-mono text-slate-500">
+                            {Math.round(adversarialResult.personaPanel.agreementLevel * 100)}% agreement
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Persona insights */}
+                      {adversarialResult.personaPanel.insights.slice(0, 5).map((insight, i) => (
+                        <div key={i} className="border border-slate-200 bg-white p-3">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-bold text-slate-800">{String(insight.persona)}</span>
+                            <span className={`text-[9px] px-1.5 py-0.5 border ${
+                              insight.stance === 'support' ? 'bg-green-50 text-green-700 border-green-100' :
+                              insight.stance === 'oppose' ? 'bg-red-50 text-red-700 border-red-100' :
+                              'bg-slate-50 text-slate-600 border-slate-100'
+                            }`}>{insight.stance}</span>
+                          </div>
+                          <p className="text-[9px] text-slate-600 leading-relaxed">{insight.summary}</p>
+                          {insight.riskCallouts.length > 0 && (
+                            <p className="text-[9px] text-red-600 mt-1">⚠ {insight.riskCallouts[0]}</p>
+                          )}
+                        </div>
+                      ))}
+
+                      {/* Blind spots */}
+                      {adversarialResult.personaPanel.blindSpots.length > 0 && (
+                        <div className="border border-slate-200 bg-slate-50 p-3">
+                          <p className="text-[10px] font-bold text-slate-600 mb-1">Identified Blind Spots</p>
+                          {adversarialResult.personaPanel.blindSpots.slice(0, 3).map((bs, i) => (
+                            <p key={i} className="text-[9px] text-slate-500 leading-relaxed">• {bs}</p>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* ── PARTNERS TAB ──────────────────────────────────────────────── */}
+              {sidebarTab === 'partners' && (
+                <div className="space-y-3 mt-1">
+                  <p className="text-[10px] text-slate-500 leading-relaxed">
+                    Partner Intelligence Engine ranks potential counterparts by strategic fit, track record, and risk exposure for your current case.
+                  </p>
+                  <button
+                    onClick={runDeepAnalysis}
+                    disabled={deepAnalysisRunning || !caseStudy.country}
+                    className="w-full py-2 text-[11px] font-bold uppercase tracking-widest bg-slate-900 text-green-400 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  >
+                    {deepAnalysisRunning ? 'Ranking…' : '⚡ Rank Partners'}
+                  </button>
+                  {!caseStudy.country && (
+                    <p className="text-[10px] text-amber-600">Set a country in your case parameters first.</p>
+                  )}
+
+                  {rankedPartners.length > 0 && rankedPartners.map((rp, i) => (
+                    <div key={i} className="border border-slate-200 bg-white p-3">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <span className="text-[10px] font-bold text-slate-800">{rp.partner.name || `Partner ${i + 1}`}</span>
+                        <span className="text-[9px] font-mono text-green-700 flex-shrink-0">
+                          {Math.round(rp.score.total ?? 0)}% fit
+                        </span>
+                      </div>
+                      {rp.partner.type && <p className="text-[9px] text-slate-400 mb-0.5 capitalize">{rp.partner.type}</p>}
+                      {rp.reasons.length > 0 && (
+                        <ul className="mt-1 space-y-0.5">
+                          {rp.reasons.slice(0, 3).map((r, ri) => (
+                            <li key={ri} className="text-[9px] text-slate-600 leading-relaxed">• {r}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                  {rankedPartners.length === 0 && !deepAnalysisRunning && (
+                    <p className="text-[9px] text-slate-400">Click "Rank Partners" to populate this panel.</p>
+                  )}
                 </div>
               )}
             </div>
