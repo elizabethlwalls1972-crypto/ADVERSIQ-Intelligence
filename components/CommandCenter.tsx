@@ -96,10 +96,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'b': {
             title: 'Agentic & Autonomous Systems',
-            subtitle: '50+ parallel engines orchestrated as a unified brain with anticipatory thinking — adversarial analysis, 20+ live external sources, quantum risk simulation, multi-provider AI orchestration, and adaptive runtime control.',
+            subtitle: '50+ parallel engines orchestrated as a unified brain with anticipatory thinking â€” adversarial analysis, 20+ live external sources, quantum risk simulation, multi-provider AI orchestration, and adaptive runtime control.',
             icon: 'B',
             color: 'from-emerald-600 to-emerald-800',
-            summary: 'A 50+ engine parallel brain fires on every query with anticipatory intelligence — formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, cognitive reasoning, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with intelligent provider load-balancing, graceful degradation and full audit trail.',
+            summary: 'A 50+ engine parallel brain fires on every query with anticipatory intelligence â€” formula indices, reactive intelligence, entity verification, quantum Monte Carlo simulation, cognitive reasoning, geopolitical arbitrage, OSINT, sanctions screening, trade statistics, opportunity detection, and deep web research, with intelligent provider load-balancing, graceful degradation and full audit trail.',
             full: (
                 <div className="space-y-6">
                     <p className="text-lg text-slate-500 leading-relaxed mb-4">These systems provide goal-directed autonomy for research, synthesis, and live intelligence gathering. Fifty-plus engines fire in parallel on every query via the Brain Integration Service &mdash; each contributing a different analytical dimension, including three quantum-inspired engines (Monte Carlo risk simulation, pattern discovery, and cognitive bias modelling) and a 12-layer Cognitive Reasoning Engine that models human decision-making. An anticipatory thinking system predicts what the user will need next and pre-loads engines before they are requested. An intelligent multi-provider AI Orchestrator distributes workload across available providers (Groq, Together, OpenAI, Anthropic) with automatic failover, health tracking, and rate-limit-aware load balancing. Specialist agents spawn on demand, external data providers are queried in real time, and governance gates (red/amber/green) enforce control at every step. Output quality and freshness depend on provider availability, API configuration, and release-gate verdicts.</p>
@@ -168,7 +168,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
         },
         'c': {
             title: 'Reflexive Intelligence',
-            subtitle: 'The system analyses the user, not just the market — detecting what you—re not saying, modelling cognitive intent, and reframing for every audience.',
+            subtitle: 'The system analyses the user, not just the market â€” detecting what youâ€”re not saying, modelling cognitive intent, and reframing for every audience.',
             icon: 'C',
             color: 'from-amber-600 to-amber-800',
             summary: 'Identity reality-checking using post-structuralist theory, latent advantage mining from casual mentions, audience-adaptive translation, and hidden motivation detection.',
@@ -360,7 +360,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Statement */}
+                        {/* Left â€” Statement */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
@@ -372,7 +372,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right — Feature words with color cycling */}
+                        {/* Right â€” Feature words with color cycling */}
                         <div className="flex flex-col justify-center">
                             <style>{`
                                 @keyframes colorCycle1 { 0%,100%{color:#ff3366} 20%{color:#ff9500} 40%{color:#00d4ff} 60%{color:#a855f7} 80%{color:#22d3ee} }
@@ -404,28 +404,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-500">The Problem This System Solves</p>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-slate-900 leading-tight mb-6">
                             The intelligence exists.<br />
-                            <span className="font-black">It was never accessible — until now.</span>
+                            <span className="font-black">It was never accessible â€” until now.</span>
                         </h2>
                         <p className="text-lg text-slate-500 leading-relaxed">
-                            A government agency evaluating a foreign partnership. A regional council making the case for infrastructure investment. A business entering a new market for the first time. Every one of them needs the same thing: structured, stress-tested, credible evidence that their opportunity is real. That evidence has always existed — but only for organisations that could afford to commission it.
+                            A government agency evaluating a foreign partnership. A regional council making the case for infrastructure investment. A business entering a new market for the first time. Every one of them needs the same thing: structured, stress-tested, credible evidence that their opportunity is real. That evidence has always existed â€” but only for organisations that could afford to commission it.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-100">
                         {[
                             {
-                                heading: 'It costs $25,000–$200,000',
+                                heading: 'It costs $25,000â€“$200,000',
                                 sub: 'Per engagement. Per project. Per question.',
-                                body: 'A structured advisory analysis from a qualified firm — the kind that holds up under investor or government scrutiny — starts at $25,000 and routinely reaches $200,000. That cost alone disqualifies most regional and public-sector organisations before the conversation begins.',
+                                body: 'A structured advisory analysis from a qualified firm â€” the kind that holds up under investor or government scrutiny â€” starts at $25,000 and routinely reaches $200,000. That cost alone disqualifies most regional and public-sector organisations before the conversation begins.',
                             },
                             {
-                                heading: 'It takes 4–6 weeks',
+                                heading: 'It takes 4â€“6 weeks',
                                 sub: 'Minimum. Often longer.',
-                                body: 'By the time a traditional engagement is complete, the window has moved. Investment decisions don\'t wait. Government tender deadlines don\'t move. The organisations that can produce structured evidence in days win — and they\'ve always been the same organisations.',
+                                body: 'By the time a traditional engagement is complete, the window has moved. Investment decisions don\'t wait. Government tender deadlines don\'t move. The organisations that can produce structured evidence in days win â€” and they\'ve always been the same organisations.',
                             },
                             {
                                 heading: 'Most decisions happen without it',
                                 sub: 'Because there was no other option.',
-                                body: 'Regional councils, first-time exporters, and public agencies have been making high-stakes decisions on spreadsheets, PowerPoint decks, and optimistic projections for decades. Not through incompetence — through lack of access. ADVERSIQ closes that gap permanently.',
+                                body: 'Regional councils, first-time exporters, and public agencies have been making high-stakes decisions on spreadsheets, PowerPoint decks, and optimistic projections for decades. Not through incompetence â€” through lack of access. ADVERSIQ closes that gap permanently.',
                             },
                         ].map((item, i) => (
                             <div key={i} className="bg-white px-8 py-10">
@@ -451,15 +451,15 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black">existed before. Built for decisions that can&rsquo;t afford to be wrong.</span>
                             </h2>
                             <p className="text-lg text-white/60 leading-relaxed mb-6">
-                                ADVERSIQ is not a chatbot with a professional interface. It is not a template generator. It is not a model wrapper with a dashboard. It is a structured intelligence pipeline — built from the ground up to produce analysis that is mathematically verifiable, adversarially tested, and fully auditable before it reaches you.
+                                ADVERSIQ is not a chatbot with a professional interface. It is not a template generator. It is not a model wrapper with a dashboard. It is a structured intelligence pipeline â€” built from the ground up to produce analysis that is mathematically verifiable, adversarially tested, and fully auditable before it reaches you.
                             </p>
                             <p className="text-base text-white/50 leading-relaxed">
-                                No other platform combines deterministic formula scoring, adversarial debate, cognitive bias modelling, and reflexive self-checking in a single integrated pipeline. Every piece of that architecture was built specifically because decisions made with this kind of evidence — government partnerships, cross-border investments, market entries — require more than a confident-sounding answer.
+                                No other platform combines deterministic formula scoring, adversarial debate, cognitive bias modelling, and reflexive self-checking in a single integrated pipeline. Every piece of that architecture was built specifically because decisions made with this kind of evidence â€” government partnerships, cross-border investments, market entries â€” require more than a confident-sounding answer.
                             </p>
                         </div>
                         <div className="space-y-0">
                             {[
-                                { label: 'What it is', text: 'A strategic intelligence workflow that validates inputs, runs adversarial debate, applies 27+ deterministic formulas, stress-tests outcomes, and generates board-ready documents — all in a single run.' },
+                                { label: 'What it is', text: 'A strategic intelligence workflow that validates inputs, runs adversarial debate, applies 27+ deterministic formulas, stress-tests outcomes, and generates board-ready documents â€” all in a single run.' },
                                 { label: 'What it is not', text: 'A replacement for legal, financial, or engineering advice. A promise of outcome. A chatbot that generates plausible-sounding recommendations without showing its working.' },
                                 { label: 'Why it was built', text: 'Because regional communities, government agencies, and first-time operators were making multi-million dollar decisions without access to the tools that were standard practice for organisations ten times their size.' },
                                 { label: 'Why it has never been done before', text: 'Combining contradiction detection, Bayesian adversarial debate, neuroscience-derived bias modelling, Monte Carlo stress testing, and reflexive self-audit in one pipeline required expertise across six fields simultaneously. No commercial product had demanded it until this one.' },
@@ -485,7 +485,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Photo */}
+                        {/* Left â€” Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
@@ -496,7 +496,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Right — Text */}
+                        {/* Right â€” Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Who This Is For</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">You don&rsquo;t need to be an expert. The system already is.</h2>
@@ -532,7 +532,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {expandedEngine && categoryDetails[expandedEngine] && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setExpandedEngine(null)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setExpandedEngine(null)} 
@@ -562,7 +562,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showPipelineDeepDive && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setShowPipelineDeepDive(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button onClick={() => setShowPipelineDeepDive(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">10-Layer Architecture</p>
@@ -612,7 +612,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Text */}
+                        {/* Left â€” Text */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Experience</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
@@ -623,7 +623,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right — Photo */}
+                        {/* Right â€” Photo */}
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
@@ -657,7 +657,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Text */}
+                        {/* Left â€” Text */}
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Deliverables</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">What you walk away with.</h2>
@@ -666,7 +666,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </p>
                         </div>
 
-                        {/* Right — Photo */}
+                        {/* Right â€” Photo */}
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=900&fit=crop&q=80" alt="Person walking with confidence" className="w-full h-full object-cover" />
@@ -699,14 +699,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section id="partnerships" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Photo */}
+                        {/* Left â€” Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&h=900&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
-                        {/* Right — Text */}
+                        {/* Right â€” Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Partnerships</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Early partners shape what this becomes.</h2>
@@ -736,14 +736,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             <section className="py-20 px-4 bg-slate-50">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                        {/* Left — Photo */}
+                        {/* Left â€” Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=900&fit=crop&q=80" alt="Accessible intelligence pricing" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
-                        {/* Right — Text */}
+                        {/* Right â€” Text */}
                         <div className="order-1 lg:order-2">
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Pricing</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Verified decisions for everyone.</h2>
@@ -866,7 +866,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showOutputDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowOutputDetails(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setShowOutputDetails(false)} 
@@ -1338,7 +1338,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showProtocolDetails && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowProtocolDetails(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
                             <button 
                                 onClick={() => setShowProtocolDetails(false)} 
@@ -1977,7 +1977,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showUnifiedSystemOverview && (
                 <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowUnifiedSystemOverview(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 md:px-12 pt-10 pb-6">
                             <button onClick={() => setShowUnifiedSystemOverview(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
                                 <X size={20} />
@@ -2503,7 +2503,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowBlock5Popup(false)}>
                     <div className="bg-white max-w-5xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 relative">
                             <button onClick={() => setShowBlock5Popup(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What You Get</p>
@@ -2594,7 +2594,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowProofPopup(false)}>
                     <div className="bg-white max-w-5xl w-full my-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 relative">
                             <button onClick={() => setShowProofPopup(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Proof of Capability</p>
@@ -3135,7 +3135,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {showFormulas && (
                 <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowFormulas(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
+                        {/* Header â€” Landing page style */}
                         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 md:px-12 pt-10 pb-8">
                             <button onClick={() => setShowFormulas(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors">
                                 <X size={20} />
