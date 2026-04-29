@@ -421,22 +421,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        {/* Three proof statements */}
                         <div className="border-t-2 border-slate-900 pt-16 mt-4">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-                                <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Every score<br />has a source.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">No output is generated from thin air. Every number traces back to a formula. Every formula traces back to a layer. Every layer is logged with exactly what it changed. You can follow any conclusion all the way to its original inputs.</p>
-                                </div>
-                                <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">Disagreements<br />are preserved.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">Five adversarial personas argue every claim. Where they agree, confidence is high. Where they don&rsquo;t, you see the exact point of disagreement — labelled, attributed, and kept. Nothing is averaged away to produce false consensus.</p>
-                                </div>
-                                <div>
-                                    <p className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight">The system<br />checks itself.</p>
-                                    <p className="text-lg text-slate-500 leading-relaxed">Layer 09 — Reflexive Intelligence — turns the full analytical power of the pipeline inward. It audits its own output for overconfidence, confirmation bias, and missing counterfactuals before you see a single word.</p>
-                                </div>
-                            </div>
+                            <p className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.1] max-w-4xl">
+                                The model comes last.<br />Everything before it is verifiable, traceable, and adversarially tested.
+                            </p>
                         </div>
 
                     </div>
@@ -463,19 +451,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-lg text-slate-500 leading-relaxed mb-8">
                             ADVERSIQ uses language models as the final narration layer of a system that has already done the analytical work. By the time the model produces output, the claim has been checked for logical impossibility, argued over by five adversarial personas, scored by 21 deterministic formulas, stress-tested across 10,000 simulated scenarios, and reviewed by a layer that audits the system&rsquo;s own reasoning. The model narrates a finding that was already computed.
                         </p>
-                        <div className="border-t-2 border-slate-100 pt-6 grid grid-cols-2 gap-x-8 gap-y-5">
-                            {[
-                                { label: '21 scoring formulas', sub: 'Deterministic — same inputs always produce same outputs' },
-                                { label: '5 adversarial personas', sub: 'Independent positions, disagreements preserved not averaged' },
-                                { label: '247 document templates', sub: 'Built from verified pipeline output, not from generation' },
-                                { label: '10 NSIL layers', sub: 'Each one challenges the output of the one before it' },
-                            ].map((item, i) => (
-                                <div key={i}>
-                                    <p className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-1">{item.label}</p>
-                                    <p className="text-sm text-slate-500">{item.sub}</p>
-                                </div>
-                            ))}
-                        </div>
+
                     </div>
                 </div>
             </section>
@@ -495,26 +471,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <p className="text-lg text-slate-300 leading-relaxed">
                             The Nexus Strategic Intelligence Layer is the verification core of the system. It is not a wrapper around a language model — it is a sequential pipeline of 10 specialised layers. Each layer does one specific job. Each one checks and refines the work of everything that came before.
                         </p>
-                    </div>
-
-                    {/* How a case moves through the system — 5 stages */}
-                    <div className="mb-20">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-6">How a case moves through the system</p>
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-px bg-white/10">
-                            {[
-                                { n: '01', label: 'Contradiction check', desc: 'Your inputs are converted to propositional logic. Logically impossible combinations are caught here — mathematically, before any resources are spent.' },
-                                { n: '02', label: 'Adversarial debate', desc: '5 personas argue independently. Bayesian belief updating. Nash bargaining resolves deadlocks. Disagreements are preserved, not averaged away.' },
-                                { n: '03', label: 'Formula scoring', desc: '21 deterministic formulas run as a dependency graph. Independent calculations execute in parallel. Same inputs always produce the same outputs.' },
-                                { n: '04', label: 'Stress testing', desc: '10,000 Monte Carlo simulations. Output: probability distributions with Value-at-Risk — not single-point estimates you have to trust blindly.' },
-                                { n: '05', label: 'Language model', desc: 'Only now. The model narrates a finding the pipeline has already computed, verified, stress-tested, and checked for internal consistency.' },
-                            ].map((stage, i) => (
-                                <div key={i} className="bg-white/5 px-5 py-6">
-                                    <span className="block text-[10px] font-mono text-amber-400/60 mb-3 tracking-widest uppercase">Stage {stage.n}</span>
-                                    <p className="text-sm font-bold text-white mb-2 leading-snug">{stage.label}</p>
-                                    <p className="text-xs text-slate-400 leading-relaxed">{stage.desc}</p>
-                                </div>
-                            ))}
-                        </div>
                     </div>
 
                     {/* 10-layer grid with real mechanism descriptions */}
@@ -539,22 +495,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
                                 </div>
                             ))}
-                        </div>
-                    </div>
-
-                    {/* Finale */}
-                    <div className="border-t border-white/10 pt-12 pb-4 mb-16">
-                        <div className="max-w-3xl mx-auto text-center">
-                            <h3 className="text-2xl md:text-3xl font-light text-white leading-tight mb-5">
-                                Ten layers of verification.<br />
-                                <span className="font-black">Then the language model speaks.</span>
-                            </h3>
-                            <p className="text-base text-slate-400 leading-relaxed mb-8">
-                                Every claim has been checked for logical consistency, argued by five independent adversarial personas, scored by 21 deterministic formulas, stress-tested across 10,000 simulations, and reviewed by a layer that audits the system&rsquo;s own reasoning for bias and overconfidence. The model doesn&rsquo;t generate the answer. It narrates a finding that was already computed.
-                            </p>
-                            <p className="text-xs font-mono text-white/30 tracking-[0.18em] border-t border-white/10 pt-6 leading-relaxed">
-                                21 formulas &nbsp;&middot;&nbsp; 10 verification layers &nbsp;&middot;&nbsp; 5 adversarial personas &nbsp;&middot;&nbsp; 247 documents &nbsp;&middot;&nbsp; full provenance on every output
-                            </p>
                         </div>
                     </div>
 
