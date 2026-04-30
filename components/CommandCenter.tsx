@@ -372,8 +372,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <p className="text-lg text-slate-500 leading-relaxed mb-4">
                                 Built by one person, in sixteen months, from nothing.
                             </p>
+                            <p className="text-base text-slate-400 leading-relaxed mb-4">
+                                The tools that institutional investors and big-city advisors use to assess risk, validate strategy, and stress-test decisions were never designed for regional operators, independent agencies, or communities working without a seven-figure budget. That gap was the point. ADVERSIQ was built specifically to close it.
+                            </p>
                             <p className="text-base text-slate-400 leading-relaxed">
-                                The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. Formal logic. Bayesian statistics. Decision science. Cognitive neuroscience. Financial modelling. Software architecture. Combined into a single deterministic pipeline that verifies its own conclusions before they reach you.
+                                Whether you&rsquo;re a regional council navigating a major infrastructure proposal, a first-time investor without a law firm on retainer, or an operator who simply wants to make the call yourself &mdash; this is the system. Not a consultant who flies in for three days. Not a template. Analysis that has already checked itself before it reaches you.
                             </p>
                         </div>
 
