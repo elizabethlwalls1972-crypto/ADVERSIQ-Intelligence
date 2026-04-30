@@ -369,14 +369,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 Six fields. Ten layers.<br className="hidden md:block" />
                                 <span className="font-black">One pipeline.</span>
                             </h2>
-                            <p className="text-lg text-slate-500 leading-relaxed mb-4">
+                            <p className="text-lg text-slate-700 leading-relaxed mb-4">
                                 Built by one person, in sixteen months, from nothing.
                             </p>
-                            <p className="text-base text-slate-400 leading-relaxed mb-4">
-                                The tools that institutional investors and big-city advisors use to assess risk, validate strategy, and stress-test decisions were never designed for regional operators, independent agencies, or communities working without a seven-figure budget. That gap was the point. ADVERSIQ was built specifically to close it.
-                            </p>
-                            <p className="text-base text-slate-400 leading-relaxed">
-                                Whether you&rsquo;re a regional council navigating a major infrastructure proposal, a first-time investor without a law firm on retainer, or an operator who simply wants to make the call yourself &mdash; this is the system. Not a consultant who flies in for three days. Not a template. Analysis that has already checked itself before it reaches you.
+                            <p className="text-base text-slate-600 leading-relaxed">
+                                Institutional-grade analysis was never built for regional communities, independent operators, or anyone making a major decision without a firm on retainer. ADVERSIQ was built for exactly that. Whether you&rsquo;re a council, a first-time investor, or simply doing it yourself &mdash; this is the system.
                             </p>
                         </div>
 
