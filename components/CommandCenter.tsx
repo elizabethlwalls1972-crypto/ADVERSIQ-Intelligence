@@ -366,11 +366,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
-                                Strategic intelligence<br className="hidden md:block" />
-                                that checks its own work.
+                                Six fields. Ten layers.<br className="hidden md:block" />
+                                <span className="font-black">One pipeline.</span>
                             </h2>
-                            <p className="text-lg text-slate-500 leading-relaxed">
-                                Most advisory tools generate answers. ADVERSIQ generates verified ones. Every analysis passes through multiple independent reasoning layers that interrogate, challenge, and stress-test each other&rsquo;s conclusions &mdash; surfacing contradictions, flagging buried assumptions, and returning a position that has survived adversarial challenge before it reaches you.
+                            <p className="text-lg text-slate-500 leading-relaxed mb-4">
+                                Built by one person, in sixteen months, from nothing.
+                            </p>
+                            <p className="text-base text-slate-400 leading-relaxed">
+                                The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. Formal logic. Bayesian statistics. Decision science. Cognitive neuroscience. Financial modelling. Software architecture. Combined into a single deterministic pipeline that verifies its own conclusions before they reach you.
                             </p>
                         </div>
 
@@ -384,12 +387,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 @keyframes colorCycle5 { 0%,100%{color:#22d3ee} 20%{color:#a855f7} 40%{color:#ff9500} 60%{color:#facc15} 80%{color:#ff3366} }
                             `}</style>
                             <div className="space-y-1">
-                                {['Rigorous', 'Verified', 'Autonomous', 'Adversarial', 'Defensible'].map((word, i) => (
+                                {['Six fields.', 'Ten layers.', 'One pipeline.', 'One person.', 'From nothing.'].map((word, i) => (
                                     <p
                                         key={word}
-                                        className="text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] select-none cursor-default"
+                                        className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[0.95] select-none cursor-default"
                                         style={{ animation: `colorCycle${i + 1} 3s ease-in-out infinite` }}
-                                    >{word}.</p>
+                                    >{word}</p>
                                 ))}
                             </div>
                         </div>
