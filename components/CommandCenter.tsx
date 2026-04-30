@@ -3107,23 +3107,57 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
             {/* Architecture Modal */}
             {showArchitecture && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowArchitecture(false)}>
-                    <div className="bg-slate-950 max-w-5xl w-full my-8 shadow-2xl" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowArchitecture(false)}>
+                    <div className="bg-slate-950 max-w-5xl w-full my-8 shadow-2xl border border-white/5" onClick={e => e.stopPropagation()}>
 
                         {/* Header */}
-                        <div className="px-8 md:px-14 pt-12 pb-10 border-b border-white/10 relative">
+                        <div className="px-8 md:px-14 pt-14 pb-12 border-b border-white/8 relative">
                             <button onClick={() => setShowArchitecture(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/30 hover:text-white transition-colors"><X size={20} /></button>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Architecture</p>
+                            <div className="inline-block border border-amber-400/40 px-3 py-1 mb-6">
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-400">Unprecedented — Never Been Combined</p>
+                            </div>
                             <h2 className="text-3xl md:text-5xl font-light text-white leading-tight">
-                                A system built from six disciplines<br />
-                                <span className="font-black">that no single field had ever combined.</span>
+                                Six disciplines.<br />
+                                <span className="font-black">One pipeline.</span><br />
+                                <span className="font-black text-amber-400">Built by one person.</span>
                             </h2>
-                            <p className="text-base text-white/40 mt-6 max-w-3xl leading-relaxed">
-                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture &mdash; all enforced as a deterministic, auditable pipeline. Every layer has explicit input and output contracts. Nothing moves forward until the previous layer is satisfied.
+                            <p className="text-[15px] text-white/45 mt-6 max-w-3xl leading-relaxed">
+                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture &mdash; all enforced as a deterministic, auditable pipeline. Every layer has an explicit input and output contract. Nothing moves forward until the previous layer is satisfied.
                             </p>
+                            {/* 6 Disciplines bar */}
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-px mt-8 bg-white/5">
+                                {[
+                                    { d: 'Formal Logic', note: 'SAT contradiction solver' },
+                                    { d: 'Bayesian Statistics', note: 'Belief-updating debate engine' },
+                                    { d: 'Decision Science', note: '10-layer structured pipeline' },
+                                    { d: 'Cognitive Neuroscience', note: '7 university models implemented' },
+                                    { d: 'Financial Modelling', note: '54+ proprietary formulas' },
+                                    { d: 'Software Architecture', note: 'DAG scheduling + contracts' },
+                                ].map((item, i) => (
+                                    <div key={i} className="bg-slate-900 px-5 py-4">
+                                        <p className="text-xs font-black text-amber-400 uppercase tracking-wide">{item.d}</p>
+                                        <p className="text-[11px] text-white/30 mt-1">{item.note}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         <div className="px-8 md:px-14 py-12 space-y-16">
+
+                            {/* Proof bar */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
+                                {[
+                                    { n: '10', label: 'Sequential\nPipeline Layers' },
+                                    { n: '54+', label: 'Proprietary\nFormulas' },
+                                    { n: '6', label: 'World-First\nCombinations' },
+                                    { n: '0', label: 'Commercial\nPrecedents' },
+                                ].map((s, i) => (
+                                    <div key={i} className="bg-slate-900 px-6 py-7 text-center">
+                                        <p className="text-3xl md:text-4xl font-black text-amber-400 leading-none">{s.n}</p>
+                                        <p className="text-[10px] text-white/30 uppercase tracking-[0.1em] mt-2 leading-snug whitespace-pre-line">{s.label}</p>
+                                    </div>
+                                ))}
+                            </div>
 
                             {/* World Firsts callout */}
                             <div>
@@ -3222,116 +3256,147 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
             {/* Founder Letter Modal */}
             {showFounderLetter && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowFounderLetter(false)}>
-                    <div className="bg-white max-w-4xl w-full my-8 shadow-2xl" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowFounderLetter(false)}>
+                    <div className="bg-slate-950 max-w-4xl w-full my-8 shadow-2xl border border-white/5" onClick={e => e.stopPropagation()}>
 
                         {/* Header */}
-                        <div className="bg-slate-950 px-8 md:px-14 pt-12 pb-10 relative">
-                            <button onClick={() => setShowFounderLetter(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/40 hover:text-white transition-colors"><X size={20} /></button>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">A Letter from the Founder</p>
-                            <h2 className="text-3xl md:text-5xl font-light text-white leading-tight mb-2">
+                        <div className="relative px-8 md:px-16 pt-14 pb-12 border-b border-white/8">
+                            <button onClick={() => setShowFounderLetter(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/30 hover:text-white transition-colors"><X size={20} /></button>
+                            <p className="text-xs font-bold uppercase tracking-[0.25em] mb-6 text-amber-400">A Letter from the Founder</p>
+                            <h2 className="text-4xl md:text-6xl font-extralight text-white leading-[1.1] mb-4">
                                 Sixteen months.<br />
-                                <span className="font-black">One developer. One purpose.</span>
+                                <span className="font-black">One developer.</span><br />
+                                <span className="font-black text-amber-400">One purpose.</span>
                             </h2>
-                            <p className="text-base text-white/50 mt-4">Brayden Walls &mdash; Founder &amp; Sole Developer, ADVERSIQ Intelligence</p>
+                            <p className="text-sm text-white/40 mt-6 uppercase tracking-[0.15em]">Brayden Walls &mdash; Founder &amp; Sole Developer, ADVERSIQ Intelligence</p>
+                        </div>
+
+                        {/* Stats bar */}
+                        <div className="grid grid-cols-4 border-b border-white/8">
+                            {[
+                                { n: '16', label: 'Months\nBuilding' },
+                                { n: '1', label: 'Developer,\nEverything' },
+                                { n: '54+', label: 'Proprietary\nFormulas' },
+                                { n: '$0', label: 'External\nFunding' },
+                            ].map((s, i) => (
+                                <div key={i} className="px-6 py-7 border-r border-white/8 last:border-r-0 text-center">
+                                    <p className="text-3xl md:text-4xl font-black text-amber-400 leading-none">{s.n}</p>
+                                    <p className="text-[10px] text-white/35 uppercase tracking-[0.12em] mt-2 leading-snug whitespace-pre-line">{s.label}</p>
+                                </div>
+                            ))}
                         </div>
 
                         {/* Letter body */}
-                        <div className="px-8 md:px-14 py-12 space-y-8 text-slate-700 leading-relaxed">
+                        <div className="px-8 md:px-16 py-12 space-y-10 text-white/65 leading-relaxed">
 
-                            <p className="text-xl font-light text-slate-900 leading-relaxed">
+                            <p className="text-xl md:text-2xl font-light text-white/90 leading-relaxed">
                                 I am 53 years old. I am the sole developer of everything inside ADVERSIQ. And I want to tell you honestly why this exists &mdash; because it did not begin with a business plan.
                             </p>
 
-                            <div className="border-l-4 border-amber-400 pl-6 py-2">
-                                <p className="text-lg text-slate-800 font-light italic leading-relaxed">
+                            {/* Pull quote */}
+                            <div className="border-l-2 border-amber-400 pl-8 py-4 my-8">
+                                <p className="text-lg md:text-xl text-white/80 font-light italic leading-relaxed">
                                     &ldquo;Every &lsquo;new idea&rsquo; is old somewhere. The child learns what the parent already knows. The past isn&rsquo;t historical interest. The past is the solution library.&rdquo;
                                 </p>
-                                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mt-3">&mdash; Brayden Walls</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400/70 mt-4">&mdash; Brayden Walls</p>
                             </div>
 
-                            <div className="border-t border-slate-100 pt-8">
-                                <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-500 mb-4">What I Saw</p>
-                                <p className="text-base leading-relaxed">
-                                    I have spent my career moving across sectors &mdash; construction, resources, trade, regional development, community governance. In every environment, across every country and every field, the same thing kept happening. The people who needed the best information the most were the ones who had the least access to it.
-                                </p>
-                                <p className="text-base leading-relaxed mt-4">
-                                    I watched regional councils spend months preparing proposals that were rejected not because their opportunities weren&rsquo;t real, but because the documents didn&rsquo;t speak the language investors expect. I watched businesses enter foreign markets on optimistic spreadsheets and come undone on details they had no way of knowing to ask about. I watched government agencies commission reports that arrived three months too late, cost more than the decision was worth, and still couldn&rsquo;t surface the one or two things that actually mattered.
-                                </p>
-                                <p className="text-base leading-relaxed mt-4">
-                                    And I noticed something else: the gap was never about intelligence, ambition, or effort. The people I was watching were exceptional. The gap was entirely about access. The right tools had always existed &mdash; but they lived inside capital-city advisory firms, behind six-figure invoices and six-week turnaround times.
-                                </p>
-                            </div>
+                            {/* Sections */}
+                            {[
+                                {
+                                    label: 'What I Saw',
+                                    paras: [
+                                        'I have spent my career moving across sectors — construction, resources, trade, regional development, community governance. In every environment, across every country and every field, the same thing kept happening. The people who needed the best information the most were the ones who had the least access to it.',
+                                        'I watched regional councils spend months preparing proposals that were rejected not because their opportunities weren\'t real, but because the documents didn\'t speak the language investors expect. I watched businesses enter foreign markets on optimistic spreadsheets and come undone on details they had no way of knowing to ask about. I watched government agencies commission reports that arrived three months too late, cost more than the decision was worth, and still couldn\'t surface the one or two things that actually mattered.',
+                                        'And I noticed something else: the gap was never about intelligence, ambition, or effort. The people I was watching were exceptional. The gap was entirely about access. The right tools had always existed — but they lived inside capital-city advisory firms, behind six-figure invoices and six-week turnaround times.',
+                                    ]
+                                },
+                                {
+                                    label: 'What I Did About It',
+                                    paras: [
+                                        'At 52, I decided to stop watching it happen. I taught myself to code. I studied every economic development framework, every investment methodology, every decision-science discipline I could find. I moved to the Philippines and spent over a year on the ground — in Mindanao, in small coastal cities, in communities where the economic potential was enormous and the tools to unlock it simply did not exist. I watched the same pattern repeat: ambitious local leaders, incomplete information, no pathway to be seen.',
+                                        'That period became the foundation of this system. Not as inspiration — as specification. Every feature in ADVERSIQ exists because I watched a real decision fail in a real place for a reason that was entirely preventable.',
+                                    ]
+                                },
+                            ].map((section, si) => (
+                                <div key={si} className="border-t border-white/8 pt-10">
+                                    <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">{section.label}</p>
+                                    {section.paras.map((p, pi) => (
+                                        <p key={pi} className="text-[15px] leading-relaxed text-white/60 mt-4 first:mt-0">{p}</p>
+                                    ))}
+                                </div>
+                            ))}
 
-                            <div className="border-t border-slate-100 pt-8">
-                                <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-500 mb-4">What I Did About It</p>
-                                <p className="text-base leading-relaxed">
-                                    At 52, I decided to stop watching it happen. I taught myself to code. I studied every economic development framework, every investment methodology, every decision-science discipline I could find. I moved to the Philippines and spent over a year on the ground &mdash; in Mindanao, in small coastal cities, in communities where the economic potential was enormous and the tools to unlock it simply did not exist. I watched the same pattern repeat: ambitious local leaders, incomplete information, no pathway to be seen.
-                                </p>
-                                <p className="text-base leading-relaxed mt-4">
-                                    That period became the foundation of this system. Not as inspiration &mdash; as specification. Every feature in ADVERSIQ exists because I watched a real decision fail in a real place for a reason that was entirely preventable.
-                                </p>
-                            </div>
-
-                            <div className="border-t border-slate-100 pt-8">
-                                <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-500 mb-4">What I Built &mdash; From Scratch</p>
-                                <p className="text-base leading-relaxed">
-                                    Over sixteen months, working alone, I designed and built every component of what you see here:
-                                </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            {/* What I Built */}
+                            <div className="border-t border-white/8 pt-10">
+                                <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">What I Built — From Scratch</p>
+                                <p className="text-[15px] text-white/60 leading-relaxed mb-8">Over sixteen months, working alone, I designed and built every component of what you see here:</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
                                     {[
-                                        { label: '27+ Deterministic Formulas', desc: 'A proprietary scoring suite spanning strategic positioning, risk-adjusted return, supply chain impact, workforce readiness, governance integrity, and more. Every formula is mathematically grounded and fully auditable.' },
-                                        { label: 'Bayesian Adversarial Debate Engine', desc: 'Five expert AI personas &mdash; Skeptic, Advocate, Regulator, Accountant, Operator &mdash; run structured adversarial debate on every proposal. Beliefs update via Bayesian inference. Nothing reaches you until it has survived challenge.' },
-                                        { label: 'SAT Contradiction Solver', desc: 'Converts every input into propositional logic and tests for internal contradictions before any analysis runs. If your assumptions are impossible, the system tells you before you act on them.' },
-                                        { label: 'Monte Carlo Stress Testing', desc: '10,000-iteration simulation engine that produces probabilistic outcome distributions, Value-at-Risk scores, and regret analysis &mdash; quantifying the cost of inaction alongside the risk of action.' },
-                                        { label: 'Neuroscience-Derived Bias Modelling', desc: 'Identifies cognitive distortions in the input &mdash; overconfidence, anchoring, optimism bias &mdash; using decision-science frameworks and flags them before they contaminate the analysis.' },
-                                        { label: 'Reflexive Self-Audit Layer', desc: 'The system checks its own conclusions. Before any output is released, a dedicated audit layer examines the reasoning chain and returns a release verdict. If the system isn&rsquo;t confident, it says so.' },
-                                        { label: 'Ten-Step Structured Intake Protocol', desc: 'A guided intake process that extracts identity, strategic intent, market context, financials, risk tolerance, governance, and readiness. No prior expertise required &mdash; the system structures the thinking.' },
-                                        { label: 'Board-Ready Document Generation', desc: 'Investment memos, risk assessments, partner briefs, concept notes, export declarations, and more &mdash; automatically compiled from every score, debate transcript, and audit trail. Institutional-grade. Ready to send.' },
+                                        { n: '01', label: '54+ Deterministic Formulas', desc: 'A proprietary scoring suite spanning strategic positioning, risk-adjusted return, supply chain impact, workforce readiness, and governance integrity. Every formula is mathematically grounded and fully auditable.' },
+                                        { n: '02', label: 'Bayesian Adversarial Debate Engine', desc: 'Five expert AI personas — Skeptic, Advocate, Regulator, Accountant, Operator — run structured adversarial debate on every proposal. Beliefs update via Bayesian inference. Nothing reaches you until it has survived challenge.' },
+                                        { n: '03', label: 'SAT Contradiction Solver', desc: 'Converts every input into propositional logic and tests for internal contradictions before any analysis runs. If your assumptions are impossible, the system tells you before you act on them.' },
+                                        { n: '04', label: 'Monte Carlo Stress Testing', desc: '10,000-iteration simulation engine producing probabilistic outcome distributions, Value-at-Risk scores, and regret analysis — quantifying the cost of inaction alongside the risk of action.' },
+                                        { n: '05', label: 'Neuroscience-Derived Bias Modelling', desc: 'Identifies cognitive distortions — overconfidence, anchoring, optimism bias — using university-grade decision-science frameworks and flags them before they contaminate the analysis.' },
+                                        { n: '06', label: 'Reflexive Self-Audit Layer', desc: 'The system checks its own conclusions. Before any output is released, a dedicated audit layer examines the reasoning chain and returns a release verdict. If it isn\'t confident, it says so.' },
+                                        { n: '07', label: 'Ten-Layer Structured Intelligence Pipeline', desc: 'A guided intake process that extracts strategic intent, market context, financials, risk tolerance, and governance. No prior expertise required — the system structures the thinking.' },
+                                        { n: '08', label: 'Board-Ready Document Generation', desc: 'Investment memos, risk assessments, partner briefs, concept notes, export declarations — automatically compiled from every score, debate transcript, and audit trail. Institutional-grade. Ready to send.' },
                                     ].map((item, i) => (
-                                        <div key={i} className="border-t-2 border-slate-900 pt-4">
-                                            <p className="text-sm font-black text-slate-900 mb-2">{item.label}</p>
-                                            <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
+                                        <div key={i} className="bg-slate-900 px-6 py-7">
+                                            <p className="text-2xl font-black text-white/10 leading-none mb-3">{item.n}</p>
+                                            <p className="text-xs font-black text-amber-400 uppercase tracking-wide mb-2 leading-snug">{item.label}</p>
+                                            <p className="text-sm text-white/40 leading-relaxed">{item.desc}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="border-t border-slate-100 pt-8">
-                                <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-500 mb-4">Why This Has Never Been Done Before</p>
-                                <p className="text-base leading-relaxed">
-                                    Building any one of those components in isolation is achievable. Combining all of them &mdash; where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off &mdash; required expertise across six academic disciplines simultaneously: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
+                            {/* Never done before */}
+                            <div className="border-t border-white/8 pt-10">
+                                <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">Why This Has Never Been Done Before</p>
+                                <p className="text-[15px] text-white/60 leading-relaxed">
+                                    Building any one of those components in isolation is achievable. Combining all of them — where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off — required simultaneous expertise across six academic disciplines: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
                                 </p>
-                                <p className="text-base leading-relaxed mt-4">
+                                <p className="text-[15px] text-white/60 leading-relaxed mt-4">
                                     No commercial product had demanded that combination until this one. Because until this one, no one had tried to make institutional-grade decision intelligence accessible to organisations that couldn&rsquo;t afford to commission it.
                                 </p>
+                                {/* 6 disciplines */}
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-8">
+                                    {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
+                                        <div key={i} className="border border-amber-400/20 px-4 py-3 text-center">
+                                            <p className="text-xs font-bold text-amber-400/80 uppercase tracking-wide">{d}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="text-center text-xs text-white/25 mt-3 uppercase tracking-widest">Six disciplines. One pipeline. Never combined before.</p>
                             </div>
 
-                            <div className="border-t border-slate-100 pt-8">
-                                <p className="text-xs font-bold uppercase tracking-[0.15em] text-amber-500 mb-4">Why I Am Telling You This</p>
-                                <p className="text-base leading-relaxed">
+                            {/* Why I am telling you this */}
+                            <div className="border-t border-white/8 pt-10">
+                                <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">Why I Am Telling You This</p>
+                                <p className="text-[15px] text-white/60 leading-relaxed">
                                     Because I want you to understand what you&rsquo;re looking at. This is not a startup with a pitch deck and a runway. This is not a model wrapper with a dashboard and a marketing team. This is sixteen months of one person&rsquo;s full attention, applied to a problem that has existed for decades and been ignored because the people it hurt the most had no platform to be heard from.
                                 </p>
-                                <p className="text-base leading-relaxed mt-4">
-                                    I have no investors. I have no team. I registered as an Australian sole trader (ABN 55 978 113 300) and built every line of this from the ground up. I did it because I believe the organisations that have always been overlooked deserve the same analytical firepower as the ones that were never at risk of being ignored.
+                                <p className="text-[15px] text-white/60 leading-relaxed mt-4">
+                                    I have no investors. I have no team. I registered as an Australian sole trader and built every line of this from the ground up. I did it because I believe the organisations that have always been overlooked deserve the same analytical firepower as the ones that were never at risk of being ignored.
                                 </p>
-                                <p className="text-base leading-relaxed mt-4">
+                                <p className="text-[15px] text-white/80 font-medium leading-relaxed mt-6">
                                     I hope it bridges the gap. That is all it was ever meant to do.
                                 </p>
                             </div>
 
                             {/* Signature */}
-                            <div className="border-t-2 border-slate-900 pt-8 mt-4">
-                                <p className="text-2xl font-light text-slate-900 mb-1">Brayden Walls</p>
-                                <p className="text-sm text-slate-500">Founder &amp; Sole Developer &mdash; ADVERSIQ Intelligence</p>
-                                <p className="text-sm text-slate-400 mt-1">ABN 55 978 113 300 &mdash; Registered Australian Sole Trader</p>
+                            <div className="border-t border-white/8 pt-10 mt-4">
+                                <p className="text-4xl md:text-5xl font-extralight text-white leading-tight mb-3">Brayden Walls</p>
+                                <p className="text-sm text-white/40 uppercase tracking-[0.15em]">Founder &amp; Sole Developer — ADVERSIQ Intelligence</p>
+                                <p className="text-xs text-white/25 mt-2 uppercase tracking-[0.1em]">ABN 55 978 113 300 — Registered Australian Sole Trader</p>
                             </div>
                         </div>
 
                         {/* Footer */}
-                        <div className="px-8 md:px-14 py-6 border-t border-slate-200 flex justify-between items-center bg-slate-50">
-                            <p className="text-xs text-slate-400 font-medium uppercase tracking-widest">Built from the edge. For the whole world.</p>
-                            <button onClick={() => setShowFounderLetter(false)} className="px-8 py-3 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all">Close</button>
+                        <div className="px-8 md:px-16 py-6 border-t border-white/8 flex justify-between items-center">
+                            <p className="text-xs text-white/20 font-medium uppercase tracking-widest">Built from the edge. For the whole world.</p>
+                            <button onClick={() => setShowFounderLetter(false)} className="px-8 py-3 bg-amber-400 text-slate-900 text-sm font-bold hover:bg-amber-300 transition-all">Close</button>
                         </div>
                     </div>
                 </div>

@@ -367,6 +367,11 @@ For COMPLEX DECISIONS (strategy, risk, investment, market entry, multi-factor an
 
 KEY RULE: Match your format exactly to the complexity of what was asked. A greeting gets a warm, direct reply. A factual question gets a direct expert answer. A complex strategic decision gets the full structured pipeline.
 
+CRITICAL OUTPUT RULES — NEVER VIOLATE:
+- NEVER show internal reasoning, planning notes, step-by-step deliberation, or draft preparation before your answer.
+- NEVER output labels like "Step 1:", "NSIL Master Hub:", "Situation Analysis:", "Draft N:", or any chain-of-thought planning.
+- Begin your response directly with the answer. Internal reasoning must never appear in output.
+
 General behavior:
 - Be direct, client-facing, and human. No filler. No robotic formatting for simple inputs.
 - Preserve professional tone suitable for executive and government stakeholders.
@@ -420,6 +425,12 @@ Numbered, specific, sequenced steps — who, what, and when.
 One question or data point that would materially improve confidence.
 
 KEY RULE: Match your format to the question's complexity. "Tell me about Mayor X of City Y" is a simple question — answer it directly. "Should we invest in market X given regulatory risk Y?" is a complex decision — use the structured format.
+
+CRITICAL OUTPUT RULES — NEVER VIOLATE:
+- NEVER show internal reasoning, planning notes, step-by-step deliberation, or draft preparation before your answer.
+- NEVER output labels like "Step 1:", "Step 2:", "NSIL Master Hub:", "Situation Analysis:", "User Signal Analysis:", "Draft N:", or any chain-of-thought planning in your response.
+- NEVER annotate your response with "(This matches the provided good response)" or similar meta-commentary.
+- Begin your response directly with the answer. Internal reasoning is private and must never appear in output.
 
 General behavior:
 - Be direct and client-facing. No filler. No vague claims.
@@ -570,7 +581,7 @@ const CONSULTANT_ALLOWED_TASK_TYPES = new Set<ConsultantTaskType>([
 const CONSULTANT_MAX_MESSAGE_CHARS = 6000;
 const CONSULTANT_MAX_CONTEXT_CHARS = 14000;
 const CONSULTANT_MAX_RESPONSE_CHARS = 7000;
-const CONSULTANT_PROVIDER_TIMEOUT_MS = Number(process.env.CONSULTANT_PROVIDER_TIMEOUT_MS || 20000);
+const CONSULTANT_PROVIDER_TIMEOUT_MS = Number(process.env.CONSULTANT_PROVIDER_TIMEOUT_MS || 14000);
 const CONSULTANT_AUDIT_REDACTION_ENABLED = process.env.CONSULTANT_AUDIT_REDACTION_ENABLED !== 'false';
 const CONSULTANT_AUDIT_EXPORT_MAX = 5000;
 const CONSULTANT_REPLAY_STORE_PAYLOAD = process.env.CONSULTANT_REPLAY_STORE_PAYLOAD !== 'false';
@@ -678,6 +689,22 @@ const stripThinkingTokens = (text: string): string => {
   cleaned = cleaned.replace(/<thinking>[\s\S]*?<\/thinking>/gi, '');
   // Remove [THINKING]...[/THINKING] blocks
   cleaned = cleaned.replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '');
+
+  // Strip "(This matches the provided good response)." style annotation that
+  // some models emit when reasoning about whether their output matches an example.
+  cleaned = cleaned.replace(/\(This matches[^)]*\)\s*\.?\s*/gi, '');
+
+  // Detect untagged chain-of-thought preamble: planning notes that appear before
+  // the actual structured response. Signature: lines containing internal analysis
+  // labels (NSIL, Situation Analysis, User Signal, Step N:) followed by a
+  // markdown # heading that starts the real answer. Extract from the heading.
+  const hasUntaggedPreamble = /\b(NSIL Master Hub|Situation Analysis|User Signal Analysis|Step\s+\d+\s*:|Adversarial Stress Test|Contrarian View|Investment Landscape|Draft \d+)\b[\s\S]*?\n#+\s/i.test(cleaned);
+  if (hasUntaggedPreamble) {
+    const headingMatch = cleaned.match(/(#+\s[\s\S]+)$/);
+    if (headingMatch && headingMatch[1].trim().length > 30) {
+      cleaned = headingMatch[1].trim();
+    }
+  }
 
   // Detect Gemini/Gemma bullet-list chain-of-thought preamble.
   // These models sometimes output their reasoning as nested bullet points:
@@ -2085,7 +2112,9 @@ router.post('/consultant', async (req: Request, res: Response) => {
     let nsilReport: Record<string, unknown> | null = null;
     let liveIntel: LiveIntelligenceResult | null = null;
 
-    const BRAIN_TIMEOUT_MS = 12000;
+    // Fast-path: cap enrichment at 4 s so the AI call starts immediately.
+    // Brain/NSIL are bonus context — missing them is far better than a slow response.
+    const BRAIN_TIMEOUT_MS = 4000;
 
     try {
       const [brainResult, nsilResult, liveResult] = await Promise.allSettled([
@@ -2099,7 +2128,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         ]),
         Promise.race([
           fetchLiveIntelligence(sanitizedMessage),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), 8000)),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), 3000)),
         ]),
       ]);
       if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
