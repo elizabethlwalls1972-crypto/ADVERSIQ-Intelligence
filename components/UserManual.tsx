@@ -1244,7 +1244,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           
           {/* Title Block */}
           <div className="text-center border-b border-slate-300 pb-6">
-            <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Technical Report * January 2026</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Technical Report · May 2026</p>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">ADVERSIQ</h2>
             <h3 className="text-lg text-slate-700 mb-4">A Neuro-Symbolic Decision-Support Architecture for Cross-Border Partnership Intelligence</h3>
             <p className="text-xs text-slate-500">Brayden Walls Global Advisory * Research & Development Division</p>
@@ -1608,7 +1608,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
           {/* References Footer */}
           <div className="border-t border-slate-300 pt-4 mt-6">
             <p className="text-xs text-slate-500 text-center">
-              ADVERSIQ * Technical Architecture Report * Version 3.2 * January 2026<br/>
+              ADVERSIQ · Technical Architecture Report · Version 3.3 · May 2026<br/>
               A(c) 2026 Brayden Walls Global Advisory. All formulas and methodologies are proprietary.
             </p>
           </div>
@@ -3192,7 +3192,7 @@ const UserManual: React.FC<UserManualProps> = ({ onLaunchOS, onOpenCommandCenter
       {/* Terms Modal */}
       <Modal isOpen={activeModal === 'terms'} onClose={() => setActiveModal(null)} title="Terms & Conditions">
         <div className="prose prose-slate max-w-none">
-          <p className="text-sm text-slate-500 mb-6">Effective May 2025 | Last Updated January 2026</p>
+          <p className="text-sm text-slate-500 mb-6">Effective May 2025 | Last Updated May 2026</p>
           
           <div className="space-y-6">
             <div>

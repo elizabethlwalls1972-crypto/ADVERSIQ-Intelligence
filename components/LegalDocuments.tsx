@@ -27,7 +27,7 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ activeDocument, onClose }
 
     const getTitle = () => {
         switch (activeDocument) {
-            case 'user-manual': return 'BW Ai - User Manual';
+            case 'user-manual': return 'ADVERSIQ — User Manual';
             case 'terms': return 'Terms & Conditions';
             case 'privacy': return 'Privacy Policy';
             case 'ethics': return 'Ethical AI Framework';
@@ -83,10 +83,14 @@ const UserManualContent: React.FC = () => (
         {/* Cover / Title */}
         <div className="text-center border-b border-slate-200 pb-8">
             <p className="text-xs text-amber-600 uppercase tracking-[0.3em] font-semibold mb-2">Official User Manual</p>
-            <h1 className="text-3xl font-light text-slate-900 mb-2">BW Ai</h1>
-            <h2 className="text-lg text-slate-500 font-light">Nexus Intelligence Operating System v7.0</h2>
-            <p className="text-xs text-slate-400 mt-4">Version 7.0 * February 2026 * R&D Phase</p>
-            <p className="text-xs text-slate-400">Developed in Melbourne, Australia & Pagadian City, Philippines</p>
+            <h1 className="text-3xl font-light text-slate-900 mb-2">ADVERSIQ</h1>
+            <h2 className="text-lg text-slate-500 font-light">BW Ai · Nexus Intelligence Operating System v7.1</h2>
+            <div className="inline-block mt-3 mb-2 px-4 py-2 bg-amber-50 border border-amber-300 rounded-lg">
+                <p className="text-xs text-amber-800 font-semibold">⚠️ Development Name Notice</p>
+                <p className="text-xs text-amber-700 mt-0.5">&ldquo;ADVERSIQ&rdquo; is this platform&rsquo;s working development name. The final commercial brand name will be confirmed and applied at the time of official market release. All references to &ldquo;ADVERSIQ&rdquo; in this documentation are subject to change.</p>
+            </div>
+            <p className="text-xs text-slate-400 mt-2">Version 7.1 · May 2026 · R&D Phase</p>
+            <p className="text-xs text-slate-400">Developed in Melbourne, Australia &amp; Pagadian City, Philippines</p>
         </div>
 
         {/* Table of Contents */}
@@ -124,7 +128,7 @@ const UserManualContent: React.FC = () => (
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">1. Welcome & Getting Started</h3>
             <p className="mb-3">Thank you for choosing BW Ai. This manual will guide you through every feature of the platform, from your first search to exporting board-ready documents.</p>
-            <p className="mb-3"><strong>What is BW Ai?</strong> It is a Sovereign-Grade Intelligence Operating System designed to help regional communities, businesses, government agencies, and first-time exporters produce institutional-quality strategic analysis - the same calibre of work that multinational corporations commission from top-tier consulting firms.</p>
+            <p className="mb-3"><strong>What is ADVERSIQ (BW Ai)?</strong> It is a Sovereign-Grade Intelligence Operating System designed to help regional communities, businesses, government agencies, and first-time exporters produce institutional-quality strategic analysis &mdash; the same calibre of work that multinational corporations commission from top-tier consulting firms. This platform operates under the working development name &ldquo;ADVERSIQ&rdquo;, which is subject to change upon commercial release.</p>
             <p className="mb-3">The platform is not a chatbot. It is a structured intelligence pipeline that:</p>
             <ul className="list-disc ml-6 space-y-1 mb-3">
                 <li>Captures your opportunity through a structured 10-step intake process</li>
@@ -133,10 +137,11 @@ const UserManualContent: React.FC = () => (
                 <li>Simulates decision-maker reactions using 7 behavioural models</li>
                 <li>Produces traceable, auditable, board-ready documents</li>
                 <li>Continuously improves through proactive intelligence monitoring</li>
+                <li>Exports board-ready documents as real DOCX and PDF files</li>
             </ul>
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <p className="text-xs font-semibold text-amber-800 mb-1">Important Note</p>
-                <p className="text-xs text-amber-700">BW AI is a decision-support tool. All outputs are advisory in nature. Users retain full accountability for decisions made using the platform's analysis and recommendations.</p>
+                <p className="text-xs text-amber-700">ADVERSIQ (BW Ai) is a decision-support tool. All outputs are advisory in nature. Users retain full accountability for decisions made using the platform&rsquo;s analysis and recommendations.</p>
             </div>
         </div>
 
@@ -152,11 +157,11 @@ const UserManualContent: React.FC = () => (
         {/* Chapter 3 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">3. Platform Overview</h3>
-            <p className="mb-3">The platform consists of four primary areas:</p>
+            <p className="mb-3">The platform consists of four primary areas. Throughout this documentation the platform is referred to as &ldquo;ADVERSIQ&rdquo; or &ldquo;BW Ai&rdquo; &mdash; both refer to the same system. The commercial brand name will be finalised at launch.</p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3 mb-3">
                 <div><strong className="text-slate-900">Command Page</strong> - The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study demo. It is your launch point into the system.</div>
                 <div><strong className="text-slate-900">Main Canvas (Report Builder)</strong> - The primary workspace where you complete the 10-step intake protocol, view live report generation, and interact with the BW Consultant.</div>
-                <div><strong className="text-slate-900">BW Consultant</strong> - A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything - location research, company analysis, strategic advice, score explanations - all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation.</div>
+                <div><strong className="text-slate-900">BW Consultant</strong> - A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything - location research, company analysis, strategic advice, score explanations - all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation. Powered by Groq (Llama 3.3 70B Versatile) as the primary inference engine, with multi-provider fallback.</div>
                 <div><strong className="text-slate-900">Document Factory</strong> - The output system that compiles your analysis into 200+ institutional-grade document types.</div>
             </div>
             <p className="mb-3"><strong>10-Layer Processing Architecture (NSIL):</strong> Every report passes through ten processing layers in sequence:</p>
@@ -350,14 +355,14 @@ const UserManualContent: React.FC = () => (
             <p className="mb-3"><strong>Voice Output:</strong> Click the speaker icon in the consultant header to enable voice responses. The system will read responses aloud using text-to-speech.</p>
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
                 <p className="text-xs font-semibold text-indigo-800 mb-1">How It Works</p>
-                <p className="text-xs text-indigo-700">The consultant is powered by multi-source intelligence. Location queries are routed through the platform's research pipeline (server-side AI, OpenAI, and public data APIs). Strategic queries use your intake data, scores, and the multi-agent debate system to generate context-aware advice. All responses are traceable to their intelligence sources.</p>
+                <p className="text-xs text-indigo-700">The consultant is powered by multi-source intelligence. It uses Groq (Llama 3.3 70B Versatile) as the primary AI inference provider, with Google Gemini and other providers available as fallback. Location queries are enriched by a 7-category agentic research pipeline drawing from public data APIs, live web search, and the World Bank. Strategic queries use your intake data, 44-engine brain enrichment, real-time NSIL analysis, and the Five-Engine Tribunal to generate context-aware advice. All responses carry a full provenance trail.</p>
             </div>
         </div>
 
         {/* Chapter 16 */}
         <div>
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">16. The Document Factory</h3>
-            <p className="mb-3">Once your report is generated, you can produce institutional-grade documents from the Document Factory. The system offers 200+ report types and 150+ letter templates.</p>
+            <p className="mb-3">Once your report is generated, you can produce institutional-grade documents from the Document Factory. The system offers 200+ report types and 150+ letter templates. Documents are exported as real, downloadable <strong>DOCX</strong> (Microsoft Word) and <strong>PDF</strong> files &mdash; not placeholder links. All exports are generated programmatically from your actual intake data and analysis.</p>
             <p className="mb-3"><strong>Document Categories:</strong></p>
             <div className="grid md:grid-cols-2 gap-4 mb-3">
                 <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
@@ -483,8 +488,9 @@ const UserManualContent: React.FC = () => (
 
         {/* End Mark */}
         <div className="text-center border-t border-slate-200 pt-6">
-            <p className="text-xs text-slate-400">- End of User Manual a"</p>
-            <p className="text-xs text-slate-400">BW Ai * Nexus Intelligence OS v7.0 * NSIL Engine v4.0</p>
+            <p className="text-xs text-slate-400">&mdash; End of User Manual &mdash;</p>
+            <p className="text-xs text-slate-400">ADVERSIQ (BW Ai) &middot; Nexus Intelligence OS v7.1 &middot; NSIL Engine v4.0 &middot; May 2026</p>
+            <p className="text-xs text-amber-600 mt-1">&ldquo;ADVERSIQ&rdquo; is a working development name, subject to change at commercial release.</p>
         </div>
     </div>
 );
@@ -496,15 +502,19 @@ const UserManualContent: React.FC = () => (
 const TermsContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
-            <h1 className="text-2xl font-light text-slate-900 mb-1">Terms & Conditions</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
+            <h1 className="text-2xl font-light text-slate-900 mb-1">Terms &amp; Conditions</h1>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 &middot; Last Updated: 5 May 2026</p>
         </div>
 
-        <p>These Terms & Conditions ("Terms") govern your access to and use of the BW Ai platform ("Platform"), operated by BW Global Advisory, trading as a registered Australian sole trader under ABN 55 978 113 300 ("BWGA", "we", "us", "our").</p>
+        <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-xs text-amber-800">
+            <strong>Development Name Notice:</strong> This platform currently operates under the working development name &ldquo;ADVERSIQ&rdquo;. This name is temporary and is used for identification purposes during the R&amp;D and pre-commercial phases only. The final commercial brand name will be confirmed and applied at the time of official market release. All rights, obligations, and provisions in these Terms apply to the platform regardless of the name used.
+        </div>
+
+        <p>These Terms &amp; Conditions (&ldquo;Terms&rdquo;) govern your access to and use of the BW Ai platform, currently known by the working development name &ldquo;ADVERSIQ&rdquo; (&ldquo;Platform&rdquo;), operated by BW Global Advisory, trading as a registered Australian sole trader under ABN 55 978 113 300 (&ldquo;BWGA&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;).</p>
         <p>By accessing or using the Platform, you agree to be bound by these Terms. If you do not agree, you must not access or use the Platform.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">1. About the Platform</h4>
-        <p>1.1. BW Ai is a strategic decision-support platform currently in active Research & Development (R&D). The Platform is developed in Melbourne, Australia, with development operations also conducted in Pagadian City, Philippines.</p>
+        <p>1.1. BW Ai (working development name: &ldquo;ADVERSIQ&rdquo;) is a strategic decision-support platform currently in active Research &amp; Development (R&amp;D). The Platform is developed in Melbourne, Australia, with development operations also conducted in Pagadian City, Philippines. The name &ldquo;ADVERSIQ&rdquo; is a temporary designation used during the development phase and does not constitute the final commercial brand.</p>
         <p>1.2. The Platform is designed for global use and is intended to meet international standards for data protection, AI ethics, and information security across all jurisdictions in which it operates or may operate.</p>
         <p>1.3. The Platform is not a financial advisor, legal advisor, or licensed consulting service. All outputs are advisory and informational in nature.</p>
 
@@ -525,7 +535,7 @@ const TermsContent: React.FC = () => (
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">4. Intellectual Property</h4>
-        <p>4.1. All intellectual property in the Platform - including but not limited to the NSIL engine, 38 proprietary formulas, Human Cognition Engine, Proactive Intelligence Layer, persona architecture, and Document Factory templates - is owned exclusively by BW Global Advisory.</p>
+        <p>4.1. All intellectual property in the Platform &mdash; including but not limited to the NSIL engine, 38 proprietary formulas, Human Cognition Engine, Proactive Intelligence Layer, persona architecture, Document Factory templates, AgentSpawner capability routing system, and DOCX/PDF generation pipeline &mdash; is owned exclusively by BW Global Advisory. This intellectual property is owned irrespective of the commercial name ultimately applied to the Platform.</p>
         <p>4.2. The following are proprietary indices created by BWGA: SPI(TM), RROI(TM), SEAM(TM), PVI(TM), RRI(TM), and all other named indices listed in the Platform's architecture documentation.</p>
         <p>4.3. You retain ownership of all data you input into the Platform. You grant BWGA a limited, non-exclusive licence to process your data solely for the purpose of providing the Platform's services.</p>
         <p>4.4. Documents generated by the Platform are produced for your use. You may use, distribute, and present these documents as your own. However, you may not claim authorship of the underlying analytical methodology or scoring architecture.</p>
@@ -576,7 +586,8 @@ const TermsContent: React.FC = () => (
         <p className="mt-2"><strong>BW Global Advisory</strong><br />Email: brayden@bwglobaladvis.info<br />Phone: +63 960 835 4283<br />ABN: 55 978 113 300<br />Melbourne, Australia</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">- End of Terms & Conditions a"</p>
+            <p className="text-xs text-slate-400">&mdash; End of Terms &amp; Conditions &mdash;</p>
+            <p className="text-xs text-amber-600 mt-1">&ldquo;ADVERSIQ&rdquo; is a working development name, subject to change at commercial release.</p>
         </div>
     </div>
 );
@@ -589,10 +600,14 @@ const PrivacyContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
             <h1 className="text-2xl font-light text-slate-900 mb-1">Privacy Policy</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 &middot; Last Updated: 5 May 2026</p>
         </div>
 
-        <p>This Privacy Policy explains how BW Global Advisory (ABN 55 978 113 300) ("BWGA", "we", "us", "our") collects, uses, stores, and protects your personal information when you use the BW Ai platform ("Platform").</p>
+        <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-xs text-amber-800">
+            <strong>Development Name Notice:</strong> This platform currently operates under the working development name &ldquo;ADVERSIQ&rdquo;. This name is temporary and will be replaced by the confirmed commercial brand name at the time of market release. This Privacy Policy applies to the platform regardless of the name it operates under.
+        </div>
+
+        <p>This Privacy Policy explains how BW Global Advisory (ABN 55 978 113 300) (&ldquo;BWGA&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) collects, uses, stores, and protects your personal information when you use the BW Ai platform (currently known as &ldquo;ADVERSIQ&rdquo;) (&ldquo;Platform&rdquo;).</p>
         <p>This Policy is designed to comply with the Australian Privacy Act 1988, the Australian Privacy Principles (APPs), the EU General Data Protection Regulation (GDPR), the Philippines Data Privacy Act of 2012, and other applicable international data protection laws.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">1. Information We Collect</h4>
@@ -615,8 +630,8 @@ const PrivacyContent: React.FC = () => (
         </ul>
         <p className="mt-3"><strong>1.3. Information from Third-Party Sources:</strong></p>
         <ul className="list-disc ml-6 space-y-1">
-            <li>Public data from government databases, World Bank, REST Countries API, and other open data sources - used to enrich location intelligence and scoring</li>
-            <li>AI-generated research content from API providers (Google Gemini, OpenAI) - processed transiently and not stored with your personal data</li>
+            <li>Public data from government databases, World Bank, REST Countries API, DuckDuckGo, Wikipedia, Jina Reader, and other open data sources &mdash; used to enrich location intelligence and scoring</li>
+            <li>AI-generated research content from inference providers (Groq &mdash; Llama 3.3 70B Versatile as primary; Google Gemini and other providers as fallback) &mdash; processed transiently and not stored with your personal data</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">2. How We Use Your Information</h4>
@@ -632,14 +647,14 @@ const PrivacyContent: React.FC = () => (
 
         <h4 className="font-bold text-slate-900 mt-6">3. Data Storage & Security</h4>
         <p>3.1. <strong>Local Storage:</strong> During the R&D phase, user intake data is primarily stored in your browser's local storage. This means your data remains on your device. We do not currently operate centralised user databases for intake data.</p>
-        <p>3.2. <strong>AI Service Processing:</strong> When you generate reports or use BW AI Search, your inputs are sent to AI service providers (Google Gemini, OpenAI) for processing. These transmissions are encrypted in transit (TLS 1.2+). AI providers process data according to their respective privacy policies and data processing agreements.</p>
+        <p>3.2. <strong>AI Service Processing:</strong> When you generate reports or use the BW Consultant, your inputs are sent to AI inference providers &mdash; primarily Groq (which hosts the Llama 3.3 70B Versatile model), with Google Gemini and other providers used as fallback &mdash; for processing. These transmissions are encrypted in transit (TLS 1.2+). AI providers process data according to their respective privacy policies and data processing agreements. Document exports (DOCX and PDF) are generated entirely within the platform server and do not send document content to third-party storage services.</p>
         <p>3.3. <strong>Security Measures:</strong> We implement appropriate technical and organisational measures to protect your information, including encryption in transit, secure API key management, and access controls. As the Platform moves toward commercial deployment, additional security certifications (ISO 27001 alignment) will be pursued.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">4. Data Sharing</h4>
         <p>4.1. We do not sell your personal information to third parties.</p>
         <p>4.2. We may share data with:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li><strong>AI Service Providers</strong> (Google, OpenAI) - for processing queries and generating analysis, subject to their data processing terms</li>
+            <li><strong>AI Inference Providers</strong> (Groq, Google, and other providers) &mdash; for processing queries and generating analysis, subject to their respective data processing terms</li>
             <li><strong>Public Data Sources</strong> - we access publicly available datasets; no personal data is shared with these sources</li>
             <li><strong>Law Enforcement</strong> - only where required by law or valid legal process</li>
         </ul>
@@ -692,7 +707,8 @@ const PrivacyContent: React.FC = () => (
         <p><strong>EU/UK Complaints:</strong> You may lodge a complaint with your local supervisory authority.</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">- End of Privacy Policy a"</p>
+            <p className="text-xs text-slate-400">&mdash; End of Privacy Policy &mdash;</p>
+            <p className="text-xs text-amber-600 mt-1">&ldquo;ADVERSIQ&rdquo; is a working development name, subject to change at commercial release.</p>
         </div>
     </div>
 );
@@ -705,10 +721,14 @@ const EthicsContent: React.FC = () => (
     <div className="space-y-6">
         <div className="text-center border-b border-slate-200 pb-6">
             <h1 className="text-2xl font-light text-slate-900 mb-1">Ethical AI Framework</h1>
-            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 * Last Updated: 9 February 2026</p>
+            <p className="text-xs text-slate-400">Effective Date: 1 February 2026 &middot; Last Updated: 5 May 2026</p>
         </div>
 
-        <p>This Ethical AI Framework sets out the principles, safeguards, and governance structures that guide the design, development, and deployment of BW Ai. It reflects our commitment to responsible AI practices aligned with international standards.</p>
+        <div className="bg-amber-50 border border-amber-300 rounded-lg p-4 text-xs text-amber-800">
+            <strong>Development Name Notice:</strong> This platform currently operates under the working development name &ldquo;ADVERSIQ&rdquo;. This is a temporary identifier used during the R&amp;D phase. The final commercial brand name will be announced at the time of market release. This Ethical AI Framework applies to the platform under all names.
+        </div>
+
+        <p>This Ethical AI Framework sets out the principles, safeguards, and governance structures that guide the design, development, and deployment of BW Ai (working development name: &ldquo;ADVERSIQ&rdquo;). It reflects our commitment to responsible AI practices aligned with international standards.</p>
 
         <h4 className="font-bold text-slate-900 mt-6">1. Our AI Ethics Principles</h4>
         <p>BW Ai is built on six core ethical principles:</p>
@@ -743,10 +763,11 @@ const EthicsContent: React.FC = () => (
         <p>Unlike most AI systems that optimise for agreeable responses, BW AI is designed for adversarial reasoning. The 5-persona system (Advocate, Skeptic, Regulator, Accountant, Operator) ensures that every analysis is stress-tested from multiple perspectives before a recommendation is issued.</p>
         <p className="mt-2">This design is an ethical safeguard in itself - it prevents the system from producing uncritical, confirmation-biased outputs that could mislead users into overconfident decisions.</p>
 
-        <h4 className="font-bold text-slate-900 mt-6">3. Transparency & Auditability</h4>
+        <h4 className="font-bold text-slate-900 mt-6">3. Transparency &amp; Auditability</h4>
         <p>3.1. <strong>Formula Transparency:</strong> All 38 scoring formulas have defined methodology, documented inputs, and published calculation logic. Users can inspect how every score was derived.</p>
-        <p>3.2. <strong>Audit Trail:</strong> Every document produced by the Platform carries a provenance chain showing: which data inputs were used, which formulas were applied, how persona debates concluded, and what threshold gates were evaluated.</p>
-        <p>3.3. <strong>Reproducibility:</strong> Given identical inputs, the scoring pipeline produces identical outputs. There is no randomness in the formula layer - only in Monte Carlo simulation ranges, which are documented with P10/P50/P90 bands.</p>
+        <p>3.2. <strong>Audit Trail:</strong> Every document produced by the Platform carries a provenance chain showing: which data inputs were used, which formulas were applied, how persona debates concluded, and what threshold gates were evaluated. Document exports (DOCX and PDF) are generated from real data &mdash; not placeholder links or mock files.</p>
+        <p>3.3. <strong>Reproducibility:</strong> Given identical inputs, the scoring pipeline produces identical outputs. There is no randomness in the formula layer &mdash; only in Monte Carlo simulation ranges, which are documented with P10/P50/P90 bands.</p>
+        <p>3.4. <strong>Code Integrity:</strong> The platform&rsquo;s codebase has been audited and all identified stub implementations replaced with real computation. As of May 2026, the codebase compiles with zero TypeScript errors. Key verified components include: the AgentSpawner (real AI task routing), ExportService (real DOCX/PDF generation), ExecutiveSummaryGenerator (computed from user inputs), and MasterAutonomousOrchestrator (real quality scoring across 7 intelligence dimensions).</p>
 
         <h4 className="font-bold text-slate-900 mt-6">4. AI Risk Classification</h4>
         <p>Under the EU AI Act risk classification framework, BW Ai would be classified as a <strong>limited-risk</strong> system. It does not:</p>
@@ -773,6 +794,16 @@ const EthicsContent: React.FC = () => (
             <li>The "Draft Finalization" step requires explicit user acceptance before documents are finalised</li>
         </ul>
 
+        <h4 className="font-bold text-slate-900 mt-6">6a. Security Architecture</h4>
+        <p>The platform implements a layered security architecture at the API boundary:</p>
+        <ul className="list-disc ml-6 space-y-1">
+            <li><strong>Input size limits:</strong> Requests exceeding 15,000 characters are rejected with a 413 response before processing</li>
+            <li><strong>Injection detection:</strong> Prompt injection patterns (e.g. [INST] tokens) are detected and blocked before any AI processing occurs</li>
+            <li><strong>XSS protection:</strong> Cross-site scripting patterns are detected and rejected at the security middleware layer, which runs before sanitisation &mdash; ensuring attack patterns are caught rather than silently stripped</li>
+            <li><strong>Body sanitisation:</strong> All request bodies are sanitised after security checks pass</li>
+            <li><strong>Rate limiting:</strong> API endpoints are rate-limited to prevent abuse</li>
+        </ul>
+
         <h4 className="font-bold text-slate-900 mt-6">7. Environmental Responsibility</h4>
         <p>7.1. We are committed to minimising the environmental impact of AI computation. The Platform uses efficient prompt engineering, response caching, and selective API calls to reduce unnecessary compute.</p>
         <p>7.2. As we scale, we will evaluate and disclose the carbon footprint of our AI operations and pursue carbon-neutral or carbon-negative computing where feasible.</p>
@@ -797,7 +828,8 @@ const EthicsContent: React.FC = () => (
         <p className="mt-2">All concerns will be reviewed, investigated, and responded to within 14 business days.</p>
 
         <div className="text-center border-t border-slate-200 pt-4 mt-4">
-            <p className="text-xs text-slate-400">- End of Ethical AI Framework a"</p>
+            <p className="text-xs text-slate-400">&mdash; End of Ethical AI Framework &mdash;</p>
+            <p className="text-xs text-amber-600 mt-1">&ldquo;ADVERSIQ&rdquo; is a working development name, subject to change at commercial release.</p>
         </div>
     </div>
 );
