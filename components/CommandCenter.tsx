@@ -432,18 +432,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
                     </div>
 
-                    {/* Full-width band — Asian city photo left bleeds to section edge, text right */}
-                    <div className="border-t border-white/10 -mx-4 flex flex-col md:flex-row items-stretch min-h-[220px]">
-                        <div className="md:w-1/2 overflow-hidden flex-shrink-0">
-                            <img
-                                src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=900&h=500&fit=crop&q=85"
-                                alt="Asian city skyline at night"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div className="md:w-1/2 px-8 py-8 flex flex-col justify-center">
+                    {/* Full-width feature — Asian city photo with text overlay */}
+                    <div className="relative -mx-4 overflow-hidden" style={{ minHeight: '320px' }}>
+                        <img
+                            src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=1400&h=500&fit=crop&q=85"
+                            alt="Asian city skyline at night"
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-transparent" />
+                        <div className="relative z-10 px-8 py-14 max-w-lg">
                             <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Why nothing else does this</p>
-                            <p className="text-sm text-white/60 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
+                            <p className="text-sm text-white/80 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
                         </div>
                     </div>
 
