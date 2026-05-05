@@ -439,10 +439,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </p>
 
                         {/* Technical commercial statement */}
-                        <div className="mt-10 max-w-4xl border-l-2 border-amber-400/40 pl-6">
-                            <p className="text-sm text-white/50 leading-relaxed">
+                        <div className="mt-10 max-w-4xl border-l-2 border-amber-400 pl-6">
+                            <p className="text-base font-semibold text-amber-400 leading-relaxed">
                                 38 proprietary formulas. 5 adversarial AI personas. A DAG-scheduled reasoning engine that does not predict — it enforces. OIQ™, MEQ™, PSQ™, RAQ™, and ADV™: IQ, EQ, SQ, and AQ applied to organisations, markets, and regions for the first time in any intelligence platform. Every claim here maps 1-to-1 to a running executor in the codebase. Not a wrapper. Not a template.{' '}
-                                <span className="text-white/80">A purpose-built intelligence verification engine — and the only one built to be proven wrong.</span>
+                                <span className="text-white">A purpose-built intelligence verification engine — and the only one built to be proven wrong.</span>
                             </p>
                         </div>
 
