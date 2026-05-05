@@ -366,14 +366,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
-                                Six fields. Ten layers.<br className="hidden md:block" />
-                                <span className="font-black">One pipeline.</span>
+                                The intelligence platform<br className="hidden md:block" />
+                                <span className="font-black">built for decisions that matter.</span>
                             </h2>
                             <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                Built by one person, in sixteen months, from nothing.
+                                Six disciplines. Ten verified layers. One deterministic pipeline.
                             </p>
                             <p className="text-base text-slate-600 leading-relaxed">
-                                Institutional-grade analysis was never built for regional communities, independent operators, or anyone making a major decision without a firm on retainer. ADVERSIQ was built for exactly that. Whether you&rsquo;re a council, a first-time investor, or simply doing it yourself &mdash; this is the system.
+                                ADVERSIQ delivers institutional-grade strategic analysis at a fraction of the cost of traditional advisory — purpose-built for government agencies, regional authorities, investment operators, and organisations making high-stakes decisions without a big-four firm on retainer. Every output is mathematically verified, adversarially tested, and fully auditable before it reaches you.
                             </p>
                         </div>
 
