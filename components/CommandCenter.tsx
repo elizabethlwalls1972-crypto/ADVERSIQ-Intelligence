@@ -438,78 +438,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <span className="text-amber-400">It deserves one that has already been proven wrong — and survived.</span>
                         </p>
 
-                        {/* Technical commercial statement — NSIL explained 1:1 */}
-                        <div className="mt-10 border border-white/10 bg-white/[0.03] p-8 max-w-4xl">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-amber-400 mb-6">What makes this categorically different</p>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10">
-
-                                {/* Col 1 — The engine */}
-                                <div className="bg-slate-900 p-6 space-y-4">
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">The Engine — NSIL</p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        The <strong className="text-white">Nexus Strategic Intelligence Layer</strong> is a 10-layer deterministic reasoning engine. It does not predict. It does not guess. It enforces. Every input passes through hard validation gates before a single formula runs. Every output is traceable to the input that produced it.
-                                    </p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        Inside NSIL sit <strong className="text-white">38 proprietary formulas</strong> — not heuristics, not AI-generated weightings, but deterministic mathematical indices executed in a Directed Acyclic Graph so that no formula runs before its dependencies are resolved. The same inputs always produce the same scores. That is not how any other AI advisory tool works.
-                                    </p>
-                                    <div className="pt-2 space-y-1">
-                                        {['SPI™ — Success Probability Index', 'RROI™ — Regional Return on Investment', 'SEAM™ — Stakeholder Engagement Alignment', 'IVAS™ — Investment Velocity Activation Score', 'SCF™ — Strategic Confidence Factor'].map(f => (
-                                            <p key={f} className="text-[11px] text-amber-400/80 font-mono">{f}</p>
-                                        ))}
-                                        <p className="text-[11px] text-white/30 font-mono">+ 33 derivative indices across risk, operations, and intelligence layers</p>
-                                    </div>
-                                </div>
-
-                                {/* Col 2 — The Intelligence Suite */}
-                                <div className="bg-slate-900 p-6 space-y-4">
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">The Intelligence Suite — What No One Else Has</p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        Five AI personas — Advocate, Skeptic, Regulator, Accountant, Operator — run an adversarial debate on your project before any recommendation is made. They do not agree. They are designed not to. Consensus is forced by the tribunal architecture. The output is a position that has already been cross-examined.
-                                    </p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        On top of the formula layer sits an autonomous intelligence tier: Creative Synthesis (Koestler bisociation theory), Cross-Domain Transfer (Gentner structure-mapping), Ethical Reasoning (Rawlsian + utilitarian + intergenerational discounting), and Scenario Simulation (Monte Carlo, 200-run proxy, causal feedback loops).
-                                    </p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        And above all of that — <strong className="text-white">a framework that has never been applied to strategic intelligence before:</strong>
-                                    </p>
-                                    <div className="pt-2 space-y-1">
-                                        {[
-                                            'OIQ™ — Organizational Intelligence Quotient',
-                                            'MEQ™ — Market Emotional Quotient',
-                                            'PSQ™ — Partnership Social Quotient',
-                                            'RAQ™ — Regional Adversity Quotient',
-                                            'ADV™ — ADVERSIQ Intelligence Score (master composite)',
-                                        ].map(f => (
-                                            <p key={f} className="text-[11px] text-amber-400/80 font-mono">{f}</p>
-                                        ))}
-                                        <p className="text-[11px] text-white/30 leading-relaxed pt-1">IQ, EQ, SQ, and AQ have been applied to individuals for decades. ADVERSIQ is the first platform to apply them to organizations, markets, partnerships, and regions as live, computable, explainable indices inside a scoring pipeline.</p>
-                                    </div>
-                                </div>
-
-                                {/* Col 3 — The Claim, verified */}
-                                <div className="bg-slate-900 p-6 space-y-4">
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">The Claim — Verified</p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        Other platforms generate analysis. ADVERSIQ generates <strong className="text-white">evidence</strong>. Every score carries a full provenance chain: which formula produced it, which inputs it consumed, how the personas voted, and what threshold gate it passed.
-                                    </p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        The codebase is audited. Zero TypeScript compilation errors. All stub implementations replaced with real computation — AgentSpawner routes to live AI inference, ExportService generates real DOCX and PDF files, the MasterAutonomousOrchestrator scores across 7 intelligence dimensions using actual formula outputs.
-                                    </p>
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        The security layer runs before the AI layer. XSS patterns, prompt injection signatures, and oversized payloads are rejected at the middleware boundary before any model processes them. The system was built for adversarial inputs — by design.
-                                    </p>
-                                    <div className="border-t border-white/10 pt-4 mt-2">
-                                        <p className="text-[11px] text-white/40 leading-relaxed">
-                                            This is not a wrapper around a foundation model.<br />
-                                            It is not a prompt template with a professional UI.<br />
-                                            It is a purpose-built intelligence verification engine<br />
-                                            that took six fields of expertise to assemble — and produces<br />
-                                            outputs that can be defended in a boardroom.
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
+                        {/* Technical commercial statement */}
+                        <div className="mt-10 max-w-4xl border-l-2 border-amber-400/40 pl-6">
+                            <p className="text-sm text-white/50 leading-relaxed">
+                                38 proprietary formulas. 5 adversarial AI personas. A DAG-scheduled reasoning engine that does not predict — it enforces. OIQ™, MEQ™, PSQ™, RAQ™, and ADV™: IQ, EQ, SQ, and AQ applied to organisations, markets, and regions for the first time in any intelligence platform. Every claim here maps 1-to-1 to a running executor in the codebase. Not a wrapper. Not a template.{' '}
+                                <span className="text-white/80">A purpose-built intelligence verification engine — and the only one built to be proven wrong.</span>
+                            </p>
                         </div>
 
                         <div className="mt-10 flex flex-wrap gap-4">
