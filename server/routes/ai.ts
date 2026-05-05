@@ -713,13 +713,13 @@ const stripThinkingTokens = (text: string): string => {
   const hasReasoningPreamble = /^[\s]*\*[\t ]{1,8}(User input|System Persona|Core Identity|Goal:|Tone:|Formatting:|Draft \d)/m.test(cleaned);
   if (hasReasoningPreamble) {
     // Try to extract the actual response after the last "Draft N...:*" or "Draft N...:" marker
-    const draftExtract = cleaned.match(/Draft\s+\d+[^:\n]*:[\*\s]*((?:(?!\n\s*\*\s+Draft)[\s\S])+)$/i);
+    const draftExtract = cleaned.match(/Draft\s+\d+[^:\n]*:[*\s]*((?:(?!\n\s*\*\s+Draft)[\s\S])+)$/i);
     if (draftExtract && draftExtract[1].trim().length > 15) {
       cleaned = draftExtract[1].replace(/^\*\s*/, '').trim();
     } else {
       // No clean draft found — strip all bullet-list reasoning lines entirely
       const lines = cleaned.split('\n');
-      const nonBulletLines = lines.filter(line => !/^[\s]*[\*\-][\t ]+/.test(line));
+      const nonBulletLines = lines.filter(line => !/^[\s]*[*-][\t ]+/.test(line));
       const candidate = nonBulletLines.join('\n').trim();
       // Only keep non-bullet content if substantial; otherwise signal empty for fallback
       cleaned = candidate.length > 20 ? candidate : '';
