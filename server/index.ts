@@ -126,45 +126,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Validate and sanitize request bodies for AI endpoints
-app.use('/api/ai', (req: Request, res: Response, next: NextFunction) => {
-  if (req.method !== 'POST' && req.method !== 'PUT') return next();
-  if (!req.body) return next();
-
-  const body = req.body;
-
-  // Check for oversized message payloads
-  if (body.message && typeof body.message === 'string' && body.message.length > 15000) {
-    return res.status(413).json({ error: 'Message too long. Maximum 15,000 characters.' });
-  }
-
-  // Strip null bytes from all string fields
-  for (const key of Object.keys(body)) {
-    if (typeof body[key] === 'string') {
-      body[key] = body[key].replace(/\0/g, '');
-    }
-  }
-
-  // Block prompt injection patterns in server-side requests
-  if (body.message && typeof body.message === 'string') {
-    const msg = body.message;
-    const dangerousPatterns = [
-      /\[system\]|\[INST\]|<\|system\|>|<\|im_start\|>/i,
-      /ignore\s+(?:all\s+)?(?:previous|prior)\s+instructions/i,
-      /<script[\s>]/i,
-      /javascript\s*:/i,
-    ];
-    for (const pattern of dangerousPatterns) {
-      if (pattern.test(msg)) {
-        console.warn(`[SECURITY] Blocked dangerous input pattern: ${pattern.source} from ${req.ip}`);
-        return res.status(400).json({ error: 'Input contains disallowed content.' });
-      }
-    }
-  }
-
-  next();
-});
-
 // Rate limiting — prevent abuse
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
@@ -245,6 +206,46 @@ app.use(cors({
 // Body parsing (with size limits to prevent abuse)
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+
+// Validate and sanitize request bodies for AI endpoints
+// MUST be registered AFTER body parser so req.body is populated
+app.use('/api/ai', (req: Request, res: Response, next: NextFunction) => {
+  if (req.method !== 'POST' && req.method !== 'PUT') return next();
+  if (!req.body) return next();
+
+  const body = req.body;
+
+  // Check for oversized message payloads
+  if (body.message && typeof body.message === 'string' && body.message.length > 15000) {
+    return res.status(413).json({ error: 'Message too long. Maximum 15,000 characters.' });
+  }
+
+  // Strip null bytes from all string fields
+  for (const key of Object.keys(body)) {
+    if (typeof body[key] === 'string') {
+      body[key] = body[key].replace(/\0/g, '');
+    }
+  }
+
+  // Block prompt injection patterns in server-side requests
+  if (body.message && typeof body.message === 'string') {
+    const msg = body.message;
+    const dangerousPatterns = [
+      /\[system\]|\[INST\]|<\|system\|>|<\|im_start\|>/i,
+      /ignore\s+(?:all\s+)?(?:previous|prior)\s+instructions/i,
+      /<script[\s>]/i,
+      /javascript\s*:/i,
+    ];
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(msg)) {
+        console.warn(`[SECURITY] Blocked dangerous input pattern: ${pattern.source} from ${req.ip}`);
+        return res.status(400).json({ error: 'Input contains disallowed content.' });
+      }
+    }
+  }
+
+  next();
+});
 
 // Global sanitization and optional auth in request pipeline
 app.use(sanitizeBody);
