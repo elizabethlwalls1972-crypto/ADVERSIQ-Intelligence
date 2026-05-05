@@ -423,13 +423,26 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 { label: 'What you get', text: 'A complete intelligence workflow: validated inputs, adversarial debate, 27+ deterministic formulas, bias audit, Monte Carlo stress testing, and board-ready documents — in a single run.' },
                                 { label: 'Who it replaces', text: 'The strategy consultant. The risk advisory firm. The analyst you were going to hire. ADVERSIQ runs the same rigour at a fraction of the cost, in a fraction of the time.' },
                                 { label: 'Why it exists', text: 'Government agencies, regional authorities, and investment operators were making multi-million dollar decisions with tools built for a different era. ADVERSIQ was built to change that.' },
-                                { label: 'Why nothing else does this', text: 'Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.' },
                             ].map((item, i) => (
                                 <div key={i} className="border-t border-white/10 py-6">
                                     <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">{item.label}</p>
                                     <p className="text-sm text-white/60 leading-relaxed">{item.text}</p>
                                 </div>
                             ))}
+                            {/* Final item — photo to the right */}
+                            <div className="border-t border-white/10 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                                <div className="py-2">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Why nothing else does this</p>
+                                    <p className="text-sm text-white/60 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
+                                </div>
+                                <div className="overflow-hidden min-h-[160px]">
+                                    <img
+                                        src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&h=320&fit=crop&q=85"
+                                        alt="Strategic intelligence analysis in action"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="border-t border-white/10 pt-12">
