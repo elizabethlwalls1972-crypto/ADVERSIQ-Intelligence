@@ -522,3 +522,285 @@ toolRegistry.register({
   },
 });
 
+// ============================================================================
+// FREE GLOBAL INTELLIGENCE TOOLS — no API key, no cost, live data
+// ============================================================================
+
+import { localReasoningEngine } from '../LocalReasoningEngine.js';
+
+// ── Exchange Rates — frankfurter.app, free, no key ───────────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'exchange_rates',
+    description: 'Get live foreign exchange rates from any base currency. No API key required. Use for currency risk analysis, investment returns in local currency, or TCO conversion.',
+    category: 'data',
+    parameters: [
+      { name: 'base', type: 'string', description: 'Base currency code e.g. USD, EUR, GBP', required: true },
+      { name: 'targets', type: 'string', description: 'Comma-separated target currencies e.g. PHP,VND,KES,NGN,BRL', required: false },
+    ],
+    returns: 'Live exchange rates from frankfurter.app with date',
+  },
+  execute: async (args) => {
+    const base = String(args.base ?? 'USD').toUpperCase().slice(0, 3);
+    const targets = args.targets ? `&to=${String(args.targets).toUpperCase().slice(0, 100)}` : '';
+    const url = `https://api.frankfurter.app/latest?from=${base}${targets}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(6000), headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0' } });
+    if (!res.ok) throw new Error(`Exchange rate API error ${res.status}`);
+    const data = await res.json() as { amount: number; base: string; date: string; rates: Record<string, number> };
+    return {
+      base: data.base,
+      date: data.date,
+      rates: data.rates,
+      source: 'Frankfurter (ECB data) — free, no API key',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── RSS/ATOM News Feed — any public RSS URL, free, no key ────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'rss_news',
+    description: 'Fetch and parse any public RSS/ATOM news feed. Returns latest headlines with dates. Suggested feeds: BBC World (https://feeds.bbci.co.uk/news/world/rss.xml), Reuters (https://feeds.reuters.com/reuters/topNews), FT (https://www.ft.com/?format=rss).',
+    category: 'research',
+    parameters: [
+      { name: 'feedUrl', type: 'string', description: 'Full RSS/ATOM feed URL', required: true },
+      { name: 'limit', type: 'number', description: 'Max articles to return (default 10, max 20)', required: false },
+    ],
+    returns: 'Array of { title, link, pubDate, description } from the feed',
+  },
+  execute: async (args) => {
+    const feedUrl = String(args.feedUrl ?? '').trim();
+    if (!feedUrl.startsWith('http')) throw new Error('feedUrl must be a valid http/https URL');
+    const limit = Math.min(Number(args.limit ?? 10), 20);
+
+    const res = await fetch(feedUrl, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0', 'Accept': 'application/rss+xml, application/xml, text/xml, */*' },
+    });
+    if (!res.ok) throw new Error(`RSS fetch error ${res.status}`);
+    const xml = await res.text();
+
+    // Parse RSS items with simple regex (no XML library needed for standard feeds)
+    const items: Array<{ title: string; link: string; pubDate: string; description: string }> = [];
+    const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
+    let match: RegExpExecArray | null;
+
+    const extract = (block: string, tag: string): string => {
+      const m = block.match(new RegExp(`<${tag}(?:[^>]*)>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/${tag}>`, 'i'));
+      return m ? m[1].trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"') : '';
+    };
+
+    while ((match = itemRegex.exec(xml)) && items.length < limit) {
+      const block = match[1];
+      items.push({
+        title: extract(block, 'title').slice(0, 200),
+        link: extract(block, 'link') || extract(block, 'guid'),
+        pubDate: extract(block, 'pubDate') || extract(block, 'published') || extract(block, 'updated'),
+        description: extract(block, 'description').replace(/<[^>]+>/g, '').slice(0, 400),
+      });
+    }
+
+    // Also handle ATOM <entry> format
+    if (items.length === 0) {
+      const entryRegex = /<entry[\s>]([\s\S]*?)<\/entry>/gi;
+      while ((match = entryRegex.exec(xml)) && items.length < limit) {
+        const block = match[1];
+        const linkMatch = block.match(/<link[^>]+href="([^"]+)"/i);
+        items.push({
+          title: extract(block, 'title').slice(0, 200),
+          link: linkMatch?.[1] || '',
+          pubDate: extract(block, 'published') || extract(block, 'updated'),
+          description: extract(block, 'summary').replace(/<[^>]+>/g, '').slice(0, 400),
+        });
+      }
+    }
+
+    const feedTitle = xml.match(/<title(?:[^>]*)>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/i)?.[1] ?? feedUrl;
+    return {
+      feed: feedTitle.slice(0, 100),
+      itemCount: items.length,
+      items,
+      source: feedUrl,
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── Open-Meteo — weather forecast, free, no key ──────────────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'weather_forecast',
+    description: 'Get current weather and 7-day forecast for any city. Free, no API key. Useful for agriculture, logistics, disaster risk, and operational planning analysis.',
+    category: 'data',
+    parameters: [
+      { name: 'city', type: 'string', description: 'City name e.g. Manila, Nairobi, Lagos, Jakarta', required: false },
+      { name: 'latitude', type: 'number', description: 'Latitude (alternative to city)', required: false },
+      { name: 'longitude', type: 'number', description: 'Longitude (alternative to city)', required: false },
+    ],
+    returns: 'Current temperature, wind speed, precipitation, and 7-day forecast from Open-Meteo',
+  },
+  execute: async (args) => {
+    let lat = Number(args.latitude ?? 0);
+    let lon = Number(args.longitude ?? 0);
+    let cityName = String(args.city ?? '').trim();
+
+    // Geocode city via Nominatim if lat/lon not provided
+    if ((!lat || !lon) && cityName) {
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`,
+        { signal: AbortSignal.timeout(5000), headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0' } }
+      );
+      if (geoRes.ok) {
+        const geoData = await geoRes.json() as Array<{ lat: string; lon: string; display_name: string }>;
+        if (geoData.length > 0) {
+          lat = parseFloat(geoData[0].lat);
+          lon = parseFloat(geoData[0].lon);
+          cityName = geoData[0].display_name.split(',')[0];
+        }
+      }
+    }
+    if (!lat || !lon) throw new Error('Provide city name or latitude/longitude');
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max&timezone=auto&forecast_days=7`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error(`Open-Meteo API error ${res.status}`);
+
+    const data = await res.json() as {
+      current: { temperature_2m: number; relative_humidity_2m: number; precipitation: number; wind_speed_10m: number };
+      daily: { time: string[]; temperature_2m_max: number[]; temperature_2m_min: number[]; precipitation_sum: number[]; wind_speed_10m_max: number[] };
+      timezone: string;
+    };
+
+    const forecast = (data.daily.time ?? []).map((date, i) => ({
+      date,
+      maxTemp: data.daily.temperature_2m_max?.[i],
+      minTemp: data.daily.temperature_2m_min?.[i],
+      precipitation: data.daily.precipitation_sum?.[i],
+      maxWind: data.daily.wind_speed_10m_max?.[i],
+    }));
+
+    return {
+      location: cityName || `${lat},${lon}`,
+      timezone: data.timezone,
+      current: {
+        temperature: `${data.current.temperature_2m}°C`,
+        humidity: `${data.current.relative_humidity_2m}%`,
+        precipitation: `${data.current.precipitation} mm`,
+        windSpeed: `${data.current.wind_speed_10m} km/h`,
+      },
+      forecast7Day: forecast,
+      source: 'Open-Meteo (free, no API key)',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── OpenAlex — academic & research papers, free, no key ─────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'research_papers',
+    description: 'Search peer-reviewed academic research papers on any topic via OpenAlex. Free, no API key. Useful for finding evidence base for sector trends, technology adoption, development economics, public health, etc.',
+    category: 'research',
+    parameters: [
+      { name: 'query', type: 'string', description: 'Research topic e.g. "fintech financial inclusion Southeast Asia" or "renewable energy Africa"', required: true },
+      { name: 'limit', type: 'number', description: 'Number of papers to return (default 5, max 10)', required: false },
+      { name: 'fromYear', type: 'number', description: 'Filter papers from this year onwards e.g. 2020', required: false },
+    ],
+    returns: 'Array of papers with title, authors, year, abstract, citations, and open access URL',
+  },
+  execute: async (args) => {
+    const query = String(args.query ?? '').trim().slice(0, 200);
+    if (!query) throw new Error('query required');
+    const limit = Math.min(Number(args.limit ?? 5), 10);
+    const fromYear = args.fromYear ? `&filter=publication_year:>${Number(args.fromYear) - 1}` : '';
+
+    const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&sort=relevance_score:desc&per-page=${limit}&select=title,authorships,publication_year,abstract_inverted_index,cited_by_count,open_access,doi${fromYear}`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0 (mailto:admin@adversiq.ai)' },
+    });
+    if (!res.ok) throw new Error(`OpenAlex API error ${res.status}`);
+
+    const data = await res.json() as {
+      results: Array<{
+        title: string;
+        authorships: Array<{ author: { display_name: string } }>;
+        publication_year: number;
+        abstract_inverted_index?: Record<string, number[]>;
+        cited_by_count: number;
+        open_access: { is_oa: boolean; oa_url?: string };
+        doi?: string;
+      }>;
+    };
+
+    const papers = (data.results ?? []).map(p => {
+      // Reconstruct abstract from inverted index
+      let abstract = '';
+      if (p.abstract_inverted_index) {
+        const words: Array<[string, number]> = [];
+        for (const [word, positions] of Object.entries(p.abstract_inverted_index)) {
+          positions.forEach(pos => words.push([word, pos]));
+        }
+        abstract = words.sort((a, b) => a[1] - b[1]).map(w => w[0]).join(' ').slice(0, 500);
+      }
+      return {
+        title: p.title,
+        authors: (p.authorships ?? []).slice(0, 3).map(a => a.author?.display_name).filter(Boolean).join(', '),
+        year: p.publication_year,
+        abstract,
+        citations: p.cited_by_count,
+        openAccess: p.open_access?.is_oa ?? false,
+        url: p.open_access?.oa_url ?? (p.doi ? `https://doi.org/${p.doi.replace('https://doi.org/', '')}` : null),
+      };
+    });
+
+    return {
+      query,
+      paperCount: papers.length,
+      papers,
+      source: 'OpenAlex (free, no API key — 250M+ scholarly works)',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── Local Reason — offline autonomous reasoning, zero API key ─────────────────
+toolRegistry.register({
+  schema: {
+    name: 'local_reason',
+    description: 'Run the local autonomous reasoning engine — chains NSIL formulas + Bayesian debate + SAT solver + local Ollama LLM. Works completely offline with zero API keys once Ollama is set up. Use for questions that require deep structured reasoning.',
+    category: 'analysis',
+    parameters: [
+      { name: 'question', type: 'string', description: 'The question or problem to reason about', required: true },
+      { name: 'context', type: 'string', description: 'Additional context or background information', required: false },
+      { name: 'scores', type: 'object', description: 'NSIL formula scores if available', required: false },
+      { name: 'depth', type: 'string', description: 'Reasoning depth: quick | standard | deep', required: false },
+    ],
+    returns: 'Structured reasoning result with answer, confidence, epistemic status, and step-by-step reasoning chain',
+  },
+  execute: async (args) => {
+    return localReasoningEngine.reason({
+      question: String(args.question ?? ''),
+      context: args.context ? String(args.context) : undefined,
+      scores: args.scores as Record<string, number>,
+      depth: (args.depth as 'quick' | 'standard' | 'deep') ?? 'standard',
+    });
+  },
+});
+
+// ── Ollama Status — check local AI setup ─────────────────────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'ollama_status',
+    description: 'Check whether the local Ollama AI runtime is running, which models are installed, and get setup guidance. Use this to verify the system can reason fully offline.',
+    category: 'data',
+    parameters: [],
+    returns: 'Ollama running status, installed model list, recommended models, and setup guidance',
+  },
+  execute: async () => {
+    return localReasoningEngine.getSetupStatus();
+  },
+});
+
+

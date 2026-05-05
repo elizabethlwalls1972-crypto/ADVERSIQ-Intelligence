@@ -67,6 +67,7 @@ import { sanitizeBody } from './middleware/validate.js';
 // bedrock placeholder route removed — inference handled by /api/ai routes
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
+import ollamaRoutes from './routes/ollama.js';
 
 const app = express();
 const PORT = parseInt(String(process.env.PORT || 3000), 10);
@@ -311,6 +312,7 @@ app.use('/api/learning', learningRoutes);
 // bedrock placeholder route removed — all AI inference goes through /api/ai
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
+app.use('/api/ollama', ollamaRoutes);
 
 // Serve static frontend in production
 if (process.env.NODE_ENV === 'production') {
