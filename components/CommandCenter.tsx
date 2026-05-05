@@ -429,22 +429,24 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <p className="text-sm text-white/60 leading-relaxed">{item.text}</p>
                                 </div>
                             ))}
-                            {/* Final item — photo to the right */}
-                            <div className="border-t border-white/10 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-                                <div className="py-2">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">Why nothing else does this</p>
-                                    <p className="text-sm text-white/60 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
-                                </div>
-                                <div className="overflow-hidden min-h-[160px]">
-                                    <img
-                                        src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=700&h=320&fit=crop&q=85"
-                                        alt="Strategic intelligence analysis in action"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                            </div>
                         </div>
                     </div>
+
+                    {/* Full-width band — Asian city photo left bleeds to section edge, text right */}
+                    <div className="border-t border-white/10 -mx-4 flex flex-col md:flex-row items-stretch min-h-[220px]">
+                        <div className="md:w-1/2 overflow-hidden flex-shrink-0">
+                            <img
+                                src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=900&h=500&fit=crop&q=85"
+                                alt="Asian city skyline at night"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div className="md:w-1/2 px-8 py-8 flex flex-col justify-center">
+                            <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Why nothing else does this</p>
+                            <p className="text-sm text-white/60 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
+                        </div>
+                    </div>
+
                     <div className="border-t border-white/10 pt-12">
                         <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl">
                             Your next major decision deserves more than a confident-sounding answer.<br />
