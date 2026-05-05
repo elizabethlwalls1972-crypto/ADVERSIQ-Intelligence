@@ -63,7 +63,9 @@ const ESTIMATED_TIMES: Record<FormulaId, number> = {
   'BARNA': 30, 'NVI': 25, 'CRI': 35, 'FRS': 25,
   'CAP': 20, 'AGI': 15, 'VCI': 20, 'ATI': 25, 'ESI': 30, 'ISI': 20, 'OSI': 25, 'TCO': 35,
   'PRI': 30, 'RNI': 25, 'SRA': 35, 'IDV': 20,
-  'CRE': 80, 'CDT': 75, 'AGL': 60, 'ETH': 55, 'EVO': 45, 'ADA': 40, 'EMO': 50, 'SIM': 120
+  'CRE': 80, 'CDT': 75, 'AGL': 60, 'ETH': 55, 'EVO': 45, 'ADA': 40, 'EMO': 50, 'SIM': 120,
+  // Human Intelligence Quotient Suite
+  'OIQ': 40, 'MEQ': 35, 'PSQ': 35, 'RAQ': 40, 'ADV': 25
 };
 
 // ============================================================================

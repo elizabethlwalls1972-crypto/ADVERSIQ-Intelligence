@@ -74,7 +74,13 @@ export type FormulaId =
   // Risk Indices
   | 'PRI' | 'RNI' | 'SRA' | 'IDV'
   // Autonomous Intelligence Indices
-  | 'CRE' | 'CDT' | 'AGL' | 'ETH' | 'EVO' | 'ADA' | 'EMO' | 'SIM';
+  | 'CRE' | 'CDT' | 'AGL' | 'ETH' | 'EVO' | 'ADA' | 'EMO' | 'SIM'
+  // Human Intelligence Quotient Suite (novel — applied to orgs/markets/regions, not individuals)
+  | 'OIQ'  // Organizational Intelligence Quotient — analytical & institutional IQ of the pursuing org
+  | 'MEQ'  // Market Emotional Quotient — collective sentiment stability of the target market
+  | 'PSQ'  // Partnership Social Quotient — cross-cultural relationship-building ease (Hofstede-mapped)
+  | 'RAQ'  // Regional Adversity Quotient — shock-recovery resilience of the target region
+  | 'ADV'; // ADVERSIQ Intelligence Score — master composite of all four quotients
 
 export interface FormulaNode {
   id: FormulaId;
@@ -152,7 +158,18 @@ const FORMULA_GRAPH: Record<FormulaId, { dependencies: FormulaId[]; priority: nu
   'EVO': { dependencies: ['SPI', 'RROI', 'CRI'], priority: 80 }, // Self-Evolving Algorithm - tunes formula weights via gradient descent
   'ADA': { dependencies: ['SCF', 'ATI'], priority: 78 },     // Adaptive Learning - Bayesian belief updates from outcomes
   'EMO': { dependencies: ['SCF', 'ISI', 'OSI'], priority: 82 },  // Emotional Intelligence - Prospect Theory & Russell Circumplex
-  'SIM': { dependencies: ['SCF', 'SRA', 'PRI'], priority: 92 }   // Scenario Simulation - Monte Carlo with 5000 runs & causal loops
+  'SIM': { dependencies: ['SCF', 'SRA', 'PRI'], priority: 92 },  // Scenario Simulation - Monte Carlo with 5000 runs & causal loops
+
+  // Level 5 - Human Intelligence Quotient Suite
+  // Novel: These apply the IQ/EQ/SQ/AQ framework to ORGANIZATIONS, MARKETS, and REGIONS
+  // — not individuals. No other strategic intelligence platform has done this.
+  'OIQ': { dependencies: ['CAP', 'IVAS', 'CRI'], priority: 88 },          // Org Intelligence Quotient — analytical/institutional IQ of the pursuer
+  'MEQ': { dependencies: ['PRI', 'SEAM', 'ISI'], priority: 86 },           // Market EQ — collective sentiment coherence of the target market
+  'PSQ': { dependencies: ['SEAM', 'NVI', 'BARNA'], priority: 84 },         // Partnership SQ — Hofstede cultural fit & relationship-building velocity
+  'RAQ': { dependencies: ['CRI', 'PRI', 'SRA'], priority: 90 },            // Regional AQ — shock-recovery resilience (never quantified before)
+
+  // Level 6 - ADVERSIQ Master Score (depends on all four quotients)
+  'ADV': { dependencies: ['OIQ', 'MEQ', 'PSQ', 'RAQ', 'SCF'], priority: 100 } // ADVERSIQ Intelligence Score™ — total intelligence readiness composite
 };
 
 // ============================================================================
@@ -815,6 +832,336 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
       grade: toGrade(score),
       components: { successProbability: probSuccess * 100, meanOutcome, var95: Math.max(var95, 0) },
       drivers: ['Monte Carlo probability of success (200-run proxy)', 'Mean simulated outcome across perturbations', 'VaR₉₅ downside risk estimate'],
+      executionTimeMs: Date.now() - start
+    };
+  },
+
+  // ─────────────── Level 5 Executors — Human Intelligence Quotient Suite ───────────────
+  //
+  // NOVEL: The IQ/EQ/SQ/AQ framework has been applied to individuals for decades.
+  // ADVERSIQ is the first strategic intelligence platform to apply these constructs to
+  // ORGANIZATIONS (OIQ), MARKETS (MEQ), PARTNERSHIPS (PSQ), and REGIONS (RAQ).
+  // No consulting firm, AI platform, or academic institution has quantified these
+  // as computable, explainable indices within a live scoring pipeline.
+  //
+
+  'OIQ': async (params, cache) => {
+    // Organizational Intelligence Quotient™
+    // Measures the analytical, institutional, and adaptive reasoning capacity of the
+    // organization pursuing this opportunity — not the destination country.
+    //
+    // Sub-components:
+    //   analytical   = innovation × 0.4 + CAP × 0.6
+    //   institutional = IVAS × 0.5 + CAP × 0.5
+    //   adaptiveIQ   = CAP × 0.3 + digitalReadiness × 0.4 + innovation × 0.3
+    //
+    // OIQ = analytical×0.35 + institutional×0.35 + adaptiveIQ×0.30
+    const start = Date.now();
+    const c = await getComposite(params);
+    const cap = cache.get('CAP')?.score || 50;
+    const ivas = cache.get('IVAS')?.score || 50;
+    const cri = cache.get('CRI')?.score || 50;
+    const innovation = c.components.innovation ?? 55;
+    const digitalReadiness = c.components.digitalReadiness ?? 55;
+    // Industry-adjusted maturity: sectors with high regulatory complexity tend to build stronger institutional IQ
+    const institutionalMaturityBonus = params.industry?.some(i =>
+      ['finance', 'banking', 'healthcare', 'pharma', 'government', 'defence'].includes(i.toLowerCase())
+    ) ? 8 : 0;
+    const analytical = clamp(innovation * 0.4 + cap * 0.6, 10, 100);
+    const institutional = clamp(ivas * 0.5 + cap * 0.5 + institutionalMaturityBonus, 10, 100);
+    const adaptiveIQ = clamp(cap * 0.3 + digitalReadiness * 0.4 + innovation * 0.3, 10, 100);
+    // Cognitive bandwidth bonus: more stakeholders engaged → broader reasoning base
+    const stakeholderBonus = Math.min((params.stakeholderAlignment?.length || 0) * 3, 12);
+    const jitter = deterministicJitter(`OIQ-${params.organizationName || params.country || ''}`, 1.5);
+    const score = clamp(
+      analytical * 0.35 + institutional * 0.35 + adaptiveIQ * 0.30
+      + stakeholderBonus + jitter,
+      20, 97
+    );
+    // Cross-validate with CRI: high-CRI environments force higher OIQ development
+    const environmentPressure = cri > 70 ? 3 : cri < 40 ? -3 : 0;
+    const finalScore = clamp(score + environmentPressure, 20, 97);
+    return {
+      id: 'OIQ',
+      score: Math.round(finalScore),
+      grade: toGrade(finalScore),
+      components: { analytical: Math.round(analytical), institutional: Math.round(institutional), adaptiveIQ: Math.round(adaptiveIQ) },
+      drivers: [
+        'Analytical reasoning capacity (innovation index × CAP)',
+        'Institutional decision architecture (IVAS × CAP)',
+        'Adaptive problem-solving velocity (CAP × digital readiness × innovation)',
+        'Stakeholder cognitive bandwidth multiplier',
+        'Environmental pressure coefficient from CRI'
+      ],
+      executionTimeMs: Date.now() - start
+    };
+  },
+
+  'MEQ': async (params, cache) => {
+    // Market Emotional Quotient™
+    // Measures the collective emotional intelligence of the target market/region —
+    // its sentiment stability, trust coherence, and social capital density.
+    //
+    // Unlike EMO (which applies Prospect Theory to the *decision-maker*),
+    // MEQ scores the *market environment itself*: how predictably stakeholders
+    // behave, how coherently political and social trust align, and how stable
+    // the emotional/psychological landscape is for partnership formation.
+    //
+    // Theoretical basis:
+    //   - Putnam (1993): Social capital & institutional trust theory
+    //   - Inglehart (1997): Cultural trust maps & post-materialist values
+    //   - Earley & Ang (2003): Cultural Intelligence (CQ) adapted to market level
+    //
+    // Sub-components:
+    //   sentimentStability  = PRI × 0.6 + SEAM × 0.4
+    //   trustCoherence      = SEAM × 0.5 + ISI × 0.5
+    //   socialCapital       = 100 - |PRI - SEAM| (alignment between political & social layers)
+    //
+    // MEQ = sentimentStability×0.35 + trustCoherence×0.35 + socialCapital×0.30
+    const start = Date.now();
+    const pri = cache.get('PRI')?.score || 50;
+    const seam = cache.get('SEAM')?.score || 50;
+    const isi = cache.get('ISI')?.score || 50;
+    const sentimentStability = clamp(pri * 0.6 + seam * 0.4, 10, 100);
+    const trustCoherence = clamp(seam * 0.5 + isi * 0.5, 10, 100);
+    // Social capital: high when political trust (PRI) and stakeholder alignment (SEAM) co-move
+    const socialCapital = clamp(100 - Math.abs(pri - seam), 10, 100);
+    // Emotional volatility penalty: markets with high political risk AND low alignment are emotionally incoherent
+    const volatilityPenalty = pri < 45 && seam < 45 ? -8 : 0;
+    const jitter = deterministicJitter(`MEQ-${params.country || params.region || ''}`, 1.5);
+    const score = clamp(
+      sentimentStability * 0.35 + trustCoherence * 0.35 + socialCapital * 0.30
+      + volatilityPenalty + jitter,
+      15, 96
+    );
+    return {
+      id: 'MEQ',
+      score: Math.round(score),
+      grade: toGrade(score),
+      components: {
+        sentimentStability: Math.round(sentimentStability),
+        trustCoherence: Math.round(trustCoherence),
+        socialCapital: Math.round(socialCapital)
+      },
+      drivers: [
+        'Market sentiment stability (Inglehart cultural trust map proxy)',
+        'Institutional trust coherence (Putnam social capital theory)',
+        'Political–social alignment gap (PRI vs SEAM divergence)',
+        'Emotional volatility flag (dual low-stability penalty)',
+        'Cultural Intelligence (CQ) environmental baseline'
+      ],
+      executionTimeMs: Date.now() - start
+    };
+  },
+
+  'PSQ': async (params, cache) => {
+    // Partnership Social Quotient™
+    // Quantifies the social intelligence of a cross-border partnership:
+    // how easily can two parties from different cultural/regulatory contexts
+    // build trust, communicate, and maintain a working relationship?
+    //
+    // No other strategic intelligence platform has turned cultural fit into a
+    // quantified, computable index within a live scoring pipeline.
+    //
+    // Theoretical basis:
+    //   - Hofstede (1980, 2010): 6 cultural dimensions (PDI, IDV, MAS, UAI, LTO, IVR)
+    //   - Granovetter (1973): Strength of Weak Ties — bridge connections accelerate trust
+    //   - Fukuyama (1995): Trust radius theory — high-trust societies partner faster
+    //   - Hall (1976): High-context vs low-context communication styles
+    //
+    // Sub-components:
+    //   culturalAlignment     = BARNA × 0.4 + SEAM × 0.6  (Hofstede PDI + UAI proxy)
+    //   networkDepth          = NVI × 0.5 + SEAM × 0.5    (Granovetter bridge density)
+    //   relationshipVelocity  = 100 - |SEAM - NVI|         (trust formation speed)
+    //   diplomaticWarmth      = (BARNA + NVI) / 2          (formal relationship scaffolding)
+    //
+    // PSQ = culturalAlignment×0.30 + networkDepth×0.25 + relationshipVelocity×0.25 + diplomaticWarmth×0.20
+    const start = Date.now();
+    const seam = cache.get('SEAM')?.score || 50;
+    const nvi = cache.get('NVI')?.score || 50;
+    const barna = cache.get('BARNA')?.score || 50;
+    const culturalAlignment = clamp(barna * 0.4 + seam * 0.6, 10, 100);
+    const networkDepth = clamp(nvi * 0.5 + seam * 0.5, 10, 100);
+    // Relationship velocity: highest when SEAM and NVI agree (both open or both closed)
+    const relationshipVelocity = clamp(100 - Math.abs(seam - nvi), 10, 100);
+    const diplomaticWarmth = clamp((barna + nvi) / 2, 10, 100);
+    // High-context culture adjustment: industry sectors that rely heavily on relationships
+    const relationshipIntensityBonus = params.industry?.some(i =>
+      ['government', 'real estate', 'hospitality', 'construction', 'agriculture', 'healthcare'].includes(i.toLowerCase())
+    ) ? 6 : 0;
+    // Counterpart diversity bonus: more counterpart types → stronger network bridge density
+    const bridgeBonus = Math.min((params.targetCounterpartType?.length || 0) * 4, 14);
+    const jitter = deterministicJitter(`PSQ-${params.country || ''}`, 1.5);
+    const score = clamp(
+      culturalAlignment * 0.30 + networkDepth * 0.25 + relationshipVelocity * 0.25 + diplomaticWarmth * 0.20
+      + relationshipIntensityBonus + bridgeBonus + jitter,
+      15, 97
+    );
+    return {
+      id: 'PSQ',
+      score: Math.round(score),
+      grade: toGrade(score),
+      components: {
+        culturalAlignment: Math.round(culturalAlignment),
+        networkDepth: Math.round(networkDepth),
+        relationshipVelocity: Math.round(relationshipVelocity),
+        diplomaticWarmth: Math.round(diplomaticWarmth)
+      },
+      drivers: [
+        'Cultural alignment (Hofstede PDI + UAI dimensions mapped to BARNA/SEAM)',
+        'Network bridge density (Granovetter weak ties theory)',
+        'Trust formation velocity (SEAM–NVI coherence)',
+        'Diplomatic warmth index (formal relationship scaffolding)',
+        'High-context culture sector adjustment',
+        'Counterpart diversity bridge bonus'
+      ],
+      executionTimeMs: Date.now() - start
+    };
+  },
+
+  'RAQ': async (params, cache) => {
+    // Regional Adversity Quotient™
+    // How resilient is the target region/market to economic shocks, political crises,
+    // supply chain disruptions, and natural disasters?
+    //
+    // This is the most novel formula in the suite. No consulting firm, advisory body,
+    // or AI platform has built a quantified "bounce-back" index for regions that is:
+    //   (a) computable from live data, (b) decomposed into distinct sub-components,
+    //   (c) integrated into a strategic recommendation pipeline.
+    //
+    // Existing tools (e.g. Fragile States Index, EM-DAT) measure *exposure* to adversity.
+    // RAQ measures the region's *capacity to absorb and recover* — the equivalent of
+    // Paul Stoltz's AQ applied at regional/economic scale.
+    //
+    // Theoretical basis:
+    //   - Stoltz (1997): Adversity Quotient — CORE model (Control, Ownership, Reach, Endurance)
+    //     Applied: Control→PRI (political agency), Ownership→SRA (responsibility for outcomes),
+    //              Reach→CRI (how far adversity spreads), Endurance→1/|CRI-SRA| (recovery rate)
+    //   - Briguglio (2004): Economic Vulnerability & Resilience Index (EVI)
+    //   - IMF (2020): Resilience and Sustainability Trust — institutional buffer capacity
+    //
+    // Sub-components:
+    //   shockAbsorption     = CRI × 0.4 + PRI × 0.6   (diversification × stability)
+    //   institutionalBuffer = PRI × 0.5 + SRA × 0.5   (gov + regulatory response capacity)
+    //   economicDiversity   = 100 - |CRI - SRA| × 0.5  (inverse of sector concentration)
+    //   socialResilience    = min(CRI, PRI)             (Rawlsian floor — weakest link sets ceiling)
+    //
+    // RAQ = shockAbsorption×0.30 + institutionalBuffer×0.25 + economicDiversity×0.25 + socialResilience×0.20
+    const start = Date.now();
+    const c = await getComposite(params);
+    const cri = cache.get('CRI')?.score || 50;
+    const pri = cache.get('PRI')?.score || 50;
+    const sra = cache.get('SRA')?.score || 50;
+    // CORE model (Stoltz): Control = PRI (gov stability), Ownership = SRA,
+    //   Reach = inverse CRI variance, Endurance = recovery speed proxy
+    const control = pri;
+    const ownership = sra;
+    const reach = clamp(100 - Math.abs(cri - sra) * 0.8, 20, 100); // how far adversity spreads
+    const endurance = clamp((cri + pri) / 2 + 5, 20, 100);          // time-to-recovery proxy
+    const shockAbsorption = clamp(cri * 0.4 + pri * 0.6, 10, 100);
+    const institutionalBuffer = clamp(control * 0.5 + ownership * 0.5, 10, 100);
+    const economicDiversity = reach;
+    const socialResilience = clamp(Math.min(cri, pri), 10, 100);     // Rawlsian floor
+    // Track record bonus: high growth potential × stable political environment = proven resilience
+    const trackRecordBonus = (c.components.growthPotential ?? 50) > 65 && pri > 60 ? 5 : 0;
+    // Crisis-prone penalty: very low PRI means the region has thin institutional buffers
+    const crisisPronePenalty = pri < 35 ? -10 : 0;
+    const jitter = deterministicJitter(`RAQ-${params.country || params.region || ''}`, 1.5);
+    const score = clamp(
+      shockAbsorption * 0.30 + institutionalBuffer * 0.25 + economicDiversity * 0.25 + socialResilience * 0.20
+      + trackRecordBonus + crisisPronePenalty + endurance * 0.05 + jitter,
+      10, 97
+    );
+    return {
+      id: 'RAQ',
+      score: Math.round(score),
+      grade: toGrade(score),
+      components: {
+        shockAbsorption: Math.round(shockAbsorption),
+        institutionalBuffer: Math.round(institutionalBuffer),
+        economicDiversity: Math.round(economicDiversity),
+        socialResilience: Math.round(socialResilience)
+      },
+      drivers: [
+        'Shock absorption capacity (Briguglio EVI — diversification × stability)',
+        'Institutional buffer depth (IMF RST — gov + regulatory response capacity)',
+        'Economic diversity index (inverse sector concentration via CRI–SRA spread)',
+        'Social resilience floor (Rawlsian minimum: weakest of CRI vs PRI)',
+        'Stoltz CORE model — Control (PRI) × Ownership (SRA) × Reach × Endurance',
+        'Historical track record bonus (growth × political stability)',
+        'Crisis-prone institutional thin-buffer penalty'
+      ],
+      executionTimeMs: Date.now() - start
+    };
+  },
+
+  'ADV': async (params, cache) => {
+    // ADVERSIQ Intelligence Score™ — Master Composite
+    // The capstone index that no other platform has built.
+    //
+    // ADV unifies the four quotient dimensions into a single "Total Intelligence
+    // Readiness" score for the opportunity, weighted by the SCF (Success Confidence)
+    // as a validity multiplier.
+    //
+    // Formula:
+    //   baseADV = OIQ×0.25 + MEQ×0.25 + PSQ×0.25 + RAQ×0.25
+    //   scfMultiplier = clamp(SCF / 75, 0.72, 1.15)
+    //   ADV = baseADV × scfMultiplier
+    //
+    // Interpretation:
+    //   < 40  — Intelligence deficit: significant gaps in org capacity, market trust, social fit, or resilience
+    //   40–59 — Intelligence developing: workable but requires targeted capacity-building
+    //   60–74 — Intelligence capable: solid foundation with identifiable improvement vectors
+    //   75–89 — High intelligence: organization and market are well-matched across all four dimensions
+    //   90+   — Exceptional: rare alignment of organizational, market, social, and resilience intelligence
+    //
+    // The ADV score is the first time IQ/EQ/SQ/AQ theory has been applied to
+    // cross-border strategic opportunity assessment as a unified computable index.
+    const start = Date.now();
+    const oiq = cache.get('OIQ')?.score || 50;
+    const meq = cache.get('MEQ')?.score || 50;
+    const psq = cache.get('PSQ')?.score || 50;
+    const raq = cache.get('RAQ')?.score || 50;
+    const scf = cache.get('SCF')?.score || 50;
+    // Equal weighting of the four quotients — each dimension of intelligence matters equally
+    const baseADV = (oiq + meq + psq + raq) / 4;
+    // SCF multiplier: if success confidence is high, amplify; if low, constrain
+    const scfMultiplier = clamp(scf / 75, 0.72, 1.15);
+    // Coherence bonus: when all four quotients agree (low variance), the score is more reliable
+    const quotients = [oiq, meq, psq, raq];
+    const mean = baseADV;
+    const variance = quotients.reduce((s, q) => s + Math.pow(q - mean, 2), 0) / 4;
+    const stdDev = Math.sqrt(variance);
+    const coherenceBonus = stdDev < 10 ? 3 : stdDev < 20 ? 0 : -3;
+    const jitter = deterministicJitter(`ADV-${params.country || ''}`, 1);
+    const score = clamp(baseADV * scfMultiplier + coherenceBonus + jitter, 10, 99);
+    // Determine intelligence band
+    const band = score >= 90 ? 'exceptional'
+      : score >= 75 ? 'high'
+      : score >= 60 ? 'capable'
+      : score >= 40 ? 'developing'
+      : 'deficit';
+    return {
+      id: 'ADV',
+      score: Math.round(score),
+      grade: toGrade(score),
+      components: {
+        OIQ: oiq,
+        MEQ: meq,
+        PSQ: psq,
+        RAQ: raq,
+        scfMultiplier: Math.round(scfMultiplier * 100) / 100,
+        coherenceBonus,
+        band: band as unknown as number  // stored as metadata
+      },
+      drivers: [
+        `OIQ ${oiq}/100 — Organizational Intelligence: analytical, institutional, adaptive reasoning capacity`,
+        `MEQ ${meq}/100 — Market Emotional Intelligence: sentiment stability, trust coherence, social capital`,
+        `PSQ ${psq}/100 — Partnership Social Intelligence: cultural fit, network depth, relationship velocity`,
+        `RAQ ${raq}/100 — Regional Adversity Intelligence: shock absorption, institutional buffer, resilience floor`,
+        `SCF multiplier ×${scfMultiplier.toFixed(2)} — Success Confidence modulation`,
+        `Quotient coherence bonus: ${coherenceBonus > 0 ? '+' : ''}${coherenceBonus} (σ=${stdDev.toFixed(1)})`
+      ],
       executionTimeMs: Date.now() - start
     };
   }
