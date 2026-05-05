@@ -178,6 +178,7 @@ interface CaseStudy {
   constraints: string;
   timeline: string;
   additionalContext: string[];
+  sector?: string;
   uploadedDocuments: string[];
   aiInsights: string[];
   domainMode?: string;
@@ -1269,6 +1270,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   const locationSessionIdRef = useRef<string | null>(null);
   const locationProfileContextRef = useRef<string>('');
   const eventBusInsightsRef = useRef<string>('');
+  const handleSendRef = useRef<((overrideMsg?: string) => Promise<void>) | null>(null);
   const multiAgentContextRef = useRef<string>('');
   const multiAgentRunningRef = useRef(false);
 
@@ -1526,18 +1528,22 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       if (action.category === 'document') {
         // Trigger document generation for this action
         const docPrompt = `${action.label}: ${action.description}`;
-        await handleSendMessage(docPrompt);
+        await handleSendRef.current?.(docPrompt);
       } else if (action.category === 'submit') {
         // Submit the current case to the AI pipeline
         const submitMsg = `Proceed with: ${action.label}. ${action.description}`;
-        await handleSendMessage(submitMsg);
+        await handleSendRef.current?.(submitMsg);
       } else if (action.category === 'escalate') {
         // Add to chat as an escalation signal
         const escalateMsg = `ESCALATION REQUIRED — ${action.label}: ${action.description}. Please provide priority guidance.`;
-        await handleSendMessage(escalateMsg);
+        await handleSendRef.current?.(escalateMsg);
       } else if (action.category === 'notify') {
         // Log the notification as an insight
-        appendEventInsight('ACTION_NOTIFY', `${action.label}: ${action.description}`);
+        const _notifyEntry = `[ACTION_NOTIFY] ${action.label}: ${action.description}`.slice(0, 310);
+        eventBusInsightsRef.current = [
+          ...eventBusInsightsRef.current.split('\n').slice(-12),
+          _notifyEntry,
+        ].join('\n');
       }
       setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'done' } : a));
     } catch (err) {
@@ -1576,7 +1582,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         sector: caseStudy.sector,
         currentMatter: caseStudy.currentMatter,
         organizationName: caseStudy.organizationName,
-        additionalContext: caseStudy.additionalContext,
+        additionalContext: caseStudy.additionalContext.join('\n'),
       };
       const historical = HistoricalParallelMatcher.match(params);
       const counterfactual = CounterfactualEngine.analyze(params);
@@ -1587,7 +1593,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         country: caseStudy.country || '',
         sector: caseStudy.sector || '',
         objective: caseStudy.currentMatter || '',
-        constraints: caseStudy.additionalContext || '',
+        constraints: caseStudy.additionalContext.join('\n'),
         candidates: REGIONAL_PARTNER_CANDIDATES,
       });
       setRankedPartners(rankedPartnerList.slice(0, 6));
@@ -1608,9 +1614,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         sector: caseStudy.sector,
         currentMatter: caseStudy.currentMatter,
         organizationName: caseStudy.organizationName,
-        additionalContext: caseStudy.additionalContext,
+        additionalContext: caseStudy.additionalContext.join('\n'),
         projectStage: 'analysis',
-      } as Parameters<typeof AdversarialReasoningService.generate>[0];
+      } as unknown as Parameters<typeof AdversarialReasoningService.generate>[0];
       const result = await AdversarialReasoningService.generate(params);
       setAdversarialResult(result);
     } catch (err) {
@@ -4199,11 +4205,12 @@ ${agentRegistry.current.toManifest()}`;
   }, [recommendationBoostMap, recommendedDocs.length, generateRecommendations, isCaseStudyComplete]);
 
   // Handle send message
-  const handleSend = useCallback(async () => {
-    if (!inputValue.trim() && uploadedFiles.length === 0) return;
+  const handleSend = useCallback(async (overrideMsg?: string) => {
+    const effectiveInput = overrideMsg !== undefined ? overrideMsg : inputValue;
+    if (!effectiveInput.trim() && uploadedFiles.length === 0) return;
 
     // ── Security gate: validate input before AI pipeline ────────────────────
-    const securityCheck = securityService.validateInput(inputValue, 'chat');
+    const securityCheck = securityService.validateInput(effectiveInput, 'chat');
     if (securityCheck.blocked) {
       const threatNames = securityCheck.threats.map(t => t.description).join(', ');
       setMessages(prev => [
@@ -4218,7 +4225,7 @@ ${agentRegistry.current.toManifest()}`;
       return;
     }
 
-    let userContent = securityCheck.sanitizedInput || inputValue.trim();
+    let userContent = securityCheck.sanitizedInput || effectiveInput.trim();
 
     // ── Safety guardrails: additional AI-safety pipeline check ─────────────
     try {
@@ -4301,7 +4308,7 @@ ${agentRegistry.current.toManifest()}`;
     // ── Re-run signal extraction on COMBINED content (including uploaded doc text) ──
     // The original extractConsultantSignals only ran on typed text. Now capture
     // country, objectives, org names, etc. from the full message including docs.
-    if (uploadedFiles.length > 0 && userContent.length > inputValue.trim().length + 100) {
+    if (uploadedFiles.length > 0 && userContent.length > effectiveInput.trim().length + 100) {
       const docSignals = extractConsultantSignals(userContent);
       if (docSignals.country && !extractedSignals.country) extractedSignals.country = docSignals.country;
       if (docSignals.organizationName && !extractedSignals.organizationName) extractedSignals.organizationName = docSignals.organizationName;
@@ -5008,6 +5015,7 @@ ${agentRegistry.current.toManifest()}`;
     setIsStreamingResponse(false);
     setIsLoading(false);
   }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles]);
+  handleSendRef.current = handleSend;
 
   // Handle file selection
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -7434,7 +7442,7 @@ ${agentRegistry.current.toManifest()}`;
                 />
                 <button
                   data-send-btn
-                  onClick={handleSend}
+                  onClick={() => handleSend()}
                   disabled={(!inputValue.trim() && uploadedFiles.length === 0) || isLoading}
                   className={`px-6 py-3 text-sm font-medium transition-colors flex items-center gap-2 ${
                     (!inputValue.trim() && uploadedFiles.length === 0) || isLoading

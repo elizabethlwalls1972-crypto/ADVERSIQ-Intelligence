@@ -462,9 +462,6 @@ ${orgName}
     setError(null);
     setCopySuccess('');
 
-    // Simulate "thinking" time for the consultancy feel
-    await new Promise(r => setTimeout(r, 1200));
-
     try {
       let content = '';
       if (letterType === 'precedent_based') {
