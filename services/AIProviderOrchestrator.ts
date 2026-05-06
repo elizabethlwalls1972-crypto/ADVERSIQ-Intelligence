@@ -7,23 +7,25 @@
  * Spreads token usage, picks the best provider for each task type,
  * implements retry-with-fallback, and tracks usage to avoid rate limits.
  *
- * Providers: Ollama (local) → Gemma → Groq → Together → OpenRouter → Mistral → OpenAI → Anthropic
+ * Providers: Ollama models (local, 3 models) → Gemma → Groq → Together → OpenRouter → Mistral → OpenAI → Anthropic
  * Each provider has different strengths:
- *   - Ollama:      Local inference, zero cost, full privacy (requires Ollama installed)
- *   - Gemma:       Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
- *   - Groq:        Ultra-fast inference, great for quick analytical queries
- *   - Together:    Good for long-form generation, large context
- *   - OpenRouter:  Free-tier access to Claude, Llama, Mistral, DeepSeek and more via one key
- *   - Mistral:     Free tier (500M tokens/month), excellent EU-hosted reasoning
- *   - OpenAI:      Best reasoning, function calling, nuanced analysis
- *   - Anthropic:   Best for careful, nuanced, safety-aware responses
+ *   - ollama (llama3.2:3b):   Fast local inference, zero cost, full privacy
+ *   - ollama-qwen3 (qwen3):   Local deep reasoning + long analysis (Alibaba Qwen3)
+ *   - ollama-openchat:        Local fast conversation fine-tune (OpenChat 3.5)
+ *   - Gemma:                  Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
+ *   - Groq:                   Ultra-fast cloud inference
+ *   - Together:               Good for long-form generation, large context
+ *   - OpenRouter:             Free-tier access to Claude, Llama, Mistral, DeepSeek and more
+ *   - Mistral:                Free tier (500M tokens/month), excellent EU-hosted reasoning
+ *   - OpenAI:                 Best reasoning, function calling, nuanced analysis
+ *   - Anthropic:              Best for careful, nuanced, safety-aware responses
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
 import { callOllama, checkOllamaAvailable, type OllamaMessage } from './ollamaService';
 import { callGemma, isGemmaAvailable, type GemmaMessage } from '../gemmaService';
 
-export type AIProvider = 'ollama' | 'gemma' | 'groq' | 'together' | 'openrouter' | 'mistral' | 'openai' | 'anthropic';
+export type AIProvider = 'ollama' | 'ollama-qwen3' | 'ollama-openchat' | 'gemma' | 'groq' | 'together' | 'openrouter' | 'mistral' | 'openai' | 'anthropic';
 
 export type TaskType =
   | 'quick-analysis'    // Short analytical response — Groq preferred
@@ -68,22 +70,55 @@ function getProviderConfigs(): ProviderConfig[] {
   // Ollama — local, free, no API key needed (highest priority)
   // Availability is checked async; we always register it but callProvider
   // will verify reachability before use.
+  const ollamaBase = typeof process !== 'undefined'
+    ? (process.env?.OLLAMA_BASE_URL || 'http://localhost:11434')
+    : 'http://localhost:11434';
   const ollamaModel = typeof process !== 'undefined'
     ? (process.env?.OLLAMA_MODEL || 'llama3.2:3b')
     : 'llama3.2:3b';
+
+  // Primary Ollama model (llama3.2:3b by default) — fast, lightweight
   configs.push({
     name: 'ollama',
-    apiUrl: typeof process !== 'undefined'
-      ? (process.env?.OLLAMA_BASE_URL || 'http://localhost:11434')
-      : 'http://localhost:11434',
+    apiUrl: ollamaBase,
     getKey: () => 'local',
     model: ollamaModel,
     maxOutputTokens: 8192,
     requestsPerMinute: 999,
     tokensPerMinute: 999999,
-    strengths: ['quick-analysis', 'general', 'research', 'long-generation', 'deep-reasoning', 'consensus'],
+    strengths: ['quick-analysis', 'general'],
     costWeight: 0,
   });
+
+  // Qwen3 — local deep-reasoning model (register always; callProvider verifies availability)
+  if (ollamaModel !== 'qwen3:latest') {
+    configs.push({
+      name: 'ollama-qwen3',
+      apiUrl: ollamaBase,
+      getKey: () => 'local',
+      model: 'qwen3:latest',
+      maxOutputTokens: 8192,
+      requestsPerMinute: 999,
+      tokensPerMinute: 999999,
+      strengths: ['deep-reasoning', 'long-generation', 'research', 'consensus', 'extended-thinking'],
+      costWeight: 0,
+    });
+  }
+
+  // OpenChat — local conversation fine-tune (register always; callProvider verifies availability)
+  if (ollamaModel !== 'openchat:latest') {
+    configs.push({
+      name: 'ollama-openchat',
+      apiUrl: ollamaBase,
+      getKey: () => 'local',
+      model: 'openchat:latest',
+      maxOutputTokens: 8192,
+      requestsPerMinute: 999,
+      tokensPerMinute: 999999,
+      strengths: ['quick-analysis', 'general'],
+      costWeight: 0,
+    });
+  }
 
   // Gemma — free Google AI key (second priority)
   if (isGemmaAvailable()) {
@@ -314,8 +349,8 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
   const maxTokens = options.maxTokens || config.maxOutputTokens;
   const temperature = options.temperature ?? 0.4;
 
-  // ── Ollama (local) ──
-  if (config.name === 'ollama') {
+  // ── Ollama (local — handles ollama, ollama-qwen3, ollama-openchat) ──
+  if (config.name === 'ollama' || config.name === 'ollama-qwen3' || config.name === 'ollama-openchat') {
     // Check availability first — if Ollama isn't running, fail fast so orchestrator falls through
     const available = await checkOllamaAvailable();
     if (!available) {
@@ -335,7 +370,7 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
 
     return {
       text,
-      provider: 'ollama',
+      provider: config.name as AIProvider,
       tokensUsed: 0, // Ollama tracks internally
       latencyMs: Date.now() - start,
     };
@@ -474,7 +509,7 @@ export async function callAI(options: AICallOptions): Promise<AICallResult> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     const provider = selectProvider(taskType, excludeProviders);
     if (!provider) {
-      throw new Error('No AI providers available. Install Ollama (https://ollama.com) for free local AI, or configure: GOOGLE_AI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY');
+      throw new Error('No AI providers available. Ollama local models (llama3.2:3b, qwen3:latest, openchat:latest) or configure: GOOGLE_AI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENROUTER_API_KEY, MISTRAL_API_KEY, OPENAI_API_KEY, ANTHROPIC_API_KEY');
     }
 
     try {
