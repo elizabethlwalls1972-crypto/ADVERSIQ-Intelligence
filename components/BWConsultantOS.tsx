@@ -3232,13 +3232,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
           id: generateId(),
           role: 'assistant',
           content: [
-            'Nexus Intelligence — Online.',
+            'Hi, I\'m Susan — your strategic intelligence partner.',
             '',
-            'Tell me what you\'re working on — a deal, a market, a region, a partner, a project — in your own words. The system will handle the rest.',
+            'I\'m here because making the right decision, in the right market, at the right time, takes more than a search engine.',
             '',
-            'Behind this conversation, ten verification layers are standing by: adversarial reasoning engines, contradiction detection, Monte Carlo stress testing, cognitive modelling, entity intelligence, confidence scoring, and a 247-template document factory. Everything you share is verified, cross-checked, and stress-tested before any conclusion is returned.',
+            'Tell me what you\'re working on — a deal, a market entry, an investment, a partnership, a government engagement — in your own words. I\'ll take it from there.',
             '',
-            'You don\'t need to know which tools apply. Just describe your situation and the pipeline activates automatically.'
+            'Behind our conversation, ten verification layers stand by: adversarial reasoning, contradiction detection, Monte Carlo stress testing, cognitive modelling, entity intelligence, confidence scoring, and a 247-template document factory. Everything you share is verified, cross-checked, and stress-tested before any conclusion comes back to you.',
+            '',
+            'You don\'t need to know which tools apply. Just describe your situation and I activate automatically.'
           ].join('\n'),
           timestamp: new Date(),
           phase: 'discovery'
@@ -4971,29 +4973,45 @@ ${agentRegistry.current.toManifest()}`;
         // This avoids the model reasoning out loud about which persona to adopt.
         if (isGreetingOnly) {
           const greetingReplies = [
-            'Hello! Tell me what you\'re working on — a deal, a market entry, a partner assessment, or a strategic decision — and I\'ll focus the analysis on what matters most.',
-            'Hi there. What situation are you looking at? Describe it in your own words and I\'ll get the relevant intelligence running.',
-            'Good to have you here. What\'s the project or decision you need help thinking through?',
+            'Hi! I\'m Susan — tell me what you\'re working on and I\'ll focus the analysis on what matters most.',
+            'Hello. What situation are you looking at? Describe it in your own words and I\'ll get the right intelligence running.',
+            'Good to have you here. What decision or project do you need help thinking through?',
           ];
           responseContent = greetingReplies[Math.floor(Math.random() * greetingReplies.length)];
         } else {
         setIsStreamingResponse(true);
         try {
-          const res = await fetch('/api/ai/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              message: userContent,
-              systemInstruction: systemContext || undefined,
-              conversationHistory: messages.map((m) => ({
-                role: m.role,
-                content: typeof m.content === 'string' ? m.content : String(m.content),
-              })),
-            }),
-          });
-          if (res.ok) {
-            const data = await res.json();
-            responseContent = data.text || data.response || '';
+          // Trim context to avoid blowing through provider token-per-minute limits.
+          // The backend system prompt adds further context server-side.
+          const MAX_CONTEXT_CHARS = 6000;
+          const trimmedContext = systemContext.length > MAX_CONTEXT_CHARS
+            ? systemContext.slice(0, MAX_CONTEXT_CHARS) + '\n...[additional context truncated]'
+            : systemContext;
+
+          const aiCtrl = new AbortController();
+          const aiTimeout = setTimeout(() => aiCtrl.abort(), 55000); // 55s browser-side guard
+          try {
+            const res = await fetch('/api/ai/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              signal: aiCtrl.signal,
+              body: JSON.stringify({
+                message: userContent,
+                systemInstruction: trimmedContext || undefined,
+                conversationHistory: messages.map((m) => ({
+                  role: m.role,
+                  content: typeof m.content === 'string' ? m.content : String(m.content),
+                })),
+              }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              responseContent = data.text || data.response || '';
+            } else {
+              console.warn('[handleSend] AI endpoint returned', res.status);
+            }
+          } finally {
+            clearTimeout(aiTimeout);
           }
         } catch (aiErr) {
           console.warn('[handleSend] AI call error:', aiErr);
@@ -5001,7 +5019,7 @@ ${agentRegistry.current.toManifest()}`;
         }
 
         if (!responseContent) {
-          responseContent = `I'm ready to assist with your strategic intelligence needs. Please share more context so I can provide targeted analysis.`;
+          responseContent = `I'm here, Susan — let me know a bit more about what you're working on. Share the sector, country, or specific decision and I'll pull the right analysis together for you.`;
         }
 
         displayedMsgIds.current.add(assistantMessageId);

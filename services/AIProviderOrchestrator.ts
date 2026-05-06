@@ -7,21 +7,23 @@
  * Spreads token usage, picks the best provider for each task type,
  * implements retry-with-fallback, and tracks usage to avoid rate limits.
  *
- * Providers: Ollama (local) → Gemma → Groq → Together → OpenAI → Anthropic
+ * Providers: Ollama (local) → Gemma → Groq → Together → OpenRouter → Mistral → OpenAI → Anthropic
  * Each provider has different strengths:
- *   - Ollama:     Local inference, zero cost, full privacy (requires Ollama installed)
- *   - Gemma:      Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
- *   - Groq:      Ultra-fast inference, great for quick analytical queries
- *   - Together:   Good for long-form generation, large context
- *   - OpenAI:     Best reasoning, function calling, nuanced analysis
- *   - Anthropic:  Best for careful, nuanced, safety-aware responses
+ *   - Ollama:      Local inference, zero cost, full privacy (requires Ollama installed)
+ *   - Gemma:       Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
+ *   - Groq:        Ultra-fast inference, great for quick analytical queries
+ *   - Together:    Good for long-form generation, large context
+ *   - OpenRouter:  Free-tier access to Claude, Llama, Mistral, DeepSeek and more via one key
+ *   - Mistral:     Free tier (500M tokens/month), excellent EU-hosted reasoning
+ *   - OpenAI:      Best reasoning, function calling, nuanced analysis
+ *   - Anthropic:   Best for careful, nuanced, safety-aware responses
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 
 import { callOllama, checkOllamaAvailable, type OllamaMessage } from './ollamaService';
 import { callGemma, isGemmaAvailable, type GemmaMessage } from '../gemmaService';
 
-export type AIProvider = 'ollama' | 'gemma' | 'groq' | 'together' | 'openai' | 'anthropic';
+export type AIProvider = 'ollama' | 'gemma' | 'groq' | 'together' | 'openrouter' | 'mistral' | 'openai' | 'anthropic';
 
 export type TaskType =
   | 'quick-analysis'    // Short analytical response — Groq preferred
@@ -113,7 +115,7 @@ function getProviderConfigs(): ProviderConfig[] {
     });
   }
 
-  const togetherKey = String(process.env.TOGETHER_API_KEY || '').trim();
+  const togetherKey = String(process.env.TOGETHER_API_KEY || process.env.LEGACY_API_KEY || '').trim();
   if (togetherKey && togetherKey.length > 20 && !togetherKey.toLowerCase().includes('your-')) {
     configs.push({
       name: 'together',
@@ -125,6 +127,36 @@ function getProviderConfigs(): ProviderConfig[] {
       tokensPerMinute: 100000,
       strengths: ['long-generation', 'general', 'research', 'consensus'],
       costWeight: 2,
+    });
+  }
+
+  const openrouterKey = String(process.env.OPENROUTER_API_KEY || '').trim();
+  if (openrouterKey && openrouterKey.length > 20 && !openrouterKey.toLowerCase().includes('your-')) {
+    configs.push({
+      name: 'openrouter',
+      apiUrl: 'https://openrouter.ai/api/v1/chat/completions',
+      getKey: () => openrouterKey,
+      model: process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.3-70b-instruct:free',
+      maxOutputTokens: 8192,
+      requestsPerMinute: 20,
+      tokensPerMinute: 50000,
+      strengths: ['deep-reasoning', 'long-generation', 'general', 'research', 'consensus'],
+      costWeight: 1,
+    });
+  }
+
+  const mistralKey = String(process.env.MISTRAL_API_KEY || '').trim();
+  if (mistralKey && mistralKey.length > 20 && !mistralKey.toLowerCase().includes('your-')) {
+    configs.push({
+      name: 'mistral',
+      apiUrl: 'https://api.mistral.ai/v1/chat/completions',
+      getKey: () => mistralKey,
+      model: process.env.MISTRAL_MODEL || 'mistral-small-latest',
+      maxOutputTokens: 8192,
+      requestsPerMinute: 60,
+      tokensPerMinute: 500000,
+      strengths: ['quick-analysis', 'general', 'research', 'long-generation'],
+      costWeight: 1,
     });
   }
 
