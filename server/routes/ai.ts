@@ -70,7 +70,7 @@ const COUNTRY_CODE_MAP: Record<string, string> = {
 };
 
 // Jina Reader: converts any URL to clean plain text — free, no key, no rate limit for basic use
-async function fetchPageViaJina(url: string, timeoutMs = 8000): Promise<string> {
+async function fetchPageViaJina(url: string, timeoutMs = 4000): Promise<string> {
   try {
     const jinaUrl = `https://r.jina.ai/${url}`;
     const res = await fetch(jinaUrl, {
@@ -129,13 +129,13 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
     // 2. Wikipedia full extract — free, no key
     (async () => {
       const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(searchQuery)}&format=json&origin=*&srlimit=1`;
-      const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
+      const sRes = await fetch(searchUrl, { signal: AbortSignal.timeout(3000) });
       if (!sRes.ok) return null;
       const sData = await sRes.json();
       const title = sData?.query?.search?.[0]?.title;
       if (!title) return null;
       const contentUrl = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=extracts&explaintext=true&exintro=false&exchars=4000&format=json&origin=*`;
-      const cRes = await fetch(contentUrl, { signal: AbortSignal.timeout(6000) });
+      const cRes = await fetch(contentUrl, { signal: AbortSignal.timeout(5000) });
       if (!cRes.ok) return null;
       const cData = await cRes.json();
       const pages = cData?.query?.pages || {};
@@ -180,7 +180,7 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
       const fetches = await Promise.allSettled(
         indicators.map(async (ind) => {
           const url = `https://api.worldbank.org/v2/country/${countryCode}/indicator/${ind.code}?format=json&mrv=3&per_page=3`;
-          const r = await fetch(url, { signal: AbortSignal.timeout(7000) });
+          const r = await fetch(url, { signal: AbortSignal.timeout(5000) });
           if (!r.ok) return null;
           const d = await r.json();
           const entries = ((d[1] || []) as Array<{ value: number | null; date: string }>)
@@ -2112,9 +2112,12 @@ router.post('/consultant', async (req: Request, res: Response) => {
     let nsilReport: Record<string, unknown> | null = null;
     let liveIntel: LiveIntelligenceResult | null = null;
 
-    // Fast-path: cap enrichment at 4 s so the AI call starts immediately.
-    // Brain/NSIL are bonus context — missing them is far better than a slow response.
+    // Live intelligence runs with its own generous timeout (12 s) so parallel
+    // external fetches (Wikipedia, World Bank, DuckDuckGo, Jina — each 6-7 s)
+    // have time to complete before the AI call begins.
+    // Brain/NSIL are CPU-bound and cap at 4 s.
     const BRAIN_TIMEOUT_MS = 4000;
+    const LIVE_INTEL_TIMEOUT_MS = 12000;
 
     try {
       const [brainResult, nsilResult, liveResult] = await Promise.allSettled([
@@ -2128,7 +2131,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         ]),
         Promise.race([
           fetchLiveIntelligence(sanitizedMessage),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), 3000)),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), LIVE_INTEL_TIMEOUT_MS)),
         ]),
       ]);
       if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
