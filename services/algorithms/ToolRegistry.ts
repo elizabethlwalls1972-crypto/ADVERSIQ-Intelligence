@@ -587,7 +587,7 @@ toolRegistry.register({
     let match: RegExpExecArray | null;
 
     const extract = (block: string, tag: string): string => {
-      const m = block.match(new RegExp(`<${tag}(?:[^>]*)>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/${tag}>`, 'i'));
+      const m = block.match(new RegExp(`<${tag}(?:[^>]*)>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`, 'i'));
       return m ? m[1].trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"') : '';
     };
 
@@ -800,6 +800,321 @@ toolRegistry.register({
   },
   execute: async () => {
     return localReasoningEngine.getSetupStatus();
+  },
+});
+
+// ── GDELT 2.0 — global real-time news event database, free, no key ────────────
+toolRegistry.register({
+  schema: {
+    name: 'gdelt_news',
+    description: 'Search GDELT 2.0 global news event database for real-time coverage of any topic, country, or issue. Returns article titles, source country, sentiment tone, and publication date. Covers 100+ languages. Free, no API key.',
+    category: 'research',
+    parameters: [
+      { name: 'query', type: 'string', description: 'Search query e.g. "Nigeria fintech regulation 2024" or "Vietnam manufacturing investment"', required: true },
+      { name: 'limit', type: 'number', description: 'Max articles (default 8, max 25)', required: false },
+      { name: 'timespan', type: 'string', description: 'Time window: "1d" "7d" "30d" (default 7d)', required: false },
+    ],
+    returns: 'Array of global news articles with title, source, country, sentiment tone score, and date',
+  },
+  execute: async (args) => {
+    const query = String(args.query ?? '').trim().slice(0, 200);
+    if (!query) throw new Error('query required');
+    const limit = Math.min(Number(args.limit ?? 8), 25);
+    const timespan = String(args.timespan ?? '7d').replace(/[^0-9dwmy]/g, '').slice(0, 4) || '7d';
+    const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(query)}&mode=artlist&maxrecords=${limit}&format=json&sourcelang=english&timespan=${timespan}`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0' },
+    });
+    if (!res.ok) throw new Error(`GDELT API error ${res.status}`);
+    const data = await res.json() as {
+      articles?: Array<{
+        title: string;
+        url: string;
+        seendate: string;
+        socialimage?: string;
+        domain: string;
+        language: string;
+        sourcecountry?: string;
+        tone?: number;
+      }>;
+    };
+    const articles = (data.articles ?? []).slice(0, limit).map(a => ({
+      title: a.title,
+      url: a.url,
+      date: a.seendate?.slice(0, 8) ?? 'N/A',
+      domain: a.domain,
+      sourceCountry: a.sourcecountry ?? 'Unknown',
+      language: a.language,
+      tone: a.tone?.toFixed(2) ?? 'N/A',
+    }));
+    return {
+      query,
+      timespan,
+      articleCount: articles.length,
+      articles,
+      interpretation: 'Tone: negative values = negative sentiment; positive values = positive. Scale: -100 to +100.',
+      source: 'GDELT 2.0 Document Database (free, no API key)',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── IMF World Economic Outlook — country economic data, free, no key ──────────
+toolRegistry.register({
+  schema: {
+    name: 'imf_indicator',
+    description: 'Fetch IMF World Economic Outlook data for any country. Returns GDP growth, inflation, current account balance, government debt, and unemployment. Free, no API key.',
+    category: 'data',
+    parameters: [
+      { name: 'countryCode', type: 'string', description: 'ISO2 country code e.g. NG, PH, VN, KE, ID, IN, BR', required: true },
+      { name: 'indicator', type: 'string', description: 'IMF indicator: NGDP_RPCH (GDP growth), PCPIPCH (inflation), BCA_NGDPD (current account), GGXWDG_NGDP (govt debt), LUR (unemployment). Default: NGDP_RPCH', required: false },
+      { name: 'years', type: 'number', description: 'Number of recent years to return (default 5)', required: false },
+    ],
+    returns: 'Time-series economic data from IMF WEO database with projections',
+  },
+  execute: async (args) => {
+    const cc = String(args.countryCode ?? '').toUpperCase().trim().slice(0, 3);
+    if (!cc) throw new Error('countryCode required (ISO2 e.g. NG, VN, PH)');
+    const indicator = String(args.indicator ?? 'NGDP_RPCH').toUpperCase().trim();
+    const years = Math.min(Number(args.years ?? 5), 10);
+
+    const url = `https://www.imf.org/external/datamapper/api/v1/${indicator}/${cc}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+    if (!res.ok) throw new Error(`IMF API error ${res.status} for ${cc}/${indicator}`);
+    const data = await res.json() as { values?: Record<string, Record<string, number>>; label?: Record<string, { label: string }> };
+    const countryData = data.values?.[indicator]?.[cc];
+    if (!countryData) throw new Error(`No IMF data found for ${cc} / ${indicator}`);
+
+    const allYears = Object.keys(countryData).sort();
+    const recentYears = allYears.slice(-years);
+    const timeSeries = recentYears.map(y => ({ year: y, value: countryData[y]?.toFixed(2) ?? 'N/A' }));
+
+    const indicatorLabels: Record<string, string> = {
+      NGDP_RPCH: 'Real GDP Growth (%)',
+      PCPIPCH: 'Inflation (%)',
+      BCA_NGDPD: 'Current Account Balance (% of GDP)',
+      GGXWDG_NGDP: 'General Government Gross Debt (% of GDP)',
+      LUR: 'Unemployment Rate (%)',
+    };
+
+    return {
+      countryCode: cc,
+      indicator,
+      indicatorLabel: indicatorLabels[indicator] ?? indicator,
+      timeSeries,
+      latestValue: timeSeries[timeSeries.length - 1],
+      source: 'IMF World Economic Outlook (free, no API key)',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── Governance Index — World Bank WGI, free, no key ───────────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'governance_index',
+    description: 'Fetch World Bank Worldwide Governance Indicators (WGI) for any country: corruption control, government effectiveness, regulatory quality, rule of law, political stability, and voice & accountability. Critical for investment risk and market entry decisions. Free, no API key.',
+    category: 'data',
+    parameters: [
+      { name: 'countryCode', type: 'string', description: 'ISO2 country code e.g. NG, PH, VN, KE, ID, IN', required: true },
+    ],
+    returns: 'WGI scores (-2.5 to +2.5) for 6 governance dimensions plus business environment and logistics indicators',
+  },
+  execute: async (args) => {
+    const cc = String(args.countryCode ?? '').toUpperCase().trim().slice(0, 3);
+    if (!cc) throw new Error('countryCode required (ISO2 e.g. NG, VN, PH)');
+
+    const indicators: Array<{ code: string; label: string }> = [
+      { code: 'CC.EST', label: 'Corruption Control (−2.5 worst / +2.5 best)' },
+      { code: 'GE.EST', label: 'Government Effectiveness' },
+      { code: 'RQ.EST', label: 'Regulatory Quality' },
+      { code: 'RL.EST', label: 'Rule of Law' },
+      { code: 'PV.EST', label: 'Political Stability / No Violence' },
+      { code: 'VA.EST', label: 'Voice & Accountability' },
+      { code: 'IC.REG.DURS', label: 'Days to Register a Business' },
+      { code: 'LP.LPI.OVRL.XQ', label: 'Logistics Performance Index (1–5)' },
+      { code: 'BX.KLT.DINV.CD.WD', label: 'FDI Net Inflows (USD)' },
+      { code: 'IC.TAX.TOTL.CP.ZS', label: 'Total Tax Rate (% of profit)' },
+    ];
+
+    const fetches = await Promise.allSettled(
+      indicators.map(async (ind) => {
+        const url = `https://api.worldbank.org/v2/country/${cc}/indicator/${ind.code}?format=json&mrv=1&per_page=1`;
+        const r = await fetch(url, { signal: AbortSignal.timeout(5000) });
+        if (!r.ok) return null;
+        const d = await r.json() as Array<unknown>;
+        const entries = d[1] as Array<{ value: number | null; date: string }> | undefined;
+        const entry = entries?.[0];
+        if (!entry?.value) return null;
+        return { indicator: ind.label, value: entry.value, year: entry.date };
+      })
+    );
+
+    const scores = fetches
+      .filter((r): r is PromiseFulfilledResult<{ indicator: string; value: number; year: string } | null> =>
+        r.status === 'fulfilled' && r.value !== null)
+      .map(r => r.value!);
+
+    if (!scores.length) throw new Error(`No governance data found for country code: ${cc}`);
+
+    // Interpret WGI: above 0 = above global median; below 0 = below
+    const wgiScores = scores.filter(s => s.value !== null && Math.abs(s.value) <= 2.5);
+    const avgWGI = wgiScores.length > 0
+      ? (wgiScores.reduce((sum, s) => sum + s.value, 0) / wgiScores.length).toFixed(2)
+      : 'N/A';
+
+    return {
+      countryCode: cc,
+      scores,
+      averageWGIScore: avgWGI,
+      interpretation: 'WGI scores: above 0 = above global median; below 0 = below. −2.5 = worst governance, +2.5 = best.',
+      source: 'World Bank Worldwide Governance Indicators (free, no API key)',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── Company Intelligence — GLEIF LEI records, free, no key ────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'company_search',
+    description: 'Search global company intelligence via GLEIF (Global LEI Foundation) Legal Entity Identifier database. Find registered companies by name, get registration details, country, legal form, and entity status. Covers 2M+ entities globally. Free, no API key.',
+    category: 'research',
+    parameters: [
+      { name: 'name', type: 'string', description: 'Company name to search e.g. "MTN Nigeria" or "Grab Holdings"', required: true },
+      { name: 'country', type: 'string', description: 'ISO2 country filter e.g. NG, PH, SG (optional)', required: false },
+      { name: 'limit', type: 'number', description: 'Max results (default 5, max 10)', required: false },
+    ],
+    returns: 'Array of company records with LEI, legal name, country, jurisdiction, entity status, and registration dates',
+  },
+  execute: async (args) => {
+    const name = String(args.name ?? '').trim().slice(0, 150);
+    if (!name) throw new Error('name required');
+    const country = args.country ? `&filter[entity.legalAddress.country]=${String(args.country).toUpperCase().slice(0, 2)}` : '';
+    const limit = Math.min(Number(args.limit ?? 5), 10);
+    const url = `https://api.gleif.org/api/v1/lei-records?filter[entity.names]=${encodeURIComponent(name)}${country}&page[size]=${limit}&fields[lei-records]=lei,entity,registration`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(7000),
+      headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0', 'Accept': 'application/json' },
+    });
+    if (!res.ok) throw new Error(`GLEIF API error ${res.status}`);
+    const data = await res.json() as {
+      data?: Array<{
+        attributes: {
+          lei: string;
+          entity: {
+            legalName: { name: string };
+            legalAddress: { country: string; city?: string };
+            legalForm?: { id: string };
+            status: string;
+          };
+          registration: {
+            initialRegistrationDate: string;
+            lastUpdateDate: string;
+            status: string;
+          };
+        };
+      }>;
+    };
+
+    const companies = (data.data ?? []).slice(0, limit).map(c => ({
+      lei: c.attributes.lei,
+      legalName: c.attributes.entity.legalName.name,
+      country: c.attributes.entity.legalAddress.country,
+      city: c.attributes.entity.legalAddress.city ?? null,
+      entityStatus: c.attributes.entity.status,
+      registrationStatus: c.attributes.registration.status,
+      registeredSince: c.attributes.registration.initialRegistrationDate?.slice(0, 10) ?? null,
+      lastUpdated: c.attributes.registration.lastUpdateDate?.slice(0, 10) ?? null,
+    }));
+
+    return {
+      searchQuery: name,
+      resultCount: companies.length,
+      companies,
+      note: 'LEI (Legal Entity Identifier) is the global standard for company identification. Active status means entity is a registered legal entity.',
+      source: 'GLEIF (Global LEI Foundation) — free, no API key',
+      retrievedAt: new Date().toISOString(),
+    };
+  },
+});
+
+// ── Climate Risk — INFORM Risk Index, free open data ──────────────────────────
+toolRegistry.register({
+  schema: {
+    name: 'climate_risk',
+    description: 'Fetch INFORM Risk Index data for any country — a composite humanitarian crisis and disaster risk index used by the UN and EU. Covers hazard exposure (natural + human), vulnerability (socioeconomic), and lack of coping capacity. Critical for infrastructure, agriculture, insurance, and supply chain planning. Free, no API key.',
+    category: 'data',
+    parameters: [
+      { name: 'countryCode', type: 'string', description: 'ISO3 country code e.g. NGA (Nigeria), PHL (Philippines), VNM (Vietnam), IDN (Indonesia)', required: false },
+      { name: 'countryName', type: 'string', description: 'Country name (alternative to code) e.g. Nigeria, Philippines, Vietnam', required: false },
+      { name: 'year', type: 'number', description: 'INFORM year (2023 or 2024, default 2024)', required: false },
+    ],
+    returns: 'INFORM composite risk score (0-10) plus sub-scores: hazard, vulnerability, lack of coping capacity, natural hazard, and human hazard',
+  },
+  execute: async (args) => {
+    // INFORM open data API via European Commission JRC
+    const year = Math.min(Math.max(Number(args.year ?? 2024), 2020), 2024);
+    let iso3 = String(args.countryCode ?? '').toUpperCase().trim().slice(0, 3);
+
+    // Fallback: map common country names to ISO3
+    if (!iso3 && args.countryName) {
+      const name = String(args.countryName).toLowerCase();
+      const iso3Map: Record<string, string> = {
+        'nigeria': 'NGA', 'philippines': 'PHL', 'vietnam': 'VNM', 'indonesia': 'IDN',
+        'kenya': 'KEN', 'ghana': 'GHA', 'ethiopia': 'ETH', 'bangladesh': 'BGD',
+        'india': 'IND', 'pakistan': 'PAK', 'myanmar': 'MMR', 'cambodia': 'KHM',
+        'mozambique': 'MOZ', 'mali': 'MLI', 'chad': 'TCD', 'niger': 'NER',
+        'somalia': 'SOM', 'sudan': 'SDN', 'yemen': 'YEM', 'syria': 'SYR',
+        'ukraine': 'UKR', 'brazil': 'BRA', 'colombia': 'COL', 'peru': 'PER',
+        'south africa': 'ZAF', 'tanzania': 'TZA', 'uganda': 'UGA', 'rwanda': 'RWA',
+        'malaysia': 'MYS', 'thailand': 'THA', 'sri lanka': 'LKA',
+      };
+      iso3 = iso3Map[name] ?? '';
+    }
+
+    // INFORM API via JRC
+    const url = `https://drmkc.jrc.ec.europa.eu/inform-index/API/InformAPI/countries/Scores/${year}?iso3=${iso3 || 'all'}`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0', 'Accept': 'application/json' },
+    });
+    if (!res.ok) throw new Error(`INFORM API error ${res.status}`);
+    const data = await res.json() as Array<{
+      ISO3: string;
+      Country: string;
+      INFORM_Risk: number;
+      Hazard_Exposure: number;
+      Vulnerability: number;
+      Lack_of_Coping_Capacity: number;
+      Natural_Hazard: number;
+      Human_Hazard: number;
+    }>;
+
+    if (!Array.isArray(data) || data.length === 0) throw new Error('No INFORM data returned');
+
+    const entry = iso3 ? data.find(d => d.ISO3 === iso3) ?? data[0] : data[0];
+    const risk = entry.INFORM_Risk;
+    const riskLevel = risk >= 6 ? 'VERY HIGH' : risk >= 4 ? 'HIGH' : risk >= 2 ? 'MEDIUM' : 'LOW';
+
+    return {
+      country: entry.Country,
+      iso3: entry.ISO3,
+      year,
+      informRiskScore: risk?.toFixed(2) ?? 'N/A',
+      riskLevel,
+      breakdown: {
+        hazardExposure: entry.Hazard_Exposure?.toFixed(2) ?? 'N/A',
+        vulnerability: entry.Vulnerability?.toFixed(2) ?? 'N/A',
+        lackOfCopingCapacity: entry.Lack_of_Coping_Capacity?.toFixed(2) ?? 'N/A',
+        naturalHazard: entry.Natural_Hazard?.toFixed(2) ?? 'N/A',
+        humanHazard: entry.Human_Hazard?.toFixed(2) ?? 'N/A',
+      },
+      interpretation: `Score 0-10: 0=no risk, 10=maximum risk. ${riskLevel} risk level for ${entry.Country}. Used by UN OCHA, EU Civil Protection, and development finance institutions.`,
+      source: 'INFORM Risk Index, European Commission JRC (free, open data)',
+      retrievedAt: new Date().toISOString(),
+    };
   },
 });
 

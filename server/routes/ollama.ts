@@ -15,7 +15,7 @@
  * POST /api/ollama/reason        → Run local reasoning on a question
  */
 
-import { Router, Request, Response } from 'express';
+import { Router, type Request, type Response } from 'express';
 import { localReasoningEngine } from '../../services/LocalReasoningEngine.js';
 import { checkOllamaAvailable } from '../../services/ollamaService.js';
 

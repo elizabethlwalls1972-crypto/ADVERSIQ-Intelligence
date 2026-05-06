@@ -34,6 +34,7 @@ import { globalVectorIndex } from '../../services/algorithms/VectorMemoryIndex.j
 import { validateBody, aiValidation } from '../middleware/validate.js';
 import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
 import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
+import { proactiveSolutionEngine, type ProactiveContext } from '../../services/ProactiveSolutionEngine.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -102,7 +103,7 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
   // Detect tech/startup queries for Hacker News
   const isTechQuery = /startup|saas|api|software|developer|tech|venture|funding|ai|llm|open.?source|github|vc |seed round/.test(lowerQuery);
 
-  const [ddg, wiki, wikidata, news, worldbank, hn] = await Promise.allSettled([
+  const [ddg, wiki, wikidata, news, worldbank, hn, gdelt, openalex] = await Promise.allSettled([
     // 1. DuckDuckGo Instant Answers — extract abstract + top result URLs for Jina
     (async () => {
       const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(searchQuery)}&format=json&no_redirect=1&no_html=1`;
@@ -210,6 +211,32 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
         .join('\n');
       return hits || null;
     })() : Promise.resolve(null),
+
+    // 7. GDELT 2.0 Doc API — global real-time news, free, no key
+    (async () => {
+      const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(searchQuery)}&mode=artlist&maxrecords=5&format=json&sourcelang=english`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(7000), headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0' } });
+      if (!res.ok) return null;
+      const data = await res.json() as { articles?: Array<{ title: string; url: string; seendate: string; sourcecountry?: string; domain?: string; tone?: number }> };
+      if (!data.articles?.length) return null;
+      const items = data.articles.slice(0, 5).map(a =>
+        `• ${a.title} [${a.sourcecountry ?? a.domain ?? 'Global'}, tone:${a.tone?.toFixed(1) ?? '?'}] (${a.seendate?.slice(0, 8) ?? 'recent'})`
+      );
+      return `GDELT Global News Coverage (${data.articles.length} articles):\n${items.join('\n')}`;
+    })(),
+
+    // 8. OpenAlex — academic evidence base, free, no key
+    (async () => {
+      const url = `https://api.openalex.org/works?search=${encodeURIComponent(searchQuery.slice(0, 120))}&sort=cited_by_count:desc&per-page=3&select=title,publication_year,cited_by_count,open_access`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(6000), headers: { 'User-Agent': 'ADVERSIQ-Intelligence/1.0 (mailto:admin@adversiq.ai)' } });
+      if (!res.ok) return null;
+      const data = await res.json() as { results?: Array<{ title: string; publication_year: number; cited_by_count: number; open_access?: { is_oa: boolean } }> };
+      if (!data.results?.length) return null;
+      const papers = data.results.slice(0, 3).map(p =>
+        `• "${p.title}" (${p.publication_year}, ${p.cited_by_count} citations${p.open_access?.is_oa ? ', open access' : ''})`
+      );
+      return `Academic Evidence (OpenAlex):\n${papers.join('\n')}`;
+    })(),
   ]);
 
   // Collect top URLs for Jina page fetching
@@ -240,6 +267,14 @@ async function fetchLiveIntelligence(query: string): Promise<LiveIntelligenceRes
   if (hn.status === 'fulfilled' && hn.value) {
     result.newsItems = (result.newsItems ? result.newsItems + '\n\n' : '') + '[Hacker News]\n' + (hn.value as string);
     result.sources.push('Hacker News');
+  }
+  if (gdelt.status === 'fulfilled' && gdelt.value) {
+    result.newsItems = (result.newsItems ? result.newsItems + '\n\n' : '') + (gdelt.value as string);
+    result.sources.push('GDELT 2.0 (Global Event Database)');
+  }
+  if (openalex.status === 'fulfilled' && openalex.value) {
+    result.worldBankData = (result.worldBankData ? result.worldBankData + '\n\n' : '') + (openalex.value as string);
+    result.sources.push('OpenAlex Academic Database');
   }
 
   // Jina Reader: fetch full page content from top search result URLs
@@ -1250,7 +1285,7 @@ const buildWithTokenBudget = (sections: PromptSection[], maxTokens: number): str
 
 const MAX_PROMPT_TOKENS = 16000; // Groq 128K context supports much more
 
-const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string, liveIntelligence?: string) => {
+const buildConsultantPrompt = (message: string, intent: ConsultantIntent, context?: unknown, systemPrompt?: string, brainPromptBlock?: string, nsilSummary?: string, liveIntelligence?: string, proactiveContext?: ProactiveContext) => {
   const capProfile = deriveConsultantCapabilityProfile(message, context).brief;
   const overlooked = JSON.stringify(buildOverlookedIntelligenceSnapshot(message, context));
   const pipeline = JSON.stringify(runStrategicIntelligencePipeline(message, context));
@@ -1282,6 +1317,12 @@ const buildConsultantPrompt = (message: string, intent: ConsultantIntent, contex
     {
       label: '═══ BRAIN INTELLIGENCE ═══',
       content: brainPromptBlock || '',
+      priority: 2,
+      minTokens: 200,
+    },
+    {
+      label: '═══ PROACTIVE INTELLIGENCE ENGINE ═══',
+      content: proactiveContext?.intelligenceBlock || '',
       priority: 2,
       minTokens: 200,
     },
@@ -2111,16 +2152,19 @@ router.post('/consultant', async (req: Request, res: Response) => {
     let brainContext: BrainContext | null = null;
     let nsilReport: Record<string, unknown> | null = null;
     let liveIntel: LiveIntelligenceResult | null = null;
+    let proactiveCtx: ProactiveContext | null = null;
 
     // Live intelligence runs with its own generous timeout (12 s) so parallel
     // external fetches (Wikipedia, World Bank, DuckDuckGo, Jina — each 6-7 s)
     // have time to complete before the AI call begins.
     // Brain/NSIL are CPU-bound and cap at 4 s.
+    // ProactiveSolutionEngine runs concurrently with 10 s budget.
     const BRAIN_TIMEOUT_MS = 4000;
     const LIVE_INTEL_TIMEOUT_MS = 12000;
+    const PROACTIVE_TIMEOUT_MS = 10000;
 
     try {
-      const [brainResult, nsilResult, liveResult] = await Promise.allSettled([
+      const [brainResult, nsilResult, liveResult, proactiveResult] = await Promise.allSettled([
         Promise.race([
           BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
@@ -2133,6 +2177,10 @@ router.post('/consultant', async (req: Request, res: Response) => {
           fetchLiveIntelligence(sanitizedMessage),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), LIVE_INTEL_TIMEOUT_MS)),
         ]),
+        Promise.race([
+          proactiveSolutionEngine.run(sanitizedMessage, PROACTIVE_TIMEOUT_MS),
+          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Proactive timeout')), PROACTIVE_TIMEOUT_MS + 500)),
+        ]),
       ]);
       if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
       else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
@@ -2140,6 +2188,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
       else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
       if (liveResult.status === 'fulfilled') liveIntel = liveResult.value;
       else console.warn('[Consultant] Live intelligence did not complete:', liveResult.reason?.message);
+      if (proactiveResult.status === 'fulfilled') proactiveCtx = proactiveResult.value;
+      else console.warn('[Consultant] Proactive engine did not complete:', proactiveResult.reason?.message);
     } catch (brainErr) {
       console.warn('[Consultant] Brain/NSIL/Live parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
     }
@@ -2224,7 +2274,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
       systemPrompt,
       brainContext?.promptBlock ?? undefined,
       nsilReport ? summariseNSILReport(nsilReport) : undefined,
-      liveIntel ? formatLiveIntelligence(liveIntel) : undefined
+      liveIntel ? formatLiveIntelligence(liveIntel) : undefined,
+      proactiveCtx ?? undefined
     );
     let brokerResult: { text: string; provider: ConsultantProvider | 'local-intelligence'; attempts: ConsultantProviderAttempt[] };
     try {
