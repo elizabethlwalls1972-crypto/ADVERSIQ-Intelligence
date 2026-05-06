@@ -321,6 +321,19 @@ type ConsultantAuditEventFilter =
 
 type ConsultantAuditProviderFilter = 'all' | 'bedrock' | 'gemini' | 'openai';
 
+// UUID generator — falls back to Math.random() polyfill when crypto.randomUUID
+// is unavailable (HTTP over LAN is a non-secure context where it is undefined).
+const generateId = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return generateId();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 const LOCALES: { code: string; label: string }[] = [
   { code: 'en', label: 'EN' },
   { code: 'fr', label: 'FR' },
@@ -1430,7 +1443,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages(prev => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'system' as const,
         content: `Location intelligence pushed from Live Research:\n\n${locationNote}\n\nI've loaded this location profile. Tell me what you're trying to achieve here and I'll immediately begin building your advisory case.`,
         timestamp: new Date(),
@@ -2426,7 +2439,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Added to your case: ${move}`,
         timestamp: new Date(),
@@ -2465,7 +2478,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Pilot option set to ${preference === 'include' ? 'Include' : 'Without'}: ${option.label}`,
         timestamp: new Date(),
@@ -2524,7 +2537,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       setMessages((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'system',
           content: `Live Research synced to ADVERSIQ verification context${topicLabel ? ` (topic: ${topicLabel})` : ''}. This has been added to the active pipeline inputs.`,
           timestamp: new Date(),
@@ -2645,7 +2658,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
         setMessages((prev) => ([
           ...prev,
           {
-            id: crypto.randomUUID(),
+            id: generateId(),
             role: 'system',
             content: `Strategic factors applied to Live Research inputs. ${strategic?.recommendedPath?.targetRegion ? `Top regional target: ${strategic.recommendedPath.targetRegion}.` : ''}`,
             timestamp: new Date(),
@@ -2720,7 +2733,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Research topic noted: "${option.label}" - this will be factored into your consultation.`,
         timestamp: new Date(),
@@ -2783,7 +2796,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: 'Quick lines converted into ADVERSIQ baseline context and added to the verification pipeline.',
         timestamp: new Date(),
@@ -3024,7 +3037,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => ([
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'system',
         content: `Research topic activated: ${topicTitle}. Live search and case draft context were updated.`,
         timestamp: new Date(),
@@ -3064,7 +3077,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       return [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'system',
           content: pinMessage,
           timestamp: new Date(),
@@ -3096,7 +3109,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => ([
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'system',
         content: `Removed pinned source from draft evidence: ${item.title}.`,
         timestamp: new Date(),
@@ -3126,7 +3139,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     setMessages((prev) => ([
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'system',
         content: 'Cleared all pinned live sources from draft evidence.',
         timestamp: new Date(),
@@ -3216,10 +3229,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
       if (!restored) {
         const initialMessage: Message = {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'assistant',
           content: [
-            'Welcome to ADVERSIQ.',
+            'Nexus Intelligence — Online.',
             '',
             'Tell me what you\'re working on — a deal, a market, a region, a partner, a project — in your own words. The system will handle the rest.',
             '',
@@ -3591,7 +3604,7 @@ ${agentRegistry.current.toManifest()}`;
           domainMode: caseStudy.domainMode || 'regional-development'
         },
         envelope: {
-          requestId: crypto.randomUUID(),
+          requestId: generateId(),
           timestamp: new Date().toISOString(),
           messageChars: userInput.length,
           readinessScore: consultantGateReady ? 90 : Math.max(15, 90 - consultantGateMissing.length * 15),
@@ -3660,7 +3673,7 @@ ${agentRegistry.current.toManifest()}`;
         message: userInput,
         context: { phase: context, caseStudy, consultantCaseBrief, consultantGateReady, consultantGateMissing, domainMode: caseStudy.domainMode || 'regional-development' },
         envelope: {
-          requestId: crypto.randomUUID(),
+          requestId: generateId(),
           timestamp: new Date().toISOString(),
           messageChars: userInput.length,
           readinessScore: consultantGateReady ? 90 : Math.max(15, 90 - consultantGateMissing.length * 15),
@@ -4478,7 +4491,7 @@ ${agentRegistry.current.toManifest()}`;
 
     // Add user message
     const userMessage: Message = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'user',
       content: userContent,
       timestamp: new Date(),
@@ -4544,7 +4557,7 @@ ${agentRegistry.current.toManifest()}`;
       setExecutionTaskStatus('ingestion', 'completed', ingestionDetail);
       let responseProvenance = buildMessageProvenance(caseDraft, liveReadiness);
 
-      const assistantMessageId = crypto.randomUUID();
+      const assistantMessageId = generateId();
       setMessages(prev => [...prev, {
         id: assistantMessageId,
         role: 'assistant',
@@ -5107,7 +5120,7 @@ ${agentRegistry.current.toManifest()}`;
     const nextGap = gaps[0];
     setCurrentPhase('discovery');
     setMessages(prev => [...prev, {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: `Highest-priority gap (${nextGap.severity.toUpperCase()}): ${nextGap.label}\n${nextGap.question}`,
       timestamp: new Date(),
@@ -5275,7 +5288,7 @@ ${agentRegistry.current.toManifest()}`;
       setMessages((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'assistant',
           content: `Please confirm or reject all detected entities before resolving the top gap. Completeness is currently ${decisionCompletenessPct}%.`,
           timestamp: new Date(),
@@ -5364,7 +5377,7 @@ ${agentRegistry.current.toManifest()}`;
     setMessages((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Captured top-gap input for ${topGap.label}. Updated fields: ${applied.join(', ') || 'case context'} and reprioritized remaining gaps.${nextGap ? `\n\nNext critical gap: ${nextGap.label}\n${nextGap.question}` : '\n\nNo immediate critical gap remains. Continue with discovery or proceed to recommendations.'}`,
         timestamp: new Date(),
@@ -5509,7 +5522,7 @@ ${agentRegistry.current.toManifest()}`;
 
     if (effectiveDocIds.length === 0) {
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: generationScope === 'letters-only'
           ? 'No letter outputs are currently available. Add or select letter-type outputs first.'
@@ -5529,7 +5542,7 @@ ${agentRegistry.current.toManifest()}`;
     if (!consultantGateReady) {
       setCurrentPhase('discovery');
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Generation blocked by consultant gate. Complete these required inputs first:\n- ${consultantGateMissing.join('\n- ')}`,
         timestamp: new Date(),
@@ -5542,7 +5555,7 @@ ${agentRegistry.current.toManifest()}`;
     if (criticalCaseGaps.length > 0) {
       setCurrentPhase('discovery');
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Before generation, resolve these prioritized case gaps:\n- ${criticalCaseGaps.slice(0, 4).map((gap) => `${gap.severity.toUpperCase()}: ${gap.label}`).join('\n- ')}\n\nUse "Ask Next Critical Question" or "Resolve Top Gap" to close the highest-impact gap first.`,
         timestamp: new Date(),
@@ -5553,7 +5566,7 @@ ${agentRegistry.current.toManifest()}`;
 
     if (readinessScore < 70) {
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Your case file readiness is ${readinessScore}%. I need at least 70% before generation. Complete the key case fields (organisation, jurisdiction, objective, current matter) or continue answering questions to reach 70%.`,
         timestamp: new Date(),
@@ -5563,7 +5576,7 @@ ${agentRegistry.current.toManifest()}`;
     }
     if (!allowAllDocumentAccess) {
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: 'Please enable access to all relevant uploaded material before final generation. This improves accuracy, page estimates, and evidence traceability.',
         timestamp: new Date(),
@@ -5720,7 +5733,7 @@ ${agentRegistry.current.toManifest()}`;
       const combined = allResults.map(r => `## ${r.title}\n\n${r.content}`).join('\n\n---\n\n');
       setGeneratedContent(combined);
 
-      const genReportId = crypto.randomUUID();
+      const genReportId = generateId();
       setMessages(prev => [...prev, {
         id: genReportId,
         role: 'assistant',
@@ -5740,7 +5753,7 @@ ${agentRegistry.current.toManifest()}`;
         } catch (error) {
       console.error('Generation error:', error);
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: 'Document generation encountered an error. Check your case information and try again.',
         timestamp: new Date(),
@@ -6296,7 +6309,7 @@ ${agentRegistry.current.toManifest()}`;
     setShowWorkspaceModal(false);
     setCurrentPhase('analysis');
 
-    const retryUserMessageId = crypto.randomUUID();
+    const retryUserMessageId = generateId();
     setMessages((prev) => [
       ...prev,
       {
@@ -6368,7 +6381,7 @@ ${agentRegistry.current.toManifest()}`;
       setMessages((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'assistant',
           content: responseText,
           timestamp: new Date(),
@@ -6380,7 +6393,7 @@ ${agentRegistry.current.toManifest()}`;
       setMessages((prev) => [
         ...prev,
         {
-          id: crypto.randomUUID(),
+          id: generateId(),
           role: 'assistant',
           content: 'Retry execution failed. Please review the request details and try again.',
           timestamp: new Date(),
@@ -6773,7 +6786,7 @@ ${agentRegistry.current.toManifest()}`;
 
     setCurrentPhase('discovery');
     setMessages(prev => [...prev, {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: prompt,
       timestamp: new Date(),
@@ -6816,7 +6829,7 @@ ${agentRegistry.current.toManifest()}`;
     }
 
     setMessages(prev => [...prev, {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: `Thanks for the feedback. I will adjust future recommendation ranking using this outcome signal (${feedbackSignal}).`,
       timestamp: new Date(),
@@ -6835,7 +6848,7 @@ ${agentRegistry.current.toManifest()}`;
     setFeedbackNote('');
     setFeedbackSubmitted(false);
     setMessages(prev => [...prev, {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: 'Learning signals reset. Recommendations are now back to baseline scoring.',
       timestamp: new Date(),
@@ -6903,7 +6916,7 @@ ${agentRegistry.current.toManifest()}`;
           : '';
 
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: `Learning profile imported successfully (${Object.keys(sanitized).length} signal${Object.keys(sanitized).length === 1 ? '' : 's'}).${compatibilityWarning}`,
         timestamp: new Date(),
@@ -6912,7 +6925,7 @@ ${agentRegistry.current.toManifest()}`;
     } catch (importError) {
       console.error('Learning profile import failed:', importError);
       setMessages(prev => [...prev, {
-        id: crypto.randomUUID(),
+        id: generateId(),
         role: 'assistant',
         content: 'Unable to import learning profile. Please use a valid JSON file exported from ADVERSIQ Intelligence.',
         timestamp: new Date(),
