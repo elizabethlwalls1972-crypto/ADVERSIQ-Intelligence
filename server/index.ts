@@ -63,7 +63,7 @@ import governanceRoutes from './routes/governance.js';
 import authRoutes from './routes/auth.js';
 import learningRoutes from './routes/learning.js';
 import { optionalAuth } from './middleware/auth.js';
-import { sanitizeBody } from './middleware/validate.js';
+import { sanitizeBody, promptInjectionGuard } from './middleware/validate.js';
 // bedrock placeholder route removed — inference handled by /api/ai routes
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
@@ -83,13 +83,16 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com"],
+      // unsafe-eval removed: Vite dev HMR does not need eval in production builds
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.tailwindcss.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
       connectSrc: ["'self'", "https://cdn.tailwindcss.com", "https://api.worldbank.org", "https://restcountries.com", "https://nominatim.openstreetmap.org", "https://en.wikipedia.org", "https://www.wikidata.org", "https://api.duckduckgo.com", "https://r.jina.ai", "https://hn.algolia.com", "https://google.serper.dev", "https://api.perplexity.ai", "https://generativelanguage.googleapis.com", "https://*.amazonaws.com", "https://api.together.xyz", "https://api.groq.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
       workerSrc: ["'self'", "blob:"],
       frameSrc: ["'none'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
     },
   },
   crossOriginEmbedderPolicy: false,
@@ -137,10 +140,10 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/', apiLimiter);
 
-// Stricter limit for AI endpoints (expensive calls)
+// Stricter limit for AI endpoints (expensive calls — lower than general API limit)
 const aiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 120,
+  max: 20,  // 20 AI calls per minute per IP (GPT/Gemma calls are expensive)
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'AI request rate limit exceeded. Please wait before trying again.' },
@@ -303,7 +306,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 // API Routes
 app.use('/api/auth', authUserLimiter, authRoutes);
-app.use('/api/ai', aiUserLimiter, aiRoutes);
+app.use('/api/ai', aiUserLimiter, promptInjectionGuard, aiRoutes);
 app.use('/api/reports', reportUserLimiter, reportsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/autonomous', autonomousRoutes);

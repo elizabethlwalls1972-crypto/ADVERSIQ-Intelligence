@@ -4,9 +4,15 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
-  console.warn('[AUTH] JWT_SECRET not set — auth features (login/register) will be unavailable.');
+  if (process.env.NODE_ENV === 'production') {
+    // Hard fail in production — a missing JWT secret is a critical security misconfiguration
+    throw new Error('[AUTH] FATAL: JWT_SECRET environment variable is required in production. Set it before starting the server.');
+  }
+  console.warn('[AUTH] JWT_SECRET not set — using ephemeral dev secret. DO NOT deploy without a strong JWT_SECRET.');
 }
-const EFFECTIVE_JWT_SECRET = JWT_SECRET || 'INSECURE-DEV-ONLY-DO-NOT-DEPLOY';
+// Ephemeral dev-only secret: random per process start, so tokens never persist across restarts in dev
+const EPHEMERAL_DEV_SECRET = `dev-ephemeral-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+const EFFECTIVE_JWT_SECRET = JWT_SECRET || EPHEMERAL_DEV_SECRET;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const JWT_EXPIRES_IN: any = process.env.JWT_EXPIRES_IN || '24h';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

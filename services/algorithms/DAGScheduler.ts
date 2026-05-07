@@ -80,7 +80,23 @@ export type FormulaId =
   | 'MEQ'  // Market Emotional Quotient — collective sentiment stability of the target market
   | 'PSQ'  // Partnership Social Quotient — cross-cultural relationship-building ease (Hofstede-mapped)
   | 'RAQ'  // Regional Adversity Quotient — shock-recovery resilience of the target region
-  | 'ADV'; // ADVERSIQ Intelligence Score — master composite of all four quotients
+  | 'ADV'  // ADVERSIQ Intelligence Score — master composite of all four quotients
+  // ── NEW: Antifragility & Temporal Intelligence Suite (Layers 16–17) ───────
+  | 'AFI'  // Antifragility Index™ — Taleb convexity score; measures gain-from-disorder capacity
+  | 'TAI'  // Temporal Arbitrage Index™ — time-asymmetric pricing gap exploitation score
+  | 'TDI'  // Temporal Discount Index™ — behavioral vs rational future-pricing divergence
+  // ── NEW: Narrative & Complexity Economics Suite ───────────────────────────
+  | 'NEI'  // Narrative Economics Index™ — Shiller viral narrative impact on decision environment
+  | 'PSI'  // Phase State Index™ — system criticality / proximity to tipping point (complexity theory)
+  | 'CGI'  // Cognitive Gap Index™ — delta between what the system knows vs. what it needs to know
+  // ── NEW: Strategic Value & Counterfactual Suite ────────────────────────────
+  | 'SVX'  // Strategic Value Exchange™ — mutual value creation quality in partnerships
+  | 'CFV'  // Counterfactual Value™ — value of strategic paths NOT taken (opportunity cost scoring)
+  | 'IME'  // Information Metabolism Efficiency™ — speed of converting information to action
+  // ── NEW: Systemic Intelligence Suite ──────────────────────────────────────
+  | 'SCV'  // Systemic Cascade Value™ — positive cascade potential through network nodes
+  | 'MBI'  // Moral Business Intelligence™ — ESG × Governance × Ethics composite (beyond ETH)
+  | 'EXF'; // Exformation Index™ — value of what is NOT communicated (structural silence analysis)
 
 export interface FormulaNode {
   id: FormulaId;
@@ -169,7 +185,36 @@ const FORMULA_GRAPH: Record<FormulaId, { dependencies: FormulaId[]; priority: nu
   'RAQ': { dependencies: ['CRI', 'PRI', 'SRA'], priority: 90 },            // Regional AQ — shock-recovery resilience (never quantified before)
 
   // Level 6 - ADVERSIQ Master Score (depends on all four quotients)
-  'ADV': { dependencies: ['OIQ', 'MEQ', 'PSQ', 'RAQ', 'SCF'], priority: 100 } // ADVERSIQ Intelligence Score™ — total intelligence readiness composite
+  'ADV': { dependencies: ['OIQ', 'MEQ', 'PSQ', 'RAQ', 'SCF'], priority: 100 }, // ADVERSIQ Intelligence Score™ — total intelligence readiness composite
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Level 7 - Antifragility & Temporal Intelligence Suite
+  // Novel formulas — no other commercial intelligence platform has implemented these
+  // ────────────────────────────────────────────────────────────────────────────
+  'AFI': { dependencies: ['SCF', 'SRA', 'CRI'], priority: 92 },         // Antifragility Index™ — Taleb convexity: gain-from-disorder scoring
+  'TAI': { dependencies: ['SCF', 'RROI', 'PRI'], priority: 88 },        // Temporal Arbitrage Index™ — hyperbolic discount gap + regime lag
+  'TDI': { dependencies: ['TAI', 'RROI'], priority: 82 },               // Temporal Discount Index™ — behavioral vs rational future-pricing gap
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Level 7 - Narrative & Complexity Economics Suite
+  // ────────────────────────────────────────────────────────────────────────────
+  'NEI': { dependencies: ['SCF', 'ISI', 'EMO'], priority: 78 },         // Narrative Economics Index™ — Shiller viral narrative momentum score
+  'PSI': { dependencies: ['CRI', 'PRI', 'SRA'], priority: 80 },         // Phase State Index™ — complexity criticality / tipping-point proximity
+  'CGI': { dependencies: ['CAP', 'IVAS', 'ADA'], priority: 76 },        // Cognitive Gap Index™ — known-unknown delta in decision intelligence
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Level 8 - Strategic Value & Counterfactual Suite (depends on Level 7)
+  // ────────────────────────────────────────────────────────────────────────────
+  'SVX': { dependencies: ['SEAM', 'PSQ', 'NVI'], priority: 85 },        // Strategic Value Exchange™ — mutual value creation quality
+  'CFV': { dependencies: ['SCF', 'AFI', 'TAI'], priority: 80 },         // Counterfactual Value™ — opportunity cost of paths NOT taken
+  'IME': { dependencies: ['CGI', 'CAP', 'ADA'], priority: 78 },         // Information Metabolism Efficiency™ — info-to-action conversion rate
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // Level 8 - Systemic Intelligence Suite
+  // ────────────────────────────────────────────────────────────────────────────
+  'SCV': { dependencies: ['SCF', 'NEI', 'PSI'], priority: 82 },         // Systemic Cascade Value™ — positive cascade potential through the network
+  'MBI': { dependencies: ['ETH', 'ESI', 'OSI'], priority: 90 },         // Moral Business Intelligence™ — ESG × Governance × Ethics composite
+  'EXF': { dependencies: ['CGI', 'EMO', 'CRE'], priority: 74 },         // Exformation Index™ — value of what is structurally NOT communicated
 };
 
 // ============================================================================
@@ -1164,7 +1209,148 @@ const FORMULA_EXECUTORS: Record<FormulaId, (params: ReportParameters, cache: For
       ],
       executionTimeMs: Date.now() - start
     };
-  }
+  },
+
+  // ────────────────────────────────────────────────────────────────────────────
+  // NEW FORMULA EXECUTORS — Layers 16–17: Antifragility, Temporal, Complexity
+  // These implement lightweight score estimations from the composite framework.
+  // Full computation is handled by the dedicated agent engines (AntifragilityEngine,
+  // TemporalArbitrageEngine) — these DAG nodes provide fast proxy scores.
+  // ────────────────────────────────────────────────────────────────────────────
+
+  AFI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const scf = cache.get('SCF')?.score ?? 50;
+    const sra = cache.get('SRA')?.score ?? 50;
+    const cri = cache.get('CRI')?.score ?? 50;
+    // Antifragility proxy: high SCF with high volatility tolerance + low SRA risk = antifragile
+    const convexityProxy = Math.min(100, scf * 0.5 + (100 - sra) * 0.3 + (100 - cri) * 0.2);
+    const score = Math.round(Math.min(100, Math.max(0, convexityProxy)));
+    const grade = score >= 70 ? 'ANTIFRAGILE' : score >= 45 ? 'ROBUST' : 'FRAGILE';
+    return { id: 'AFI', score, grade, components: { convexity_proxy: convexityProxy, scf, sra, cri }, drivers: [`AFI™ ${score}/100 — Taleb antifragility: gain-from-disorder capacity`, `Grade: ${grade} | SCF: ${scf} | Risk adj: ${sra}`], executionTimeMs: Date.now() - start };
+  },
+
+  TAI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const scf = cache.get('SCF')?.score ?? 50;
+    const rroi = cache.get('RROI')?.score ?? 50;
+    const pri = cache.get('PRI')?.score ?? 50;
+    // Temporal arbitrage proxy: high returns + moderate political risk = window exists
+    const discountGap = Math.min(100, (100 - pri) * 0.4 + rroi * 0.4 + scf * 0.2);
+    const score = Math.round(Math.min(100, Math.max(0, discountGap)));
+    const grade = score >= 70 ? 'STRONG_ARBITRAGE' : score >= 50 ? 'MODERATE_ARBITRAGE' : score >= 35 ? 'NEUTRAL' : 'NEGATIVE_ARBITRAGE';
+    return { id: 'TAI', score, grade, components: { discount_gap: discountGap, rroi, pri, scf }, drivers: [`TAI™ ${score}/100 — Temporal arbitrage window strength`, `Grade: ${grade} | Behavioral discount gap estimated`], executionTimeMs: Date.now() - start };
+  },
+
+  TDI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const tai = cache.get('TAI')?.score ?? 50;
+    const rroi = cache.get('RROI')?.score ?? 50;
+    // TDI = divergence between behavioral and rational pricing
+    const score = Math.round(Math.min(100, Math.max(0, tai * 0.7 + (rroi - 50) * 0.6)));
+    const grade = score >= 60 ? 'HIGH_DIVERGENCE' : score >= 35 ? 'MODERATE_DIVERGENCE' : 'LOW_DIVERGENCE';
+    return { id: 'TDI', score, grade, components: { tai, rroi }, drivers: [`TDI™ ${score}/100 — Behavioral vs rational future-pricing gap`, `Hyperbolic discount divergence: ${score >= 60 ? 'HIGH' : 'MODERATE'}`], executionTimeMs: Date.now() - start };
+  },
+
+  NEI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const scf = cache.get('SCF')?.score ?? 50;
+    const isi = cache.get('ISI')?.score ?? 50;
+    const emo = cache.get('EMO')?.score ?? 50;
+    // Narrative economics: coherent story + emotional resonance + strategic fit = strong narrative
+    const score = Math.round(Math.min(100, Math.max(0, scf * 0.35 + isi * 0.30 + emo * 0.35)));
+    const grade = score >= 70 ? 'STRONG_NARRATIVE' : score >= 50 ? 'EMERGING_NARRATIVE' : 'WEAK_NARRATIVE';
+    return { id: 'NEI', score, grade, components: { scf, isi, emo }, drivers: [`NEI™ ${score}/100 — Shiller narrative economics momentum`, `Narrative coherence: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  PSI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const cri = cache.get('CRI')?.score ?? 50;
+    const pri = cache.get('PRI')?.score ?? 50;
+    const sra = cache.get('SRA')?.score ?? 50;
+    // Phase state: high risk + high SRA correction = near tipping point
+    const criticality = Math.min(100, (cri * 0.4 + pri * 0.3 + sra * 0.3));
+    const score = Math.round(Math.min(100, Math.max(0, criticality)));
+    const grade = score >= 75 ? 'CRITICAL_STATE' : score >= 50 ? 'ELEVATED' : 'STABLE';
+    return { id: 'PSI', score, grade, components: { cri, pri, sra }, drivers: [`PSI™ ${score}/100 — System tipping-point proximity (complexity theory)`, `Phase state: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  CGI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const cap = cache.get('CAP')?.score ?? 50;
+    const ivas = cache.get('IVAS')?.score ?? 50;
+    const ada = cache.get('ADA')?.score ?? 50;
+    // Cognitive gap: high capability + high IVAS but low adaptive learning = gap
+    const gap = Math.max(0, ((cap + ivas) / 2) - ada);
+    const score = Math.round(Math.min(100, Math.max(0, gap)));
+    const grade = score >= 40 ? 'SIGNIFICANT_GAP' : score >= 20 ? 'MODERATE_GAP' : 'MINIMAL_GAP';
+    return { id: 'CGI', score, grade, components: { cap, ivas, ada }, drivers: [`CGI™ ${score}/100 — Known-unknown intelligence delta`, `Gap severity: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  SVX: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const seam = cache.get('SEAM')?.score ?? 50;
+    const psq = cache.get('PSQ')?.score ?? 50;
+    const nvi = cache.get('NVI')?.score ?? 50;
+    const score = Math.round(Math.min(100, Math.max(0, seam * 0.4 + psq * 0.35 + nvi * 0.25)));
+    const grade = score >= 70 ? 'HIGH_MUTUAL_VALUE' : score >= 50 ? 'MODERATE_VALUE' : 'LOW_VALUE';
+    return { id: 'SVX', score, grade, components: { seam, psq, nvi }, drivers: [`SVX™ ${score}/100 — Strategic value exchange quality`, `Mutual value creation: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  CFV: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const scf = cache.get('SCF')?.score ?? 50;
+    const afi = cache.get('AFI')?.score ?? 50;
+    const tai = cache.get('TAI')?.score ?? 50;
+    // Counterfactual value: how much better could we do if we chose differently?
+    const counterfactual = Math.min(100, (100 - scf) * 0.4 + afi * 0.3 + tai * 0.3);
+    const score = Math.round(Math.min(100, Math.max(0, counterfactual)));
+    const grade = score >= 70 ? 'HIGH_OPPORTUNITY_COST' : score >= 45 ? 'MODERATE_ALTERNATIVES' : 'OPTIMAL_CHOICE';
+    return { id: 'CFV', score, grade, components: { scf, afi, tai }, drivers: [`CFV™ ${score}/100 — Value of paths NOT taken`, `Opportunity cost signal: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  IME: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const cgi = cache.get('CGI')?.score ?? 50;
+    const cap = cache.get('CAP')?.score ?? 50;
+    const ada = cache.get('ADA')?.score ?? 50;
+    // Inverse of CGI × capability × adaptive learning = metabolism efficiency
+    const score = Math.round(Math.min(100, Math.max(0, (100 - cgi) * 0.3 + cap * 0.4 + ada * 0.3)));
+    const grade = score >= 70 ? 'HIGH_EFFICIENCY' : score >= 50 ? 'MODERATE' : 'LOW_EFFICIENCY';
+    return { id: 'IME', score, grade, components: { cgi, cap, ada }, drivers: [`IME™ ${score}/100 — Information-to-action conversion rate`, `Metabolism efficiency: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  SCV: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const scf = cache.get('SCF')?.score ?? 50;
+    const nei = cache.get('NEI')?.score ?? 50;
+    const psi = cache.get('PSI')?.score ?? 50;
+    const score = Math.round(Math.min(100, Math.max(0, scf * 0.45 + nei * 0.30 + psi * 0.25)));
+    const grade = score >= 70 ? 'HIGH_CASCADE_POTENTIAL' : score >= 50 ? 'MODERATE' : 'LIMITED_SPREAD';
+    return { id: 'SCV', score, grade, components: { scf, nei, psi }, drivers: [`SCV™ ${score}/100 — Positive network cascade potential`, `Cascade grade: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  MBI: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const eth = cache.get('ETH')?.score ?? 50;
+    const esi = cache.get('ESI')?.score ?? 50;
+    const osi = cache.get('OSI')?.score ?? 50;
+    // MBI = min of ethical gate × ESG × operational sustainability
+    const score = Math.round(Math.min(100, Math.max(0, Math.min(eth, esi) * 0.5 + osi * 0.5)));
+    const grade = score >= 70 ? 'EXEMPLARY' : score >= 50 ? 'COMPLIANT' : 'REMEDIATION_REQUIRED';
+    return { id: 'MBI', score, grade, components: { eth, esi, osi }, drivers: [`MBI™ ${score}/100 — Moral Business Intelligence (ESG × Ethics × Governance)`, `Grade: ${grade}`], executionTimeMs: Date.now() - start };
+  },
+
+  EXF: async (params: ReportParameters, cache: FormulaCache): Promise<FormulaResult> => {
+    const start = Date.now();
+    const cgi = cache.get('CGI')?.score ?? 50;
+    const emo = cache.get('EMO')?.score ?? 50;
+    const cre = cache.get('CRE')?.score ?? 50;
+    // Exformation: what isn't being said has value proportional to the cognitive gap and emotional signal
+    const score = Math.round(Math.min(100, Math.max(0, cgi * 0.4 + emo * 0.3 + cre * 0.3)));
+    const grade = score >= 70 ? 'HIGH_EXFORMATION' : score >= 50 ? 'MODERATE' : 'LOW_EXFORMATION';
+    return { id: 'EXF', score, grade, components: { cgi, emo, cre }, drivers: [`EXF™ ${score}/100 — Value of structural silence / what is not communicated`, `Exformation signal: ${grade}`], executionTimeMs: Date.now() - start };
+  },
 };
 
 // ============================================================================

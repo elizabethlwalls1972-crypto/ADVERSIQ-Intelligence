@@ -127,9 +127,43 @@ export function validateBody(rules: ValidationRule[]) {
 
 export function sanitizeString(value: string): string {
   return value
-    .replace(/\0/g, '')
-    .replace(/<script[\s>]/gi, '')
+    .replace(/\0/g, '')                             // null bytes
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '') // script blocks
+    .replace(/<script[\s>]/gi, '')                  // opening script tags
+    .replace(/javascript\s*:/gi, '')                // javascript: URIs
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, '')   // inline event handlers
     .trim();
+}
+
+// ─── Prompt Injection Detection ──────────────────────────────────────────────
+// Detects adversarial instructions embedded in user content intended to hijack
+// the AI system prompt (OWASP LLM01 — Prompt Injection).
+const PROMPT_INJECTION_PATTERNS: RegExp[] = [
+  /ignore\s+(all\s+)?(previous|prior|above|earlier)\s+(instructions?|prompts?|context)/i,
+  /forget\s+(everything|all|your|previous|prior)/i,
+  /you\s+are\s+now\s+(a\s+)?(?!an?\s+AI\b)/i,
+  /system\s*:\s*(you|your|ignore|forget|override)/i,
+  /\[INST\]|\[\/INST\]|<<SYS>>|<\/SYS>/i,  // Llama instruction tokens
+  /disregard\s+(all\s+)?(previous|prior|your)\s+(instructions?|training)/i,
+  /new\s+(instructions?|role|persona|task)\s*:/i,
+  /override\s+(safety|filter|instruction|system)/i,
+];
+
+export function detectPromptInjection(text: string): boolean {
+  return PROMPT_INJECTION_PATTERNS.some(pattern => pattern.test(text));
+}
+
+export function promptInjectionGuard(req: Request, res: Response, next: NextFunction): void {
+  const suspicious = ['message', 'query', 'systemInstruction', 'problemStatement', 'prompt', 'input']
+    .map(field => req.body?.[field])
+    .filter((v): v is string => typeof v === 'string')
+    .some(value => detectPromptInjection(value));
+
+  if (suspicious) {
+    res.status(400).json({ error: 'Request contains disallowed content patterns.' });
+    return;
+  }
+  next();
 }
 
 export function sanitizeBody(req: Request, _res: Response, next: NextFunction): void {

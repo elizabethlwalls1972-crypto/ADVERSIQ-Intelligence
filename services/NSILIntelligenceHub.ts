@@ -59,6 +59,9 @@ import { UniversalTranslationLayer, type TranslationInput, type TranslationRepor
 // IFC Global Standards Engine (Layer 10 - Universal Compliance)
 import { IFCGlobalStandardsEngine, type GlobalStandardsAssessment } from './IFCGlobalStandardsEngine';
 
+// NSIL v2 Universal Intelligence Layer (Layers 11-14)
+import { CompoundIntelligenceOrchestrator, type CompoundIntelligenceReport, type UniversalProblemInput } from './agents/CompoundIntelligenceOrchestrator';
+
 // ============================================================================
 // TYPES
 // ============================================================================
@@ -147,6 +150,9 @@ export interface IntelligenceReport {
   
   // IFC Global Standards Assessment (Universal Skeleton + Gap Analysis + Local Law Hunt)
   globalStandards?: GlobalStandardsAssessment;
+
+  // NSIL v2 Universal Intelligence (Layers 11-14: Impossibility + Cascade + Social + Orchestration)
+  universalIntelligence?: CompoundIntelligenceReport;
   
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
@@ -260,7 +266,7 @@ export class NSILIntelligenceHub {
       
       // Run reflexive intelligence layer
       reflexive = await this.runReflexiveLayer(params, autonomous);
-      
+
       componentsRun.push(
         'PersonaEngine', 'CounterfactualEngine', 'UnbiasedAnalysis',
         'IFCGlobalStandardsEngine',
@@ -307,6 +313,42 @@ export class NSILIntelligenceHub {
     
     const processingTime = Date.now() - startTime;
     
+    // ─── NSIL v2: Universal Intelligence Layer (Layers 11-17) ─────────────────
+    // Runs for all problems — the OS-level synthesis that makes this platform
+    // capable of handling any domain, any scale, any problem.
+    // Layers 11-15: ImpossibilityEngine, UniversalProblemAdapter,
+    //              CascadingEffectPredictor, SocialDynamicsAgent,
+    //              CompoundIntelligenceOrchestrator
+    // Layer 16: AntifragilityEngine (AFI™) — Taleb antifragility quantification
+    // Layer 17: TemporalArbitrageEngine (TAI™ + TDI™) — temporal pricing gaps
+    let universalIntelligence: CompoundIntelligenceReport | undefined;
+    try {
+      const universalInput: UniversalProblemInput = {
+        naturalLanguageQuery: [
+          (params as Record<string, string>).currentMatter,
+          (params as Record<string, string>).objectives,
+          (params as Record<string, string>).challenges
+        ].filter(Boolean).join('. ') || (params as Record<string, string>).region || 'General analysis',
+        additionalContext: (params as Record<string, string>).context || (params as Record<string, string>).additionalContext,
+        geography: (params as Record<string, string>).country || (params as Record<string, string>).region,
+        stakeholders: (params as Record<string, string[]>).stakeholders,
+        constraints: (params as Record<string, string[]>).constraints,
+        successDefinition: (params as Record<string, string>).successMetric,
+        urgency: 'short-term',
+        complexity: 'complex'
+      };
+      universalIntelligence = await CompoundIntelligenceOrchestrator.orchestrate(universalInput);
+      componentsRun.push(
+        'UniversalProblemAdapter', 'ImpossibilityEngine',
+        'CascadingEffectPredictor', 'SocialDynamicsAgent',
+        'CompoundIntelligenceOrchestrator',
+        'AntifragilityEngine',    // Layer 16 — AFI™
+        'TemporalArbitrageEngine' // Layer 17 — TAI™ + TDI™
+      );
+    } catch {
+      // Universal Intelligence is additive — never block the main report
+    }
+
     return {
       id: reportId,
       timestamp: new Date(),
@@ -316,6 +358,7 @@ export class NSILIntelligenceHub {
       counterfactual,
       unbiasedAnalysis,
       globalStandards,
+      universalIntelligence,
       autonomous,
       reflexive,
       applicableInsights,
@@ -329,7 +372,9 @@ export class NSILIntelligenceHub {
         globalStandards: '1.0',
         knowledge: '2.0',
         cognition: '1.5',
-        proactive: '1.2'
+        proactive: '1.2',
+        antifragility: '1.0',    // Layer 16 — AFI™
+        temporalArbitrage: '1.0' // Layer 17 — TAI™ + TDI™
       }
     };
   }
@@ -1005,8 +1050,33 @@ export class NSILIntelligenceHub {
       'RegionalMirroringEngine':    '1.0.0',
       'RegionalIdentityDecoder':    '1.0.0',
       'LatentAdvantageMiner':       '1.0.0',
-      'UniversalTranslationLayer':  '1.0.0'
+      'UniversalTranslationLayer':  '1.0.0',
+      // NSIL v2 Universal Intelligence (Layers 11-14)
+      'ImpossibilityEngine':             '1.0.0',
+      'UniversalProblemAdapter':         '1.0.0',
+      'CascadingEffectPredictor':        '1.0.0',
+      'SocialDynamicsAgent':             '1.0.0',
+      'CompoundIntelligenceOrchestrator':'1.0.0'
     };
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // NSIL v2: Universal Intelligence — Direct Access
+  // Use this method when you want to run ONLY the 5 new agents on any
+  // natural language problem, bypassing the investment-specific pipeline.
+  // This is the "OS mode" entry point.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Solve any problem using NSIL v2 Universal Intelligence.
+   * Takes natural language input. Returns a full compound intelligence report.
+   * No API keys required. Runs fully locally.
+   */
+  static async solveAnyProblem(query: string, options?: Partial<UniversalProblemInput>): Promise<CompoundIntelligenceReport> {
+    return CompoundIntelligenceOrchestrator.orchestrate({
+      naturalLanguageQuery: query,
+      ...options
+    });
   }
 }
 

@@ -7,12 +7,13 @@
  * Ollama must be installed and running: https://ollama.com
  *
  * Default endpoint: http://localhost:11434
- * Default model:    llama3.1:8b  (configurable via OLLAMA_MODEL env var)
+ * Default model:    gemma3:4b  (Google Gemma 3 — configurable via OLLAMA_MODEL env var)
  *
  * Install & run:
  *   1. Download Ollama from https://ollama.com
- *   2. ollama pull llama3.1:8b
+ *   2. ollama pull gemma3:4b        (3.3 GB — Google Gemma 3, strong multilingual reasoning)
  *   3. ollama serve   (runs on port 11434 by default)
+ *   OR: run start.ps1 — it does all of this automatically.
  *
  * The orchestrator will auto-detect Ollama availability and fall back to
  * cloud providers (Gemma → Groq → Together → OpenAI → Anthropic) if
@@ -29,8 +30,8 @@ const OLLAMA_BASE_URL = typeof process !== 'undefined'
   : 'http://localhost:11434';
 
 const OLLAMA_DEFAULT_MODEL = typeof process !== 'undefined'
-  ? (process.env?.OLLAMA_MODEL || 'llama3.2:3b')
-  : 'llama3.2:3b';
+  ? (process.env?.OLLAMA_MODEL || 'gemma3:4b')
+  : 'gemma3:4b';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

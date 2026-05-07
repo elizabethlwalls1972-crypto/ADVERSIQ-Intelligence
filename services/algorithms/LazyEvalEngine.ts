@@ -65,7 +65,10 @@ const ESTIMATED_TIMES: Record<FormulaId, number> = {
   'PRI': 30, 'RNI': 25, 'SRA': 35, 'IDV': 20,
   'CRE': 80, 'CDT': 75, 'AGL': 60, 'ETH': 55, 'EVO': 45, 'ADA': 40, 'EMO': 50, 'SIM': 120,
   // Human Intelligence Quotient Suite
-  'OIQ': 40, 'MEQ': 35, 'PSQ': 35, 'RAQ': 40, 'ADV': 25
+  'OIQ': 40, 'MEQ': 35, 'PSQ': 35, 'RAQ': 40, 'ADV': 25,
+  // Layers 16–17: Antifragility, Temporal Arbitrage, Complexity (46-formula suite)
+  'AFI': 45, 'TAI': 50, 'TDI': 40, 'NEI': 35, 'PSI': 30,
+  'CGI': 35, 'SVX': 40, 'CFV': 45, 'IME': 30, 'SCV': 35, 'MBI': 40, 'EXF': 30
 };
 
 // ============================================================================
