@@ -455,7 +455,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         {/* Technical commercial statement */}
                         <div className="mt-10 max-w-4xl border-l-2 border-amber-400 pl-6">
                             <p className="text-base font-semibold text-amber-400 leading-relaxed">
-                                38 proprietary formulas. 5 adversarial AI personas. A DAG-scheduled reasoning engine that does not predict — it enforces. OIQ™, MEQ™, PSQ™, RAQ™, and ADV™: IQ, EQ, SQ, and AQ applied to organisations, markets, and regions for the first time in any intelligence platform. Every claim here maps 1-to-1 to a running executor in the codebase. Not a wrapper. Not a template.{' '}
+                                46 proprietary formulas. 17 intelligence layers. 5 adversarial AI personas. A DAG-scheduled reasoning engine that does not predict — it enforces. OIQ™, MEQ™, PSQ™, RAQ™, and ADV™: IQ, EQ, SQ, and AQ applied to organisations, markets, and regions for the first time in any intelligence platform. Powered by the AntifragilityEngine and TemporalArbitrageEngine — stress-testing every output against volatility and time. Every claim here maps 1-to-1 to a running executor in the codebase. Not a wrapper. Not a template.{' '}
                                 <span className="text-white">A purpose-built intelligence verification engine — and the only one built to be proven wrong.</span>
                             </p>
                         </div>
@@ -3262,11 +3262,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Closing */}
                             <div className="border-t border-white/10 pt-10">
                                 <p className="text-2xl md:text-3xl font-black text-white leading-tight max-w-3xl">
-                                    Six fields. Ten layers. One pipeline.<br />
+                                    Six fields. 17 layers. 46 formulas. One pipeline.<br />
                                     <span className="text-amber-400">Built by one person, in sixteen months, from nothing.</span>
                                 </p>
                                 <p className="text-sm text-white/40 mt-4 max-w-2xl leading-relaxed">
-                                    The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. The system you are looking at is the system described here.
+                                    The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. The AntifragilityEngine and TemporalArbitrageEngine are live in the pipeline. The system you are looking at is the system described here.
                                 </p>
                             </div>
                         </div>
