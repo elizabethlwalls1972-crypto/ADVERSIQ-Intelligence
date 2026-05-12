@@ -160,6 +160,7 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://localhost:3002',
   'http://localhost:3003',
+  'http://localhost:4000',
   'http://localhost:5173',
   'https://bw-nexus-ai.onrender.com',
   'https://braydenmw.github.io',

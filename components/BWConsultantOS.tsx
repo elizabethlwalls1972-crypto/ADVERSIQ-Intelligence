@@ -21,7 +21,7 @@ import {
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
 import { extractFileTextViaAI } from '../services/geminiService';
-import { AgentToolRegistry } from '../services/agent';
+import { AgentToolRegistry, registerBuiltInTools } from '../services/agent';
 import { ProfessionalDocumentExporter } from '../services/ProfessionalDocumentExporter';
 import type { ProfessionalDocument, DocumentSection } from '../services/ProfessionalDocumentExporter';
 import { downloadAsDocx } from '../services/DocxExporter';
@@ -81,6 +81,8 @@ import { ReportsService as _ReportsService } from '../services/ReportsService';
 // import { collectExample } from '../services/FineTuningDataCollector'; // Removed for browser compatibility
 import { DocumentIntegrityService as _DocumentIntegrityService } from '../services/DocumentIntegrityService';
 import { AgentWorkflowEngine as _AgentWorkflowEngine } from '../services/agent';
+import { runWithFunctionCalling } from '../services/NativeFunctionCalling';
+import { quickRegionalIntel } from '../services/RegionalIntelligenceAgent';
 import type { ReportParameters } from '../types';
 import type { RequestEnvelope } from '../shared/cognitiveControl';
 import { INITIAL_PARAMETERS } from '../constants';
@@ -1130,6 +1132,12 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // Refs
   const agenticAIRef = useRef<BWConsultantAgenticAI>(new BWConsultantAgenticAI());
   const agentRegistry = useRef(new AgentToolRegistry());
+  // Register all built-in tools once at init so the AI has access to live data tools
+  // (country intelligence, exchange rates, partner search, composite scores, etc.)
+  useEffect(() => {
+    registerBuiltInTools(agentRegistry.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const learningProfileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -5022,6 +5030,73 @@ ${agentRegistry.current.toManifest()}`;
           responseContent = `I'm here, Susan — let me know a bit more about what you're working on. Share the sector, country, or specific decision and I'll pull the right analysis together for you.`;
         }
 
+        // ── TOOL CALL EXECUTION LOOP ───────────────────────────────────────────
+        // Try native function calling first (structured JSON-schema tools),
+        // then fall back to text-parsed [[TOOL:name]] blocks emitted by the model.
+        if (!isGreetingOnly && !shouldPromptForOutputClarification) {
+          let nativeFCToolResults: string[] = [];
+          try {
+            const fcResult = await runWithFunctionCalling(
+              [
+                { role: 'system', content: 'You are ADVERSIQ Consultant OS. Use the available tools when the user\'s query would benefit from live data.' },
+                { role: 'user', content: trimmedUserContent }
+              ],
+              agentRegistry.current,
+              { maxTokens: 1200 }
+            );
+            if (fcResult.toolResults.length > 0) {
+              nativeFCToolResults = fcResult.toolResults.map(tr => `**${tr.name}**: ${typeof tr.result.data === 'string' ? tr.result.data : JSON.stringify(tr.result.data).slice(0, 600)}`);
+            }
+          } catch { /* native function calling is optional */ }
+
+          const parsedToolCalls = AgentToolRegistry.parseToolCalls(responseContent);
+          const autoToolCalls: Array<{ name: string; params: Record<string, unknown> }> = enableFullCaseTreeMatching
+            ? [
+                caseDraft.country.trim() ? { name: 'get_country_intelligence', params: { country: caseDraft.country } } : null,
+                caseDraft.country.trim() ? { name: 'calculate_composite_scores', params: { country: caseDraft.country, sector: caseDraft.organizationType || undefined } } : null,
+              ].filter(Boolean) as Array<{ name: string; params: Record<string, unknown> }>
+            : [];
+
+          const mergedToolCalls = [...parsedToolCalls, ...autoToolCalls];
+
+          const regionalIntelPromise = caseDraft.country.trim()
+            ? quickRegionalIntel(trimmedUserContent, caseDraft.country).catch(() => null)
+            : Promise.resolve(null);
+
+          if (mergedToolCalls.length > 0 || nativeFCToolResults.length > 0) {
+            responseContent = AgentToolRegistry.stripToolCalls(responseContent);
+            const toolResultLines: string[] = [...nativeFCToolResults];
+            for (const call of mergedToolCalls) {
+              try {
+                const result = await agentRegistry.current.execute(call.name, call.params);
+                const summary =
+                  result.summary ??
+                  (result.data as { summary?: string })?.summary ??
+                  (result.success ? JSON.stringify(result.data).slice(0, 600) : `Error: ${result.error}`);
+                toolResultLines.push(`**${call.name}** (${result.latencyMs}ms):\n${summary}`);
+              } catch (toolErr) {
+                toolResultLines.push(`**${call.name}**: execution failed - ${String(toolErr)}`);
+              }
+            }
+            const regionalIntel = await regionalIntelPromise;
+            const hasRegionalData = regionalIntel?.summary
+              && !/No data found|No recent news found|No government sources found/i.test(regionalIntel.summary);
+            if (hasRegionalData && regionalIntel) {
+              toolResultLines.push(`**regional_intelligence** (${regionalIntel.sources} sources):\n${regionalIntel.summary}\nKey facts: ${regionalIntel.keyFacts.slice(0, 5).join('; ')}`);
+            }
+            if (toolResultLines.length > 0) {
+              const toolContext = toolResultLines.join('\n\n');
+              try {
+                const augmented = await processWithAI(
+                  `${userContent}\n\n[Live intelligence retrieved]:\n${toolContext}`,
+                  `You have access to the tool results above. Use them to give a specific, data-grounded response. Do NOT emit any more tool calls.`
+                );
+                if (augmented) responseContent = augmented;
+              } catch { /* tool-augmented pass is additive — don't block response */ }
+            }
+          }
+        }
+
         displayedMsgIds.current.add(assistantMessageId);
         setMessages((prev) =>
           prev.map((msg) =>
@@ -5045,7 +5120,7 @@ ${agentRegistry.current.toManifest()}`;
     // Cleanup after response
     setIsStreamingResponse(false);
     setIsLoading(false);
-  }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles]);
+  }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, enableFullCaseTreeMatching, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, processWithAI, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles]);
   handleSendRef.current = handleSend;
 
   // Handle file selection
