@@ -370,10 +370,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black">built for decisions that matter.</span>
                             </h2>
                             <p className="text-lg text-slate-700 leading-relaxed mb-4">
-                                Six disciplines. Ten verified layers. One deterministic pipeline.
+                                Regional cities worldwide face unprecedented challenges: economic stagnation, infrastructure decay, demographic shifts, and global competition. Traditional strategic advisory costs millions and takes months to deliver insights that are often outdated before implementation.
                             </p>
                             <p className="text-base text-slate-600 leading-relaxed">
-                                ADVERSIQ delivers institutional-grade strategic analysis at a fraction of the cost of traditional advisory — purpose-built for government agencies, regional authorities, investment operators, and organisations making high-stakes decisions without a big-four firm on retainer. Every output is mathematically verified, adversarially tested, and fully auditable before it reaches you.
+                                ADVERSIQ was developed to provide institutional-grade strategic analysis at a fraction of traditional costs — purpose-built for regional authorities, government agencies, and organizations making high-stakes decisions without big-four firms on retainer. Every output is mathematically verified, adversarially tested, and fully auditable before it reaches you.
                             </p>
                         </div>
 
