@@ -370,6 +370,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black">built for decisions that matter.</span>
                             </h2>
                             <p className="text-xl md:text-2xl text-slate-700 leading-relaxed mb-4 max-w-3xl">
+                                Start Free Today<br />
+                                5-day full access. No credit card. See how ADVERSIQ turns uncertainty into defensible decisions in the time it takes to grab lunch.
                             </p>
                         </div>
 
