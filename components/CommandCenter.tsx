@@ -403,7 +403,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     <div className="border-t border-white/10 pt-12 pb-16">
                         <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl">
                             Your next major decision deserves more than a confident-sounding answer.<br />
-                            <span className="text-amber-400">It deserves one that has already been proven wrong — and survived.</span>
+                            <span className="text-amber-400">It deserves one that's been battle-tested and proven resilient.</span>
                         </p>
 
                         <div className="mt-10 max-w-3xl border-l-2 border-amber-400 pl-6">
