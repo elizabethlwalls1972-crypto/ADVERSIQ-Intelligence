@@ -421,8 +421,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div className="space-y-0">
                             {[
                                 { label: 'What you get', text: 'A complete intelligence workflow: validated inputs, adversarial debate, 27+ deterministic formulas, bias audit, Monte Carlo stress testing, and board-ready documents — in a single run.' },
-                                { label: 'Where it fits in', text: 'Alongside your advisor. Before your board meeting. When you need a position verified and there is no analyst in the room. ADVERSIQ fills in the blanks — providing the rigour, the stress-testing, and the documentation that most organisations only access when they can afford to bring in a firm.' },
-                                { label: 'Why it exists', text: 'Government agencies, regional authorities, and investment operators were making multi-million dollar decisions with tools built for a different era. ADVERSIQ was built to change that.' },
+                                { label: 'Where it fits in', text: 'For organisations without a consulting retainer. For governments and regional authorities operating on real budgets. For investment committees that need analysis today, not in three months. ADVERSIQ provides institutional rigor at a fraction of traditional advisory cost — no compromise on quality, only on expense.' },
+                                { label: 'Why it exists', text: 'An affordable alternative to six-figure consulting engagements. Built so that regional authorities, development finance institutions, and investment operators can access the same analytical rigor as large corporations — without the cost barrier.' },
                             ].map((item, i) => (
                                 <div key={i} className="border-t border-white/10 py-6">
                                     <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">{item.label}</p>
@@ -441,8 +441,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-transparent" />
                         <div className="relative z-10 px-8 py-14 max-w-lg">
-                            <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Why nothing else does this</p>
-                            <p className="text-sm text-white/80 leading-relaxed">Deterministic scoring, Bayesian adversarial debate, cognitive bias modelling, and reflexive self-audit in one integrated pipeline required six fields of expertise simultaneously. No commercial product had attempted it. This one did.</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Why this matters now</p>
+                            <p className="text-sm text-white/80 leading-relaxed">Institutional-grade analysis has always been locked behind consulting fees that exclude most organisations. ADVERSIQ makes it accessible. No retainers. No three-month engagements. No waiting for availability. The intelligence your board needs, available at the cost of a good software subscription — not a consulting engagement.</p>
                         </div>
                     </div>
 
