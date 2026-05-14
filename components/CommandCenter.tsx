@@ -452,11 +452,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <span className="text-amber-400">It deserves one that has already been proven wrong — and survived.</span>
                         </p>
 
-                        {/* Technical commercial statement */}
+                        {/* Platform philosophy statement */}
                         <div className="mt-10 max-w-4xl border-l-2 border-amber-400 pl-6">
                             <p className="text-base font-semibold text-amber-400 leading-relaxed">
-                                46 proprietary formulas. 17 intelligence layers. 5 adversarial AI personas. A DAG-scheduled reasoning engine that does not predict — it enforces. OIQ™, MEQ™, PSQ™, RAQ™, and ADV™: IQ, EQ, SQ, and AQ applied to organisations, markets, and regions for the first time in any intelligence platform. Powered by the AntifragilityEngine and TemporalArbitrageEngine — stress-testing every output against volatility and time. Every claim here maps 1-to-1 to a running executor in the codebase. Not a wrapper. Not a template.{' '}
-                                <span className="text-white">A purpose-built intelligence verification engine — and the only one built to be proven wrong.</span>
+                                ADVERSIQ is not here to compete with consulting firms — it's here to offer a more affordable option for those who can't afford hands-on advisory. Our platform consolidates all groundwork in one place with institutional-grade reasoning built into this unique operating system. It helps you understand what you're looking for and approach stakeholders with more confidence.{' '}
+                                <span className="text-white">Intelligence rigor that was previously only accessible to those who could afford a consulting retainer is now available to everyone.</span>
                             </p>
                         </div>
 
