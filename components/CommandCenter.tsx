@@ -419,7 +419,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 onClick={() => setShowFounderLetter(true)}
                                 className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-900 text-sm font-bold uppercase tracking-[0.15em] hover:bg-amber-300 transition-colors"
                             >
-                                See Proof
+                                One Developer
                                 <ArrowRight size={16} />
                             </button>
                             <button
