@@ -9257,7 +9257,13 @@ ${agentRegistry.current.toManifest()}`;
               <div className="border border-stone-200 bg-stone-50 p-4">
                 <h3 className="text-sm font-bold text-slate-900 mb-2">The Founder</h3>
                 <p className="text-sm text-slate-700 leading-relaxed">
-                  I'm Brayden Walls - the founder and sole developer behind BWGA Ai. For more than 16 months I've been living, researching, and building in the Philippines - on the ground, in communities where economic potential is enormous but the tools to unlock it simply don't exist. I watched the same pattern repeat everywhere: ambitious businesses with incomplete information, regional governments unable to translate their advantages into investor language, unproductive meetings built on mismatched expectations. Places like Mindanao, regional Australia, communities across the Pacific - they all wanted the same thing: to be seen, to be understood, to have a fair shot. So I taught myself to code, studied every economic development framework I could find, and spent over a year turning that knowledge into a complete reasoning system - one that thinks through problems the way a team of senior consultants would, but faster, cheaper, and available to anyone.
+                  After 25 years, I wanted to make a difference. I have spent my career moving across sectors - construction, resources, trade, regional development, and community governance. In every environment, across every country and every field, the same thing kept happening. The people who needed the best information the most were the ones who had the least access to it.
+                </p>
+                <p className="text-sm text-slate-700 leading-relaxed mt-3">
+                  I watched regional councils spend months preparing proposals that were rejected not because their opportunities weren't real, but because the documents didn't speak the language investors expect. I watched businesses enter foreign markets on optimistic spreadsheets and come undone on details they had no way of knowing to ask about. I watched government agencies commission reports that arrived three months too late, cost more than the decision was worth, and still couldn't surface the one or two things that actually mattered.
+                </p>
+                <p className="text-sm text-slate-700 leading-relaxed mt-3">
+                  And I noticed something else: the gap was never about intelligence, ambition, or effort. The people I was watching were exceptional. The gap was entirely about access. The right tools had always existed - but they lived inside capital-city advisory firms, behind six-figure invoices and six-week turnaround times.
                 </p>
               </div>
 
