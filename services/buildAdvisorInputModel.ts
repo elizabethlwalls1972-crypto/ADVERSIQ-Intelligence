@@ -51,16 +51,23 @@ const deriveMarketGrowthRate = (params: ReportParameters): number => {
   return 12;
 };
 
-/**
- * Build placeholder risk entries when the user hasn't supplied explicit risks.
- * Each entry is tagged as synthetic so downstream consumers (e.g. GlobalIntelligenceEngine)
- * can distinguish fabricated placeholders from real risk-register data.
- */
-const buildPlaceholderRisks = (params: ReportParameters) => {
+const buildDerivedRiskSignals = (params: ReportParameters) => {
   const sensitivitySignals = (params.politicalSensitivities?.length ?? 0) + (params.priorityThemes?.length ?? 0);
   const base = params.riskTolerance === 'high' ? 2 : params.riskTolerance === 'low' ? 4 : 3;
   const riskCount = Math.max(1, Math.min(6, sensitivitySignals || base));
-  return Array.from({ length: riskCount }, (_, idx) => ({ id: `placeholder-risk-${idx}`, synthetic: true }));
+  const sourceSignals = [
+    ...(params.politicalSensitivities ?? []),
+    ...(params.priorityThemes ?? []),
+    params.riskTolerance ? `${params.riskTolerance} risk tolerance` : undefined,
+    params.country ? `${params.country} jurisdiction exposure` : undefined,
+    params.expansionTimeline ? `${params.expansionTimeline} delivery timeline` : undefined,
+  ].filter(Boolean) as string[];
+
+  return Array.from({ length: riskCount }, (_, idx) => ({
+    id: `derived-risk-${idx + 1}`,
+    sourceSignal: sourceSignals[idx % Math.max(1, sourceSignals.length)] || 'limited intake evidence',
+    derived: true,
+  }));
 };
 
 export const buildAdvisorInputFromParams = (params: ReportParameters): AdvisorInputModel => {
@@ -99,7 +106,7 @@ export const buildAdvisorInputFromParams = (params: ReportParameters): AdvisorIn
       },
     },
     risks: {
-      risks: buildPlaceholderRisks(params),
+      risks: buildDerivedRiskSignals(params),
     },
   };
 };

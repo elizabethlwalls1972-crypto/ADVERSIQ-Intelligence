@@ -18,6 +18,9 @@ if (result) {
   console.log(`Countries scanned: ${result.countriesScanned.join(', ')}`);
   console.log(`Harness trajectories: ${result.harness.trajectoriesObserved}`);
   console.log(`Refiner changes: ${result.harness.refinerChanges}`);
+  console.log(
+    `p/G/K/M edits: prompt=${result.harness.promptEdits}, subagents=${result.harness.subagentEdits}, skills=${result.harness.skillEdits}, memory=${result.harness.harnessMemoryEdits}`,
+  );
   console.log('Output files:');
   for (const file of result.outputFiles) {
     console.log(`- ${file}`);

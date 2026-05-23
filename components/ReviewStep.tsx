@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ReportParameters, SPIResult, EthicalCheckResult } from '../types';
 
-// Placeholder for services if they don't exist in the context
-const generateSpeech = async (text: string) => null; 
-const decodeAudioData = async (data: any, ctx: any) => ctx.createBuffer(1, 1, 24000);
-
 import { calculateSPI, runEthicalSafeguards } from '../services/engine';
 import { FileText, Users, GlobeIcon, Target, ShieldCheck, TrendingUp, BrainCircuit, DownloadIcon, NexusLogo, AlertTriangleIcon, CheckCircle, RocketIcon, ActivityIcon, BarChart } from './Icons';
 import SuccessScoreCard from './SuccessScoreCard';
@@ -101,16 +97,32 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
         Target Sector: ${params.industry.join(' and ')}.
         Region: ${params.region}.
         Success Probability Index is ${spiData?.spi} percent.
-        Ethical Safeguard status: ${ethicalData?.passed ? 'Passed' : 'Requires Review'}.`;
-        
-        // Mock speech generation
-        console.log("Speaking:", textToSay);
-        
-        setTimeout(() => {
+        Ethical Safeguard status: ${ethicalData?.passed ? 'Passed' : 'Requires Verification'}.`;
+
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
             setAudioLoading(false);
-            setIsPlaying(false); // Reset immediately for demo as we don't have real audio
-            alert("Audio Brief Simulation: " + textToSay);
-        }, 1000);
+            setIsPlaying(false);
+            setBackendStatus('Audio unavailable in this browser');
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(textToSay);
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.onstart = () => {
+            setAudioLoading(false);
+            setIsPlaying(true);
+        };
+        utterance.onend = () => {
+            setIsPlaying(false);
+        };
+        utterance.onerror = () => {
+            setAudioLoading(false);
+            setIsPlaying(false);
+            setBackendStatus('Audio brief failed');
+        };
+        window.speechSynthesis.speak(utterance);
     };
 
     // Helper to identify deep logic modules
@@ -193,7 +205,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({ params }) => {
                                             </div>
                                             <div>
                                                 <h4 className={`font-bold text-sm ${ethicalData.passed ? 'text-blue-900' : 'text-red-900'}`}>
-                                                    Ethical Safeguard Engine: {ethicalData.passed ? 'Pass' : 'Review Required'}
+                                                    Ethical Safeguard Engine: {ethicalData.passed ? 'Pass' : 'Verification Required'}
                                                 </h4>
                                                 <p className="text-xs text-stone-600 mt-1">
                                                     {backendStatus === 'Processing...' ? 'Running deep scan...' : 'Preliminary check complete.'}

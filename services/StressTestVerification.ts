@@ -441,7 +441,7 @@ export class StressTestVerification {
         summary += '\n' + '='.repeat(80) + '\n';
         
         if (stillFailing === 0 && partial <= 2) {
-            summary += 'VERDICT: All critical issues FIXED. System is production-ready.\n';
+            summary += 'VERDICT: All critical issues fixed under the configured stress-test suite.\n';
         } else if (stillFailing === 0) {
             summary += 'VERDICT: Critical issues fixed. Some partial fixes need review.\n';
         } else {

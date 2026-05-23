@@ -144,15 +144,25 @@ export class HistoricalDevelopmentAnalyzer {
    * Load historical profiles from disk
    */
   private load_profiles(): void {
-    // In production: load from database
-    // For now: create sample profiles
-    this.profiles = this.create_sample_profiles();
+    const files = fs.readdirSync(this.data_dir).filter(file => file.endsWith('.json'));
+    const loaded: HistoricalDevelopmentProfile[] = [];
+    for (const file of files) {
+      try {
+        const parsed = JSON.parse(fs.readFileSync(path.join(this.data_dir, file), 'utf8')) as HistoricalDevelopmentProfile;
+        if (parsed.entity_id && parsed.entity_name && parsed.country) {
+          loaded.push(parsed);
+        }
+      } catch {
+        // Ignore malformed local profile files and keep loading the rest.
+      }
+    }
+    this.profiles = loaded.length > 0 ? loaded : this.create_curated_profiles();
   }
   
   /**
-   * Create sample historical profiles for demonstration
+   * Create curated historical profiles used when no local profile store exists.
    */
-  private create_sample_profiles(): HistoricalDevelopmentProfile[] {
+  private create_curated_profiles(): HistoricalDevelopmentProfile[] {
     return [
       {
         entity_id: 'manila_ph',

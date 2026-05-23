@@ -141,7 +141,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
 
           <div className="mb-6">
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-lg">
-              <h3 className="text-lg font-semibold mb-2">100% Performance Mode</h3>
+              <h3 className="text-lg font-semibold mb-2">Full Performance Mode</h3>
               <p className="text-sm opacity-90">
                 Activate all advanced autonomous agents for complete system optimization:
                 Deep Thinking * Autonomous Research * Intelligent Document Generation * Self-Improvement
@@ -255,7 +255,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                 onClick={startMasterOrchestration}
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
               >
-                🚀 Start 100% Orchestration
+                🚀 Start Full Orchestration
               </button>
             )}
 

@@ -21,7 +21,7 @@ const AttractWorkspace = () => {
               Get Started <ArrowRight className="w-5 h-5" />
             </button>
             <button className="bg-slate-800 hover:bg-slate-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all border border-slate-700">
-              View Demo
+              View Live Example
             </button>
           </div>
         </div>
@@ -311,7 +311,7 @@ const AttractWorkspace = () => {
                 Get Started
               </button>
               <p className="text-slate-500 text-sm mt-4">
-                No onboarding required. Try a live demo or contact us for a pilot.
+                No onboarding required. Try a live example or contact us for a pilot.
               </p>
             </div>
           </div>

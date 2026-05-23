@@ -297,7 +297,7 @@ export class GlobalComplianceFramework {
         flags.push(`Low CPI (${profile.corruptionPerceptionIndex}/100): significant corruption risk. Anti-bribery compliance programme essential.`);
       }
     } else {
-      flags.push(`Country "${params.country}" not found in compliance database. Manual compliance review required.`);
+      flags.push(`Country "${params.country}" not found in compliance database. Autonomous compliance-source expansion required.`);
     }
 
     // Regional bloc standards

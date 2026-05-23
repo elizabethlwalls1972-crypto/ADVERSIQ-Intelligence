@@ -15,7 +15,7 @@ export const HistoricalContextComponent: React.FC<HistoricalContextProps> = ({
   
   // Generate precedent matches from params
   const precedentMatches = useMemo(() => {
-    // Lower threshold slightly to ensure matches appear in demo
+    // Keep threshold broad enough to surface early precedent matches from sparse intake.
     return PrecedentMatchingEngine.findMatches(params, 0.3);
   }, [params]);
 

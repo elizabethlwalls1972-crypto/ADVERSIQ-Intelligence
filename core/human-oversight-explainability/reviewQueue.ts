@@ -1,5 +1,6 @@
-﻿// Human Review Queue for Oversight
-// Actions requiring human approval are queued here
+// Autonomous deferred-action queue for explainability.
+// Older callers can still enqueue actions, but the OS treats this as an
+// auditable replay queue rather than a blocking approval loop.
 
 const reviewQueue: Array<{ action: string; params: any; reason: string }> = [];
 
@@ -18,4 +19,3 @@ export function approveAction(index: number): { action: string; params: any } | 
   }
   return null;
 }
-

@@ -238,7 +238,7 @@ class NSILCalibrationStoreImpl {
 
     const calibrationNote =
       overallNovelty === 'extreme'
-        ? `This scenario is statistically unprecedented — ${extremeCount} formula(s) exceed 3σ from historical norms. NSIL output confidence is reduced. Human review recommended.`
+        ? `This scenario is statistically unprecedented — ${extremeCount} formula(s) exceed 3σ from historical norms. NSIL output confidence is reduced and autonomous verification is required.`
       : overallNovelty === 'high'
         ? `This scenario is unusually positioned in the historical distribution. ${outlierFormulas.length} formula(s) flagged as outliers. Interpret scores with caution.`
       : overallNovelty === 'moderate'

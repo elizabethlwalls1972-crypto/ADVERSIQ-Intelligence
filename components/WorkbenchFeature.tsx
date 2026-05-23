@@ -134,7 +134,7 @@ export const WorkbenchFeature: React.FC = () => {
                     </div>
                 </div>
 
-                {/* The Visual Demo (Split Screen) */}
+                {/* Live workbench preview */}
                 <div className="grid lg:grid-cols-2 gap-0 border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-24 bg-black/40 backdrop-blur-sm h-[460px]">
                     
                     {/* Left: User Input */}

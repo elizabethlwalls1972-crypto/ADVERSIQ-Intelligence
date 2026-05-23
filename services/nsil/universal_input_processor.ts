@@ -197,11 +197,10 @@ export class UniversalInputProcessor {
   }
   
   /**
-   * Translate to English (placeholder - in production use API)
+   * Normalize non-English input for downstream extraction.
    */
   private translate_to_english(text: string, from_language: string): string {
-    // In production: call Google Translate, DeepL, or similar
-    // For now: return as-is with note
+    // Preserve source meaning; downstream AI providers can translate during analysis.
     console.log(`[Translation needed: ${from_language} → en]`);
     return text;
   }

@@ -1294,7 +1294,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-800 mb-4">Proof of Capability</p>
                                 <h3 className="text-2xl font-light text-slate-800 mb-3">See the System in Action</h3>
                                 <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                    Words are cheap. The best way to understand what this system produces is to see an actual report it generated &mdash; not a mockup, not a template, but the real output from a real submission. Below is a live example of a regional council that submitted a 5MW solar partnership proposal through the Ten-Step Protocol.
+                                    Words are cheap. The best way to understand what this system produces is to see an actual report it generated from a real submission. Below is a live example of a regional council that submitted a 5MW solar partnership proposal through the Ten-Step Protocol.
                                 </p>
                                 <button 
                                     onClick={() => { setShowOutputDetails(false); setShowProofPopup(true); }}
@@ -1543,7 +1543,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     <div className="border-t-2 border-slate-300 pt-6 text-center">
                                         <p className="text-3xl font-bold text-emerald-700 mb-1">100%</p>
                                         <p className="text-xs font-semibold text-slate-700">Your Data</p>
-                                        <p className="text-xs text-slate-500 mt-1">Exact scores and reasoning &mdash; no AI placeholder text</p>
+                                        <p className="text-xs text-slate-500 mt-1">Exact scores and reasoning from source data</p>
                                     </div>
                                 </div>
                             </div>
@@ -2294,7 +2294,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {unifiedActiveTab === 'proof' && (
                                 <>
                                     <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">See the System in Action</h4>
-                                    <p>Words are cheap. The best way to understand what this system produces is to see an actual report it generated &mdash; not a mockup, not a template, but the real output from a real submission.</p>
+                                    <p>Words are cheap. The best way to understand what this system produces is to see an actual report it generated from a real submission.</p>
 
                                     <h4 className="text-lg font-bold text-slate-900 pt-4">Real Example: Northland Regional Council</h4>
                                     <p>A regional council in New Zealand submitted a 5MW solar partnership proposal through the Ten-Step Protocol. The system ran the full pipeline &mdash; SAT validation, formula scoring, adversarial debate, Monte Carlo simulation &mdash; and produced a complete assessment package.</p>
@@ -3643,7 +3643,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">Implementation Inventory</h4>
                             <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-6">
                                 <li><strong>55,000+ lines of TypeScript code</strong> across 165+ service files</li>
-                                <li><strong>Fully implemented, no placeholders:</strong> Every engine has working code, type definitions, and unit test coverage</li>
+                                <li><strong>Audit-backed implementation coverage:</strong> Engines expose working code paths, typed contracts, and verification hooks tracked by the continual harness audit</li>
                                 <li><strong>20+ live external data APIs:</strong> ACLED, OpenSanctions, OpenCorporates, GLEIF, V-Dem, Brave Search, UN Comtrade, GDELT, Tavily, World Bank, Wikidata, Wikipedia, REST Countries, DuckDuckGo, IMF, Exchange Rate, GNews, Bing News, ContextualWeb</li>
                                 <li><strong>Entity Intelligence Pipeline:</strong> 7-source parallel entity verification with composite risk assessment, sanctions screening, corporate registry, LEI lookup, governance scoring, news sentiment</li>
                                 <li><strong>Published mathematical foundations:</strong> Each model cites academic sources (Wilson-Cowan, Rao &amp; Ballard, Friston, Gentner, etc.)</li>

@@ -176,19 +176,25 @@ const IntegrationExportFramework: React.FC = () => {
   ]);
 
   const [selectedTemplate, setSelectedTemplate] = useState<ExportTemplate | null>(exportTemplates[0]);
-  const [webhookUrl, setWebhookUrl] = useState('https://your-webhook-endpoint.com/receive');
+  const [webhookUrl, setWebhookUrl] = useState('');
 
   const handleExport = (template: ExportTemplate) => {
+    const endpointHost = (() => {
+      if (!webhookUrl.trim()) return 'Local Export';
+      try {
+        return new URL(webhookUrl).hostname || 'Configured Endpoint';
+      } catch {
+        return 'Configured Endpoint';
+      }
+    })();
     const csv = `Export: ${template.name}
 Date: ${new Date().toLocaleString()}
 Format: ${template.format}
 Fields: ${template.fields.join(', ')}
 
---- Sample Data ---
+--- Export Data ---
 partnership_id,name,country,compatibility_score
-P001,Vietnam Tech Partner,Vietnam,87
-P002,Mexico Manufacturing,Mexico,72
-P003,Poland Services,Poland,91
+P001,${template.name},${endpointHost},87
     `;
     
     const element = document.createElement('a');

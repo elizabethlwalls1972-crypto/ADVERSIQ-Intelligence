@@ -33,7 +33,7 @@
  *   TYPE F — Impossible Problem: explicitly stated as unsolvable, intractable
  *
  * Agent Selection Logic:
- *   Every problem type gets a different agent chain.
+ *   Each classified problem type gets a different agent chain.
  *   TYPE F always triggers ImpossibilityEngine first.
  *   TYPE D triggers all agents in full synthesis mode.
  *   Types A-C trigger domain-specialized chains.

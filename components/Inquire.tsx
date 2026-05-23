@@ -43,7 +43,7 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
         setInputText('');
         setIsProcessing(true);
 
-        // Add Placeholder for AI Response (Thinking State)
+        // Add transient AI response while reasoning is running.
         const thinkingId = Date.now();
         setMessages(prev => [...prev, { sender: 'copilot', text: '', isThinking: true, thinkingStep: 'Initializing...' }]);
 
@@ -100,7 +100,7 @@ const Inquire: React.FC<InquireProps> = ({ params, onApplySuggestions }) => {
             // Replace Thinking Message with Result
             setMessages(prev => {
                 const newMsgs = [...prev];
-                newMsgs.pop(); // Remove thinking placeholder
+                newMsgs.pop(); // Remove transient thinking message.
                 return [...newMsgs, {
                     sender: 'copilot',
                     text: result.summary,

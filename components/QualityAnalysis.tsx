@@ -34,22 +34,50 @@ const schema: Schema = {
     required: ["score", "credibility", "biasDetected", "biasAnalysis", "missingDataPoints", "recommendedSources", "freshnessScore"]
 };
 
+const runLocalQualityAudit = (params: ReportParameters): QualityAudit => {
+    const missingDataPoints: string[] = [];
+    if (!params.region) missingDataPoints.push('Target region');
+    if (!params.industry?.length) missingDataPoints.push('Industry classification');
+    if (!params.organizationType) missingDataPoints.push('Organization type');
+    if (!params.idealPartnerProfile) missingDataPoints.push('Ideal partner profile');
+    if (!params.problemStatement || params.problemStatement.length < 80) missingDataPoints.push('Detailed objective and constraints');
+
+    const evidenceSignals = [
+        params.region,
+        ...(params.industry ?? []),
+        params.organizationType,
+        params.idealPartnerProfile,
+        params.problemStatement,
+    ].filter(Boolean).length;
+    const completeness = Math.min(100, Math.round((evidenceSignals / 5) * 100));
+    const score = Math.max(35, Math.min(92, completeness - missingDataPoints.length * 6 + 20));
+    const biasDetected = !params.riskTolerance || !params.priorityThemes?.length;
+
+    return {
+        score,
+        credibility: score >= 75 ? 'High' : score >= 55 ? 'Moderate' : 'Low',
+        biasDetected,
+        biasAnalysis: biasDetected
+            ? 'The intake is missing risk-tolerance or priority-theme signals, so the audit marks potential optimism and selection-bias exposure.'
+            : 'The intake includes enough strategy, sector, and risk context for a balanced first-pass audit.',
+        missingDataPoints: missingDataPoints.length ? missingDataPoints : ['Latest official statistics and named counterparty evidence'],
+        recommendedSources: [
+            'World Bank DataBank',
+            'IMF DataMapper',
+            'UN Comtrade',
+            `${params.region || 'Target market'} investment promotion agency`,
+        ],
+        freshnessScore: params.problemStatement && params.problemStatement.length > 120 ? 82 : 62,
+    };
+};
+
 const QualityAnalysis: React.FC<QualityAnalysisProps> = ({ params }) => {
     const [audit, setAudit] = useState<QualityAudit | null>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!process.env.API_KEY) {
-            // Mock data if no API key
-            setAudit({
-                score: 85,
-                credibility: "High",
-                biasDetected: false,
-                biasAnalysis: "Analysis appears balanced.",
-                missingDataPoints: ["Competitor Pricing"],
-                recommendedSources: ["Industry Reports 2024"],
-                freshnessScore: 90
-            });
+            setAudit(runLocalQualityAudit(params));
             return;
         }
 

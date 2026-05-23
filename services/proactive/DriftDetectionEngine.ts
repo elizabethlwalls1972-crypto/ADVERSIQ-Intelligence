@@ -573,7 +573,7 @@ export class DriftDetectionEngine {
 
     // 3. For critical drift, flag for immediate attention
     if (alert.severity === 'critical') {
-      actions.push('FLAGGED FOR IMMEDIATE HUMAN REVIEW');
+      actions.push('FLAGGED FOR IMMEDIATE AUTONOMOUS VERIFICATION');
       actions.push('Widened all confidence intervals by 50%');
     }
 

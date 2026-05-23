@@ -73,7 +73,7 @@ export const Services: React.FC = () => {
          <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 
-                {/* Visual / Portrait Placeholder */}
+                {/* Visual portrait */}
                 <div className="relative order-2 lg:order-1">
                     <div className="absolute -top-10 -left-10 w-40 h-40 bg-bw-gold/10 rounded-full blur-3xl"></div>
                     <div className="relative z-10 bg-stone-100 p-2 rounded-sm rotate-1 shadow-xl border border-stone-200">

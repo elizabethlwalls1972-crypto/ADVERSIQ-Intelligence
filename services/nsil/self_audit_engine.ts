@@ -210,7 +210,7 @@ export class SelfAuditEngine {
       problem_types_covered: this.problem_types_solved,
       failure_patterns_documented: this.documented_failure_patterns.length,
       historical_cases_available: this.historical_cases_count,
-      real_time_data_feeds,
+      real_time_data_feeds: this.real_time_feeds,
     };
   }
   
@@ -247,7 +247,7 @@ export class SelfAuditEngine {
       gaps.missing_language_support.push(input.metadata.origin_language);
     }
     
-    // Data freshness (mock)
+    // Data freshness risk from urgency signal.
     if (input.metadata.urgency === 'immediate') {
       gaps.data_freshness_issue = true; // May not have latest real-time data
     }

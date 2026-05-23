@@ -29,7 +29,7 @@ export interface SanctionsScreenResult {
   query: string;
   totalHits: number;
   hits: SanctionsHit[];
-  clearanceLevel: 'Clear' | 'Review Required' | 'High Risk' | 'Blocked';
+  clearanceLevel: 'Clear' | 'Enhanced Verification' | 'High Risk' | 'Blocked';
   flaggedLists: string[];
 }
 
@@ -50,7 +50,7 @@ function deriveClearanceLevel(hits: SanctionsHit[]): SanctionsScreenResult['clea
   const sanctioned = hits.filter(h => h.isSanctioned);
   if (sanctioned.some(h => h.datasets.some(d => d.includes('ofac') || d.includes('un_sc')))) return 'Blocked';
   if (sanctioned.length > 0) return 'High Risk';
-  if (hits.some(h => h.isPEP)) return 'Review Required';
+  if (hits.some(h => h.isPEP)) return 'Enhanced Verification';
   return 'Clear';
 }
 

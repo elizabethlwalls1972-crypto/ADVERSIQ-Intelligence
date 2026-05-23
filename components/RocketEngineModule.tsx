@@ -22,7 +22,7 @@ const RocketEngineModule: React.FC<RocketEngineModuleProps> = ({ params }) => {
         const features = customFeatures 
             ? customFeatures.split(',').map(s => ({ name: s.trim(), rarityScore: 5, relevanceScore: 5, marketProxy: 50000 }))
             : [
-                // Generate synthetic features based on industry if no custom input
+                // Derive baseline features from industry context when no custom input is provided.
                 { name: `${params.industry[0] || 'Strategic'} Hub`, rarityScore: 8, relevanceScore: 9, marketProxy: 50000 },
                 { name: "Special Economic Zone", rarityScore: 6, relevanceScore: 8, marketProxy: 30000 },
                 { name: "Deep Water Port", rarityScore: 7, relevanceScore: 7, marketProxy: 80000 },
@@ -30,13 +30,12 @@ const RocketEngineModule: React.FC<RocketEngineModuleProps> = ({ params }) => {
                 { name: "Renewable Energy Grid", rarityScore: 6, relevanceScore: 8, marketProxy: 60000 }
             ];
 
-        // Synthesize a RegionProfile
         const regionProfile: RegionProfile = {
             id: `region-${(params.region || 'global').replace(/\s+/g, '-').toLowerCase()}`,
             name: params.region || 'Global',
             country: params.country || params.region?.split(',')[0] || 'Global',
-            population: 10000000, // Mock default
-            gdp: 50000000000, // Mock default
+            population: Number((params as any).population) || 10000000,
+            gdp: Number((params as any).gdp) || 50000000000,
             rawFeatures: features,
             sectorHint: params.industry?.[0],
             regulatoryComplexity: 50,

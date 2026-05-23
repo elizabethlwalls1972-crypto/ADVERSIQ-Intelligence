@@ -2,7 +2,7 @@
  *
  * Location Intelligence Service Logic
  *
- * PRODUCTION-READY
+ * Runtime location intelligence adapter
  * This file previously contained AWS Bedrock location intelligence logic. All AWS-specific code has been removed.
  */
 

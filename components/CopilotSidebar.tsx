@@ -90,15 +90,14 @@ export default function CopilotSidebar({ caseId, currentContext }: {
     setLoading(true);
     append(`Requesting: ${id}...`);
     try {
-        // Use the existing geminiService instead of fetch
-        const mockParams: ReportParameters = currentContext?.params || {} as any;
+        const copilotParams: ReportParameters = currentContext?.params || {} as any;
         
         let query = "";
         if (id === 'clarify') query = "Clarify the current strategic ambiguity.";
         if (id === 'partners') query = "Identify potential partners for this context.";
         if (id === 'risk') query = "Provide a quick risk assessment.";
 
-        const result = await askCopilot(query, mockParams);
+        const result = await askCopilot(query, copilotParams);
         append(`Result: ${result.description}`);
     } catch (e) {
       append('Error: ' + String(e));

@@ -623,7 +623,7 @@ export class BWConsultantAgenticAI {
     if (eng?.nsilStatus && eng.nsilStatus !== 'green') {
       const statusLabels: Record<string, string> = { yellow: 'MODERATE RISK', orange: 'ELEVATED RISK', red: 'HIGH RISK' };
       const label = statusLabels[eng.nsilStatus] || eng.nsilStatus.toUpperCase();
-      const concerns = eng.nsilTopConcerns?.slice(0, 3).join('; ') || 'Review required';
+      const concerns = eng.nsilTopConcerns?.slice(0, 3).join('; ') || 'Verification required';
       insights.push({
         id: crypto.randomUUID(),
         type: 'risk_assessment',

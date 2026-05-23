@@ -255,7 +255,7 @@ function generateFallbackSolutions(problem: string, context: unknown) {
 }
 
 /**
- * Master Autonomous Orchestrator endpoint - achieves 100% performance
+ * Master Autonomous Orchestrator endpoint - runs the full performance profile
  * Coordinates all advanced agents (thinking, research, writing, self-improvement)
  */
 router.post('/master-orchestrate', async (req: Request, res: Response) => {
@@ -266,7 +266,7 @@ router.post('/master-orchestrate', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Report parameters are required' });
     }
 
-    console.log('🎯 Starting Master Autonomous Orchestration for 100% performance');
+    console.log('🎯 Starting Master Autonomous Orchestration for full performance');
 
     const startTime = Date.now();
 
@@ -292,7 +292,7 @@ router.post('/master-orchestrate', async (req: Request, res: Response) => {
       systemStatus: result.systemStatus,
       confidence: result.confidence,
       processingTimeMs: Date.now() - startTime,
-      message: 'Master Autonomous Orchestration completed successfully - 100% performance achieved'
+      message: 'Master Autonomous Orchestration completed successfully with full performance profile'
     };
 
     console.log('✅ Master Autonomous Orchestration completed successfully');

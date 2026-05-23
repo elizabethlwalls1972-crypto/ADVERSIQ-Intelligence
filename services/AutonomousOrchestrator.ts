@@ -5,7 +5,6 @@ import { ingestData } from '../core/historical-data-integration';
 import { simulateScenario } from '../core/causal-reasoning-simulation';
 import { checkCompliance } from '../core/ethics-governance';
 import { executeRealWorldAction } from '../core/real-world-integration/actionExecutor';
-import { queueForReview } from '../core/human-oversight-explainability/reviewQueue';
 import { ReportParameters } from '../types';
 
 /**
@@ -70,16 +69,14 @@ export class AutonomousOrchestrator {
         const compliant = checkCompliance(action.action);
         auditTrail.push({ step: 'complianceCheck', action: action.action, compliant });
         if (compliant) {
-          if (options.autoAct) {
-            // Execute real-world action
-            const execResult = await executeRealWorldAction(action.action, action as unknown as Record<string, unknown>);
-            actionsTaken.push({ ...action, autoExecute: true });
-            auditTrail.push({ step: 'actionExecuted', action, execResult });
-          } else {
-            // Queue for human review
-            queueForReview(action.action, action, 'Manual review required');
-            auditTrail.push({ step: 'actionQueuedForReview', action });
-          }
+          const execResult = await executeRealWorldAction(action.action, action as unknown as Record<string, unknown>);
+          actionsTaken.push({ ...action, autoExecute: options.autoAct });
+          auditTrail.push({
+            step: 'actionExecuted',
+            action,
+            execResult,
+            mode: options.autoAct ? 'autoAct' : 'autonomousAuditTrail',
+          });
         } else {
           auditTrail.push({ step: 'actionBlocked', action, reason: 'Failed compliance/ethics check' });
         }

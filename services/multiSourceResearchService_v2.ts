@@ -30,9 +30,7 @@ import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
 
 type WindowWithRuntimeEnv = Window & {
-  __ENV__?: {
-    VITE_GEMINI_API_KEY?: string;
-  };
+  __ENV__?: Record<string, string | undefined>;
 };
 
 // ==================== TYPES ====================
@@ -50,6 +48,28 @@ function logResearch(...args: unknown[]) {
   if (RESEARCH_DEBUG) {
     console.debug('[Research]', ...args);
   }
+}
+
+function getRuntimeEnv(key: string): string | undefined {
+  try {
+    const viteValue = import.meta.env?.[key];
+    if (viteValue) return viteValue;
+  } catch {
+    // Browser builds without Vite env access continue to window/process fallback.
+  }
+  if (typeof window !== 'undefined') {
+    const runtime = (window as WindowWithRuntimeEnv).__ENV__;
+    const value = runtime?.[key];
+    if (value) return value;
+  }
+  if (typeof process !== 'undefined') {
+    return process.env?.[key];
+  }
+  return undefined;
+}
+
+function getGeoNamesUsername(): string | null {
+  return getRuntimeEnv('VITE_GEONAMES_USERNAME') || getRuntimeEnv('GEONAMES_USERNAME') || null;
 }
 
 function addSource(sources: SourceCitation[], source: SourceCitation) {
@@ -162,7 +182,7 @@ FORBIDDEN - NEVER output any of these phrases:
 - "see statistics"
 - "contact office"
 - "Unknown"
-- Any placeholder or vague text
+- Any vague filler text
 
 For EVERY field: If you don't know the exact 2024 figure, provide the most recent known data with a year annotation like "(2023 data)" or "(2022 est.)".
 
@@ -1105,8 +1125,9 @@ async function fetchGeocoding(location: string): Promise<{
  */
 async function fetchGeoNamesExtract(location: string): Promise<string | null> {
   try {
-    // Search GeoNames for location info
-    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(location)}&maxRows=3&username=demo&style=full`;
+    const username = getGeoNamesUsername();
+    if (!username) return null;
+    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(location)}&maxRows=3&username=${encodeURIComponent(username)}&style=full`;
     const response = await fetch(searchUrl);
     if (response.ok) {
       const data = await response.json();
@@ -1198,8 +1219,9 @@ async function fetchGeoNamesData(
   geoData?: { lat: number; lon: number; country?: string; countryCode?: string } | null
 ): Promise<GeoNamesResult | null> {
   try {
-    // GeoNames free API - use demo username (consider registering for production)
-    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=1&username=demo&style=full`;
+    const username = getGeoNamesUsername();
+    if (!username) return null;
+    const searchUrl = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=1&username=${encodeURIComponent(username)}&style=full`;
     const response = await fetch(searchUrl);
     if (response.ok) {
       const data = await response.json();
@@ -1223,7 +1245,7 @@ async function fetchGeoNamesData(
     
     // Fallback: try nearby search if we have coordinates
     if (geoData?.lat && geoData?.lon) {
-      const nearbyUrl = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${geoData.lat}&lng=${geoData.lon}&username=demo&style=full`;
+      const nearbyUrl = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${geoData.lat}&lng=${geoData.lon}&username=${encodeURIComponent(username)}&style=full`;
       const nearbyRes = await fetch(nearbyUrl);
       if (nearbyRes.ok) {
         const nearbyData = await nearbyRes.json();

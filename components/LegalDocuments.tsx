@@ -159,7 +159,7 @@ const UserManualContent: React.FC = () => (
             <h3 className="text-lg font-semibold text-slate-900 mb-3 border-b border-amber-400 pb-2">3. Platform Overview</h3>
             <p className="mb-3">The platform consists of four primary areas. Throughout this documentation the platform is referred to as &ldquo;ADVERSIQ&rdquo; or &ldquo;BW Ai&rdquo; &mdash; both refer to the same system. The commercial brand name will be finalised at launch.</p>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3 mb-3">
-                <div><strong className="text-slate-900">Command Page</strong> - The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study demo. It is your launch point into the system.</div>
+                <div><strong className="text-slate-900">Command Page</strong> - The landing page you see when you first arrive. It explains the platform, its architecture, and a live case-study example. It is your launch point into the system.</div>
                 <div><strong className="text-slate-900">Main Canvas (Report Builder)</strong> - The primary workspace where you complete the 10-step intake protocol, view live report generation, and interact with the BW Consultant.</div>
                 <div><strong className="text-slate-900">BW Consultant</strong> - A unified AI advisor that occupies the right sidebar of the Main Canvas. You can ask it anything - location research, company analysis, strategic advice, score explanations - all in one chat window. It is also proactive, automatically pushing intelligence briefings and live analysis updates into the conversation. Powered by Groq (Llama 3.3 70B Versatile) as the primary inference engine, with multi-provider fallback.</div>
                 <div><strong className="text-slate-900">Document Factory</strong> - The output system that compiles your analysis into 200+ institutional-grade document types.</div>
@@ -751,7 +751,7 @@ const EthicsContent: React.FC = () => (
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                 <p className="font-semibold text-sm text-slate-900 mb-1">Human Oversight</p>
-                <p className="text-xs text-slate-600">All AI outputs are advisory. The system is designed to augment human decision-making, not replace it. Critical decisions always require human review and approval.</p>
+                <p className="text-xs text-slate-600">All AI outputs are advisory. The system runs autonomous verification, provenance checks, and audit logging before presenting recommendations. User checkpoints are used only when a user explicitly requests them or when legal execution authority sits outside the platform.</p>
             </div>
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
                 <p className="font-semibold text-sm text-slate-900 mb-1">Public Benefit</p>
@@ -767,7 +767,7 @@ const EthicsContent: React.FC = () => (
         <p>3.1. <strong>Formula Transparency:</strong> All 38 scoring formulas have defined methodology, documented inputs, and published calculation logic. Users can inspect how every score was derived.</p>
         <p>3.2. <strong>Audit Trail:</strong> Every document produced by the Platform carries a provenance chain showing: which data inputs were used, which formulas were applied, how persona debates concluded, and what threshold gates were evaluated. Document exports (DOCX and PDF) are generated from real data &mdash; not placeholder links or mock files.</p>
         <p>3.3. <strong>Reproducibility:</strong> Given identical inputs, the scoring pipeline produces identical outputs. There is no randomness in the formula layer &mdash; only in Monte Carlo simulation ranges, which are documented with P10/P50/P90 bands.</p>
-        <p>3.4. <strong>Code Integrity:</strong> The platform&rsquo;s codebase has been audited and all identified stub implementations replaced with real computation. As of May 2026, the codebase compiles with zero TypeScript errors. Key verified components include: the AgentSpawner (real AI task routing), ExportService (real DOCX/PDF generation), ExecutiveSummaryGenerator (computed from user inputs), and MasterAutonomousOrchestrator (real quality scoring across 7 intelligence dimensions).</p>
+        <p>3.4. <strong>Code Integrity:</strong> The platform includes continual harness audit tooling that scans for unfinished runtime paths, demo data paths, human-loop gates, and unsupported capability claims. Key verified components include: the AgentSpawner (AI task routing), ExportService (DOCX/PDF generation), ExecutiveSummaryGenerator (computed from user inputs), and MasterAutonomousOrchestrator (quality scoring across 7 intelligence dimensions).</p>
 
         <h4 className="font-bold text-slate-900 mt-6">4. AI Risk Classification</h4>
         <p>Under the EU AI Act risk classification framework, BW Ai would be classified as a <strong>limited-risk</strong> system. It does not:</p>
@@ -785,13 +785,13 @@ const EthicsContent: React.FC = () => (
         <p>5.3. <strong>Persona Diversity:</strong> The adversarial persona system ensures multiple viewpoints are represented in every analysis, reducing the risk of single-perspective bias.</p>
         <p>5.4. <strong>Continuous Calibration:</strong> The Proactive Intelligence Layer includes a backtesting calibration engine that validates scoring accuracy against real-world outcomes and flags drift.</p>
 
-        <h4 className="font-bold text-slate-900 mt-6">6. Human-in-the-Loop</h4>
-        <p>BW AI is designed with a strict human-in-the-loop philosophy:</p>
+        <h4 className="font-bold text-slate-900 mt-6">6. Autonomous Governance</h4>
+        <p>BW AI is designed for autonomous verification with clear operating boundaries:</p>
         <ul className="list-disc ml-6 space-y-1">
-            <li>No output is automatically actioned - all reports, documents, and recommendations require human review</li>
-            <li>Users explicitly initiate report generation and document production</li>
-            <li>The system presents go/no-go recommendations but does not execute actions on users' behalf</li>
-            <li>The "Draft Finalization" step requires explicit user acceptance before documents are finalised</li>
+            <li>Reports, documents, and recommendations are checked by formula scoring, provenance chains, and audit gates before delivery</li>
+            <li>Autonomous execution is limited to platform analysis, source expansion, ranking, and document production workflows</li>
+            <li>External commitments, filings, purchases, or legally binding actions remain outside platform execution authority</li>
+            <li>User checkpoints are invoked only for requested final acceptance steps or actions that require external legal authority</li>
         </ul>
 
         <h4 className="font-bold text-slate-900 mt-6">6a. Security Architecture</h4>

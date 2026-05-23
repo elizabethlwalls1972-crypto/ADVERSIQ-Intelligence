@@ -84,8 +84,8 @@ const TOOL_REGISTRY: AugmentedAITool[] = [
     id: 'langgraph',
     name: 'LangGraph',
     category: 'workflow_orchestration',
-    primaryUse: 'Human-in-the-loop AI workflow orchestration with stateful graph execution.',
-    bwUseCase: 'Implement approval checkpoints for case recommendations and high-impact document actions.',
+    primaryUse: 'Stateful graph execution with autonomous verification checkpoints.',
+    bwUseCase: 'Implement autonomous assurance gates for case recommendations and high-impact document actions.',
     deployment: 'self_hosted',
     integrationPriority: 'high'
   },
@@ -204,11 +204,11 @@ export const buildAugmentedAISnapshot = (
       },
       {
         title: 'Learn',
-        detail: 'Human reviewer can accept, reject, or modify recommendations; system should store this feedback to improve future relevance.'
+        detail: 'The system stores outcome signals and recommendation feedback to improve future relevance without blocking execution.'
       },
       {
         title: 'Assure',
-        detail: 'Human remains final decision maker, verifies ethics, compliance, and contextual appropriateness before execution.'
+        detail: 'Ethics, compliance, and contextual checks run as autonomous gates before execution; user-facing checkpoints occur only when explicitly requested.'
       }
     ],
     humanControls: {

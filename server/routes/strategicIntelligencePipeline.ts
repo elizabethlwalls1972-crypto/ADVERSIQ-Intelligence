@@ -84,7 +84,7 @@ export const runStrategicIntelligencePipeline = (message: string, context?: unkn
         score: overlooked.topRegionalOpportunities[0]?.score ?? 0
       },
       {
-        stage: 'Stage 5 — Human-in-the-loop Assurance',
+        stage: 'Stage 5 — Autonomous Assurance',
         detail: augmented.steps.map((step) => step.title).join(' → '),
         score: 78
       },

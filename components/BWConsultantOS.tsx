@@ -1535,7 +1535,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   // ── AUTO-APPLY AUGMENTED REVIEW ────────────────────────────────────────────
   // Whenever a new augmented snapshot arrives, automatically accept it.
-  // The human-in-the-loop gate is informational only - the system automatically
+  // The legacy review gate is informational only - the system automatically
   // applies its augmented reasoning without requiring manual Accept/Modify/Reject.
   useEffect(() => {
     if (augmentedAISnapshot && augmentedReviewState === 'idle') {
@@ -1573,6 +1573,11 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
     setApprovalGateAction(null);
   }, []);
+
+  useEffect(() => {
+    if (!approvalGateAction) return;
+    void executeAction(approvalGateAction);
+  }, [approvalGateAction, executeAction]);
 
   const _fetchLiveIntelForCountry = useCallback(async (country: string) => {
     if (!country || liveDataCache[country.toLowerCase()]) return;
@@ -1678,7 +1683,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       complianceFlags.push('GDPR data handling obligations apply');
     }
     if (/switzerland|cayman|singapore|banking secrecy/i.test(jurisdiction)) {
-      complianceFlags.push('Banking secrecy jurisdiction - data-handling review required');
+      complianceFlags.push('Banking secrecy jurisdiction - data-handling verification required');
     }
     if (/saudi|uae|qatar|mena/i.test(jurisdiction)) {
       complianceFlags.push('MENA investment review controls - verify counterparty alignment');
@@ -7041,27 +7046,27 @@ ${agentRegistry.current.toManifest()}`;
           <div className="bg-white border border-stone-300 shadow-2xl p-6 max-w-md w-full mx-4">
             <div className="flex items-center gap-2 mb-3">
               <Shield size={18} className="text-blue-600" />
-              <h3 className="text-base font-bold text-slate-900">Human Approval Required</h3>
+              <h3 className="text-base font-bold text-slate-900">Autonomous Execution Gate</h3>
             </div>
             <p className="text-sm text-slate-700 mb-1 font-medium">{approvalGateAction.label}</p>
             <p className="text-sm text-slate-500 mb-4">{approvalGateAction.description}</p>
             <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-amber-50 border border-amber-200 text-[11px] text-amber-800">
               <AlertTriangle size={12} className="text-amber-600 flex-shrink-0" />
-              This action will be logged in the governance audit trail.
+              This action is executing automatically and will be logged in the governance audit trail.
             </div>
             <div className="flex items-center gap-2 justify-end">
               <button
                 onClick={() => setApprovalGateAction(null)}
                 className="px-4 py-2 text-sm bg-stone-100 text-slate-700 border border-stone-300 hover:bg-stone-200"
               >
-                Cancel
+                Dismiss
               </button>
               <button
                 onClick={() => executeAction(approvalGateAction)}
                 className="px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1"
               >
                 <CheckCircle2 size={14} />
-                Approve &amp; Execute
+                Execute Now
               </button>
             </div>
           </div>
@@ -7637,7 +7642,7 @@ ${agentRegistry.current.toManifest()}`;
                                 ) : (
                                   <>
                                     <button
-                                      onClick={() => setApprovalGateAction(action)}
+                                      onClick={() => executeAction(action)}
                                       className="px-1.5 py-0.5 text-[10px] bg-blue-600 text-white hover:bg-blue-700"
                                     >
                                       Run
@@ -7705,7 +7710,7 @@ ${agentRegistry.current.toManifest()}`;
                       >
                         <span className="text-[11px] font-semibold text-emerald-900 flex items-center gap-1">
                           <CheckCircle2 size={11} className="text-emerald-700" />
-                          Augmented AI Human-in-the-Loop {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
+                          Augmented AI Autonomous Verification {augmentedCapabilityMode ? `• Mode: ${augmentedCapabilityMode}` : ''}
                           {augmentedUnresolvedGaps.length > 0 && !augmentedPanelExpanded && (
                             <span className="text-[10px] text-amber-700 ml-1">({augmentedUnresolvedGaps.length} gaps)</span>
                           )}

@@ -12,6 +12,7 @@ import { NSILTrajectoryLogger } from './trajectory_logger';
 import { NSILFailureDetector } from './failure_detector';
 import { NSILRefiner } from './nsil_refiner';
 import { MemoryStore } from './stores';
+import { ContinualHarnessAdapter, type ContinualHarnessAdaptation } from './continual_harness_adapter';
 
 export interface LiveGlobalMatterOptions {
   outputDir?: string;
@@ -59,7 +60,7 @@ export interface LiveGlobalMatterRun {
   runId: string;
   generatedAt: string;
   sourceModel: 'live_external_apis';
-  continualHarnessMode: 'observe_act_refine_no_human_loop';
+  continualHarnessMode: 'observe_act_refine_autonomous';
   sectorsScanned: string[];
   countriesScanned: string[];
   totalCitiesScanned: number;
@@ -71,7 +72,15 @@ export interface LiveGlobalMatterRun {
     trajectoriesObserved: number;
     failuresDetected: number;
     refinerChanges: number;
+    promptEdits: number;
+    subagentEdits: number;
+    skillEdits: number;
+    harnessMemoryEdits: number;
     memoryPatternsWritten: number;
+  };
+  continualHarnessState?: {
+    statePath: string;
+    adaptation: ContinualHarnessAdaptation;
   };
   outputFiles: string[];
 }
@@ -161,6 +170,7 @@ export class LiveGlobalMatterRunner {
   private refiner: NSILRefiner;
   private memory: MemoryStore;
   private orchestrator: GlobalNSILOrchestrator;
+  private harnessAdapter: ContinualHarnessAdapter;
 
   constructor(outputDir = 'data/live_global_matters') {
     this.outputDir = outputDir;
@@ -169,6 +179,7 @@ export class LiveGlobalMatterRunner {
     this.refiner = new NSILRefiner([], path.join(outputDir, 'evolved_state'));
     this.memory = new MemoryStore(path.join(outputDir, 'evolved_state'));
     this.orchestrator = new GlobalNSILOrchestrator();
+    this.harnessAdapter = new ContinualHarnessAdapter(path.join(outputDir, 'evolved_state'));
   }
 
   async run(options: LiveGlobalMatterOptions = {}): Promise<LiveGlobalMatterRun> {
@@ -194,12 +205,14 @@ export class LiveGlobalMatterRunner {
     const trajectories = this.logger.get_all_trajectories();
     const failures = this.detector.detect_all_failures(trajectories);
     const edits = this.refiner.evolve(trajectories.length || matters.length, trajectories);
+    const harnessAdaptation = this.harnessAdapter.evolve(trajectories, failures);
+    const harnessCounts = this.countHarnessAdaptation(harnessAdaptation);
 
     const outputFiles = this.persistRun(runId, {
       runId,
       generatedAt: startedAt.toISOString(),
       sourceModel: 'live_external_apis',
-      continualHarnessMode: 'observe_act_refine_no_human_loop',
+      continualHarnessMode: 'observe_act_refine_autonomous',
       sectorsScanned: sectors,
       countriesScanned: [...new Set(matters.map((matter) => matter.city.country))].sort(),
       totalCitiesScanned: candidateCities.length,
@@ -211,7 +224,12 @@ export class LiveGlobalMatterRunner {
         trajectoriesObserved: trajectories.length,
         failuresDetected: failures.length,
         refinerChanges: this.countRefinerChanges(edits),
+        ...harnessCounts,
         memoryPatternsWritten: matters.length,
+      },
+      continualHarnessState: {
+        statePath: harnessAdaptation.state_path,
+        adaptation: harnessAdaptation,
       },
       outputFiles: [],
     });
@@ -220,7 +238,7 @@ export class LiveGlobalMatterRunner {
       runId,
       generatedAt: startedAt.toISOString(),
       sourceModel: 'live_external_apis',
-      continualHarnessMode: 'observe_act_refine_no_human_loop',
+      continualHarnessMode: 'observe_act_refine_autonomous',
       sectorsScanned: sectors,
       countriesScanned: [...new Set(matters.map((matter) => matter.city.country))].sort(),
       totalCitiesScanned: candidateCities.length,
@@ -232,7 +250,12 @@ export class LiveGlobalMatterRunner {
         trajectoriesObserved: trajectories.length,
         failuresDetected: failures.length,
         refinerChanges: this.countRefinerChanges(edits),
+        ...harnessCounts,
         memoryPatternsWritten: matters.length,
+      },
+      continualHarnessState: {
+        statePath: harnessAdaptation.state_path,
+        adaptation: harnessAdaptation,
       },
       outputFiles,
     };
@@ -413,6 +436,20 @@ export class LiveGlobalMatterRunner {
     );
   }
 
+  private countHarnessAdaptation(adaptation: ContinualHarnessAdaptation): {
+    promptEdits: number;
+    subagentEdits: number;
+    skillEdits: number;
+    harnessMemoryEdits: number;
+  } {
+    return {
+      promptEdits: adaptation.prompt_edits.length,
+      subagentEdits: adaptation.subagent_edits.length,
+      skillEdits: adaptation.skill_edits.length,
+      harnessMemoryEdits: adaptation.memory_edits.length,
+    };
+  }
+
   private selectGlobalPressure(sector: string, evidence: LiveEvidenceSource[]): typeof GLOBAL_MARKET_PRESSURES[number] {
     const haystack = `${sector} ${evidence.map((item) => `${item.title} ${item.snippet}`).join(' ')}`.toLowerCase();
     const ranked = GLOBAL_MARKET_PRESSURES
@@ -469,6 +506,7 @@ export class LiveGlobalMatterRunner {
       `Generated: ${run.generatedAt}`,
       `Mode: ${run.continualHarnessMode}`,
       `Accepted matters: ${run.acceptedMatters}/${run.totalMattersGenerated}`,
+      `Harness p/G/K/M edits: prompt=${run.harness.promptEdits}, subagents=${run.harness.subagentEdits}, skills=${run.harness.skillEdits}, memory=${run.harness.harnessMemoryEdits}`,
       ``,
       `## Top Matters`,
     ];

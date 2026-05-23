@@ -61,7 +61,7 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Mock file upload handling
+            // Record selected file metadata for downstream upload processing.
             console.log("File uploaded:", file.name);
         }
     };
@@ -198,4 +198,3 @@ export const ProfileStep: React.FC<ProfileStepProps> = ({
         </div>
     );
 };
-

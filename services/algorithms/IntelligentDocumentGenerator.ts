@@ -879,7 +879,7 @@ ${topInsight ? `**Lead Insight:** ${topInsight.title} - ${topInsight.description
 |--------|--------|---------|
 | Multi-Agent Debate Consensus | 30% | ${confidence >= 70 ? 'Strong agreement' : confidence >= 50 ? 'Mixed signals' : 'No consensus'} |
 | HCE Cognitive Validation | 20% | ${confidence >= 60 ? 'Low cognitive bias risk' : 'Elevated bias risk'} |
-| Ethics Compliance | 15% | ${confidence >= 40 ? 'Within compliance bounds' : 'Review required'} |
+| Ethics Compliance | 15% | ${confidence >= 40 ? 'Within compliance bounds' : 'Verification required'} |
 | Data Freshness | 20% | Live API data (World Bank, exchange rates) |
 | Historical Pattern Match | 15% | ${insights.length >= 3 ? 'Strong pattern library' : 'Limited prior cases'} |
 
@@ -931,7 +931,7 @@ ${confidence >= 70
 ${JSON.stringify(scores, null, 2)}
 \`\`\`
 
-> All formulas use CompositeScoreService real component data. No Math.random() or placeholder scoring.`;
+> All formulas use CompositeScoreService real component data with deterministic scoring.`;
   }
 
   private generateMethodology(): string {

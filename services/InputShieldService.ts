@@ -516,7 +516,7 @@ export class InputShieldService {
         category: 'geography',
         field: 'country',
         userValue: country,
-        message: 'Country not in validation database - manual review recommended'
+        message: 'Country not in validation database - autonomous source expansion required'
       };
     }
     

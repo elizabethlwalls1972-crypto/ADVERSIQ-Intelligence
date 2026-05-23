@@ -460,7 +460,7 @@ function introspectSystem(): Map<string, { implemented: boolean; evidence: strin
   });
   results.set('GENSEC05_BP01', {
     implemented: true,
-    evidence: ['ActionExecutionEngine requires approval for high-impact tasks', 'WellArchitectedAuditEngine enforces permission boundaries at runtime'],
+    evidence: ['ActionExecutionEngine enforces explicit-user-request boundaries for high-impact tasks', 'WellArchitectedAuditEngine enforces permission boundaries at runtime'],
   });
   results.set('GENSEC06_BP01', {
     implemented: false,
@@ -705,8 +705,8 @@ export function recordWorkflowStep(
 
   if (mergedConfig.requiredApprovalFor.includes(action)) {
     trace.status = 'stopped';
-    monitoringService.warn('security', `[WA-Guardrail] STOPPED - Action "${action}" requires approval in workflow ${workflowId}`);
-    return { allowed: false, reason: `Action "${action}" requires human approval` };
+    monitoringService.warn('security', `[WA-Guardrail] STOPPED - Action "${action}" requires explicit user request in workflow ${workflowId}`);
+    return { allowed: false, reason: `Action "${action}" requires explicit user request` };
   }
 
   // Guardrail 2: Timeout (GENREL03_BP02)

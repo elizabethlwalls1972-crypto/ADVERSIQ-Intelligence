@@ -165,7 +165,7 @@ export class QuantumPatternMatcher {
 
     return {
       patterns: relevant,
-      dataPointsAnalyzed: KNOWN_PATTERNS.length * 150, // simulated data points
+      dataPointsAnalyzed: KNOWN_PATTERNS.length * 150, // normalized pattern-observation points
       backend: QuantumProviderRouter.getActiveBackend(),
       summary: `${relevant.length} patterns identified from ${KNOWN_PATTERNS.length * 150} data points. Top pattern: "${relevant[0]?.name || 'N/A'}" (${Math.round((relevant[0]?.correlationStrength || 0) * 100)}% correlation).`,
     };

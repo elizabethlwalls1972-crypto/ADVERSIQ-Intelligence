@@ -4,7 +4,7 @@
  * ══════════════════════════════════════════════════════════════════════════════
  *
  * Comprehensive real test of every layer, formula, and agent in the platform.
- * No mocks. No stubs. Real computation against real inputs.
+ * Real computation against real inputs.
  *
  * Coverage:
  *   ✓ NSIL Layers 1–17 (all 17 intelligence layers)
@@ -974,7 +974,7 @@ async function main() {
     process.exit(1);
   } else {
     console.log('\n  ALL TESTS PASSED ✓');
-    console.log('  ADVERSIQ™ platform is fully wired, tested, and production-ready.');
+    console.log('  ADVERSIQ™ platform passed the configured full-system verification suite.');
     console.log('');
     process.exit(0);
   }

@@ -38,7 +38,7 @@ export interface MasterOrchestrationResult {
 }
 
 /**
- * Master Autonomous Orchestrator - Coordinates all advanced agents for 100% performance
+ * Master Autonomous Orchestrator - coordinates all advanced agents for the full performance profile
  * Integrates thinking, research, writing, self-improvement, and autonomous operations
  */
 export class MasterAutonomousOrchestrator {
@@ -110,7 +110,7 @@ export class MasterAutonomousOrchestrator {
    * Main orchestration method - coordinates all agents for complete autonomous operation
    */
   async orchestrateCompleteAnalysis(params: ReportParameters): Promise<MasterOrchestrationResult> {
-    console.log('Starting Master Autonomous Orchestration for 100% Performance');
+    console.log('Starting Master Autonomous Orchestration for full performance');
 
     const consultantGate = ConsultantGateService.evaluate(params);
     if (!consultantGate.isReady) {

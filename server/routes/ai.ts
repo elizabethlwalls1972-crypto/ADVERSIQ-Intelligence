@@ -35,6 +35,8 @@ import { validateBody, aiValidation } from '../middleware/validate.js';
 import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
 import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 import { proactiveSolutionEngine, type ProactiveContext } from '../../services/ProactiveSolutionEngine.js';
+import { runLiveGlobalMatters } from '../../services/nsil/live_global_matter_runner.js';
+import { runContinualHarnessAudit } from '../../services/nsil/continual_harness_auditor.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -1826,6 +1828,35 @@ router.get('/readiness', async (_req: Request, res: Response) => {
       }
     }
   });
+});
+
+router.post('/continual-harness/audit', async (req: Request, res: Response) => {
+  try {
+    const report = await runContinualHarnessAudit({
+      rootDir: process.cwd(),
+      runLiveProbe: Boolean(req.body?.runLiveProbe),
+      liveProbeMaxMatters: Number(req.body?.liveProbeMaxMatters || 3),
+    });
+    res.json({ success: true, report });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ success: false, error: message });
+  }
+});
+
+router.post('/continual-harness/live-global-matters', async (req: Request, res: Response) => {
+  try {
+    const result = await runLiveGlobalMatters({
+      maxMatters: Number(req.body?.maxMatters || 12),
+      cityLimitPerSector: Number(req.body?.cityLimitPerSector || 3),
+      minMatterScore: Number(req.body?.minMatterScore || 58),
+      outputDir: req.body?.outputDir,
+    });
+    res.json({ success: true, result });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ success: false, error: message });
+  }
 });
 
 router.get('/control/status', async (_req: Request, res: Response) => {

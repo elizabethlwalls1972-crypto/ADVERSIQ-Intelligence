@@ -21,8 +21,10 @@
  */
 
 // Export all NSIL components
-export { NSILTrajectoryLogger, NSILTrajectory } from './trajectory_logger';
-export { NSILFailureDetector, FailureSignature } from './failure_detector';
+export { NSILTrajectoryLogger } from './trajectory_logger';
+export type { NSILTrajectory } from './trajectory_logger';
+export { NSILFailureDetector } from './failure_detector';
+export type { FailureSignature } from './failure_detector';
 export {
   BaseStore,
   FormulaStore,
@@ -30,9 +32,33 @@ export {
   DebateStore,
   MemoryStore,
 } from './stores';
-export { NSILRefiner, HarnessEdits } from './nsil_refiner';
-export { NSILBootstrapManager, BootstrapBundle } from './bootstrap_manager';
-export {
+export { NSILRefiner } from './nsil_refiner';
+export type { HarnessEdits } from './nsil_refiner';
+export { NSILBootstrapManager } from './bootstrap_manager';
+export type { BootstrapBundle } from './bootstrap_manager';
+export { LiveGlobalMatterRunner, runLiveGlobalMatters } from './live_global_matter_runner';
+export type {
+  LiveGlobalMatter,
+  LiveGlobalMatterOptions,
+  LiveGlobalMatterRun,
+} from './live_global_matter_runner';
+export { ContinualHarnessAdapter } from './continual_harness_adapter';
+export type {
+  ContinualHarnessAdaptation,
+  ContinualHarnessState,
+  HarnessMemoryState,
+  HarnessPromptState,
+  HarnessSkillState,
+  HarnessSubagentState,
+} from './continual_harness_adapter';
+export { ContinualHarnessAuditor, runContinualHarnessAudit } from './continual_harness_auditor';
+export type {
+  AuditFinding,
+  ContinualHarnessAuditOptions,
+  ContinualHarnessAuditReport,
+  HarnessCapabilityCheck,
+} from './continual_harness_auditor';
+export type {
   RegionalDevelopmentProfile,
   RegionalFailureMode,
   CrossSectoralSolution,

@@ -1,7 +1,7 @@
 ﻿/**
  * COMPREHENSIVE INDICES ENGINE
  * 
- * Implements ALL documented indices that were previously marked as "not implemented":
+ * Implements documented indices with concrete scoring logic:
  * - BARNA: Barriers Analysis
  * - NVI: Network Value Index
  * - CRI: Country Risk Index
