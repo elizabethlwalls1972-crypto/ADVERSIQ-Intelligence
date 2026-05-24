@@ -38,6 +38,7 @@ import { proactiveSolutionEngine, type ProactiveContext } from '../../services/P
 import { runLiveGlobalMatters } from '../../services/nsil/live_global_matter_runner.js';
 import { runContinualHarnessAudit } from '../../services/nsil/continual_harness_auditor.js';
 import { autonomousInteractionLearner } from '../../services/nsil/autonomous_interaction_learner.js';
+import { autonomousResearchCognition, type ResearchEvidenceBundle } from '../../services/nsil/autonomous_research_cognition.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -313,6 +314,29 @@ function formatLiveIntelligence(live: LiveIntelligenceResult): string {
   if (live.sources.length) parts.push(`Sources: ${live.sources.join('; ')}`);
   return parts.join('\n\n');
 }
+
+const mergeLiveIntelligence = (items: LiveIntelligenceResult[]): LiveIntelligenceResult => {
+  const merged: LiveIntelligenceResult = {
+    ddgSnippet: '',
+    wikiExtract: '',
+    wikidataDesc: '',
+    newsItems: '',
+    worldBankData: '',
+    pageContent: '',
+    sources: [],
+  };
+  for (const item of items) {
+    if (item.ddgSnippet) merged.ddgSnippet += (merged.ddgSnippet ? '\n\n' : '') + item.ddgSnippet;
+    if (item.wikiExtract) merged.wikiExtract += (merged.wikiExtract ? '\n\n' : '') + item.wikiExtract.slice(0, 2500);
+    if (item.wikidataDesc) merged.wikidataDesc += (merged.wikidataDesc ? '\n' : '') + item.wikidataDesc;
+    if (item.newsItems) merged.newsItems += (merged.newsItems ? '\n\n' : '') + item.newsItems;
+    if (item.worldBankData) merged.worldBankData += (merged.worldBankData ? '\n\n' : '') + item.worldBankData;
+    if (item.pageContent) merged.pageContent += (merged.pageContent ? '\n\n---\n\n' : '') + item.pageContent.slice(0, 3500);
+    merged.sources.push(...item.sources);
+  }
+  merged.sources = Array.from(new Set(merged.sources)).slice(0, 20);
+  return merged;
+};
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -2198,7 +2222,13 @@ router.post('/consultant', async (req: Request, res: Response) => {
     let brainContext: BrainContext | null = null;
     let nsilReport: Record<string, unknown> | null = null;
     let liveIntel: LiveIntelligenceResult | null = null;
+    let researchCognitionBlock = '';
     let proactiveCtx: ProactiveContext | null = null;
+    const researchPlan = autonomousResearchCognition.plan(
+      sanitizedMessage,
+      interactionPolicy,
+      sanitizedContextResult.context,
+    );
 
     // Live intelligence runs with its own generous timeout (12 s) so parallel
     // external fetches (Wikipedia, World Bank, DuckDuckGo, Jina — each 6-7 s)
@@ -2220,7 +2250,23 @@ router.post('/consultant', async (req: Request, res: Response) => {
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
         ]),
         Promise.race([
-          fetchLiveIntelligence(sanitizedMessage),
+          (async (): Promise<LiveIntelligenceResult> => {
+            const queries = Array.from(new Set([
+              sanitizedMessage,
+              ...researchPlan.questions.map((question) => question.query),
+            ].map((query) => query.trim()).filter(Boolean))).slice(0, 3);
+            const results = await Promise.allSettled(queries.map((query) => fetchLiveIntelligence(query)));
+            const fulfilled = results
+              .map((result, index) => ({ result, index }))
+              .filter((entry): entry is { result: PromiseFulfilledResult<LiveIntelligenceResult>; index: number } => entry.result.status === 'fulfilled');
+            const evidenceBundles: ResearchEvidenceBundle[] = fulfilled.map((entry) => ({
+              query: queries[entry.index],
+              sources: entry.result.value.sources,
+              content: formatLiveIntelligence(entry.result.value),
+            }));
+            researchCognitionBlock = autonomousResearchCognition.buildEvidenceReasoningBlock(researchPlan, evidenceBundles);
+            return mergeLiveIntelligence(fulfilled.map((entry) => entry.result.value));
+          })(),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), LIVE_INTEL_TIMEOUT_MS)),
         ]),
         Promise.race([
@@ -2320,7 +2366,10 @@ router.post('/consultant', async (req: Request, res: Response) => {
       evolvedSystemPrompt,
       brainContext?.promptBlock ?? undefined,
       nsilReport ? summariseNSILReport(nsilReport) : undefined,
-      liveIntel ? formatLiveIntelligence(liveIntel) : undefined,
+      [
+        researchCognitionBlock,
+        liveIntel ? formatLiveIntelligence(liveIntel) : '',
+      ].filter((part) => part.trim()).join('\n\n') || undefined,
       proactiveCtx ?? undefined
     );
     let brokerResult: { text: string; provider: ConsultantProvider | 'local-intelligence'; attempts: ConsultantProviderAttempt[] };
@@ -2455,7 +2504,10 @@ router.post('/consultant', async (req: Request, res: Response) => {
         provider: brokerResult.provider,
         latencyMs: Date.now() - start,
         nsilComponentsRun: Array.isArray(nsilReport?.componentsRun) ? nsilReport.componentsRun as string[] : undefined,
-        context: sanitizedContextResult.context,
+        context: {
+          inputContext: sanitizedContextResult.context,
+          researchPlan,
+        },
       }, interactionPolicy);
     } catch (interactionLearningError) {
       console.warn('[Consultant] Autonomous interaction learning skipped:', interactionLearningError instanceof Error ? interactionLearningError.message : interactionLearningError);
@@ -2480,6 +2532,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
       augmentedAI: augmentedSnapshot,
       recommendedTools: recommendedAugmentedTools,
       interactionPolicy,
+      researchCognition: {
+        plan: researchPlan,
+        evidenceSources: liveIntel?.sources ?? [],
+        hasSynthesisBlock: Boolean(researchCognitionBlock),
+      },
       overlookedIntelligence,
       strategicPipeline,
       perceptionDelta,

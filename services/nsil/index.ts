@@ -66,6 +66,12 @@ export type {
   InteractionLearningState,
   TacticalInteractionFrame,
 } from './autonomous_interaction_learner';
+export { AutonomousResearchCognition, autonomousResearchCognition } from './autonomous_research_cognition';
+export type {
+  ResearchCognitionPlan,
+  ResearchEvidenceBundle,
+  ResearchQuestion,
+} from './autonomous_research_cognition';
 export type {
   RegionalDevelopmentProfile,
   RegionalFailureMode,
