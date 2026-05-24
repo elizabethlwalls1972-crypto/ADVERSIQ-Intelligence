@@ -61,6 +61,7 @@ import { IFCGlobalStandardsEngine, type GlobalStandardsAssessment } from './IFCG
 
 // NSIL v2 Universal Intelligence Layer (Layers 11-14)
 import { CompoundIntelligenceOrchestrator, type CompoundIntelligenceReport, type UniversalProblemInput } from './agents/CompoundIntelligenceOrchestrator';
+import type { GlobalProblemAnalysis } from './nsil/global_nsil_orchestrator';
 
 // ============================================================================
 // TYPES
@@ -153,6 +154,18 @@ export interface IntelligenceReport {
 
   // NSIL v2 Universal Intelligence (Layers 11-14: Impossibility + Cascade + Social + Orchestration)
   universalIntelligence?: CompoundIntelligenceReport;
+
+  // Continual Harness bridge: executable trajectory logging + outcome-learning path
+  continualHarness?: {
+    trajectorySessionId?: string;
+    inputId: string;
+    auditId: string;
+    confidence: number;
+    successProbability: number;
+    historicalParallels: number;
+    failurePatterns: string[];
+    recommendation: string;
+  };
   
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
@@ -204,6 +217,7 @@ export class NSILIntelligenceHub {
 
   private static selfEvolvingEngine = new SelfEvolvingAlgorithmEngine();
   private static adaptiveLearningEngine = new AdaptiveLearningEngine();
+  private static continualHarness: { solve_global_problem: (...args: any[]) => Promise<GlobalProblemAnalysis> } | null = null;
 
   // 
   // MASTER CONTROL " FULL ANALYSIS
@@ -322,6 +336,7 @@ export class NSILIntelligenceHub {
     // Layer 16: AntifragilityEngine (AFI™) — Taleb antifragility quantification
     // Layer 17: TemporalArbitrageEngine (TAI™ + TDI™) — temporal pricing gaps
     let universalIntelligence: CompoundIntelligenceReport | undefined;
+    let continualHarness: IntelligenceReport['continualHarness'];
     try {
       const universalInput: UniversalProblemInput = {
         naturalLanguageQuery: [
@@ -349,6 +364,37 @@ export class NSILIntelligenceHub {
       // Universal Intelligence is additive — never block the main report
     }
 
+    try {
+      if (typeof window !== 'undefined') {
+        throw new Error('Continual harness filesystem logging is available only in the Node runtime');
+      }
+      if (!this.continualHarness) {
+        const modulePath = './nsil/global_nsil_orchestrator';
+        const module = await import(/* @vite-ignore */ modulePath);
+        this.continualHarness = new module.GlobalNSILOrchestrator();
+      }
+      const harnessInput = this.buildContinualHarnessInput(params);
+      const harnessAnalysis: GlobalProblemAnalysis = await this.continualHarness.solve_global_problem(
+        harnessInput.raw,
+        harnessInput.country,
+        harnessInput.language,
+        harnessInput.personContext
+      );
+      continualHarness = {
+        trajectorySessionId: harnessAnalysis.trajectory_session_id,
+        inputId: harnessAnalysis.input_id,
+        auditId: harnessAnalysis.audit_id,
+        confidence: harnessAnalysis.recommendation.confidence,
+        successProbability: harnessAnalysis.analysis.success_probability,
+        historicalParallels: harnessAnalysis.historical_parallels.length,
+        failurePatterns: harnessAnalysis.applicable_failure_patterns.map(p => p.pattern_name),
+        recommendation: harnessAnalysis.recommendation.approach,
+      };
+      componentsRun.push('GlobalNSILOrchestrator', 'NSILTrajectoryLogger', 'NSILFailureDetector', 'NSILRefinerBridge');
+    } catch (error) {
+      console.warn('[NSILIntelligenceHub] Continual harness bridge failed:', error instanceof Error ? error.message : error);
+    }
+
     return {
       id: reportId,
       timestamp: new Date(),
@@ -359,6 +405,7 @@ export class NSILIntelligenceHub {
       unbiasedAnalysis,
       globalStandards,
       universalIntelligence,
+      continualHarness,
       autonomous,
       reflexive,
       applicableInsights,
@@ -376,6 +423,36 @@ export class NSILIntelligenceHub {
         antifragility: '1.0',    // Layer 16 — AFI™
         temporalArbitrage: '1.0' // Layer 17 — TAI™ + TDI™
       }
+    };
+  }
+
+  private static buildContinualHarnessInput(params: Partial<ReportParameters>): {
+    raw: string;
+    country: string;
+    language: string;
+    personContext: Record<string, unknown>;
+  } {
+    const record = params as Record<string, unknown>;
+    const raw = [
+      record.problemStatement,
+      record.currentMatter,
+      record.objectives,
+      record.strategicIntent,
+      record.additionalContext,
+      record.idealPartnerProfile,
+    ]
+      .flatMap(value => Array.isArray(value) ? value : value ? [value] : [])
+      .join('\n');
+
+    return {
+      raw: raw || String(record.reportName || 'General strategic analysis'),
+      country: String(record.country || record.userCountry || record.region || 'Global'),
+      language: 'en',
+      personContext: {
+        organization: record.organizationName,
+        role: record.userDepartment || record.contactRole,
+        sector: Array.isArray(record.industry) ? record.industry[0] : record.industry,
+      },
     };
   }
 

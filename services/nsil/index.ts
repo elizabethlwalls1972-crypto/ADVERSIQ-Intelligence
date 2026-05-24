@@ -58,6 +58,14 @@ export type {
   ContinualHarnessAuditReport,
   HarnessCapabilityCheck,
 } from './continual_harness_auditor';
+export { AutonomousInteractionLearner, autonomousInteractionLearner } from './autonomous_interaction_learner';
+export type {
+  InteractionMode,
+  InteractionObservation,
+  InteractionPolicy,
+  InteractionLearningState,
+  TacticalInteractionFrame,
+} from './autonomous_interaction_learner';
 export type {
   RegionalDevelopmentProfile,
   RegionalFailureMode,

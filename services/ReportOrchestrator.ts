@@ -33,6 +33,20 @@ const REGIONAL_KERNEL_PARTNERS: PartnerCandidate[] = [
 ];
 
 export class ReportOrchestrator {
+  private static async withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        promise,
+        new Promise<T>((_, reject) => {
+          timeout = setTimeout(() => reject(new Error(`${label} timed out after ${timeoutMs}ms`)), timeoutMs);
+        })
+      ]);
+    } finally {
+      if (timeout) clearTimeout(timeout);
+    }
+  }
+
   static async assembleReportPayload(params: ReportParameters): Promise<ReportPayload> {
 
     const consultantGate = ConsultantGateService.evaluate(params);
@@ -101,10 +115,10 @@ export class ReportOrchestrator {
       DerivedIndexService.calculatePRI(params),
       DerivedIndexService.calculateTCO(params),
       DerivedIndexService.calculateCRI(params),
-      AdvancedIndexService.computeIndices(params),
-      AdversarialReasoningService.generate(params),
-      optimizedAgenticBrain.think(params).catch(() => null),
-      NSILIntelligenceHub.runFullAnalysis(params).catch((err) => { console.warn('NSIL full analysis error (non-blocking):', err); return null; }),
+      this.withTimeout(AdvancedIndexService.computeIndices(params), 8000, 'AdvancedIndexService'),
+      this.withTimeout(AdversarialReasoningService.generate(params), 8000, 'AdversarialReasoningService'),
+      this.withTimeout(optimizedAgenticBrain.think(params), 8000, 'OptimizedAgenticBrain').catch(() => null),
+      this.withTimeout(NSILIntelligenceHub.runFullAnalysis(params), 15000, 'NSILIntelligenceHub').catch((err) => { console.warn('NSIL full analysis error (non-blocking):', err); return null; }),
       Promise.resolve(SituationAnalysisEngine.analyse(params)),
       Promise.resolve(HistoricalParallelMatcher.match(params))
     ]);
@@ -188,6 +202,7 @@ export class ReportOrchestrator {
         // NSIL Autonomous Intelligence Layer
         nsilIntelligence: nsilReport ? {
           autonomous: nsilReport.autonomous,
+          continualHarness: nsilReport.continualHarness,
           recommendation: nsilReport.recommendation,
           inputValidation: { overallTrust: nsilReport.inputValidation.overallTrust, overallStatus: nsilReport.inputValidation.overallStatus },
           processingTime: nsilReport.processingTime,
@@ -234,7 +249,11 @@ export class ReportOrchestrator {
 
     // Run autonomous enhancement steps (always-on full performance)
     try {
-      const _masterEnhancements = await masterAutonomousOrchestrator.runEnhancements(params, payload);
+      const _masterEnhancements = await this.withTimeout(
+        masterAutonomousOrchestrator.runEnhancements(params, payload),
+        10000,
+        'MasterAutonomousOrchestrator'
+      );
     } catch (error) {
       console.warn('Autonomous enhancements skipped (non-blocking):', error);
     }

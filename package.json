@@ -21,6 +21,7 @@
     "start": "node dist-server/server/index.js",
     "preview": "npm run build:client && wrangler dev",
     "test:nsil": "tsx scripts/nsilSimulation.ts",
+    "test:interaction-stress": "tsx scripts/interactionStress100.ts",
     "live:global-matters": "tsx scripts/liveGlobalMatterRun.ts",
     "audit:continual-harness": "tsx scripts/auditContinualHarness.ts",
     "test:system": "tsx scripts/testFullSystem.ts",

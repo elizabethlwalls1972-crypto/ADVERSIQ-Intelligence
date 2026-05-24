@@ -379,9 +379,5 @@ export interface RegionalSuccessMetrics {
 }
 
 export default {
-  RegionalDevelopmentProfile,
-  RegionalFailureMode,
-  CrossSectoralSolution,
   GLOBAL_REGIONAL_PATTERNS,
-  RegionalSuccessMetrics,
 };

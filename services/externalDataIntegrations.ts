@@ -59,11 +59,18 @@ const numbeoLimiter = new RateLimiter(3, 60_000);
 const opencorporatesLimiter = new RateLimiter(5, 60_000);
 const marineLimiter = new RateLimiter(2, 60_000);
 
+const getEnv = (key: string): string | undefined => {
+  const viteEnv = (typeof import.meta !== 'undefined' && import.meta.env)
+    ? import.meta.env as Record<string, string | undefined>
+    : {};
+  return viteEnv[key] || (typeof process !== 'undefined' ? process.env?.[key.replace(/^VITE_/, '')] || process.env?.[key] : undefined);
+};
+
 export function isExternalDataEnabled(): boolean {
   // Default to TRUE — free APIs (World Bank, GLEIF, REST Countries, Wikipedia, etc.)
   // should always be active. Only disable explicitly with VITE_ENABLE_EXTERNAL_DATA=false.
   try {
-    if (import.meta.env.VITE_ENABLE_EXTERNAL_DATA === 'false') return false;
+    if (getEnv('VITE_ENABLE_EXTERNAL_DATA') === 'false') return false;
   } catch {
     // ignore
   }
@@ -92,7 +99,7 @@ export async function fetchNumbeoCityData(cityName: string): Promise<NumbeoCityD
 
   try {
     // Requires API key (VITE_NUMBEO_API_KEY or NUMBEO_API_KEY)
-    const key = import.meta.env.VITE_NUMBEO_API_KEY || process.env?.NUMBEO_API_KEY;
+    const key = getEnv('VITE_NUMBEO_API_KEY');
     if (!key) {
       // No API key available - return null (no mock data)
       console.log(`[External] Numbeo: No API key configured for ${cityName}. Skipping.`);
@@ -192,7 +199,7 @@ export async function fetchGNewsSearch(query: string): Promise<SearchResultBatch
   if (!searchLimiter.take()) {
     return { query, results: [], source: 'gnews', status: 'failed', error: 'rate_limit' };
   }
-  const token = import.meta.env.VITE_GNEWS_API_KEY || process.env?.GNEWS_API_KEY;
+  const token = getEnv('VITE_GNEWS_API_KEY');
   if (!token) {
     return { query, results: [], source: 'gnews', status: 'failed', error: 'no_key' };
   }
@@ -219,7 +226,7 @@ export async function fetchContextualWebSearch(query: string): Promise<SearchRes
   if (!searchLimiter.take()) {
     return { query, results: [], source: 'contextualweb', status: 'failed', error: 'rate_limit' };
   }
-  const key = import.meta.env.VITE_CONTEXTUALWEB_API_KEY || process.env?.CONTEXTUALWEB_API_KEY;
+  const key = getEnv('VITE_CONTEXTUALWEB_API_KEY');
   if (!key) {
     return { query, results: [], source: 'contextualweb', status: 'failed', error: 'no_key' };
   }
@@ -253,7 +260,7 @@ export async function fetchBingSearch(query: string): Promise<SearchResultBatch>
   if (!searchLimiter.take()) {
     return { query, results: [], source: 'bing', status: 'failed', error: 'rate_limit' };
   }
-  const key = import.meta.env.VITE_BING_SEARCH_API_KEY || process.env?.BING_SEARCH_API_KEY;
+  const key = getEnv('VITE_BING_SEARCH_API_KEY');
   if (!key) {
     return { query, results: [], source: 'bing', status: 'failed', error: 'no_key' };
   }
@@ -278,6 +285,11 @@ export async function fetchBingSearch(query: string): Promise<SearchResultBatch>
 }
 
 export async function aggregateGlobalSearch(query: string): Promise<SearchResultBatch[]> {
+  if (!isExternalDataEnabled()) {
+    return [
+      { query, results: [], source: 'duckduckgo', status: 'failed', error: 'external_data_disabled' }
+    ];
+  }
   const results: SearchResultBatch[] = [];
   results.push(await fetchDuckDuckGoSearch(query));
   results.push(await fetchGNewsSearch(query));

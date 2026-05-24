@@ -138,7 +138,8 @@ export class NSILTrajectoryLogger {
     parameters: Record<string, any>;
     region_id?: string;
     client_id?: string;
-  }): void {
+  }): string {
+    this.session_id = `nsil_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     this.current_trajectory = {
       session_id: this.session_id,
       timestamp: new Date().toISOString(),
@@ -180,6 +181,7 @@ export class NSILTrajectoryLogger {
         formula_count: 0,
       },
     };
+    return this.session_id;
   }
   
   /**

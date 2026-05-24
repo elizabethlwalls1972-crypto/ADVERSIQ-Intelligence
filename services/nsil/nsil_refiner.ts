@@ -13,6 +13,7 @@
  * Each pass reads trajectory failure data and emits CRUD edits.
  */
 
+import * as fs from 'fs';
 import { NSILTrajectory } from './trajectory_logger';
 import {
   FormulaStore,
@@ -556,11 +557,11 @@ export class NSILRefiner {
     const log_path = 'data/nsil_evolution_log.json';
     const dir = 'data';
     
-    if (!require('fs').existsSync(dir)) {
-      require('fs').mkdirSync(dir, { recursive: true });
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
     
-    require('fs').writeFileSync(
+    fs.writeFileSync(
       log_path,
       JSON.stringify(this.evolution_log, null, 2)
     );

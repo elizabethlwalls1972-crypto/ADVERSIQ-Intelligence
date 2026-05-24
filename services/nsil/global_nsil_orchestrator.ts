@@ -19,6 +19,7 @@ import { NSILRefiner } from './nsil_refiner';
 
 export interface GlobalProblemAnalysis {
   input_id: string;
+  trajectory_session_id?: string;
   audit_id: string;
   timestamp: string;
   
@@ -83,7 +84,7 @@ export class GlobalNSILOrchestrator {
     this.failure_recognizer = new HumanFailurePatternRecognizer();
     this.trajectory_logger = new NSILTrajectoryLogger();
     this.failure_detector = new NSILFailureDetector();
-    this.refiner = new NSILRefiner();
+    this.refiner = new NSILRefiner([]);
   }
   
   /**
@@ -199,16 +200,16 @@ export class GlobalNSILOrchestrator {
       audit,
       historical_parallels,
       applicable_patterns
-    );
+    ).recommendation;
     
     console.log('RECOMMENDATION:');
-    console.log(`Approach: ${recommendation.recommendation.approach}`);
-    console.log(`Timeline: ${recommendation.recommendation.timeline_months} months`);
-    console.log(`Budget: ${recommendation.recommendation.budget_required}`);
-    console.log(`Confidence: ${recommendation.recommendation.confidence}%`);
-    console.log(`Expected outcome: ${recommendation.recommendation.expected_outcome}`);
+    console.log(`Approach: ${recommendation.approach}`);
+    console.log(`Timeline: ${recommendation.timeline_months} months`);
+    console.log(`Budget: ${recommendation.budget_required}`);
+    console.log(`Confidence: ${recommendation.confidence}%`);
+    console.log(`Expected outcome: ${recommendation.expected_outcome}`);
     console.log('\nImplementation phases:');
-    for (const phase of recommendation.recommendation.implementation_phases) {
+    for (const phase of recommendation.implementation_phases) {
       console.log(`  Phase ${phase.phase}: ${phase.description}`);
       console.log(`    Duration: ${phase.duration}, Budget: ${phase.budget}`);
     }
@@ -218,18 +219,31 @@ export class GlobalNSILOrchestrator {
     console.log('STEP 6: TRAJECTORY CAPTURE FOR AUTONOMOUS LEARNING');
     console.log('Logging this analysis for learning when outcome is known...\n');
     
-    const session_id = this.trajectory_logger.start_session(
-      input.metadata.origin_country,
-      input.metadata.domain,
-      input.extracted_intent.core_question
-    );
+    const session_id = this.trajectory_logger.start_session({
+      project_type: input.metadata.problem_type,
+      sector: input.metadata.domain,
+      region: input.metadata.origin_country,
+      region_id: input.metadata.origin_country,
+      client_id: input.id,
+      parameters: {
+        question: input.extracted_intent.core_question,
+        language: input.metadata.origin_language,
+        person_context,
+      },
+    });
     
-    this.trajectory_logger.log_recommendation(
-      session_id,
-      recommendation.recommendation.approach,
-      recommendation.recommendation.confidence,
-      'preliminary'
-    );
+    this.trajectory_logger.log_recommendation({
+      primary: recommendation.approach,
+      secondary: recommendation.implementation_phases.map(p => p.description),
+      confidence: recommendation.confidence / 100,
+      rationale: recommendation.why_this_approach,
+      audit_trail: [
+        `self-audit:${audit.audit_id}`,
+        `historical-parallels:${historical_parallels.length}`,
+        `failure-patterns:${applicable_patterns.length}`,
+      ],
+    });
+    this.trajectory_logger.end_session(0);
     
     console.log(`Session logged: ${session_id}`);
     console.log('When outcome known (6-12 months): System will detect if recommendation was accurate');
@@ -239,6 +253,7 @@ export class GlobalNSILOrchestrator {
     // Compile final analysis
     const analysis: GlobalProblemAnalysis = {
       input_id: input.id,
+      trajectory_session_id: session_id,
       audit_id: audit.audit_id,
       timestamp: new Date().toISOString(),
       
@@ -246,7 +261,7 @@ export class GlobalNSILOrchestrator {
       audit,
       
       historical_parallels,
-      applicable_failure_patterns,
+      applicable_failure_patterns: applicable_patterns,
       
       analysis: {
         problem_summary: input.extracted_intent.core_question,
@@ -259,6 +274,21 @@ export class GlobalNSILOrchestrator {
       },
       
       recommendation,
+      historical_precedent: historical_parallels.length > 0 
+        ? {
+          case_name: historical_parallels[0].historical_solution.what_was_done,
+          location: historical_parallels[0].source_entity,
+          year: historical_parallels[0].source_year,
+          outcome: historical_parallels[0].outcome.result,
+          applicability_percent: historical_parallels[0].applicability_to_target.score,
+        }
+        : {
+          case_name: 'No direct precedent',
+          location: 'Novel approach required',
+          year: 0,
+          outcome: 'Unknown',
+          applicability_percent: 0,
+        },
     };
     
     this.completed_analyses.push(analysis);
@@ -281,6 +311,7 @@ export class GlobalNSILOrchestrator {
     
     return {
       input_id: input.id,
+      trajectory_session_id: undefined,
       audit_id: audit.audit_id,
       timestamp: new Date().toISOString(),
       input,
@@ -413,11 +444,12 @@ export class GlobalNSILOrchestrator {
     if (!analysis) return;
     
     // Record ground truth
-    this.trajectory_logger.record_ground_truth(
-      analysis.input_id,
+    this.trajectory_logger.record_ground_truth(analysis.trajectory_session_id || analysis.input_id, {
       actual_outcome,
-      metrics
-    );
+      success: metrics.success ?? metrics.failure_pattern === undefined,
+      quantitative_result: typeof metrics.score === 'number' ? metrics.score : undefined,
+      feedback: JSON.stringify(metrics),
+    });
     
     // Detect failures
     const trajectories = this.trajectory_logger.get_recent_trajectories(30 * 24 * 60 * 60 * 1000);

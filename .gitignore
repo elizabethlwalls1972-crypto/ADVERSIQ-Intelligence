@@ -20,6 +20,13 @@ dist-server
 
 # Server data
 server/data/
+data/audit_results/
+data/nsil_trajectories/
+data/universal_inputs/
+data/evolved_state/
+data/bootstrap_bundles/
+data/nsil_scenarios/
+data/nsil_evolution_log.json
 
 # Editor directories and files
 .vscode/*

@@ -51,14 +51,17 @@ export class NSILFailureDetector {
   private trajectories: NSILTrajectory[] = [];
   private failure_signatures: FailureSignature[] = [];
   
-  constructor(trajectories: NSILTrajectory[]) {
+  constructor(trajectories: NSILTrajectory[] = []) {
     this.trajectories = trajectories;
   }
   
   /**
    * Main detection pipeline: analyze all trajectories for failure patterns
    */
-  detect_all_failures(): FailureSignature[] {
+  detect_all_failures(trajectories?: NSILTrajectory[]): FailureSignature[] {
+    if (trajectories) {
+      this.trajectories = trajectories;
+    }
     const failures = new Map<string, FailureSignature>();
     
     // 1. Find recommendation misses

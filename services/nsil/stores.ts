@@ -200,7 +200,7 @@ export class FormulaStore extends BaseStore<FormulaCoefficient> {
     if (!formula) return;
     
     formula.data.coefficients[coefficient_name] = value;
-    formula.data.updated_at = new Date().toISOString();
+    formula.updated_at = new Date().toISOString();
     formula.version += 1;
     
     this.persist_to_disk();
@@ -241,7 +241,7 @@ export class LayerStore extends BaseStore<LayerWeight> {
     if (!layer) return;
     
     layer.data.execution_order = new_order;
-    layer.data.updated_at = new Date().toISOString();
+    layer.updated_at = new Date().toISOString();
     layer.version += 1;
     
     this.persist_to_disk();
@@ -255,7 +255,7 @@ export class LayerStore extends BaseStore<LayerWeight> {
     if (!layer) return;
     
     layer.data.weight = Math.max(0, Math.min(1, new_weight));
-    layer.data.updated_at = new Date().toISOString();
+    layer.updated_at = new Date().toISOString();
     layer.version += 1;
     
     this.persist_to_disk();
@@ -269,7 +269,7 @@ export class LayerStore extends BaseStore<LayerWeight> {
     if (!layer) return;
     
     layer.data.threshold = Math.max(0, Math.min(1, new_threshold));
-    layer.data.updated_at = new Date().toISOString();
+    layer.updated_at = new Date().toISOString();
     layer.version += 1;
     
     this.persist_to_disk();
@@ -301,7 +301,7 @@ export class DebateStore extends BaseStore<DebatePrior> {
     if (!persona) return;
     
     persona.data.bayesian_prior = Math.max(0, Math.min(1, new_prior));
-    persona.data.updated_at = new Date().toISOString();
+    persona.updated_at = new Date().toISOString();
     persona.version += 1;
     
     this.persist_to_disk();
@@ -315,7 +315,7 @@ export class DebateStore extends BaseStore<DebatePrior> {
     if (!persona) return;
     
     persona.data.bias_correction = correction;
-    persona.data.updated_at = new Date().toISOString();
+    persona.updated_at = new Date().toISOString();
     persona.version += 1;
     
     this.persist_to_disk();
@@ -388,7 +388,7 @@ export class MemoryStore extends BaseStore<MemoryPattern> {
     if (!pattern) return;
     
     pattern.data.supporting_evidence.push(evidence);
-    pattern.data.updated_at = new Date().toISOString();
+    pattern.updated_at = new Date().toISOString();
     pattern.version += 1;
     
     this.persist_to_disk();
@@ -402,7 +402,7 @@ export class MemoryStore extends BaseStore<MemoryPattern> {
     if (!pattern) return;
     
     pattern.data.confidence = Math.max(0, pattern.data.confidence - 0.1);
-    pattern.data.updated_at = new Date().toISOString();
+    pattern.updated_at = new Date().toISOString();
     pattern.version += 1;
     
     this.persist_to_disk();

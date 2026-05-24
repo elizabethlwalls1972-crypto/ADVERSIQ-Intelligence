@@ -18,6 +18,10 @@ import {
   LayerStore,
   DebateStore,
   MemoryStore,
+  type FormulaCoefficient,
+  type LayerWeight,
+  type DebatePrior,
+  type MemoryPattern,
 } from './stores';
 
 export interface BootstrapBundle {
@@ -27,10 +31,10 @@ export interface BootstrapBundle {
   last_updated: string;
   
   // Evolved state snapshots
-  formulas: Record<string, any>[];
-  layers: Record<string, any>[];
-  debate_priors: Record<string, any>[];
-  memory_patterns: Record<string, any>[];
+  formulas: FormulaCoefficient[];
+  layers: LayerWeight[];
+  debate_priors: DebatePrior[];
+  memory_patterns: MemoryPattern[];
   
   // Metadata
   training_sessions: number;
@@ -301,7 +305,7 @@ Covered Sectors: ${bundle.sectors_covered.join(', ')}
     return path.join(this.bootstrap_dir, `${region_id}_bootstrap.json`);
   }
   
-  private restore_formulas(formulas: Record<string, any>[]): void {
+  private restore_formulas(formulas: FormulaCoefficient[]): void {
     for (const formula_data of formulas) {
       this.formula_store.create(
         formula_data.formula_id,
@@ -312,7 +316,7 @@ Covered Sectors: ${bundle.sectors_covered.join(', ')}
     }
   }
   
-  private restore_layers(layers: Record<string, any>[]): void {
+  private restore_layers(layers: LayerWeight[]): void {
     for (const layer_data of layers) {
       this.layer_store.create(
         layer_data.layer_id,
@@ -323,7 +327,7 @@ Covered Sectors: ${bundle.sectors_covered.join(', ')}
     }
   }
   
-  private restore_debate_priors(priors: Record<string, any>[]): void {
+  private restore_debate_priors(priors: DebatePrior[]): void {
     for (const prior_data of priors) {
       this.debate_store.create(
         prior_data.persona_id,
@@ -334,7 +338,7 @@ Covered Sectors: ${bundle.sectors_covered.join(', ')}
     }
   }
   
-  private restore_memory_patterns(patterns: Record<string, any>[]): void {
+  private restore_memory_patterns(patterns: MemoryPattern[]): void {
     for (const pattern_data of patterns) {
       this.memory_store.create(
         pattern_data.pattern_id,

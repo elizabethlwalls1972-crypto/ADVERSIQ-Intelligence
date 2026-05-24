@@ -37,6 +37,7 @@ import { getDomainSystemInstruction, getDomainConsultantInstruction, type Domain
 import { proactiveSolutionEngine, type ProactiveContext } from '../../services/ProactiveSolutionEngine.js';
 import { runLiveGlobalMatters } from '../../services/nsil/live_global_matter_runner.js';
 import { runContinualHarnessAudit } from '../../services/nsil/continual_harness_auditor.js';
+import { autonomousInteractionLearner } from '../../services/nsil/autonomous_interaction_learner.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -2141,14 +2142,6 @@ router.post('/consultant', async (req: Request, res: Response) => {
       ...requestedProviderOrder.filter((provider) => controlDecision.providerOrder.includes(provider)),
       ...controlDecision.providerOrder,
     ]));
-    const replayPayload: ConsultantReplayPayload = {
-      message: sanitizedMessage,
-      context: sanitizedContextResult.context,
-      systemPrompt: typeof systemPrompt === 'string' ? systemPrompt : undefined,
-      modelOrder: providerOrder,
-      taskType: normalizedTaskType
-    };
-    const replayHash = buildReplayHash(replayPayload);
 
     const intent = detectConsultantIntent(sanitizedMessage);
     const capabilityProfile = deriveConsultantCapabilityProfile(sanitizedMessage, sanitizedContextResult.context);
@@ -2177,6 +2170,28 @@ router.post('/consultant', async (req: Request, res: Response) => {
     // ═══ FULL BRAIN + NSIL WIRING ═══════════════════════════════════════════
     // Run the 44-engine Brain and NSIL 10-layer pipeline in parallel.
     // Both are wrapped in try/catch with timeouts so the consultant never stalls.
+    const interactionPolicy = autonomousInteractionLearner.planTurn({
+      message: sanitizedMessage,
+      taskType: normalizedTaskType,
+      intent,
+      readinessScore: requestEnvelope.readinessScore ?? strategicPipeline.readinessScore,
+      unresolvedGapCount: capabilityProfile.gaps.length,
+      context: sanitizedContextResult.context,
+    });
+    const evolvedSystemPrompt = [
+      typeof systemPrompt === 'string' ? systemPrompt : '',
+      autonomousInteractionLearner.promptBlock(interactionPolicy),
+    ].filter((part) => part.trim()).join('\n\n');
+
+    const replayPayload: ConsultantReplayPayload = {
+      message: sanitizedMessage,
+      context: sanitizedContextResult.context,
+      systemPrompt: evolvedSystemPrompt || undefined,
+      modelOrder: providerOrder,
+      taskType: normalizedTaskType
+    };
+    const replayHash = buildReplayHash(replayPayload);
+
     const reportParams = extractReportParamsFromContext(sanitizedMessage, sanitizedContextResult.context);
     const readinessEstimate = strategicPipeline.readinessScore ?? 50;
 
@@ -2302,7 +2317,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       sanitizedMessage,
       intent,
       sanitizedContextResult.context,
-      systemPrompt,
+      evolvedSystemPrompt,
       brainContext?.promptBlock ?? undefined,
       nsilReport ? summariseNSILReport(nsilReport) : undefined,
       liveIntel ? formatLiveIntelligence(liveIntel) : undefined,
@@ -2427,6 +2442,25 @@ router.post('/consultant', async (req: Request, res: Response) => {
       }
     } catch { /* non-blocking */ }
 
+    try {
+      autonomousInteractionLearner.observeTurn({
+        requestId,
+        timestamp: new Date().toISOString(),
+        message: sanitizedMessage,
+        response: finalText,
+        taskType: normalizedTaskType,
+        intent,
+        readinessScore: requestEnvelope.readinessScore ?? strategicPipeline.readinessScore,
+        unresolvedGapCount: capabilityProfile.gaps.length,
+        provider: brokerResult.provider,
+        latencyMs: Date.now() - start,
+        nsilComponentsRun: Array.isArray(nsilReport?.componentsRun) ? nsilReport.componentsRun as string[] : undefined,
+        context: sanitizedContextResult.context,
+      }, interactionPolicy);
+    } catch (interactionLearningError) {
+      console.warn('[Consultant] Autonomous interaction learning skipped:', interactionLearningError instanceof Error ? interactionLearningError.message : interactionLearningError);
+    }
+
     return res.json({
       requestId,
       taskType: normalizedTaskType,
@@ -2445,6 +2479,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       })),
       augmentedAI: augmentedSnapshot,
       recommendedTools: recommendedAugmentedTools,
+      interactionPolicy,
       overlookedIntelligence,
       strategicPipeline,
       perceptionDelta,

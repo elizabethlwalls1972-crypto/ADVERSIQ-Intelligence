@@ -5004,21 +5004,51 @@ ${agentRegistry.current.toManifest()}`;
           const aiCtrl = new AbortController();
           const aiTimeout = setTimeout(() => aiCtrl.abort(), 55000); // 55s browser-side guard
           try {
-            const res = await fetch('/api/ai/chat', {
+            const consultantTaskType =
+              deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case'
+                ? 'report_build'
+                : deliverableIntent === 'background' || deliverableIntent === 'quick_answer' || isFastFactQuery
+                  ? 'info_lookup'
+                  : /\b(risk|due diligence|compliance|contradiction|verify|stress test|adversarial)\b/i.test(trimmedUserContent)
+                    ? 'risk_review'
+                    : /\b(strategy|market entry|investment|partnership|government engagement|expansion|decision)\b/i.test(trimmedUserContent)
+                      ? 'strategy_support'
+                      : 'general_assist';
+
+            const res = await fetch(resolveApiUrl('/api/ai/consultant'), {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               signal: aiCtrl.signal,
               body: JSON.stringify({
                 message: userContent,
-                systemInstruction: trimmedContext || undefined,
-                conversationHistory: messages.map((m) => ({
-                  role: m.role,
-                  content: typeof m.content === 'string' ? m.content : String(m.content),
-                })),
+                taskType: consultantTaskType,
+                context: {
+                  phase: inferredPhase,
+                  readinessScore: liveReadiness,
+                  caseStudy: caseDraft,
+                  conversationHistory: messages.slice(-8).map((m) => ({
+                    role: m.role,
+                    content: typeof m.content === 'string' ? m.content : String(m.content),
+                  })),
+                  intelligenceContext: trimmedContext || undefined,
+                  domainMode: caseDraft.domainMode || 'regional-development',
+                },
+                envelope: {
+                  requestId: generateId(),
+                  timestamp: new Date().toISOString(),
+                  messageChars: userContent.length,
+                  readinessScore: liveReadiness,
+                  hasAttachments: _hadFileUpload,
+                  sessionDepth: Math.max(messages.length + 1, 1),
+                  taskType: consultantTaskType,
+                  retryCount: 0,
+                } satisfies RequestEnvelope,
+                systemPrompt: trimmedContext || undefined,
               }),
             });
             if (res.ok) {
               const data = await res.json();
+              captureAugmentedAIFromPayload(data);
               responseContent = data.text || data.response || '';
             } else {
               console.warn('[handleSend] AI endpoint returned', res.status);
