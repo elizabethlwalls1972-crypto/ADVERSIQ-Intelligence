@@ -219,6 +219,7 @@ export class AutonomousInteractionLearner {
       ? clamp(
           (responseText.includes('let me know a bit more') && words.length > 18 ? 0.45 : 0) +
           (responseText.includes('no ai provider') ? 0.55 : 0) +
+          (responseText.includes('[object object]') ? 0.85 : 0) +
           (response.length > 4500 && words.length < 20 ? 0.35 : 0),
         )
       : 0;

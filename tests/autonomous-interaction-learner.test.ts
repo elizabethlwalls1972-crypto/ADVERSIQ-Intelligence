@@ -52,3 +52,30 @@ test('AutonomousInteractionLearner learns without explicit human correction', ()
   assert.ok(state.learnedDirectives.length >= 1);
   assert.ok(state.learnedDirectives.some((directive) => directive.text.includes('diagnostic turns')));
 });
+
+test('AutonomousInteractionLearner treats object dumps as response mismatch', () => {
+  const { learner } = makeLearner();
+  const policy = learner.planTurn({
+    message: 'Is this a safe government investment market entry in Pagadian City?',
+    taskType: 'risk_review',
+    readinessScore: 50,
+    unresolvedGapCount: 1,
+  });
+
+  learner.observeTurn({
+    requestId: 'turn-object-dump',
+    timestamp: new Date().toISOString(),
+    message: 'Is this a safe government investment market entry in Pagadian City?',
+    response: 'Composite score: [object Object]/100\nNSIL Assessment\n[object Object]',
+    taskType: 'risk_review',
+    intent: 'risk_assessment',
+    readinessScore: 50,
+    unresolvedGapCount: 1,
+    provider: 'local-intelligence',
+    latencyMs: 1000,
+  }, policy);
+
+  const state = learner.getState();
+  assert.equal(state.observations.length, 1);
+  assert.ok(state.observations[0].signals.responseMismatch > 0.8);
+});

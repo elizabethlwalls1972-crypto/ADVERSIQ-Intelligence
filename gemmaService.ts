@@ -8,8 +8,8 @@
  * GOOGLE_AI_API_KEY with its own quota — completely independent of Together.ai,
  * Groq, and OpenAI token limits.
  *
- * Free key: https://aistudio.google.com/apikey
- * Set GOOGLE_AI_API_KEY in .env to activate.
+ * API key: https://aistudio.google.com/apikey
+ * Set GOOGLE_AI_API_KEY or GEMINI_API_KEY in .env to activate. Quotas apply.
  *
  * Models:
  *   GEMMA_DEFAULT  - gemma-4-26b-a4b-it  (reasoning, analysis — Gemma 4 flagship)
@@ -23,9 +23,12 @@ import { monitoringService } from './services/MonitoringService';
 // ─── Model Constants ──────────────────────────────────────────────────────────
 
 export const GEMMA_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-export const GEMMA_DEFAULT_MODEL = 'gemma-4-26b-a4b-it';
-export const GEMMA_FAST_MODEL = 'gemma-3-12b-it';
-export const GEMINI_THINKING_MODEL = 'gemini-2.5-pro';
+export const GEMMA_DEFAULT_MODEL =
+  (typeof process !== 'undefined' && process.env?.GEMMA_MODEL) || 'gemini-2.0-flash';
+export const GEMMA_FAST_MODEL =
+  (typeof process !== 'undefined' && process.env?.GEMMA_FAST_MODEL) || 'gemini-2.0-flash-lite';
+export const GEMINI_THINKING_MODEL =
+  (typeof process !== 'undefined' && process.env?.GEMINI_THINKING_MODEL) || 'gemini-2.5-pro';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -84,7 +87,7 @@ function isCircuitOpen(): boolean {
 
 function getGoogleAIKey(): string {
   return normalizeApiKey(
-    (typeof process !== 'undefined' && process.env?.GOOGLE_AI_API_KEY) || ''
+    (typeof process !== 'undefined' && (process.env?.GOOGLE_AI_API_KEY || process.env?.GEMINI_API_KEY)) || ''
   );
 }
 
@@ -152,7 +155,7 @@ export async function callGemma(
   const key = getGoogleAIKey();
   if (!isValidKey(key)) {
     throw new Error(
-      'GOOGLE_AI_API_KEY not configured. Get a free key at https://aistudio.google.com/apikey — ' +
+      'GOOGLE_AI_API_KEY/GEMINI_API_KEY not configured. Create a key at https://aistudio.google.com/apikey — ' +
       'this is separate from Together/Groq/OpenAI and has its own quota.'
     );
   }

@@ -38,6 +38,11 @@ const extractSector = (message: string): string => {
   return match?.[0] ?? '';
 };
 
+const extractCity = (message: string): string => {
+  const match = message.match(/\b(Pagad(?:i|a)an(?:\s+City)?|Cebu(?:\s+City)?|Davao(?:\s+City)?|Manila|Iloilo(?:\s+City)?|Cagayan de Oro|General Santos)\b/i);
+  return match?.[0] ?? '';
+};
+
 const dedupeQuestions = (questions: ResearchQuestion[]): ResearchQuestion[] => {
   const seen = new Set<string>();
   const result: ResearchQuestion[] = [];
@@ -53,6 +58,7 @@ const dedupeQuestions = (questions: ResearchQuestion[]): ResearchQuestion[] => {
 export class AutonomousResearchCognition {
   plan(message: string, policy: InteractionPolicy, context?: unknown): ResearchCognitionPlan {
     const country = extractCountry(message);
+    const city = extractCity(message);
     const sector = extractSector(message);
     const problem = firstSentence(message);
     const contextText = context ? JSON.stringify(context).slice(0, 500) : '';
@@ -82,6 +88,15 @@ export class AutonomousResearchCognition {
         query: clean(`${anchor} risks regulation funding implementation evidence`),
         purpose: 'Find outside signals that stress-test the decision assumptions.',
         expectedUse: 'test_assumption',
+      });
+    }
+
+    if (/\b(government|lgu|mayor|procurement|public[- ]private|ppp|public sector|city hall)\b/i.test(message)) {
+      questions.push({
+        id: 'public_counterparty_due_diligence',
+        query: clean(`${city || anchor} ${country} government procurement counterpart authority anti corruption security business risk`),
+        purpose: 'Verify public-counterparty authority, procurement integrity, anti-corruption exposure, and local security signals.',
+        expectedUse: 'verify_fact',
       });
     }
 

@@ -117,6 +117,8 @@ const getExplicitApiBaseUrl = (): string => {
     : '';
   const buildUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
   const resolved = String(runtimeUrl || buildUrl || '').trim().replace(/\/$/, '');
+  if (!resolved) return '';
+
   // If the build baked a localhost URL but we're running on a different host (e.g. AWS),
   // fall back to relative paths so the request goes to the same origin as the page.
   if (
@@ -127,6 +129,27 @@ const getExplicitApiBaseUrl = (): string => {
   ) {
     return '';
   }
+
+  // Production builds can be served by the same Express process that owns /api.
+  // A stale dev URL like http://localhost:3001/api would otherwise send the
+  // browser to the wrong port and trigger the generic fallback.
+  if (typeof window !== 'undefined') {
+    try {
+      const explicit = new URL(resolved, window.location.origin);
+      const current = new URL(window.location.origin);
+      if (
+        ['localhost', '127.0.0.1'].includes(explicit.hostname)
+        && ['localhost', '127.0.0.1'].includes(current.hostname)
+        && explicit.port
+        && explicit.port !== current.port
+      ) {
+        return '';
+      }
+    } catch {
+      return '';
+    }
+  }
+
   return resolved;
 };
 
@@ -135,7 +158,45 @@ const resolveApiUrl = (path: string): string => {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   const explicitBase = getExplicitApiBaseUrl();
   if (!explicitBase) return normalizedPath;
-  return `${explicitBase}${normalizedPath}`;
+  const baseWithoutApi = explicitBase.replace(/\/api$/i, '');
+  return `${baseWithoutApi}${normalizedPath}`;
+};
+
+const buildSubstantiveConnectionFallback = (input: string): string => {
+  const normalized = input.trim();
+  const city = /\bpagad(?:ian|ain)\b/i.test(normalized) ? 'Pagadian City, Zamboanga del Sur' : 'the target location';
+  const mayor = normalized.match(/\bmayor\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i)?.[1]?.replace(/\b(and|what|which|who|where)\b.*$/i, '').trim();
+  const isAuto = /\b(car|auto|automotive|vehicle|ev|manufactur)/i.test(normalized);
+
+  const stakeholderLine = mayor
+    ? `- Treat Mayor ${mayor} and the city government as the first stakeholder map, but verify current roles, committees, ordinances, and investment priorities from official LGU/DILG sources before relying on them.`
+    : '- Build a city-government stakeholder map first: mayor, city administrator, planning/development office, permits/licensing, investment promotions, engineering, and procurement.';
+
+  const sectorLines = isAuto
+    ? [
+        '- Full vehicle assembly is probably the highest-friction path unless there is already land, power, logistics, supplier depth, and incentive support.',
+        '- Better first investments are automotive parts distribution, service/maintenance hubs, light fabrication, fleet upfitting, body-building, EV/utility vehicle pilots, and government or commercial fleet servicing.',
+        '- The strongest thesis is not "build cars first"; it is "prove demand and operating support first, then localize higher-value manufacturing in stages."',
+      ]
+    : [
+        '- Start with demand validation, operating constraints, land/power/logistics readiness, local incentives, and partner availability before committing capital.',
+        '- Prioritize lower-capex entry points that prove market access before building fixed assets.',
+      ];
+
+  return [
+    `I read your brief as: understand ${city}, the local government, and whether it is worth expanding a manufacturing business there.`,
+    '',
+    '**First-pass investment read**',
+    stakeholderLine,
+    ...sectorLines,
+    '- Key risks to verify: port/highway access, reliable power, skilled technicians, permitting speed, political continuity, land title, flood exposure, and whether local procurement can anchor early revenue.',
+    '',
+    '**Recommended next move**',
+    'Run this as a staged market-entry assessment: 1) LGU/stakeholder verification, 2) automotive demand and fleet mapping, 3) site/logistics screen, 4) partner shortlist, 5) phased capex decision.',
+    '',
+    'The live intelligence call did not return cleanly in this turn, so I am giving you the deterministic first-pass instead of asking you to repeat yourself.',
+    'Tell me whether you want: information only, a solution pathway, a report/brief, a letter/document, or a full case pack.',
+  ].join('\n');
 };
 
 // ============================================================================
@@ -3756,18 +3817,20 @@ ${agentRegistry.current.toManifest()}`;
             // const health = healthResponse.value; // intentionally retained for future runtime diagnostics
 
             if (status.status === 404) {
-              runtimeHint = ' The backend server is not running or reachable at the configured URL. Start the backend with \'npm run server\' (local) or verify your deployment is running on AWS/Railway (ECS/Fargate, App Runner, or-Amplify).';
+              runtimeHint = ' The backend server is not running or reachable at the configured URL. Start the backend with npm run dev:server locally, or verify the deployed API is running.';
             } else if (!status.ok) {
               runtimeHint = ` Backend status endpoint returned ${status.status}. Check server logs and /api/health.`;
             } else {
               const statusPayload = await status.json() as Record<string, unknown>;
               const aiAvailable = statusPayload?.aiAvailable;
               const providers = statusPayload?.providers as Record<string, unknown> | undefined;
-              const bedrock = providers?.bedrock as Record<string, unknown> | undefined;
+              const readyProviderNames = Object.entries(providers || {})
+                .filter(([, value]) => value === true || (typeof value === 'object' && value !== null && (value as Record<string, unknown>).ready === true))
+                .map(([name]) => name);
               if (aiAvailable === false) {
-                runtimeHint = ' Backend AI providers are not runtime-ready. Run /api/ai/readiness and verify AWS Bedrock/OpenAI/Groq/Together credentials are resolved.';
-              } else if (bedrock && bedrock.configured === true && bedrock.credentialsResolved === false) {
-                runtimeHint = ` Bedrock credentials unresolved: ${String(bedrock.detail || 'missing runtime credentials')}.`;
+                runtimeHint = ' Managed model providers are not runtime-ready. The OS should still use local intelligence fallback; run /api/ai/readiness to verify Ollama, Google AI, Groq, Together, OpenRouter, Mistral, OpenAI, or Anthropic status.';
+              } else if (readyProviderNames.length) {
+                runtimeHint = ` Runtime-ready provider(s): ${readyProviderNames.join(', ')}.`;
               }
             }
           }
@@ -3777,11 +3840,8 @@ ${agentRegistry.current.toManifest()}`;
         }
       }
 
-      const awsHint = /Could not load credentials from any providers/i.test(lastBackendError)
-        ? ' AWS Bedrock credentials were not resolved; ensure the runtime IAM role allows bedrock:InvokeModel.'
-        : '';
       const backendHint = lastBackendError ? ` Details: ${lastBackendError}` : '';
-      const errorMsg = `I was unable to generate a response.${backendHint}${runtimeHint}${awsHint} Please confirm the backend server is running, AI credentials are valid, and outbound network access is allowed, then try again.`;
+      const errorMsg = `I was unable to generate a response.${backendHint}${runtimeHint} Please confirm the backend server is running, the local-first fallback is not blocked, and outbound network access is allowed, then try again.`;
       onChunk(errorMsg);
       return errorMsg;
 
@@ -5062,8 +5122,24 @@ ${agentRegistry.current.toManifest()}`;
         }
 
         if (!responseContent) {
-          responseContent = `I'm here, Susan — let me know a bit more about what you're working on. Share the sector, country, or specific decision and I'll pull the right analysis together for you.`;
+          responseContent = isGreetingOnly
+            ? `I'm here - let me know what decision, market, or deal you want me to assess.`
+            : buildSubstantiveConnectionFallback(trimmedUserContent);
         }
+
+        const publishAssistantResponse = (detail: string) => {
+          displayedMsgIds.current.add(assistantMessageId);
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? { ...msg, content: responseContent, provenance: responseProvenance }
+                : msg
+            )
+          );
+          setExecutionTaskStatus('response', 'completed', detail);
+        };
+
+        publishAssistantResponse(`Initial response delivered (${responseContent.split(/\s+/).length} words)`);
 
         // ── TOOL CALL EXECUTION LOOP ───────────────────────────────────────────
         // Try native function calling first (structured JSON-schema tools),
@@ -5132,15 +5208,7 @@ ${agentRegistry.current.toManifest()}`;
           }
         }
 
-        displayedMsgIds.current.add(assistantMessageId);
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMessageId
-              ? { ...msg, content: responseContent, provenance: responseProvenance }
-              : msg
-          )
-        );
-        setExecutionTaskStatus('response', 'completed', `Response delivered (${responseContent.split(/\s+/).length} words)`);
+        publishAssistantResponse(`Response delivered (${responseContent.split(/\s+/).length} words)`);
 
         const agenticResults = await agenticInsightsPromise;
         if (agenticResults.length > 0) {
@@ -7563,6 +7631,7 @@ ${agentRegistry.current.toManifest()}`;
                   )}
                 </button>
                 <textarea
+                  data-testid="bwai-search-input"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => {
@@ -7582,6 +7651,7 @@ ${agentRegistry.current.toManifest()}`;
                   rows={1}
                 />
                 <button
+                  data-testid="bwai-search-button"
                   data-send-btn
                   onClick={() => handleSend()}
                   disabled={(!inputValue.trim() && uploadedFiles.length === 0) || isLoading}

@@ -1,6 +1,17 @@
 export type ControlMode = 'reactive' | 'agentic_lite' | 'agentic_full' | 'deliberative';
 
-export type ControlProvider = 'bedrock' | 'openai' | 'anthropic' | 'groq' | 'together' | 'gemma';
+export type ControlProvider =
+  | 'ollama'
+  | 'ollama-qwen3'
+  | 'ollama-openchat'
+  | 'gemma'
+  | 'groq'
+  | 'together'
+  | 'openrouter'
+  | 'mistral'
+  | 'openai'
+  | 'anthropic'
+  | 'bedrock';
 
 export interface RequestEnvelope {
   requestId: string;
@@ -14,12 +25,15 @@ export interface RequestEnvelope {
 }
 
 export interface ProviderAvailability {
+  ollama?: boolean;
   bedrock?: boolean;
   openai: boolean;
   anthropic?: boolean;
   groq: boolean;
   together: boolean;
   gemma?: boolean;
+  openrouter?: boolean;
+  mistral?: boolean;
 }
 
 export interface LearningHint {
@@ -81,14 +95,30 @@ export const deriveControlDecision = (
   } as const;
 
   const liveOrder: ControlProvider[] = [
+    providers.ollama ? 'ollama' : null,
+    providers.ollama ? 'ollama-qwen3' : null,
+    providers.ollama ? 'ollama-openchat' : null,
+    providers.gemma ? 'gemma' : null,
     providers.groq ? 'groq' : null,
     providers.together ? 'together' : null,
+    providers.openrouter ? 'openrouter' : null,
+    providers.mistral ? 'mistral' : null,
     providers.openai ? 'openai' : null,
-    providers.gemma ? 'gemma' : null,
-    providers.bedrock ? 'bedrock' : null,
+    providers.anthropic ? 'anthropic' : null,
   ].filter((p): p is ControlProvider => Boolean(p));
 
-  const fallbackOrder: ControlProvider[] = ['groq', 'together', 'openai', 'gemma', 'bedrock'];
+  const fallbackOrder: ControlProvider[] = [
+    'ollama',
+    'ollama-qwen3',
+    'ollama-openchat',
+    'gemma',
+    'groq',
+    'together',
+    'openrouter',
+    'mistral',
+    'openai',
+    'anthropic',
+  ];
   const providerOrder = uniqueProviders(liveOrder.length ? [...liveOrder, ...fallbackOrder] : fallbackOrder);
 
   const explain: string[] = [

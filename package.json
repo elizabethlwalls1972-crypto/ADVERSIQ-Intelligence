@@ -23,6 +23,7 @@
     "test:nsil": "tsx scripts/nsilSimulation.ts",
     "test:interaction-stress": "tsx scripts/interactionStress100.ts",
     "live:global-matters": "tsx scripts/liveGlobalMatterRun.ts",
+    "test:government-investment-scenarios": "tsx scripts/runRealWorldInvestmentScenarios.ts",
     "audit:continual-harness": "tsx scripts/auditContinualHarness.ts",
     "test:system": "tsx scripts/testFullSystem.ts",
     "test:e2e": "playwright test --config=playwright.config.ts",

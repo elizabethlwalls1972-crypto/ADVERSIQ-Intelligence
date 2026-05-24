@@ -58,6 +58,12 @@ export interface GatewayResult {
   taskType: GatewayTaskType;
 }
 
+type WindowWithRuntimeEnv = Window & {
+  __ENV__?: {
+    VITE_API_BASE_URL?: string;
+  };
+};
+
 // ─── Task → Brain mapping ───────────────────────────────────────────────────
 
 interface BrainConfig {
@@ -117,6 +123,52 @@ const FALLBACK_CHAINS: Record<string, Array<{ provider: 'together' | 'groq'; mod
 // ─── Core System Prompt ─────────────────────────────────────────────────────
 
 const GATEWAY_SYSTEM_PROMPT = `You are BWGA AI - a sovereign-grade strategic intelligence operating system powered by the NSIL (Nexus Strategic Intelligence Layer). You combine 46+ proprietary formulas, 34+ intelligence engines, 12 core algorithms, and 10+ live global data APIs into every response. Be concise, evidence-based, and actionable. Every claim must be grounded in data or explicit reasoning.`;
+const GATEWAY_SERVER_FALLBACK_TIMEOUT_MS = 5000;
+
+const getGatewayApiBaseUrl = (): string => {
+  const runtimeUrl = typeof window !== 'undefined'
+    ? (window as WindowWithRuntimeEnv).__ENV__?.VITE_API_BASE_URL
+    : '';
+  const buildUrl = import.meta.env.VITE_API_BASE_URL as string | undefined;
+  const resolved = String(runtimeUrl || buildUrl || '').trim().replace(/\/$/, '');
+  if (!resolved) return '';
+
+  if (
+    resolved.includes('localhost') &&
+    typeof window !== 'undefined' &&
+    !window.location.hostname.includes('localhost') &&
+    window.location.hostname !== '127.0.0.1'
+  ) {
+    return '';
+  }
+
+  if (typeof window !== 'undefined') {
+    try {
+      const explicit = new URL(resolved, window.location.origin);
+      const current = new URL(window.location.origin);
+      if (
+        ['localhost', '127.0.0.1'].includes(explicit.hostname)
+        && ['localhost', '127.0.0.1'].includes(current.hostname)
+        && explicit.port
+        && explicit.port !== current.port
+      ) {
+        return '';
+      }
+    } catch {
+      return '';
+    }
+  }
+
+  return resolved;
+};
+
+const resolveGatewayApiUrl = (path: string): string => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const explicitBase = getGatewayApiBaseUrl();
+  if (!explicitBase) return normalizedPath;
+  const baseWithoutApi = explicitBase.replace(/\/api$/i, '');
+  return `${baseWithoutApi}${normalizedPath}`;
+};
 
 // ─── Main Gateway Function ──────────────────────────────────────────────────
 
@@ -323,17 +375,23 @@ async function callBrain(
 }
 
 async function callServerFallback(prompt: string, system: string): Promise<string> {
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
-  const res = await fetch(`${API_BASE}/api/ai/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: prompt, systemInstruction: system }),
-  });
-  if (!res.ok) throw new Error(`Server returned ${res.status}`);
-  const data = await res.json();
-  const text = data.text || data.result || data.content || '';
-  if (!text) throw new Error('Server returned empty response');
-  return text;
+  const controller = new AbortController();
+  const timeoutId = globalThis.setTimeout(() => controller.abort(), GATEWAY_SERVER_FALLBACK_TIMEOUT_MS);
+  try {
+    const res = await fetch(resolveGatewayApiUrl('/api/ai/chat'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: prompt, systemInstruction: system }),
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+    const data = await res.json();
+    const text = data.text || data.result || data.content || '';
+    if (!text) throw new Error('Server returned empty response');
+    return text;
+  } finally {
+    globalThis.clearTimeout(timeoutId);
+  }
 }
 
 function trackUsage(caller: string, taskType: string, model: string, latencyMs: number, success: boolean): void {

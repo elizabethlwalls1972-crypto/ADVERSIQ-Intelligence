@@ -12,11 +12,11 @@
  *   - ollama (llama3.2:3b):   Fast local inference, zero cost, full privacy
  *   - ollama-qwen3 (qwen3):   Local deep reasoning + long analysis (Alibaba Qwen3)
  *   - ollama-openchat:        Local fast conversation fine-tune (OpenChat 3.5)
- *   - Gemma:                  Free Google AI key, great reasoning (Gemma 4 / Gemini 2.5 Pro)
+ *   - Gemma/Gemini:           Google AI key with independent quota
  *   - Groq:                   Ultra-fast cloud inference
  *   - Together:               Good for long-form generation, large context
- *   - OpenRouter:             Free-tier access to Claude, Llama, Mistral, DeepSeek and more
- *   - Mistral:                Free tier (500M tokens/month), excellent EU-hosted reasoning
+ *   - OpenRouter:             Aggregated model access; quota and pricing vary by model
+ *   - Mistral:                EU-hosted reasoning; quota and pricing vary by plan
  *   - OpenAI:                 Best reasoning, function calling, nuanced analysis
  *   - Anthropic:              Best for careful, nuanced, safety-aware responses
  * ═══════════════════════════════════════════════════════════════════════════════
@@ -120,13 +120,13 @@ function getProviderConfigs(): ProviderConfig[] {
     });
   }
 
-  // Gemma — free Google AI key (second priority)
+  // Gemma/Gemini — Google AI key with independent quota (second priority)
   if (isGemmaAvailable()) {
     configs.push({
       name: 'gemma',
       apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
       getKey: () => 'managed-by-gemma-service',
-      model: 'gemma-4-26b-a4b-it',
+      model: process.env.GEMMA_MODEL || 'gemini-2.0-flash',
       maxOutputTokens: 8192,
       requestsPerMinute: 60,
       tokensPerMinute: 100000,
@@ -376,7 +376,7 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
     };
   }
 
-  // ── Gemma (Google AI — free key) ──
+  // ── Gemma/Gemini (Google AI key with independent quota) ──
   if (config.name === 'gemma') {
     const gemmaMsgs: GemmaMessage[] = options.messages.map(m => ({
       role: m.role as 'system' | 'user' | 'assistant',

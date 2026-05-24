@@ -7,13 +7,12 @@ const makePolicy = (mode: InteractionPolicy['mode']): InteractionPolicy => ({
   mode,
   confidence: 0.82,
   directives: [],
-  suggestedResponseShape: [],
   tacticalFrame: {
     frame: 'decision',
     hypotheses: [],
     probes: [],
-    actionSequence: [],
-    verificationSignals: [],
+    actions: [],
+    verificationChecks: [],
     adaptationRule: 'adapt from evidence',
   },
 });
@@ -49,4 +48,15 @@ test('AutonomousResearchCognition evidence block demands synthesis instead of pa
   assert.match(block, /Required synthesis behavior/);
   assert.match(block, /fault tree, decision tree, risk register, or action sequence/);
   assert.match(block, /system_failure_pattern/);
+});
+
+test('AutonomousResearchCognition adds public counterparty due diligence for government business risk', () => {
+  const cognition = new AutonomousResearchCognition();
+  const plan = cognition.plan(
+    'Is it safe to do business with the Philippine government in Pagadian City for a public-private investment project?',
+    makePolicy('decision_verification'),
+  );
+
+  assert.ok(plan.questions.some((question) => question.id === 'public_counterparty_due_diligence'));
+  assert.ok(plan.questions.some((question) => /procurement counterpart authority anti corruption security/i.test(question.query)));
 });

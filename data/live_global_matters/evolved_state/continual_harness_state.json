@@ -120,7 +120,7 @@
     {
       "id": "sector_window_manufacturing",
       "category": "trajectory_window",
-      "text": "Manufacturing has appeared in 7 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "text": "Manufacturing has appeared in 10 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
       "evidence": [
         "nsil_1779527628863_tu6f9pfzg",
         "nsil_1779527628898_bry7cc0i7",
@@ -128,26 +128,32 @@
         "nsil_1779527683654_24vd0ql0f",
         "nsil_1779530632675_o0r3h3nhm",
         "nsil_1779530633036_e08fxvvdf",
-        "nsil_1779530845745_ifo9rkxwq"
+        "nsil_1779530845745_ifo9rkxwq",
+        "nsil_1779602066986_pcui6rhhr",
+        "nsil_1779602069223_263nxiafm",
+        "nsil_1779602072817_nf0s3tj2l"
       ],
-      "confidence": 0.9000000000000001,
-      "updated_at": "2026-05-23T10:07:25.763Z",
-      "version": 2
+      "confidence": 0.95,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 3
     },
     {
       "id": "sector_window_logistics",
       "category": "trajectory_window",
-      "text": "Logistics has appeared in 5 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "text": "Logistics has appeared in 8 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
       "evidence": [
         "nsil_1779527628911_624q0ckjj",
         "nsil_1779527628923_rrm828b2t",
         "nsil_1779527683668_m7ljvg5u4",
         "nsil_1779527683682_q8avts8sz",
-        "nsil_1779530633559_0ktrr33h2"
+        "nsil_1779530633559_0ktrr33h2",
+        "nsil_1779602074810_6po2xjqyx",
+        "nsil_1779602077243_0j8kt3dqg",
+        "nsil_1779602079418_w0ynvffoo"
       ],
-      "confidence": 0.8,
-      "updated_at": "2026-05-23T10:07:25.763Z",
-      "version": 2
+      "confidence": 0.95,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 3
     },
     {
       "id": "region_window_da_nang_vietnam",
@@ -160,11 +166,15 @@
         "nsil_1779527683668_m7ljvg5u4",
         "nsil_1779530632675_o0r3h3nhm",
         "nsil_1779530633559_0ktrr33h2",
-        "nsil_1779530845745_ifo9rkxwq"
+        "nsil_1779530845745_ifo9rkxwq",
+        "nsil_1779602066986_pcui6rhhr",
+        "nsil_1779602074810_6po2xjqyx",
+        "nsil_1779602078473_oib7wv7ob",
+        "nsil_1779602079410_xwp2askxs"
       ],
-      "confidence": 0.9000000000000001,
-      "updated_at": "2026-05-23T10:07:25.764Z",
-      "version": 2
+      "confidence": 0.95,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 3
     },
     {
       "id": "region_window_coimbatore_india",
@@ -173,11 +183,14 @@
       "evidence": [
         "nsil_1779527628898_bry7cc0i7",
         "nsil_1779527683654_24vd0ql0f",
-        "nsil_1779530633036_e08fxvvdf"
+        "nsil_1779530633036_e08fxvvdf",
+        "nsil_1779602069223_263nxiafm",
+        "nsil_1779602078777_4q1llf277",
+        "nsil_1779602079400_12nsltvut"
       ],
-      "confidence": 0.7000000000000001,
-      "updated_at": "2026-05-23T10:07:25.764Z",
-      "version": 2
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 3
     },
     {
       "id": "region_window_visakhapatnam_india",
@@ -185,12 +198,117 @@
       "text": "Visakhapatnam, India has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
       "evidence": [
         "nsil_1779527628923_rrm828b2t",
-        "nsil_1779527683682_q8avts8sz"
+        "nsil_1779527683682_q8avts8sz",
+        "nsil_1779602072817_nf0s3tj2l",
+        "nsil_1779602077243_0j8kt3dqg",
+        "nsil_1779602077576_d0n0yf60d",
+        "nsil_1779602079094_9my8b8em9"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 3
+    },
+    {
+      "id": "sector_window_energy",
+      "category": "trajectory_window",
+      "text": "Energy has appeared in 3 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602077576_d0n0yf60d",
+        "nsil_1779602079426_rlo6gtez3",
+        "nsil_1779602079485_2gib3rzpv"
+      ],
+      "confidence": 0.7000000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_ict",
+      "category": "trajectory_window",
+      "text": "ICT has appeared in 3 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602078473_oib7wv7ob",
+        "nsil_1779602078777_4q1llf277",
+        "nsil_1779602079094_9my8b8em9"
+      ],
+      "confidence": 0.7000000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_textiles",
+      "category": "trajectory_window",
+      "text": "Textiles has appeared in 2 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079400_12nsltvut",
+        "nsil_1779602079496_nctu5q5p6"
       ],
       "confidence": 0.65,
-      "updated_at": "2026-05-23T10:07:25.764Z",
-      "version": 2
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_tourism",
+      "category": "trajectory_window",
+      "text": "Tourism has appeared in 3 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079410_xwp2askxs",
+        "nsil_1779602079432_lrt985agp",
+        "nsil_1779602079440_zmn51nxj6"
+      ],
+      "confidence": 0.7000000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_healthcare",
+      "category": "trajectory_window",
+      "text": "Healthcare has appeared in 2 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079446_l1bfmrcuk",
+        "nsil_1779602079526_nwsl5mduw"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_agriculture",
+      "category": "trajectory_window",
+      "text": "Agriculture has appeared in 3 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079451_yyfrcd02s",
+        "nsil_1779602079458_melkoia9l",
+        "nsil_1779602079465_wz0d6sftm"
+      ],
+      "confidence": 0.7000000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_ras_al_khaimah_uae",
+      "category": "trajectory_window",
+      "text": "Ras Al Khaimah, UAE has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079418_w0ynvffoo",
+        "nsil_1779602079426_rlo6gtez3",
+        "nsil_1779602079432_lrt985agp"
+      ],
+      "confidence": 0.7000000000000001,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_iloilo_city_philippines",
+      "category": "trajectory_window",
+      "text": "Iloilo City, Philippines has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079451_yyfrcd02s",
+        "nsil_1779602079560_2m5z5p1df"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-24T05:54:39.582Z",
+      "version": 1
     }
   ],
-  "updated_at": "2026-05-23T10:07:25.764Z"
+  "updated_at": "2026-05-24T05:54:39.582Z"
 }

@@ -11,7 +11,9 @@ import {
 } from '../../shared/cognitiveControl.js';
 import {
   shouldRequireOutputClarification,
-  buildOutputClarificationResponse
+  buildOutputClarificationResponse,
+  buildNeedClarificationDirective,
+  buildNeedRoutingClose
 } from './consultantBehavior.js';
 import { deriveConsultantCapabilityProfile } from './consultantCapabilities.js';
 import {
@@ -33,10 +35,12 @@ import { dagScheduler } from '../../services/algorithms/DAGScheduler.js';
 import { globalVectorIndex } from '../../services/algorithms/VectorMemoryIndex.js';
 import { validateBody, aiValidation } from '../middleware/validate.js';
 import { callAI, getProviderStatus, availableProviderCount, type TaskType } from '../../services/AIProviderOrchestrator.js';
+import { checkOllamaAvailable } from '../../services/ollamaService.js';
 import { getDomainSystemInstruction, getDomainConsultantInstruction, type DomainMode } from '../../services/DomainModeService.js';
 import { proactiveSolutionEngine, type ProactiveContext } from '../../services/ProactiveSolutionEngine.js';
 import { runLiveGlobalMatters } from '../../services/nsil/live_global_matter_runner.js';
 import { runContinualHarnessAudit } from '../../services/nsil/continual_harness_auditor.js';
+import { ContinualHarnessAdapter, type ContinualHarnessAdaptation, type ContinualHarnessState } from '../../services/nsil/continual_harness_adapter.js';
 import { autonomousInteractionLearner } from '../../services/nsil/autonomous_interaction_learner.js';
 import { autonomousResearchCognition, type ResearchEvidenceBundle } from '../../services/nsil/autonomous_research_cognition.js';
 
@@ -346,7 +350,7 @@ const CONSULTANT_REPLAY_FILE = path.join(DATA_DIR, 'consultant-replay.jsonl');
 
 // ─── Together.ai config ────────────────────────────────────────────────────────
 const TOGETHER_API_URL  = 'https://api.together.xyz/v1/chat/completions';
-const TOGETHER_MODEL_ID = process.env.TOGETHER_MODEL || 'meta-llama/Llama-3.1-70B-Instruct-Turbo';
+const TOGETHER_MODEL_ID = process.env.TOGETHER_MODEL || 'meta-llama/Llama-3.3-70B-Instruct-Turbo';
 const getTogetherKey    = () => String(process.env.TOGETHER_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 
 // ─── Groq config ───────────────────────────────────────────────────────────────
@@ -357,8 +361,8 @@ const getAnthropicKey = () => String(process.env.ANTHROPIC_API_KEY || '').trim()
 
 // ─── Google AI (Gemma) config ──────────────────────────────────────────────────
 const GEMMA_API_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-const GEMMA_MODEL_ID = process.env.GEMMA_MODEL || 'gemma-4-26b-a4b-it';
-const getGoogleAIKey = () => String(process.env.GOOGLE_AI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
+const GEMMA_MODEL_ID = process.env.GEMMA_MODEL || 'gemini-2.0-flash';
+const getGoogleAIKey = () => String(process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || '').trim().replace(/^['"]|['"]$/g, '');
 type AIMessageRole = 'system' | 'user' | 'assistant';
 interface AIMessage {
   role: AIMessageRole;
@@ -497,6 +501,8 @@ CRITICAL OUTPUT RULES — NEVER VIOLATE:
 General behavior:
 - Be direct and client-facing. No filler. No vague claims.
 - When context is incomplete, state assumptions and flag confidence impact.
+- If the user supplies a named person, official, agency, city, or company, treat it as a verification target and build the analysis around it. Do not dismiss the entity as "not found" unless verified live evidence contradicts the user; instead say "user-supplied, pending verification" and continue with the decision analysis.
+- Correct obvious typos in place names when the intended location is clear, while noting the normalization.
 - Preserve professional tone suitable for executive and government stakeholders.
 - Extract case signals from natural conversation progressively — never force rigid intake forms.
 `;
@@ -554,7 +560,7 @@ const detectConsultantIntent = (message: string): ConsultantIntent => {
   }
   // Person/entity queries are simple questions
   if (/\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director|mr\.|ms\.|dr\.|hon\.)\s+\w/i.test(text)) {
-    if (!/\b(strategy|investment|risk|analysis|evaluate|assess|compare|due diligence|feasibility)\b/.test(text)) {
+    if (!/\b(strategy|invest\w*|risk|analysis|evaluate|assess|compare|due diligence|feasibility|expand\w*|business|company|market entry|partnership)\b/.test(text)) {
       return 'simple_question';
     }
   }
@@ -617,10 +623,10 @@ const buildIntentDirective = (intent: ConsultantIntent): string => {
   }
 };
 
-type ConsultantProvider = ControlProvider;
+type ConsultantProvider = ControlProvider | 'local-orchestrator';
 
 interface ConsultantProviderAttempt {
-  provider: ConsultantProvider;
+  provider: ConsultantProvider | string;
   ok: boolean;
   detail?: string;
 }
@@ -640,10 +646,32 @@ const CONSULTANT_ALLOWED_TASK_TYPES = new Set<ConsultantTaskType>([
   'general_assist'
 ]);
 
+const CONSULTANT_TASK_TYPE_ALIASES: Record<string, ConsultantTaskType> = {
+  strategic_analysis: 'strategy_support',
+  strategic_advice: 'strategy_support',
+  strategy: 'strategy_support',
+  risk_analysis: 'risk_review',
+  research: 'info_lookup',
+  lookup: 'info_lookup',
+  general: 'general_assist',
+};
+
+const normalizeConsultantTaskType = (value: unknown): ConsultantTaskType | null => {
+  const raw = typeof value === 'string' && value.trim()
+    ? value.trim().toLowerCase()
+    : 'general_assist';
+  const normalized = CONSULTANT_TASK_TYPE_ALIASES[raw] || raw;
+  return CONSULTANT_ALLOWED_TASK_TYPES.has(normalized as ConsultantTaskType)
+    ? normalized as ConsultantTaskType
+    : null;
+};
+
 const CONSULTANT_MAX_MESSAGE_CHARS = 6000;
 const CONSULTANT_MAX_CONTEXT_CHARS = 14000;
 const CONSULTANT_MAX_RESPONSE_CHARS = 7000;
-const CONSULTANT_PROVIDER_TIMEOUT_MS = Number(process.env.CONSULTANT_PROVIDER_TIMEOUT_MS || 14000);
+const CONSULTANT_PROVIDER_TIMEOUT_MS = Number(process.env.CONSULTANT_PROVIDER_TIMEOUT_MS || 9000);
+const CONSULTANT_LEGACY_PROVIDER_TIMEOUT_MS = Number(process.env.CONSULTANT_LEGACY_PROVIDER_TIMEOUT_MS || 6000);
+const CONSULTANT_ORCHESTRATOR_TIMEOUT_MS = Number(process.env.CONSULTANT_ORCHESTRATOR_TIMEOUT_MS || 4500);
 const CONSULTANT_AUDIT_REDACTION_ENABLED = process.env.CONSULTANT_AUDIT_REDACTION_ENABLED !== 'false';
 const CONSULTANT_AUDIT_EXPORT_MAX = 5000;
 const CONSULTANT_REPLAY_STORE_PAYLOAD = process.env.CONSULTANT_REPLAY_STORE_PAYLOAD !== 'false';
@@ -683,27 +711,49 @@ const withTimeout = async <T>(promise: Promise<T>, timeoutMs: number, label: str
 
 
 interface RuntimeProviderAvailability {
+  ollama: boolean;
   openai: boolean;
   anthropic: boolean;
   groq: boolean;
   together: boolean;
   gemma: boolean;
+  openrouter: boolean;
+  mistral: boolean;
   bedrockConfigured: boolean;
   bedrockCredentialDetail: string;
 }
 
+const hasUsableApiKey = (value: string): boolean => {
+  const normalized = value.trim().replace(/^['"]|['"]$/g, '');
+  if (normalized.length < 12) return false;
+  return !/(your[-_ ]?|placeholder|key[-_ ]?here|changeme|replace[-_ ]?me|example)/i.test(normalized);
+};
+
+const quickOllamaAvailable = async (): Promise<boolean> => {
+  return Promise.race([
+    checkOllamaAvailable().catch(() => false),
+    new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 700)),
+  ]);
+};
+
 const getRuntimeProviderAvailability = async (): Promise<RuntimeProviderAvailability> => {
-  const openai = Boolean(getOpenAIKey());
-  const anthropic = Boolean(getAnthropicKey());
-  const groq = Boolean(getGroqKey());
-  const together = Boolean(getTogetherKey());
-  const gemma = Boolean(getGoogleAIKey());
+  const ollama = await quickOllamaAvailable();
+  const openai = hasUsableApiKey(getOpenAIKey());
+  const anthropic = hasUsableApiKey(getAnthropicKey());
+  const groq = hasUsableApiKey(getGroqKey());
+  const together = hasUsableApiKey(getTogetherKey());
+  const gemma = hasUsableApiKey(getGoogleAIKey());
+  const openrouter = hasUsableApiKey(String(process.env.OPENROUTER_API_KEY || ''));
+  const mistral = hasUsableApiKey(String(process.env.MISTRAL_API_KEY || ''));
   return {
+    ollama,
     openai,
     anthropic,
     groq,
     together,
     gemma,
+    openrouter,
+    mistral,
     bedrockConfigured: false,
     bedrockCredentialDetail: 'Bedrock removed',
   };
@@ -793,9 +843,35 @@ const stripThinkingTokens = (text: string): string => {
   return cleaned.trim();
 };
 
-const normalizeConsultantOutput = (rawText: string): string => {
+const correctUnverifiedEntityDismissal = (text: string, userMessage = ''): string => {
+  if (!/(could(?:n't| not)\s+find|no\s+information\s+on|not\s+publicly\s+available|name\s+(?:might\s+be\s+|is\s+)?incorrect)/i.test(text)) {
+    return text;
+  }
+
+  const officialMatch = userMessage.match(/\b(mayor|governor|minister|president|senator|congressman|secretary|ambassador|ceo|director)\s+([A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){0,3})/i);
+  const entityMatch = officialMatch
+    ? `${officialMatch[1][0].toUpperCase()}${officialMatch[1].slice(1).toLowerCase()} ${officialMatch[2].replace(/\b(and|what|which|who|where|why|how)\b.*$/i, '').trim()}`
+    : '';
+  if (!entityMatch) return text;
+
+  const replacement = `${entityMatch} is user-supplied and pending verification; do not treat the name as invalid without checking official LGU, DILG, or election records.`;
+  return text
+    .replace(/(?:As for\s+[^.\n]+,\s*)?[^.\n]*(?:could(?:n't| not)\s+find|no\s+information\s+on)[^.\n]*(?:\.[^\n.]*(?:incorrect|not publicly available)[^.\n]*)?\./gi, replacement)
+    .replace(/It'?s possible[^.\n]*(?:misspelled|incorrect|not readily available|not publicly available)[^.\n]*\./gi, 'Verification note: confirm the official spelling and current office status from official LGU, DILG, or election records.')
+    .replace(/However,\s+I can tell you that the current mayor of [^.]+ is a different individual\./gi, 'Do not conclude the current office holder is different without official verification; keep the stakeholder as pending verification.')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+};
+
+const normalizeConsultantOutput = (rawText: string, userMessage = ''): string => {
   const cleaned = stripThinkingTokens(rawText);
-  const text = cleaned.trim().slice(0, CONSULTANT_MAX_RESPONSE_CHARS);
+  const correctedText = correctUnverifiedEntityDismissal(cleaned.trim(), userMessage);
+  const routingClose = buildNeedRoutingClose(userMessage, correctedText);
+  const reservedChars = routingClose ? routingClose.length + 2 : 0;
+  const text = routingClose
+    ? `${correctedText.slice(0, Math.max(0, CONSULTANT_MAX_RESPONSE_CHARS - reservedChars)).trim()}\n\n${routingClose}`.trim()
+    : correctedText.slice(0, CONSULTANT_MAX_RESPONSE_CHARS).trim();
+
   if (!text) {
     return 'I can assist with your report and next actions. Share the exact objective, jurisdiction, and decision deadline, and I will proceed.';
   }
@@ -1073,10 +1149,21 @@ const getAdvancedRuntimeMetrics = (events: Record<string, unknown>[]): AdvancedR
 
 const normalizeConsultantProvider = (value: unknown): ConsultantProvider | null => {
   const normalized = String(value || '').toLowerCase();
-  if (normalized === 'together' || normalized === 'openai' || normalized === 'groq') {
-    return normalized;
-  }
-  return null;
+  const valid = new Set<ConsultantProvider>([
+    'local-orchestrator',
+    'ollama',
+    'ollama-qwen3',
+    'ollama-openchat',
+    'gemma',
+    'groq',
+    'together',
+    'openrouter',
+    'mistral',
+    'openai',
+    'anthropic',
+    'bedrock',
+  ]);
+  return valid.has(normalized as ConsultantProvider) ? normalized as ConsultantProvider : null;
 };
 
 const normalizeRequestEnvelope = (
@@ -1139,15 +1226,26 @@ const logConsultantAuditEvent = async (event: Record<string, unknown>) => {
 };
 
 const parseProviderOrder = (input: unknown): ConsultantProvider[] => {
-  const defaultOrder: ConsultantProvider[] = ['openai', 'groq', 'together'];
-  if (!Array.isArray(input)) return defaultOrder;
+  if (!Array.isArray(input)) return [];
 
-  const VALID_PROVIDERS = new Set<ConsultantProvider>(['openai', 'groq', 'together']);
+  const VALID_PROVIDERS = new Set<ConsultantProvider>([
+    'local-orchestrator',
+    'ollama',
+    'ollama-qwen3',
+    'ollama-openchat',
+    'gemma',
+    'groq',
+    'together',
+    'openrouter',
+    'mistral',
+    'openai',
+    'anthropic',
+  ]);
   const normalized = input
     .map((value) => String(value).toLowerCase())
     .filter((value): value is ConsultantProvider => VALID_PROVIDERS.has(value as ConsultantProvider));
 
-  return normalized.length > 0 ? Array.from(new Set(normalized)) : defaultOrder;
+  return Array.from(new Set(normalized));
 };
 
 // ── Extract Partial<ReportParameters> from consultant context for Brain / NSIL ──
@@ -1331,6 +1429,12 @@ const buildConsultantPrompt = (message: string, intent: ConsultantIntent, contex
       content: `INTENT: ${intent}\nINTENT DIRECTIVE: ${buildIntentDirective(intent)}`,
       priority: 1,
       minTokens: 100,
+    },
+    {
+      label: '',
+      content: buildNeedClarificationDirective(message),
+      priority: 1,
+      minTokens: 120,
     },
     {
       label: '',
@@ -1519,7 +1623,7 @@ const invokeConsultantWithOpenAI = async (prompt: string, consultantInstruction?
 const invokeConsultantWithGemma = async (prompt: string, consultantInstruction?: string): Promise<string> => {
   const key = getGoogleAIKey();
   if (!key) {
-    throw new Error('Gemma unavailable: GOOGLE_AI_API_KEY missing');
+    throw new Error('Google AI unavailable: GOOGLE_AI_API_KEY/GEMINI_API_KEY missing');
   }
 
   const systemText = consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION;
@@ -1557,6 +1661,174 @@ const invokeConsultantWithGemma = async (prompt: string, consultantInstruction?:
 // When ALL external providers fail, synthesize a response from the 44-engine
 // Brain, NSIL pipeline, Five-Engine Tribunal, and strategic analysis that are
 // already computed locally before the broker call. No API keys required.
+const formatNumber = (value: unknown, digits = 1): string => {
+  const numberValue = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(numberValue)) return '';
+  return Number.isInteger(numberValue) ? String(numberValue) : numberValue.toFixed(digits);
+};
+
+const formatCurrency = (value: unknown): string => {
+  const numberValue = typeof value === 'number' ? value : Number(value);
+  if (!Number.isFinite(numberValue)) return 'N/A';
+  return numberValue.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+};
+
+function formatStructuredValue(value: unknown): string {
+  if (value == null) return '';
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => formatStructuredValue(item))
+      .filter(Boolean)
+      .slice(0, 5)
+      .join('; ');
+  }
+  if (typeof value !== 'object') return String(value);
+
+  const obj = value as Record<string, unknown>;
+  const priorityKeys = ['action', 'summary', 'headline', 'recommendation', 'approach', 'status', 'nextStep', 'confidence'];
+  const parts = priorityKeys
+    .filter((key) => obj[key] !== undefined)
+    .map((key) => `${key}: ${formatStructuredValue(obj[key])}`)
+    .filter(Boolean);
+
+  if (parts.length) return parts.slice(0, 6).join('; ');
+
+  return Object.entries(obj)
+    .slice(0, 6)
+    .map(([key, entryValue]) => `${key}: ${formatStructuredValue(entryValue)}`)
+    .filter(Boolean)
+    .join('; ');
+}
+
+const formatCompositeScore = (value: unknown): string => {
+  if (value == null) return '';
+  if (typeof value === 'number' || typeof value === 'string') return String(value);
+  if (typeof value !== 'object') return String(value);
+
+  const obj = value as Record<string, unknown>;
+  const overall = formatNumber(obj.overall ?? obj.score ?? obj.compositeScore);
+  const parts = [
+    overall ? `overall ${overall}/100` : '',
+    formatNumber(obj.spi) ? `SPI ${formatNumber(obj.spi)}` : '',
+    formatNumber(obj.ivas) ? `IVAS ${formatNumber(obj.ivas)}` : '',
+    formatNumber(obj.scf) ? `SCF ${formatNumber(obj.scf)}` : '',
+  ].filter(Boolean);
+
+  return parts.length ? parts.join('; ') : formatStructuredValue(value);
+};
+
+const formatPayback = (value: unknown): string => {
+  if (value == null) return 'N/A';
+  if (typeof value === 'number' || typeof value === 'string') return String(value);
+  if (typeof value !== 'object') return String(value);
+
+  const obj = value as Record<string, unknown>;
+  const simple = formatNumber(obj.simplePaybackYears);
+  const discounted = formatNumber(obj.discountedPaybackYears);
+  const achieved = typeof obj.achieved === 'boolean' ? (obj.achieved ? 'achieved' : 'not achieved') : '';
+  const parts = [
+    simple ? `${simple} years simple` : '',
+    discounted ? `${discounted} years discounted` : '',
+    achieved,
+  ].filter(Boolean);
+
+  return parts.length ? parts.join(' / ') : formatStructuredValue(value);
+};
+
+const extractLocationAnchor = (message: string): string => {
+  const cityMatch = message.match(/\b(Pagad(?:i|a)an(?:\s+City)?|Cebu(?:\s+City)?|Davao(?:\s+City)?|Manila|Iloilo(?:\s+City)?|Cagayan de Oro|General Santos)\b/i);
+  if (cityMatch) return cityMatch[0].replace(/\s+/g, ' ').trim();
+  const countryMatch = message.match(/\b(Philippines|Indonesia|Vietnam|Thailand|Malaysia|Singapore|Australia|India|Brazil|Kenya|Nigeria|Ghana|United States|USA)\b/i);
+  return countryMatch?.[0] ?? '';
+};
+
+const asksGovernmentBusinessRisk = (message: string): boolean =>
+  /\b(government|lgu|mayor|procurement|public[- ]private|ppp|public sector|city hall)\b/i.test(message) &&
+  /\b(safe|risk|business|invest|investment|deal|partner|contract|market entry|do business)\b/i.test(message);
+
+const buildDirectFallbackLead = (
+  userMessage: string,
+  tribunal: { verdict: string; releaseGate: string },
+  strategicPipeline: { readinessScore: number },
+  perceptionDelta: { deltaIndex: number; confidence: number },
+  liveIntel?: LiveIntelligenceResult | null,
+): string[] => {
+  const location = extractLocationAnchor(userMessage);
+  const lines: string[] = [];
+  if (!asksGovernmentBusinessRisk(userMessage)) return lines;
+
+  const holdSignal = tribunal.releaseGate === 'red' || tribunal.verdict.toLowerCase() === 'hold' || strategicPipeline.readinessScore < 65;
+  const decision = holdSignal
+    ? 'Do not treat this as a clean green-light yet.'
+    : 'This is workable only as a controlled, staged entry.';
+
+  lines.push(`### Direct Answer`);
+  lines.push(`${decision} ${location ? `${location} should be handled as a conditional government-business opportunity, not a casual market entry.` : 'This should be handled as a conditional government-business opportunity, not a casual market entry.'}`);
+  lines.push('');
+  lines.push('The practical answer is: explore it remotely and through formal channels, but do not commit capital, travel, sign with intermediaries, or rely on verbal assurances until four checks pass: counterpart authority, procurement legality, anti-corruption controls, and current security/travel risk.');
+  lines.push('');
+  lines.push(`Local signal: tribunal=${tribunal.verdict.toUpperCase()}, gate=${tribunal.releaseGate}, readiness=${strategicPipeline.readinessScore}/100, evidence confidence=${perceptionDelta.confidence}%.`);
+  if (liveIntel?.sources?.length) {
+    lines.push(`Live evidence checked: ${liveIntel.sources.slice(0, 6).join('; ')}.`);
+  } else {
+    lines.push('Live evidence status: no external source returned strongly enough to make this a verified go/no-go; confidence must stay conditional.');
+  }
+  lines.push('');
+  return lines;
+};
+
+const providerResponseNeedsLocalSynthesis = (userMessage: string, text: string): boolean => {
+  const lower = text.toLowerCase();
+  if (lower.includes('[object object]')) return true;
+  if (!asksGovernmentBusinessRisk(userMessage)) return false;
+
+  const hasCounterpartyGate = /\b(counterpart|authority|authorized|official channel|official verification)\b/i.test(text);
+  const hasProcurementGate = /\b(procurement|tender|solicitation|legal route|bidding)\b/i.test(text);
+  const hasIntegrityGate = /\b(anti[- ]?corruption|corruption|integrity|compliance|conflict of interest|due diligence)\b/i.test(text);
+  const hasSecurityGate = /\b(security|travel risk|advisory|safety posture|physical risk)\b/i.test(text);
+  const asksInsteadOfAnswering = /\b(are you looking for|would you like information only|to better understand|i'?d like to ask)\b/i.test(text);
+  const greenlightsTooEarly = /\b(generally considered safe|safe place to do business|no major concerns)\b/i.test(text) &&
+    !(hasCounterpartyGate && hasProcurementGate && hasIntegrityGate && hasSecurityGate);
+
+  return asksInsteadOfAnswering || greenlightsTooEarly || !(hasCounterpartyGate && hasProcurementGate && hasIntegrityGate && hasSecurityGate);
+};
+
+const consultantHarnessAdapter = new ContinualHarnessAdapter(path.join(process.cwd(), 'data', 'evolved_state'));
+
+const buildContinualHarnessPromptBlock = (): {
+  block: string;
+  adaptation: ContinualHarnessAdaptation;
+  state: ContinualHarnessState;
+} => {
+  const adaptation = consultantHarnessAdapter.evolve([], []);
+  const state = consultantHarnessAdapter.getState();
+  const lines = [
+    'CONTINUAL HARNESS STATE:',
+    'Operate as observe -> act -> trajectory -> refine. Apply p/G/K/M state before responding.',
+    'Prompt directives:',
+    ...state.prompt.directives.slice(0, 8).map((directive) => `- ${directive}`),
+    'Subagents:',
+    ...state.subagents.slice(0, 6).map((agent) => `- ${agent.name}: ${agent.role} Trigger: ${agent.trigger}`),
+    'Skills:',
+    ...state.skills.slice(0, 6).map((skill) => `- ${skill.name}: ${skill.purpose}`),
+    'Memory:',
+    ...state.memory.slice(-6).map((memory) => `- ${memory.category}: ${memory.text}`),
+    'Release rule: synthesize evidence into a decision, fault tree, risk register, or action sequence. Do not repeat raw source notes as the answer.',
+  ];
+
+  return {
+    block: lines.filter((line) => line.trim()).join('\n'),
+    adaptation,
+    state,
+  };
+};
+
 const synthesizeLocalFallbackResponse = (
   userMessage: string,
   brainContext: BrainContext | null,
@@ -1565,11 +1837,14 @@ const synthesizeLocalFallbackResponse = (
   strategicPipeline: { readinessScore: number; stages: { stage: string; detail: string; score?: number }[]; recommendedPath: { targetRegion: string; strategy: string; rationale: string[] } },
   overlookedIntelligence: { evidenceCredibility: number; perceptionRealityGap: number; topRegionalOpportunities: { place: string; score: number; reason: string[] }[] },
   perceptionDelta: { deltaIndex: number; confidence: number },
+  liveIntel?: LiveIntelligenceResult | null,
 ): string => {
   const lines: string[] = [];
 
+  lines.push(...buildDirectFallbackLead(userMessage, tribunal, strategicPipeline, perceptionDelta, liveIntel));
+
   lines.push(`## Analysis Summary\n`);
-  lines.push(`Based on autonomous analysis across 44 intelligence engines, here is the assessment for your query:\n`);
+  lines.push(`This is a synthesized decision answer from the local Brain, NSIL, tribunal, live-research, and continual-harness path. It is not a source dump.\n`);
 
   // Strategic readiness
   const readiness = strategicPipeline.readinessScore;
@@ -1598,9 +1873,15 @@ const synthesizeLocalFallbackResponse = (
 
   // Recommended path
   if (strategicPipeline.recommendedPath) {
-    lines.push(`### Recommended Path`);
+    const location = extractLocationAnchor(userMessage);
+    const targetRegion = strategicPipeline.recommendedPath.targetRegion;
+    const mismatchedTarget = Boolean(location && targetRegion && !targetRegion.toLowerCase().includes(location.toLowerCase().replace(/\s+city$/i, '')));
+    lines.push(mismatchedTarget ? `### Alternate Market Signal` : `### Recommended Path`);
     lines.push(`**Strategy:** ${strategicPipeline.recommendedPath.strategy}`);
-    lines.push(`**Target region:** ${strategicPipeline.recommendedPath.targetRegion}`);
+    lines.push(`${mismatchedTarget ? '**System-ranked alternate:**' : '**Target region:**'} ${targetRegion}`);
+    if (mismatchedTarget) {
+      lines.push(`Note: your named location is ${location}; this alternate is a comparator, not an answer that replaces the named-location due diligence.`);
+    }
     for (const rationale of strategicPipeline.recommendedPath.rationale.slice(0, 4)) {
       lines.push(`- ${rationale}`);
     }
@@ -1621,7 +1902,7 @@ const synthesizeLocalFallbackResponse = (
   if (brainContext) {
     lines.push(`### Brain Intelligence (${brainContext.readiness || 'computed'})`);
     if (brainContext.compositeScore != null) {
-      lines.push(`Composite score: ${brainContext.compositeScore}/100`);
+      lines.push(`Composite score: ${formatCompositeScore(brainContext.compositeScore)}`);
     }
     if (brainContext.riskMatrix?.topRisks?.length) {
       lines.push(`\n**Top Risks:**`);
@@ -1632,19 +1913,24 @@ const synthesizeLocalFallbackResponse = (
     if (brainContext.financialAnalysis) {
       const fa = brainContext.financialAnalysis;
       lines.push(`\n**Financial Analysis:**`);
-      lines.push(`- NPV: $${fa.npv?.npv?.toLocaleString() ?? 'N/A'} at ${((fa.npv?.discountRate ?? 0) * 100).toFixed(1)}% discount rate`);
+      lines.push(`- NPV: ${formatCurrency(fa.npv?.npv)} at ${((fa.npv?.discountRate ?? 0) * 100).toFixed(1)}% discount rate`);
       lines.push(`- IRR: ${fa.irr?.irrPercent?.toFixed(1) ?? 'N/A'}%`);
-      lines.push(`- Payback period: ${fa.payback ?? 'N/A'}`);
+      lines.push(`- Payback period: ${formatPayback(fa.payback)}`);
     }
     lines.push('');
   }
 
   // NSIL report summary
   if (nsilReport) {
-    const recommendation = nsilReport.recommendation as string | undefined;
+    const recommendation = nsilReport.recommendation;
     if (recommendation) {
       lines.push(`### NSIL Assessment`);
-      lines.push(`${recommendation}\n`);
+      lines.push(`${formatStructuredValue(recommendation)}\n`);
+    }
+    const continualHarness = nsilReport.continualHarness;
+    if (continualHarness) {
+      lines.push(`### Continual Harness Read`);
+      lines.push(`${formatStructuredValue(continualHarness)}\n`);
     }
   }
 
@@ -1655,9 +1941,65 @@ const synthesizeLocalFallbackResponse = (
   lines.push(`- Strategic Readiness: ${readiness}/100\n`);
 
   lines.push(`---`);
-  lines.push(`*This analysis was generated entirely by the local intelligence engine suite (no external AI provider was used). For enhanced natural-language synthesis, configure at least one API key (GOOGLE_AI_API_KEY recommended — free at aistudio.google.com/apikey).*`);
+  lines.push(`*This response used the local intelligence fallback because managed model providers were unavailable, rate-limited, or timed out. Local-first inference removes token spend; cloud APIs remain opportunistic accelerators, not required gates.*`);
 
   return lines.join('\n');
+};
+
+const consultantProviderBackoff = new Map<string, { until: number; detail: string }>();
+
+const getProviderBackoffMs = (detail: string): number => {
+  if (/\b429\b|rate limit|quota|tokens per day|too many requests/i.test(detail)) return 5 * 60 * 1000;
+  if (/\b404\b|not found|model/i.test(detail)) return 30 * 60 * 1000;
+  if (/timed out|abort/i.test(detail)) return 60 * 1000;
+  return 20 * 1000;
+};
+
+const noteProviderFailure = (provider: string, detail: string): void => {
+  consultantProviderBackoff.set(provider, {
+    until: Date.now() + getProviderBackoffMs(detail),
+    detail,
+  });
+};
+
+const providerBackoffDetail = (provider: string): string | null => {
+  const entry = consultantProviderBackoff.get(provider);
+  if (!entry) return null;
+  if (Date.now() >= entry.until) {
+    consultantProviderBackoff.delete(provider);
+    return null;
+  }
+  const seconds = Math.max(1, Math.ceil((entry.until - Date.now()) / 1000));
+  return `backed off for ${seconds}s after: ${entry.detail}`;
+};
+
+const invokeConsultantWithUnifiedOrchestrator = async (
+  prompt: string,
+  consultantInstruction?: string,
+): Promise<{ text: string; provider: ConsultantProvider | string }> => {
+  const messages: AIMessage[] = [
+    { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
+    { role: 'user', content: prompt },
+  ];
+  const result = await callAI({
+    messages,
+    taskType: 'deep-reasoning',
+    maxTokens: 2200,
+    temperature: 0.35,
+  });
+  return { text: result.text, provider: result.provider };
+};
+
+const invokeLegacyConsultantProvider = (
+  provider: ConsultantProvider,
+  prompt: string,
+  consultantInstruction?: string,
+): Promise<string> | null => {
+  if (provider === 'groq') return invokeConsultantWithGroq(prompt, consultantInstruction);
+  if (provider === 'together') return invokeConsultantWithTogether(prompt, consultantInstruction);
+  if (provider === 'gemma') return invokeConsultantWithGemma(prompt, consultantInstruction);
+  if (provider === 'openai') return invokeConsultantWithOpenAI(prompt, consultantInstruction);
+  return null;
 };
 
 const runConsultantBroker = async (
@@ -1666,24 +2008,55 @@ const runConsultantBroker = async (
   timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS,
   providerAvailability?: Partial<Record<ConsultantProvider, boolean>>,
   consultantInstruction?: string
-): Promise<{ text: string; provider: ConsultantProvider; attempts: ConsultantProviderAttempt[] }> => {
+): Promise<{ text: string; provider: ConsultantProvider | string; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
+  const orchestratorBackoff = providerBackoffDetail('local-orchestrator');
+
+  if (orchestratorBackoff) {
+    attempts.push({ provider: 'local-orchestrator', ok: false, detail: orchestratorBackoff });
+  } else {
+    try {
+      const orchestrated = await withTimeout(
+        invokeConsultantWithUnifiedOrchestrator(prompt, consultantInstruction),
+        Math.min(timeoutMs, CONSULTANT_ORCHESTRATOR_TIMEOUT_MS),
+        'local-first AI orchestrator'
+      );
+      attempts.push({ provider: orchestrated.provider, ok: true, detail: 'local-first orchestrator' });
+      return { text: orchestrated.text, provider: orchestrated.provider, attempts };
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : 'Unknown orchestrator error';
+      attempts.push({ provider: 'local-orchestrator', ok: false, detail });
+      noteProviderFailure('local-orchestrator', detail);
+    }
+  }
 
   for (const provider of order) {
+    if (provider === 'local-orchestrator') continue;
+    if (provider === 'bedrock') {
+      attempts.push({ provider, ok: false, detail: 'Bedrock route removed; skipping stale provider' });
+      continue;
+    }
     if (providerAvailability && providerAvailability[provider] === false) {
       attempts.push({ provider, ok: false, detail: `${provider} unavailable by runtime readiness` });
       continue;
     }
 
+    const backoff = providerBackoffDetail(provider);
+    if (backoff) {
+      attempts.push({ provider, ok: false, detail: backoff });
+      continue;
+    }
+
+    const invoker = invokeLegacyConsultantProvider(provider, prompt, consultantInstruction);
+    if (!invoker) {
+      attempts.push({ provider, ok: false, detail: `${provider} handled only by local-first orchestrator` });
+      continue;
+    }
+
     try {
-      const invoker =
-        provider === 'groq'    ? invokeConsultantWithGroq(prompt, consultantInstruction)
-        : provider === 'together' ? invokeConsultantWithTogether(prompt, consultantInstruction)
-        : provider === 'gemma'    ? invokeConsultantWithGemma(prompt, consultantInstruction)
-        :                          invokeConsultantWithOpenAI(prompt, consultantInstruction);
       const text = await withTimeout(
         invoker,
-        timeoutMs,
+        Math.min(timeoutMs, CONSULTANT_LEGACY_PROVIDER_TIMEOUT_MS),
         `${provider} provider`
       );
 
@@ -1692,6 +2065,7 @@ const runConsultantBroker = async (
     } catch (error) {
       const detail = error instanceof Error ? error.message : 'Unknown provider error';
       attempts.push({ provider, ok: false, detail });
+      noteProviderFailure(provider, detail);
     }
   }
 
@@ -1797,13 +2171,26 @@ router.get('/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
 
   res.json({
-    aiAvailable: Boolean(availability.openai || availability.anthropic || availability.groq || availability.together),
+    aiAvailable: Boolean(
+      availability.ollama ||
+      availability.gemma ||
+      availability.groq ||
+      availability.together ||
+      availability.openrouter ||
+      availability.mistral ||
+      availability.openai ||
+      availability.anthropic
+    ),
     providers: {
       // Bedrock removed
+      ollama: availability.ollama,
+      gemma: availability.gemma,
       openai: availability.openai,
       anthropic: availability.anthropic,
       groq: availability.groq,
-      together: availability.together
+      together: availability.together,
+      openrouter: availability.openrouter,
+      mistral: availability.mistral
     }
   });
 });
@@ -1812,9 +2199,11 @@ router.get('/status', async (_req: Request, res: Response) => {
 router.get('/provider-status', async (_req: Request, res: Response) => {
   try {
     const status = getProviderStatus();
+    const runtimeAvailability = await getRuntimeProviderAvailability();
     res.json({
       orchestrator: 'active',
       availableProviders: availableProviderCount(),
+      runtimeAvailability,
       providers: status,
     });
   } catch (_err) {
@@ -1824,21 +2213,32 @@ router.get('/provider-status', async (_req: Request, res: Response) => {
 
 router.get('/readiness', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
-  const ready = availability.openai || availability.anthropic || availability.groq || availability.together;
+  const ready = availability.ollama || availability.gemma || availability.groq || availability.together ||
+    availability.openrouter || availability.mistral || availability.openai || availability.anthropic;
 
   const reasons: string[] = [];
   // Bedrock removed
+  if (!availability.ollama) reasons.push('ollama_not_running');
+  if (!availability.gemma) reasons.push('google_ai_not_configured');
   if (!availability.openai) reasons.push('openai_not_configured');
   if (!availability.anthropic) reasons.push('anthropic_not_configured');
   if (!availability.groq) reasons.push('groq_not_configured');
   if (!availability.together) reasons.push('together_not_configured');
-  if (ready && reasons.length === 0) reasons.push('ai_runtime_ready');
+  if (!availability.openrouter) reasons.push('openrouter_not_configured');
+  if (!availability.mistral) reasons.push('mistral_not_configured');
+  if (ready) reasons.unshift('ai_runtime_ready');
 
   res.status(ready ? 200 : 503).json({
     ready,
     reasons,
     providers: {
       // Bedrock removed
+      ollama: {
+        ready: availability.ollama
+      },
+      gemma: {
+        ready: availability.gemma
+      },
       openai: {
         ready: availability.openai
       },
@@ -1850,6 +2250,12 @@ router.get('/readiness', async (_req: Request, res: Response) => {
       },
       together: {
         ready: availability.together
+      },
+      openrouter: {
+        ready: availability.openrouter
+      },
+      mistral: {
+        ready: availability.mistral
       }
     }
   });
@@ -1888,10 +2294,14 @@ router.get('/control/status', async (_req: Request, res: Response) => {
   const availability = await getRuntimeProviderAvailability();
   const providers = {
     // Bedrock removed
+    ollama: availability.ollama,
+    gemma: availability.gemma,
     openai: availability.openai,
     anthropic: availability.anthropic,
     groq: availability.groq,
-    together: availability.together
+    together: availability.together,
+    openrouter: availability.openrouter,
+    mistral: availability.mistral
   };
   const learningHint = await AdaptiveControlLearning.getHint();
     const sample = deriveControlDecision(
@@ -1906,9 +2316,14 @@ router.get('/control/status', async (_req: Request, res: Response) => {
         retryCount: 0
       },
       {
+        ollama: providers.ollama,
+        gemma: providers.gemma,
         openai: providers.openai,
+        anthropic: providers.anthropic,
         groq: providers.groq,
         together: providers.together,
+        openrouter: providers.openrouter,
+        mistral: providers.mistral,
       },
       learningHint
     );
@@ -2078,11 +2493,12 @@ router.post('/consultant', async (req: Request, res: Response) => {
       : undefined;
     const activeDomainInstruction = getConsultantInstructionForDomain(domainMode);
 
-    const normalizedTaskType: ConsultantTaskType = (typeof taskType === 'string' ? taskType : 'general_assist') as ConsultantTaskType;
-    if (!CONSULTANT_ALLOWED_TASK_TYPES.has(normalizedTaskType)) {
+    const normalizedTaskType = normalizeConsultantTaskType(taskType);
+    if (!normalizedTaskType) {
       return res.status(400).json({
         error: 'Invalid taskType',
-        allowedTaskTypes: Array.from(CONSULTANT_ALLOWED_TASK_TYPES)
+        allowedTaskTypes: Array.from(CONSULTANT_ALLOWED_TASK_TYPES),
+        acceptedAliases: Object.keys(CONSULTANT_TASK_TYPE_ALIASES)
       });
     }
 
@@ -2130,42 +2546,27 @@ router.post('/consultant', async (req: Request, res: Response) => {
     const learningHint = await AdaptiveControlLearning.getHint();
     const providerAvailability = await getRuntimeProviderAvailability();
 
-    // Early-return when no AI provider is configured — return 200 so the
-    // frontend shows a helpful setup message instead of an error.
-    const noProviderAvailable =
-      !providerAvailability.openai &&
-      !providerAvailability.anthropic &&
-      !providerAvailability.groq &&
-      !providerAvailability.together &&
-      !providerAvailability.gemma;
-    if (noProviderAvailable) {
-      return res.json({
-        requestId,
-        taskType: normalizedTaskType,
-        text: `No AI provider is currently configured on this server. To activate the ADVERSIQ Consultant, add at least one of the following environment variables to your server and restart it:\n\n• GOOGLE_AI_API_KEY — free at aistudio.google.com/apikey (recommended — generous free tier)\n• GROQ_API_KEY — free at console.groq.com (fast inference)\n• OPENAI_API_KEY — platform.openai.com/api-keys\n• TOGETHER_API_KEY — api.together.xyz\n• ANTHROPIC_API_KEY — console.anthropic.com\n\nOnce a key is added and the server is restarted, the consultant will be fully operational.`,
-        provider: 'rule-engine',
-        attempts: [],
-        confidence: 1,
-        model: 'deterministic',
-      });
-    }
-
     const controlDecision = deriveControlDecision(
       requestEnvelope,
       {
+        ollama: providerAvailability.ollama,
         openai: providerAvailability.openai,
+        anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
         gemma: providerAvailability.gemma,
+        openrouter: providerAvailability.openrouter,
+        mistral: providerAvailability.mistral,
       },
       learningHint
     );
 
     const requestedProviderOrder = parseProviderOrder(modelOrder);
     const providerOrder = Array.from(new Set([
-      ...requestedProviderOrder.filter((provider) => controlDecision.providerOrder.includes(provider)),
+      ...requestedProviderOrder.filter((provider) => provider === 'local-orchestrator' || controlDecision.providerOrder.includes(provider as ControlProvider)),
       ...controlDecision.providerOrder,
     ]));
+    const decisionFirstLocalPath = asksGovernmentBusinessRisk(sanitizedMessage);
 
     const intent = detectConsultantIntent(sanitizedMessage);
     const capabilityProfile = deriveConsultantCapabilityProfile(sanitizedMessage, sanitizedContextResult.context);
@@ -2202,9 +2603,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
       unresolvedGapCount: capabilityProfile.gaps.length,
       context: sanitizedContextResult.context,
     });
+    const continualHarnessRuntime = buildContinualHarnessPromptBlock();
     const evolvedSystemPrompt = [
       typeof systemPrompt === 'string' ? systemPrompt : '',
       autonomousInteractionLearner.promptBlock(interactionPolicy),
+      continualHarnessRuntime.block,
     ].filter((part) => part.trim()).join('\n\n');
 
     const replayPayload: ConsultantReplayPayload = {
@@ -2230,14 +2633,11 @@ router.post('/consultant', async (req: Request, res: Response) => {
       sanitizedContextResult.context,
     );
 
-    // Live intelligence runs with its own generous timeout (12 s) so parallel
-    // external fetches (Wikipedia, World Bank, DuckDuckGo, Jina — each 6-7 s)
-    // have time to complete before the AI call begins.
-    // Brain/NSIL are CPU-bound and cap at 4 s.
-    // ProactiveSolutionEngine runs concurrently with 10 s budget.
-    const BRAIN_TIMEOUT_MS = 4000;
-    const LIVE_INTEL_TIMEOUT_MS = 12000;
-    const PROACTIVE_TIMEOUT_MS = 10000;
+    // Public-sector risk triage uses shorter budgets because the direct NSIL
+    // answer is more important than exhausting slow or quota-limited providers.
+    const BRAIN_TIMEOUT_MS = decisionFirstLocalPath ? 2500 : 3500;
+    const LIVE_INTEL_TIMEOUT_MS = decisionFirstLocalPath ? 3500 : 7000;
+    const PROACTIVE_TIMEOUT_MS = decisionFirstLocalPath ? 2500 : 6000;
 
     try {
       const [brainResult, nsilResult, liveResult, proactiveResult] = await Promise.allSettled([
@@ -2372,18 +2772,42 @@ router.post('/consultant', async (req: Request, res: Response) => {
       ].filter((part) => part.trim()).join('\n\n') || undefined,
       proactiveCtx ?? undefined
     );
-    let brokerResult: { text: string; provider: ConsultantProvider | 'local-intelligence'; attempts: ConsultantProviderAttempt[] };
-    try {
-      brokerResult = await runConsultantBroker(
+    let brokerResult: { text: string; provider: ConsultantProvider | string; attempts: ConsultantProviderAttempt[] };
+    if (decisionFirstLocalPath) {
+      const localText = synthesizeLocalFallbackResponse(
+        sanitizedMessage,
+        brainContext,
+        nsilReport,
+        tribunal,
+        strategicPipeline,
+        overlookedIntelligence,
+        perceptionDelta,
+        liveIntel,
+      );
+      brokerResult = {
+        text: localText,
+        provider: 'local-intelligence',
+        attempts: [{
+          provider: 'local-intelligence',
+          ok: true,
+          detail: 'Decision-first NSIL path for public-sector risk triage; managed model providers bypassed to avoid quota and latency blockers.',
+        }],
+      };
+    } else {
+      try {
+        brokerResult = await runConsultantBroker(
         prompt,
         providerOrder,
         controlDecision.timeoutMs,
         {
+          ollama: providerAvailability.ollama,
           openai: providerAvailability.openai,
           anthropic: providerAvailability.anthropic,
           groq: providerAvailability.groq,
           together: providerAvailability.together,
           gemma: providerAvailability.gemma,
+          openrouter: providerAvailability.openrouter,
+          mistral: providerAvailability.mistral,
         },
         activeDomainInstruction
       );
@@ -2398,6 +2822,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         strategicPipeline,
         overlookedIntelligence,
         perceptionDelta,
+        liveIntel,
       );
       brokerResult = {
         text: localText,
@@ -2410,7 +2835,33 @@ router.post('/consultant', async (req: Request, res: Response) => {
           : [],
       };
     }
-    const normalizedText = normalizeConsultantOutput(brokerResult.text);
+    }
+    if (providerResponseNeedsLocalSynthesis(sanitizedMessage, brokerResult.text)) {
+      const providerText = brokerResult.provider;
+      const localText = synthesizeLocalFallbackResponse(
+        sanitizedMessage,
+        brainContext,
+        nsilReport,
+        tribunal,
+        strategicPipeline,
+        overlookedIntelligence,
+        perceptionDelta,
+        liveIntel,
+      );
+      brokerResult = {
+        text: localText,
+        provider: 'local-intelligence',
+        attempts: [
+          ...brokerResult.attempts,
+          {
+            provider: 'quality-gate',
+            ok: true,
+            detail: `Replaced generic or incomplete provider response from ${providerText} with local NSIL synthesis`,
+          },
+        ],
+      };
+    }
+    const normalizedText = normalizeConsultantOutput(brokerResult.text, sanitizedMessage);
 
     const replayRecord: ConsultantReplayRecord = {
       requestId,
@@ -2532,6 +2983,16 @@ router.post('/consultant', async (req: Request, res: Response) => {
       augmentedAI: augmentedSnapshot,
       recommendedTools: recommendedAugmentedTools,
       interactionPolicy,
+      continualHarnessRuntime: {
+        promptEdits: continualHarnessRuntime.adaptation.prompt_edits.length,
+        subagentEdits: continualHarnessRuntime.adaptation.subagent_edits.length,
+        skillEdits: continualHarnessRuntime.adaptation.skill_edits.length,
+        memoryEdits: continualHarnessRuntime.adaptation.memory_edits.length,
+        promptDirectives: continualHarnessRuntime.state.prompt.directives.length,
+        subagents: continualHarnessRuntime.state.subagents.length,
+        skills: continualHarnessRuntime.state.skills.length,
+        memory: continualHarnessRuntime.state.memory.length,
+      },
       researchCognition: {
         plan: researchPlan,
         evidenceSources: liveIntel?.sources ?? [],
@@ -2863,13 +3324,17 @@ router.post('/consultant/replay/:requestId/retry', async (req: Request, res: Res
       CONSULTANT_PROVIDER_TIMEOUT_MS,
       {
         // Bedrock removed
+        ollama: providerAvailability.ollama,
+        gemma: providerAvailability.gemma,
         openai: providerAvailability.openai,
         anthropic: providerAvailability.anthropic,
         groq: providerAvailability.groq,
         together: providerAvailability.together,
+        openrouter: providerAvailability.openrouter,
+        mistral: providerAvailability.mistral,
       }
     );
-    const normalizedText = normalizeConsultantOutput(brokerResult.text);
+    const normalizedText = normalizeConsultantOutput(brokerResult.text, payload.message);
 
     const retryReplayHash = buildReplayHash(payload);
     const retryRecord: ConsultantReplayRecord = {
@@ -3049,8 +3514,8 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
     const advancedCurrent = getAdvancedRuntimeMetrics(currentWindowEvents);
     const advancedPrevious = getAdvancedRuntimeMetrics(previousWindowEvents);
 
-    const providers: ConsultantProvider[] = ['bedrock', 'openai'];
-    const providerMetrics = providers.reduce<Record<ConsultantProvider, {
+    const providers: ConsultantProvider[] = ['local-orchestrator', 'ollama', 'gemma', 'groq', 'together', 'openai', 'anthropic'];
+    const providerMetrics = providers.reduce<Record<string, {
       current: ReplayMetricCounts;
       previous: ReplayMetricCounts;
       delta: ReplayMetricCounts;
@@ -3067,7 +3532,7 @@ router.get('/consultant/audit-metrics', async (req: Request, res: Response) => {
         }
       };
       return acc;
-    }, {} as Record<ConsultantProvider, {
+    }, {} as Record<string, {
       current: ReplayMetricCounts;
       previous: ReplayMetricCounts;
       delta: ReplayMetricCounts;

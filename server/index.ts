@@ -47,6 +47,8 @@ if (shellPort) process.env.PORT = shellPort;
 console.log('[Server] Env loaded');
 if (process.env.NODE_ENV !== 'production') {
   console.log('[Server] AI providers configured:', [
+    process.env.OLLAMA_BASE_URL || process.env.OLLAMA_MODEL ? 'Ollama' : null,
+    process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY ? 'Google AI' : null,
     process.env.OPENAI_API_KEY ? 'OpenAI' : null,
     process.env.GROQ_API_KEY ? 'Groq' : null,
     process.env.TOGETHER_API_KEY ? 'Together' : null,
@@ -267,17 +269,12 @@ app.use(requestLogger);
 // NOTE: This only checks env-signal presence. For credential-resolved
 // availability use GET /api/ai/readiness which performs actual validation.
 app.get('/api/health', (_req: Request, res: Response) => {
-  const hasBedrock = Boolean(
-    String(process.env.AWS_REGION || '').trim() ||
-    String(process.env.BEDROCK_CONSULTANT_MODEL_ID || '').trim() ||
-    String(process.env.AWS_ACCESS_KEY_ID || '').trim() ||
-    String(process.env.AWS_PROFILE || '').trim()
-  );
+  const hasOllamaConfig = Boolean(String(process.env.OLLAMA_BASE_URL || process.env.OLLAMA_MODEL || '').trim());
   const hasOpenAI = Boolean(String(process.env.OPENAI_API_KEY || '').trim());
   const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
   const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
-  const hasGemma = Boolean(String(process.env.GOOGLE_AI_API_KEY || '').trim());
-  const aiConfigured = hasBedrock || hasOpenAI || hasGroq || hasTogether || hasGemma;
+  const hasGemma = Boolean(String(process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || '').trim());
+  const aiConfigured = hasOllamaConfig || hasOpenAI || hasGroq || hasTogether || hasGemma;
   const frontendUrlOrApi = frontEndUrl || 'not configured';
 
   res.json({ 
@@ -295,12 +292,12 @@ app.get('/api/health', (_req: Request, res: Response) => {
       configured: aiConfigured,
       // available reflects env-signal presence only; use /api/ai/readiness
       // for credential-resolved availability.
-      available: false,
+      available: aiConfigured,
       readinessEndpoint: '/api/ai/readiness',
-      provider: hasBedrock ? 'bedrock' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : hasGemma ? 'gemma' : null,
+      provider: hasOllamaConfig ? 'ollama' : hasGemma ? 'gemma' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
       message: aiConfigured
-        ? 'AI provider env vars detected — call /api/ai/readiness for live status'
-        : 'Add GOOGLE_AI_API_KEY (free at aistudio.google.com/apikey), OPENAI_API_KEY, GROQ_API_KEY, or TOGETHER_API_KEY to enable AI features'
+        ? 'AI/local provider env vars detected - call /api/ai/readiness for live status'
+        : 'Local intelligence fallback is available. For model synthesis, run Ollama locally or add GOOGLE_AI_API_KEY/GEMINI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENROUTER_API_KEY, MISTRAL_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY.'
     }
   });
 });

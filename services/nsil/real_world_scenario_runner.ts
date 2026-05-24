@@ -84,7 +84,41 @@ export interface RefinementCycle {
 
 // ─── Real-World Scenarios (Based on actual regional data) ─────────────────
 
-const REAL_WORLD_SCENARIOS: RealWorldScenario[] = [
+export const REAL_WORLD_SCENARIOS: RealWorldScenario[] = [
+  {
+    scenario_id: 'ph_pagadian_public_private_entry',
+    title: 'Philippine Regional City: Public-Private Market Entry Risk',
+    region: 'Zamboanga Peninsula',
+    country: 'Philippines',
+    sector: 'Public-Private Investment',
+    description: 'Pagadian City is a smaller regional government and services center where investors may see overlooked cost advantages, but counterpart authority, procurement integrity, security perception, and implementation capacity need verification before commitment.',
+    problem_statement: 'Should a private investor do business with the Philippine government in Pagadian City, and what gates must pass before capital, travel, or public-sector commitments are made?',
+    current_baseline: {
+      key_metrics: {
+        population_estimate: 210000,
+        local_market_depth_score: 42,
+        infrastructure_readiness_score: 38,
+        governance_verification_need_score: 82,
+        security_due_diligence_need_score: 78,
+        procurement_complexity_score: 74,
+      },
+      assets: [
+        'Regional government/service-center role',
+        'Lower operating cost than major Philippine hubs',
+        'Untapped workforce and land-cost advantage',
+        'Potential gateway role for nearby growth corridors',
+        'Public-sector need for infrastructure and service delivery partnerships',
+      ],
+      constraints: [
+        'Small local market and limited specialist talent pool',
+        'Counterpart authority must be verified through official channels',
+        'Procurement rules and anti-corruption controls are gating issues',
+        'Security and travel-risk posture requires current verification',
+        'Execution capacity may be thinner than Cebu, Davao, or Manila',
+      ],
+    },
+    real_data_source: 'Consultant live research + GlobalCityIndex + NSIL public-counterparty due diligence pathway',
+  },
   {
     scenario_id: 'ph_valenzuela_infrastructure',
     title: 'Philippine Regional City: Infrastructure Mismatch',
@@ -484,7 +518,13 @@ export class RealWorldScenarioRunner {
     let why_difference = '';
     const scoreStrength = Object.values(analysis.formula_scores).reduce((sum, value) => sum + value, 0) / Math.max(1, Object.keys(analysis.formula_scores).length);
 
-    if (scenario.scenario_id.includes('infrastructure')) {
+    if (scenario.scenario_id.includes('public_private_entry')) {
+      success = scoreStrength >= 62;
+      what_happened = success
+        ? 'Investor proceeded only after official counterpart verification, procurement route confirmation, and security review. Pilot stayed small and controlled.'
+        : 'Investor paused before commitment because counterpart authority, procurement route, or travel/security posture could not be verified in time.';
+      why_difference = success ? 'Gate-based approach prevented premature exposure' : 'Missing public-counterparty verification made the risk-adjusted path unacceptable';
+    } else if (scenario.scenario_id.includes('infrastructure')) {
       // Infrastructure projects face delays
       success = scoreStrength >= 58;
       what_happened = success
@@ -552,6 +592,18 @@ export class RealWorldScenarioRunner {
 
   private generateInterventions(scenario: RealWorldScenario): Array<{ title: string; rationale: string; priority: number }> {
     const interventions_map: Record<string, Array<{ title: string; rationale: string; priority: number }>> = {
+      ph_pagadian_public_private_entry: [
+        {
+          title: 'Four-Gate Public Counterparty Diligence',
+          rationale: 'Verify official authority, procurement legality, anti-corruption controls, and security posture before any capital or travel commitment.',
+          priority: 1,
+        },
+        {
+          title: 'Controlled Pilot Through Formal Channels',
+          rationale: 'Use a small milestone-based pilot with documented LGU/agency counterpart, legal review, and exit rights.',
+          priority: 2,
+        },
+      ],
       ph_valenzuela_infrastructure: [
         {
           title: 'Port Logistics Optimization',
@@ -603,6 +655,11 @@ export class RealWorldScenarioRunner {
 
   private generateInsights(scenario: RealWorldScenario): string[] {
     const insights_map: Record<string, string[]> = {
+      ph_pagadian_public_private_entry: [
+        'The first decision is not market attractiveness; it is whether official authority and procurement route can be verified',
+        'Pagadian-type opportunities need a controlled pilot, not a direct capital commitment',
+        'A larger hub comparator such as Cebu or Davao is useful only after the named-location diligence is answered',
+      ],
       ph_valenzuela_infrastructure: [
         'Infrastructure mismatch is the binding constraint; optimize before scaling production',
         'Port optimization (single intervention) could unlock 35-50% export growth',

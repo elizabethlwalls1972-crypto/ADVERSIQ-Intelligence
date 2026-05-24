@@ -6,10 +6,14 @@ test.describe('BW Nexus AI — Command Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+    await page.locator('#acceptTerms').scrollIntoViewIfNeeded();
+    await page.locator('#acceptTerms').check();
+    await page.getByRole('button', { name: /Launch Intelligence OS/i }).click();
+    await expect(page.locator('[data-testid="bwai-search-input"]')).toBeVisible({ timeout: 15000 });
   });
 
-  test('Command Center renders BW AI Global Search', async ({ page }) => {
-    await expect(page.locator('[data-testid="bwai-search-input"]')).toBeVisible({ timeout: 15000 });
+  test('Command Center launches BW AI Global Search', async ({ page }) => {
+    await expect(page.locator('[data-testid="bwai-search-input"]')).toBeVisible();
     await expect(page.locator('[data-testid="bwai-search-button"]')).toBeVisible();
   });
 
