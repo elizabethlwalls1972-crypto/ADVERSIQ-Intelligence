@@ -79,3 +79,18 @@ vars = {
 command = "npm run build:client"
 cwd = "."
 watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# STATIC ASSETS & SITE CONFIGURATION (React Frontend)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[site]
+bucket = "./dist"
+include = ["*.html", "*.js", "*.css", "*.png", "*.jpg", "*.svg", "*.json", "*.woff", "*.woff2", "*.ttf"]
+exclude = ["*.ts", "*.tsx", "*.map"]
+
+[env.production.site]
+bucket = "./dist"
+
+[env.staging.site]
+bucket = "./dist"
