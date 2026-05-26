@@ -4,48 +4,78 @@ type = "service"
 compatibility_date = "2024-12-19"
 account_id = ""
 
-# Cloudflare AI Binding
+# ═══════════════════════════════════════════════════════════════════════════════
+# CLOUDFLARE AI BINDINGS (Llama 3.3 70B + Web Search + Embedding)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Primary AI Model: Llama 3.3 70B (reasoning-optimized)
 [[ai]]
 binding = "AI"
 
-# KV Namespace for Chat History
+# AI Search: Live web access for real-time data
+[[ai]]
+binding = "AI_SEARCH"
+
+# AI Embedding: For semantic search and vector operations
+[[ai]]
+binding = "AI_EMBEDDING"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# STORAGE BINDINGS (KV + D1 Database)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# KV Namespace: Conversation history & session cache (7-day expiration)
 [[kv_namespaces]]
 binding = "CHAT_KV"
 id = "63b091e99c60430791a3763d20485b66"
-# For development, you can also set a preview_id:
-# preview_id = "preview-kv-namespace-id"
 
-# Static Assets Binding (automatically handles dist/ folder)
+# D1 Database: Persistent memory, NSIL state, document index
+[[d1_databases]]
+binding = "DB"
+database_name = "adversiq_intelligence"
+database_id = "your_database_id"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VECTORIZE BINDING (Semantic Search with Vector Embeddings)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "adversiq-semantic-search"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ANALYTICS & OBSERVABILITY
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[observability]
+enabled = true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ENVIRONMENT CONFIGURATIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+
 [env.production]
 name = "adversiq-intelligence-prod"
 routes = [
   { pattern = "adversiq.ai/*", zone_id = "YOUR_ZONE_ID" }
 ]
-vars = { ENVIRONMENT = "production" }
+vars = { 
+  ENVIRONMENT = "production"
+  NSIL_LAYER = "10"
+  MODEL = "llama-3.3-70b"
+  PROACTIVE_MODE = "true"
+}
 
 [env.staging]
 name = "adversiq-intelligence-staging"
-routes = [
-  { pattern = "staging.adversiq.ai/*", zone_id = "YOUR_ZONE_ID" }
-]
-vars = { ENVIRONMENT = "staging" }
+vars = { 
+  ENVIRONMENT = "staging"
+  NSIL_LAYER = "10"
+  MODEL = "llama-3.3-70b"
+  PROACTIVE_MODE = "true"
+}
 
 [build]
 command = "npm run build:client"
 cwd = "."
 watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
-
-# Minify and source maps
-[build.upload]
-format = "modules"
-dir = "./dist"
-main = "./index.html"
-
-# Analytics Engine for tracking
-[observability]
-enabled = true
-
-# Durable Objects (optional - for advanced state management)
-# [[durable_objects.bindings]]
-# name = "CONVERSATIONS"
-# class_name = "ConversationState"
