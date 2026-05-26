@@ -337,7 +337,7 @@ export class InternalEchoDetector {
               targetField: problemField,
               targetPhrase: pattern.problemDimension,
               connectionType: 'answer-to-problem',
-              strength: 0.7 + (signal.length % 10) * 0.02,
+              strength: this.computeConnectionStrength(signal, pattern.solutionSignals),
               insight: pattern.connectionDescription,
               actionableAdvice: `Connect your ${signal} (mentioned in ${field}) to your ${pattern.problemDimension} strategy - this asset may directly address the gap you've identified.`
             });
@@ -430,6 +430,51 @@ export class InternalEchoDetector {
     }
 
     return echoes;
+  }
+
+  /**
+   * Compute connection strength between one signal and a corpus of signals
+   * using normalised token overlap (Jaccard similarity).
+   *
+   * Returns a value in [0.5, 0.98] — never 0 (signals always share some
+   * meaning by the time they reach this detector) and never 1.0 (perfect
+   * overlap would mean duplicate signals, which the dedup layer should catch).
+   *
+   * @param signal   The signal whose strength we are computing.
+   * @param corpus   All signals in the current batch (including signal itself).
+   */
+  private static computeConnectionStrength(signal: string, corpus: string[]): number {
+    // Tokenise: lowercase, strip punctuation, split on whitespace.
+    const tokenise = (s: string): Set<string> => {
+      const tokens = s
+        .toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .split(/\s+/)
+        .filter(t => t.length > 2);          // drop stop-word-length tokens
+      return new Set(tokens);
+    };
+
+    const signalTokens = tokenise(signal);
+    if (signalTokens.size === 0) return 0.5; // no content — baseline
+
+    // Build a union of all tokens in the corpus (excluding the signal itself).
+    const otherCorpus = corpus.filter(s => s !== signal);
+    if (otherCorpus.length === 0) return 0.5;
+
+    const corpusTokens = new Set(
+      otherCorpus.flatMap(s => [...tokenise(s)])
+    );
+
+    // Jaccard: |intersection| / |union|
+    const intersection = [...signalTokens].filter(t => corpusTokens.has(t));
+    const union = new Set([...signalTokens, ...corpusTokens]);
+    const jaccard = intersection.length / union.size;
+
+    // Map jaccard [0, 1] → strength [0.50, 0.98].
+    // A completely novel signal (jaccard = 0) scores 0.50.
+    // A highly overlapping signal (jaccard → 1) scores up to 0.98.
+    const strength = 0.50 + jaccard * 0.48;
+    return parseFloat(strength.toFixed(3));
   }
 }
 

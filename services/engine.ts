@@ -742,6 +742,90 @@ export const generateRROI = async (params: ReportParameters): Promise<RROI_Index
 
 // --- 4. SEAM ENGINE ---
 
+// Country-specific investment and trade promotion bodies.
+// Extend as needed. Fallback uses generic IPA name.
+const COUNTRY_IPA: Record<string, string> = {
+  'Singapore':     'Economic Development Board (EDB)',
+  'Vietnam':       'Foreign Investment Agency (FIA)',
+  'Indonesia':     'BKPM Investment Coordinating Board',
+  'Philippines':   'Board of Investments (BOI)',
+  'Thailand':      'Board of Investment Thailand (BOI)',
+  'Malaysia':      'MIDA — Malaysian Investment Development Authority',
+  'India':         'Invest India',
+  'China':         'MOFCOM Investment Promotion Agency',
+  'Japan':         'JETRO — Japan External Trade Organization',
+  'South Korea':   'KOTRA — Korea Trade-Investment Promotion Agency',
+  'Australia':     'AUSTRADE — Australian Trade and Investment Commission',
+  'UAE':           'ADIO — Abu Dhabi Investment Office',
+  'Saudi Arabia':  'MISA — Ministry of Investment Saudi Arabia',
+  'Germany':       'GTAI — Germany Trade & Invest',
+  'United Kingdom':'UKTI — UK Trade & Investment',
+  'France':        'Business France',
+  'Netherlands':   'NFIA — Netherlands Foreign Investment Agency',
+  'United States': 'SelectUSA — U.S. Investment Promotion Program',
+  'Canada':        'Invest in Canada',
+  'Mexico':        'ProMéxico Investment Promotion',
+  'Brazil':        'Apex-Brasil Trade and Investment Promotion Agency',
+  'South Africa':  'TISA — Trade and Investment South Africa',
+  'Nigeria':       'NIPC — Nigeria Investment Promotion Commission',
+  'Kenya':         'KenInvest — Kenya Investment Authority',
+  'Egypt':         'GAFI — General Authority for Investment',
+  'Morocco':       'CRI — Regional Investment Centre',
+  'Poland':        'PAIH — Polish Investment and Trade Agency',
+  'Turkey':        'InvestTurkey',
+  'Israel':        'Invest in Israel',
+  'New Zealand':   'NZTE — New Zealand Trade and Enterprise',
+  'Ireland':       'IDA Ireland',
+  'Switzerland':   'Switzerland Global Enterprise',
+  'Sweden':        'Business Sweden',
+  'Norway':        'Innovation Norway',
+  'Denmark':       'Invest in Denmark',
+  'Chile':         'InvestChile',
+  'Colombia':      'ProColombia',
+  'Peru':          'ProInversión',
+};
+
+// Industry-specific professional bodies / chambers.
+// Used as the third partner slot (talent/knowledge partner).
+const INDUSTRY_BODY: Record<string, string> = {
+  'technology':      'National Technology Association',
+  'tech':            'National Technology Association',
+  'digital':         'Digital Economy Council',
+  'ai':              'AI & Data Science Institute',
+  'manufacturing':   'Manufacturers Association',
+  'industrial':      'Industrial Federation',
+  'energy':          'Energy Regulatory Authority',
+  'renewable':       'Renewable Energy Association',
+  'solar':           'Solar Industry Association',
+  'healthcare':      'Healthcare Industry Association',
+  'health':          'Healthcare Industry Association',
+  'pharma':          'Pharmaceutical Manufacturers Alliance',
+  'finance':         'Financial Services Regulatory Council',
+  'fintech':         'Fintech Industry Alliance',
+  'logistics':       'Logistics & Supply Chain Council',
+  'infrastructure':  'Infrastructure Development Authority',
+  'agriculture':     'Agricultural Export Promotion Board',
+  'agri':            'Agricultural Export Promotion Board',
+  'education':       'Education & Workforce Development Council',
+  'real estate':     'Property & Investment Developers Association',
+  'mining':          'Mining Industry Regulatory Board',
+  'construction':    'Construction Industry Development Board',
+  'retail':          'Retail Industry Federation',
+  'tourism':         'Tourism Authority',
+  'media':           'Media & Communications Council',
+  'telecom':         'Telecommunications Regulatory Authority',
+  'defence':         'Defence Industry Consortium',
+};
+
+const resolveIndustryBody = (industry: string | undefined, country: string): string => {
+  if (!industry) return `${country} Industry & Trade Board`;
+  const lower = industry.toLowerCase();
+  for (const [key, body] of Object.entries(INDUSTRY_BODY)) {
+    if (lower.includes(key)) return body;
+  }
+  return `${country} ${industry} Industry Association`;
+};
+
 export const generateSEAM = async (params: ReportParameters): Promise<SEAM_Blueprint> => {
     const composite = await CompositeScoreService.getScores(params);
     const { components, overall } = composite;
@@ -752,11 +836,35 @@ export const generateSEAM = async (params: ReportParameters): Promise<SEAM_Bluep
         99
     );
 
+    const ipaName = COUNTRY_IPA[params.country || '']
+      ?? `${params.country || 'Target'} Investment Promotion Agency`;
+
+    const industryBodyName = resolveIndustryBody(
+      params.industry?.[0],
+      params.country || 'Regional'
+    );
+
     const partnerBase = [
-        { name: `National ${params.industry[0] || 'Trade'} Board`, role: "Regulator / Enabler", synergy: makeSynergy('regulator', components.regulatory) },
-        { name: "Regional Logistics Alliance", role: "Supply Chain", synergy: makeSynergy('logistics', components.supplyChain) },
-        { name: `${params.country || 'Target'} Tech Institute`, role: "Talent Pipeline", synergy: makeSynergy('talent', components.talent) },
-        { name: "Global Chamber of Commerce", role: "Network Access", synergy: makeSynergy('network', components.marketAccess) }
+      {
+        name: ipaName,
+        role: 'Regulator / Enabler',
+        synergy: makeSynergy('regulator', components.regulatory),
+      },
+      {
+        name: `${params.country || 'Regional'} Logistics & Supply Chain Council`,
+        role: 'Supply Chain',
+        synergy: makeSynergy('logistics', components.supplyChain),
+      },
+      {
+        name: industryBodyName,
+        role: 'Talent Pipeline',
+        synergy: makeSynergy('talent', components.talent),
+      },
+      {
+        name: `${params.country || 'Regional'} Chamber of Commerce & Industry`,
+        role: 'Network Access',
+        synergy: makeSynergy('network', components.marketAccess),
+      },
     ];
 
     const gapSignals = [

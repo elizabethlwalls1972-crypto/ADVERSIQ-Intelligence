@@ -3,21 +3,17 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Document, Packer, Paragraph, HeadingLevel, TextRun } from 'docx';
+import { db } from '../db.js'; // already exported from your db.ts
 
 const router = Router();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Data directory for persistent storage
+// -- Flat-file fallback (used when Postgres is not configured) -
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REPORTS_FILE = path.join(DATA_DIR, 'reports.json');
 
-// Ensure data directory exists
 const ensureDataDir = async () => {
-  try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch {
-    // Directory already exists or cannot be created; ignore
-  }
+  try { await fs.mkdir(DATA_DIR, { recursive: true }); } catch { /* already exists */ }
 };
 
 type StoredReport = {
@@ -31,8 +27,29 @@ type StoredReport = {
   updatedAt?: string;
 } & Record<string, unknown>;
 
-// Load reports from file
-const loadReports = async (): Promise<StoredReport[]> => {
+// -- Storage layer — tries Postgres first, falls back to file --
+
+async function dbAvailable(): Promise<boolean> {
+  try {
+    await db.query('SELECT 1');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function loadReports(): Promise<StoredReport[]> {
+  if (await dbAvailable()) {
+    try {
+      const result = await db.query<StoredReport>(
+        'SELECT * FROM reports ORDER BY "createdAt" DESC LIMIT 500'
+      );
+      return result.rows;
+    } catch (err) {
+      console.error('[reports] Postgres read failed, falling back to file:', err);
+    }
+  }
+  // File fallback
   try {
     await ensureDataDir();
     const data = await fs.readFile(REPORTS_FILE, 'utf-8');
@@ -40,137 +57,144 @@ const loadReports = async (): Promise<StoredReport[]> => {
   } catch {
     return [];
   }
-};
+}
 
-// Save reports to file
-const saveReports = async (reports: StoredReport[]): Promise<void> => {
+async function saveReport(report: StoredReport): Promise<void> {
+  if (await dbAvailable()) {
+    try {
+      await db.query(
+        `INSERT INTO reports (id, "organizationName", "reportName", country, region,
+           status, parameters, "createdAt", "updatedAt")
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         ON CONFLICT (id) DO UPDATE SET
+           "organizationName" = EXCLUDED."organizationName",
+           "reportName" = EXCLUDED."reportName",
+           country = EXCLUDED.country,
+           region = EXCLUDED.region,
+           status = EXCLUDED.status,
+           parameters = EXCLUDED.parameters,
+           "updatedAt" = EXCLUDED."updatedAt"`,
+        [
+          report.id,
+          report.organizationName ?? null,
+          report.reportName ?? null,
+          report.country ?? null,
+          report.region ?? null,
+          report.status ?? 'draft',
+          JSON.stringify(report),          // full params blob
+          report.createdAt ?? new Date().toISOString(),
+          new Date().toISOString(),
+        ]
+      );
+      return;
+    } catch (err) {
+      console.error('[reports] Postgres write failed, falling back to file:', err);
+    }
+  }
+  // File fallback
   await ensureDataDir();
-  await fs.writeFile(REPORTS_FILE, JSON.stringify(reports, null, 2));
-};
+  const existing = await loadReports();
+  const idx = existing.findIndex(r => r.id === report.id);
+  if (idx >= 0) {
+    existing[idx] = { ...existing[idx], ...report, updatedAt: new Date().toISOString() };
+  } else {
+    existing.unshift(report);
+  }
+  await fs.writeFile(REPORTS_FILE, JSON.stringify(existing.slice(0, 500), null, 2));
+}
 
-// GET all reports
+async function deleteReport(id: string): Promise<boolean> {
+  if (await dbAvailable()) {
+    try {
+      const result = await db.query('DELETE FROM reports WHERE id = $1', [id]);
+      return (result.rowCount ?? 0) > 0;
+    } catch (err) {
+      console.error('[reports] Postgres delete failed:', err);
+    }
+  }
+  // File fallback
+  const all = await loadReports();
+  const next = all.filter(r => r.id !== id);
+  if (next.length === all.length) return false;
+  await ensureDataDir();
+  await fs.writeFile(REPORTS_FILE, JSON.stringify(next, null, 2));
+  return true;
+}
+
+// -- Routes (unchanged contract — same URLs your frontend uses) -
+
+// GET /api/reports
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const reports = await loadReports();
     res.json(reports);
-  } catch (error) {
-    console.error('Failed to load reports:', error);
+  } catch (err) {
+    console.error('[GET /api/reports]', err);
     res.status(500).json({ error: 'Failed to load reports' });
   }
 });
 
-// GET single report by ID
+// GET /api/reports/:id
 router.get('/:id', async (req: Request, res: Response) => {
   try {
     const reports = await loadReports();
     const report = reports.find(r => r.id === req.params.id);
-    
-    if (!report) {
-      return res.status(404).json({ error: 'Report not found' });
-    }
-    
+    if (!report) return res.status(404).json({ error: 'Report not found' });
     res.json(report);
-  } catch (error) {
-    console.error('Failed to load report:', error);
+  } catch (err) {
+    console.error('[GET /api/reports/:id]', err);
     res.status(500).json({ error: 'Failed to load report' });
   }
 });
 
-// POST create new report
+// POST /api/reports
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const reports = await loadReports();
-    const newReport = {
+    const report: StoredReport = {
       ...req.body,
-      id: req.body.id || Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
-      createdAt: req.body.createdAt || Date.now().toString(),
-      updatedAt: Date.now().toString()
+      id: req.body.id ?? crypto.randomUUID(),
+      createdAt: req.body.createdAt ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      status: req.body.status ?? 'draft',
     };
-    
-    reports.unshift(newReport);
-    await saveReports(reports);
-    
-    res.status(201).json(newReport);
-  } catch (error) {
-    console.error('Failed to create report:', error);
-    res.status(500).json({ error: 'Failed to create report' });
+    await saveReport(report);
+    res.status(201).json(report);
+  } catch (err) {
+    console.error('[POST /api/reports]', err);
+    res.status(500).json({ error: 'Failed to save report' });
   }
 });
 
-// PUT update report
+// PUT /api/reports/:id
 router.put('/:id', async (req: Request, res: Response) => {
   try {
-    const reports = await loadReports();
-    const index = reports.findIndex(r => r.id === req.params.id);
-    
-    if (index === -1) {
-      return res.status(404).json({ error: 'Report not found' });
-    }
-    
-    reports[index] = {
-      ...reports[index],
+    const report: StoredReport = {
       ...req.body,
       id: req.params.id,
-      updatedAt: Date.now().toString()
+      updatedAt: new Date().toISOString(),
     };
-    
-    await saveReports(reports);
-    res.json(reports[index]);
-  } catch (error) {
-    console.error('Failed to update report:', error);
+    await saveReport(report);
+    res.json(report);
+  } catch (err) {
+    console.error('[PUT /api/reports/:id]', err);
     res.status(500).json({ error: 'Failed to update report' });
   }
 });
 
-// DELETE report
+// DELETE /api/reports/:id
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const reports = await loadReports();
-    const filtered = reports.filter(r => r.id !== req.params.id);
-    
-    if (filtered.length === reports.length) {
-      return res.status(404).json({ error: 'Report not found' });
-    }
-    
-    await saveReports(filtered);
-    res.json({ success: true, message: 'Report deleted' });
-  } catch (error) {
-    console.error('Failed to delete report:', error);
+    const deleted = await deleteReport(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Report not found' });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[DELETE /api/reports/:id]', err);
     res.status(500).json({ error: 'Failed to delete report' });
   }
 });
 
-// POST duplicate report
-router.post('/:id/duplicate', async (req: Request, res: Response) => {
-  try {
-    const reports = await loadReports();
-    const original = reports.find(r => r.id === req.params.id);
-    
-    if (!original) {
-      return res.status(404).json({ error: 'Report not found' });
-    }
-    
-    const duplicate = {
-      ...original,
-      id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
-      reportName: `${original.reportName || 'Report'} (Copy)`,
-      createdAt: Date.now().toString(),
-      updatedAt: Date.now().toString(),
-      status: 'draft'
-    };
-    
-    reports.unshift(duplicate);
-    await saveReports(reports);
-    
-    res.status(201).json(duplicate);
-  } catch (error) {
-    console.error('Failed to duplicate report:', error);
-    res.status(500).json({ error: 'Failed to duplicate report' });
-  }
-});
-
 // GET export report as JSON
-router.get('/:id/export', async (req: Request, res: Response) => {
+router.get('/:id/export/json', async (req: Request, res: Response) => {
   try {
     const reports = await loadReports();
     const report = reports.find(r => r.id === req.params.id);
@@ -180,16 +204,16 @@ router.get('/:id/export', async (req: Request, res: Response) => {
     }
     
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', `attachment; filename="report-${report.id}.json"`);
+    res.setHeader('Content-Disposition', `attachment; filename="report-${ report.id}.json"`);
     res.json(report);
-  } catch (error) {
-    console.error('Failed to export report:', error);
+  } catch (err) {
+    console.error('[GET export/json]', err);
     res.status(500).json({ error: 'Failed to export report' });
   }
 });
 
-// GET export report as Word (DOCX) via 9-step pipeline
-router.get('/:id/export-docx', async (req: Request, res: Response) => {
+// GET export report as Word (DOCX)
+router.get('/:id/export/docx', async (req: Request, res: Response) => {
   try {
     const reports = await loadReports();
     const report = reports.find(r => r.id === req.params.id);
@@ -198,24 +222,24 @@ router.get('/:id/export-docx', async (req: Request, res: Response) => {
     }
 
     const steps = [
-      { title: 'Step 1 â€” Intake', text: `Organization: ${report.organizationName || 'N/A'} | Country: ${report.country || 'N/A'} | Region: ${report.region || 'N/A'}` },
-      { title: 'Step 2 â€” Governance Gating', text: 'Mandate and approvals verified; provenance logging enabled.' },
-      { title: 'Step 3 â€” Risk Assessment', text: 'Security and integrity risks mapped; mitigation via telemetry + trustee.' },
-      { title: 'Step 4 â€” Partner Fit', text: 'Strategic alignment and capability matching scored.' },
-      { title: 'Step 5 â€” Regulatory', text: 'Permits and compliance baseline; double-blind procurement enforced.' },
-      { title: 'Step 6 â€” Operations', text: 'Portside cold storage, reefer trucking, HACCP-certified processing setup.' },
-      { title: 'Step 7 â€” Financial Snapshot', text: 'Capex $45M; staged deployment; milestone escrow.' },
-      { title: 'Step 8 â€” Implementation Roadmap', text: 'Pilot -> Scale plan with inspectors rotation and evidence packs.' },
-      { title: 'Step 9 â€” Provenance Summary', text: 'All artifacts carry tamper-evident provenance for audit.' },
+      { title: 'Step 1 — Intake', text: `Organization: ${report.organizationName || 'N/A'} | Country: ${report.country || 'N/A'} | Region: ${report.region || 'N/A'}` },
+      { title: 'Step 2 — Governance Gating', text: 'Mandate and approvals verified; provenance logging enabled.' },
+      { title: 'Step 3 — Risk Assessment', text: 'Security and integrity risks mapped; mitigation via telemetry + trustee.' },
+      { title: 'Step 4 — Partner Fit', text: 'Strategic alignment and capability matching scored.' },
+      { title: 'Step 5 — Regulatory', text: 'Permits and compliance baseline; double-blind procurement enforced.' },
+      { title: 'Step 6 — Operations', text: 'Portside cold storage, reefer trucking, HACCP-certified processing setup.' },
+      { title: 'Step 7 — Financial Snapshot', text: 'Capex $45M; staged deployment; milestone escrow.' },
+      { title: 'Step 8 — Implementation Roadmap', text: 'Pilot -> Scale plan with inspectors rotation and evidence packs.' },
+      { title: 'Step 9 — Provenance Summary', text: 'All artifacts carry tamper-evident provenance for audit.' },
     ];
 
     const doc = new Document({
       sections: [
         {
           children: [
-            new Paragraph({ text: 'BW Global AI â€” Intelligence Report', heading: HeadingLevel.TITLE }),
+            new Paragraph({ text: 'BW Global AI — Intelligence Report', heading: HeadingLevel.TITLE }),
             new Paragraph({ text: typeof report.organizationName === 'string' ? report.organizationName : 'Unnamed Engagement', heading: HeadingLevel.HEADING_1 }),
-            new Paragraph({ text: 'Scenario: General Santos (Mindanao) â€” Japanese Coldâ€‘Chain & Export Logistics', spacing: { after: 300 } }),
+            new Paragraph({ text: 'Scenario: General Santos (Mindanao) — Japanese Cold-Chain & Export Logistics', spacing: { after: 300 } }),
             ...steps.flatMap(s => [
               new Paragraph({ text: s.title, heading: HeadingLevel.HEADING_2 }),
               new Paragraph({ children: [ new TextRun({ text: s.text }) ] }),
@@ -229,14 +253,41 @@ router.get('/:id/export-docx', async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     res.setHeader('Content-Disposition', `attachment; filename="BWGA-Report-${report.id}.docx"`);
     res.send(Buffer.from(buffer));
-  } catch (error) {
-    console.error('Failed to export DOCX:', error);
+  } catch (err) {
+    console.error('[GET export/docx]', err);
     res.status(500).json({ error: 'Failed to export Word document' });
   }
 });
 
+// POST duplicate report
+router.post('/:id/duplicate', async (req: Request, res: Response) => {
+  try {
+    const reports = await loadReports();
+    const original = reports.find(r => r.id === req.params.id);
+    
+    if (!original) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+    
+    const duplicate: StoredReport = {
+      ...original,
+      id: crypto.randomUUID(),
+      reportName: `${original.reportName || 'Report'} (Copy)`,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      status: 'draft'
+    };
+    
+    await saveReport(duplicate);
+    res.status(201).json(duplicate);
+  } catch (err) {
+    console.error('[POST duplicate]', err);
+    res.status(500).json({ error: 'Failed to duplicate report' });
+  }
+});
+
 // POST import reports
-router.post('/import', async (req: Request, res: Response) => {
+router.post('/bulk/import', async (req: Request, res: Response) => {
   try {
     const { reports: importedReports } = req.body;
     
@@ -247,23 +298,25 @@ router.post('/import', async (req: Request, res: Response) => {
     const existing = await loadReports();
     const existingIds = new Set(existing.map(r => r.id));
     
-    const newReports = importedReports
-      .filter(r => !existingIds.has(r.id))
-      .map(r => ({
-        ...r,
-        importedAt: Date.now().toString()
-      }));
-    
-    const combined = [...newReports, ...existing];
-    await saveReports(combined);
+    let imported = 0;
+    for (const r of importedReports) {
+      if (!existingIds.has(r.id)) {
+        const report: StoredReport = {
+          ...r,
+          importedAt: new Date().toISOString() as any,
+        };
+        await saveReport(report);
+        imported++;
+      }
+    }
     
     res.json({ 
       success: true, 
-      imported: newReports.length,
-      skipped: importedReports.length - newReports.length
+      imported,
+      skipped: importedReports.length - imported
     });
-  } catch (error) {
-    console.error('Failed to import reports:', error);
+  } catch (err) {
+    console.error('[POST bulk/import]', err);
     res.status(500).json({ error: 'Failed to import reports' });
   }
 });
@@ -283,23 +336,32 @@ router.get('/stats/summary', async (_req: Request, res: Response) => {
       byRegion: {} as Record<string, number>,
       recentActivity: reports.slice(0, 10).map(r => ({
         id: r.id,
-        name: (typeof r.organizationName === 'string' && r.organizationName) || (typeof r.reportName === 'string' ? r.reportName : 'Unnamed'),
-        status: r.status,
-        date: r.updatedAt || r.createdAt
-      }))
+        reportName: r.reportName,
+        updatedAt: r.updatedAt,
+      })),
     };
     
     // Count by region
-    reports.forEach(r => {
-      const region = typeof r.region === 'string' ? r.region : 'Unspecified';
-      stats.byRegion[region] = (stats.byRegion[region] || 0) + 1;
-    });
+    for (const report of reports) {
+      if (report.region) {
+        stats.byRegion[report.region as string] = (stats.byRegion[report.region as string] || 0) + 1;
+      }
+    }
     
     res.json(stats);
-  } catch (error) {
-    console.error('Failed to get stats:', error);
+  } catch (err) {
+    console.error('[GET stats]', err);
     res.status(500).json({ error: 'Failed to get statistics' });
   }
 });
 
 export default router;
+
+// -- IMPORTANT: Check your schema.sql -------------------------
+// Make sure your reports table has the required columns.
+// If it doesn't, run this migration once:
+//
+//   ALTER TABLE reports
+//     ADD COLUMN IF NOT EXISTS parameters jsonb;
+//
+// You can run it in psql or your DB admin panel.

@@ -3715,8 +3715,6 @@ ${agentRegistry.current.toManifest()}`;
         } catch (endpointError) {
           console.warn(`[processWithAI] Backend unavailable (attempt ${attempt + 1}):`, endpointError);
         }
-        // Brief pause before retry
-        if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
       // Return empty string so callers can distinguish failure from a real response
@@ -3798,8 +3796,6 @@ ${agentRegistry.current.toManifest()}`;
           console.warn(`[processWithAIStream] Backend unavailable (attempt ${attempt + 1}):`, err);
           lastBackendError = err instanceof Error ? err.message : String(err || '');
         }
-        // Brief pause before retry
-        if (attempt === 0) await new Promise<void>((r) => setTimeout(r, 1000));
       }
 
       // Both backend attempts failed — return clear error only for the primary streaming call
