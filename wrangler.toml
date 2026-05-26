@@ -1,0 +1,31 @@
+name = "adversiq-intelligence"
+main = "dist-server/server/index.js"
+type = "service"
+compatibility_date = "2024-12-19"
+
+# AI Binding for Cloudflare AI
+[[ai]]
+binding = "AI"
+
+# KV Namespace for Chat History
+[[kv_namespaces]]
+binding = "CHAT_KV"
+id = "63b091e99c60430791a3763d20485b66"
+
+# Environment Variables
+[env.production]
+routes = [
+  { pattern = "adversiq.ai/*", zone_id = "your_zone_id" }
+]
+vars = { ENVIRONMENT = "production" }
+
+[env.staging]
+vars = { ENVIRONMENT = "staging" }
+
+[build]
+command = "npm run build:all"
+cwd = "."
+watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
+
+[observability]
+enabled = true
