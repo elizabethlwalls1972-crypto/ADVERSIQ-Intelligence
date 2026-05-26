@@ -1,9 +1,10 @@
 name = "adversiq-intelligence"
-main = "dist-server/server/index.js"
+main = "_worker.ts"
 type = "service"
 compatibility_date = "2024-12-19"
+account_id = ""
 
-# AI Binding for Cloudflare AI
+# Cloudflare AI Binding
 [[ai]]
 binding = "AI"
 
@@ -11,21 +12,40 @@ binding = "AI"
 [[kv_namespaces]]
 binding = "CHAT_KV"
 id = "63b091e99c60430791a3763d20485b66"
+# For development, you can also set a preview_id:
+# preview_id = "preview-kv-namespace-id"
 
-# Environment Variables
+# Static Assets Binding (automatically handles dist/ folder)
 [env.production]
+name = "adversiq-intelligence-prod"
 routes = [
-  { pattern = "adversiq.ai/*", zone_id = "your_zone_id" }
+  { pattern = "adversiq.ai/*", zone_id = "YOUR_ZONE_ID" }
 ]
 vars = { ENVIRONMENT = "production" }
 
 [env.staging]
+name = "adversiq-intelligence-staging"
+routes = [
+  { pattern = "staging.adversiq.ai/*", zone_id = "YOUR_ZONE_ID" }
+]
 vars = { ENVIRONMENT = "staging" }
 
 [build]
-command = "npm run build:all"
+command = "npm run build:client"
 cwd = "."
 watch_paths = ["src/**/*.ts", "src/**/*.tsx"]
 
+# Minify and source maps
+[build.upload]
+format = "modules"
+dir = "./dist"
+main = "./index.html"
+
+# Analytics Engine for tracking
 [observability]
 enabled = true
+
+# Durable Objects (optional - for advanced state management)
+# [[durable_objects.bindings]]
+# name = "CONVERSATIONS"
+# class_name = "ConversationState"
