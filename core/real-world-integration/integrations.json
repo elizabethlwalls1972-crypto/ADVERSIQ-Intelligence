@@ -1,0 +1,84 @@
+[
+  {
+    "id": "slack-webhook",
+    "name": "Slack Notifications",
+    "type": "webhook",
+    "enabled": true,
+    "config": {
+      "url": "",
+      "method": "POST"
+    },
+    "rateLimit": {
+      "requests": 30,
+      "windowMs": 60000
+    }
+  },
+  {
+    "id": "discord-webhook",
+    "name": "Discord Notifications",
+    "type": "webhook",
+    "enabled": true,
+    "config": {
+      "url": "",
+      "method": "POST"
+    },
+    "rateLimit": {
+      "requests": 30,
+      "windowMs": 60000
+    }
+  },
+  {
+    "id": "teams-webhook",
+    "name": "Microsoft Teams",
+    "type": "webhook",
+    "enabled": true,
+    "config": {
+      "url": "",
+      "method": "POST"
+    },
+    "rateLimit": {
+      "requests": 30,
+      "windowMs": 60000
+    }
+  },
+  {
+    "id": "email-smtp",
+    "name": "Email via SMTP",
+    "type": "email",
+    "enabled": true,
+    "config": {
+      "host": "smtp.gmail.com",
+      "port": "587",
+      "user": "",
+      "pass": "",
+      "from": "noreply@bwnexus.ai"
+    },
+    "rateLimit": {
+      "requests": 100,
+      "windowMs": 3600000
+    }
+  },
+  {
+    "id": "file-export",
+    "name": "File Export",
+    "type": "file",
+    "enabled": true,
+    "config": {
+      "outputDir": "C:\\Users\\brayd\\Downloads\\ADVERSIQ-Intelligence-main\\core\\real-world-integration\\exports"
+    }
+  },
+  {
+    "id": "custom-api",
+    "name": "Custom API",
+    "type": "api",
+    "enabled": true,
+    "config": {
+      "baseUrl": "",
+      "apiKey": ""
+    },
+    "rateLimit": {
+      "requests": 100,
+      "windowMs": 60000
+    }
+  }
+]

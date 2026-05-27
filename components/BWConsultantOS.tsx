@@ -7239,6 +7239,7 @@ ${agentRegistry.current.toManifest()}`;
                         { mode: 'oversight', icon: '', label: 'Human Oversight & Review' },
                         { mode: 'system-dashboard', icon: '', label: 'System Dashboard' },
                         { mode: 'admin', icon: '', label: 'Admin Dashboard' },
+                        { mode: 'agent-spawner', icon: '', label: 'Sub-Agent Control Room' },
                         { mode: 'user-manual', icon: '', label: 'User Manual' },
                         { mode: 'command-center', icon: '', label: 'Back to Command Center' },
                       ].map(item => (

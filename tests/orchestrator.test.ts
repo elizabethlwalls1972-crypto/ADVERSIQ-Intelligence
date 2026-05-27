@@ -1,16 +1,17 @@
-// Basic Test Suite for AutonomousOrchestrator
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { AutonomousOrchestrator } from '../services/AutonomousOrchestrator.js';
 
-import { AutonomousOrchestrator } from '../services/AutonomousOrchestrator';
+test('AutonomousOrchestrator - should solve and act on a problem', async () => {
+  const result = await AutonomousOrchestrator.solveAndAct(
+    'Test problem',
+    { context: 'test' },
+    { organizationName: 'TestOrg' } as any,
+    { autoAct: false, urgency: 'normal' }
+  );
 
-describe('AutonomousOrchestrator', () => {
-  it('should solve and act on a problem', async () => {
-    const result = await AutonomousOrchestrator.solveAndAct(
-      'Test problem',
-      { context: 'test' },
-      { organizationName: 'TestOrg' } as any,
-      { autoAct: false, urgency: 'normal' }
-    );
-    expect(result).toHaveProperty('solutions');
-    expect(result).toHaveProperty('auditTrail');
-  });
+  assert.ok(result, 'Result should be truthy');
+  assert.ok(result.solutions, 'Result should contain solutions');
+  assert.ok(result.auditTrail, 'Result should contain auditTrail');
+  assert.equal(Array.isArray(result.solutions), true, 'Solutions should be an array');
 });

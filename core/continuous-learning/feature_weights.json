@@ -1,0 +1,51 @@
+[
+  {
+    "feature": "confidence",
+    "weight": 0.2996202445415254,
+    "importance": 0.2996202445415254,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "actionCount",
+    "weight": 0.1992404890830509,
+    "importance": 0.1992404890830509,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "auditLength",
+    "weight": 0.09468342358135623,
+    "importance": 0.09468342358135623,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "hasSuccess",
+    "weight": 0,
+    "importance": 0,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "actionDensity",
+    "weight": -0.00010850155956415869,
+    "importance": 0.00010850155956415869,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "hourOfDay",
+    "weight": -0.00047469432309319424,
+    "importance": 0.00047469432309319424,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  },
+  {
+    "feature": "dayOfWeek",
+    "weight": -0.00032550467869247603,
+    "importance": 0.00032550467869247603,
+    "lastUpdated": "2026-05-27T07:51:17.624Z",
+    "updateCount": 1
+  }
+]
