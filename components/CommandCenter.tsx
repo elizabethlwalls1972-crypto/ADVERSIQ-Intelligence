@@ -3126,7 +3126,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black text-amber-400">Built by one person.</span>
                             </h2>
                             <p className="text-[15px] text-white/45 mt-6 max-w-3xl leading-relaxed">
-                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture &mdash; all enforced as a deterministic, auditable pipeline. Every layer has an explicit input and output contract. Nothing moves forward until the previous layer is satisfied.
+                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture - with autonomous calibration now running across the stack. Every layer has an explicit input and output contract. The platform now preserves the original NSIL architecture while adding live persona calibration, structural twin discovery, Rawlsian ethics certificates, investor trust signals, macro early-warning alerts, and a continual improvement harness.
                             </p>
                             {/* 6 Disciplines bar */}
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-px mt-8 bg-white/5">
@@ -3151,10 +3151,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Proof bar */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
                                 {[
-                                    { n: '10', label: 'Sequential\nPipeline Layers' },
+                                    { n: '10', label: 'Contracted\nPipeline Layers' },
                                     { n: '54+', label: 'Proprietary\nFormulas' },
-                                    { n: '6', label: 'World-First\nCombinations' },
-                                    { n: '0', label: 'Commercial\nPrecedents' },
+                                    { n: '12+', label: 'World-First\nCombinations' },
+                                    { n: '6', label: 'Advancement\nModules' },
                                 ].map((s, i) => (
                                     <div key={i} className="bg-slate-900 px-6 py-7 text-center">
                                         <p className="text-3xl md:text-4xl font-black text-amber-400 leading-none">{s.n}</p>
@@ -3168,19 +3168,37 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Has Never Been Combined Before</p>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
                                     {[
-                                        { n: '01', title: 'SAT Contradiction Solving applied to investment intelligence', body: 'Boolean satisfiability — a tool from computer science used to verify microchip logic — applied to investment proposals. Every assumption a user submits is converted to propositional logic and tested for internal contradiction before a single formula runs. If two inputs are logically incompatible, the system halts and tells you why.' },
-                                        { n: '02', title: 'Bayesian adversarial debate as a verification gate', body: 'Five distinct expert personas (Skeptic, Advocate, Regulator, Accountant, Operator) run a structured adversarial debate with Bayesian belief updating after every round. The debate continues until one position achieves a 75% consensus threshold — or the system classifies the proposal as unresolvable. No output is released until the debate is settled.' },
-                                        { n: '03', title: 'Neuroscience-derived cognitive bias modelling in decision pipelines', body: 'Cognitive distortions — overconfidence, anchoring, optimism bias, availability heuristic — are not just mentioned as risks. They are modelled as quantifiable signals applied to the user\'s own inputs, scored, and surfaced as findings before they can corrupt the downstream analysis.' },
-                                        { n: '04', title: 'Directed Acyclic Graph scheduling of proprietary formula suites', body: 'The 27+ formulas do not run sequentially or in isolation. A DAG scheduler maps every dependency between formulas — where Formula B requires Formula A\'s output, and Formula C requires both — and executes them in the minimum number of parallel passes. Results are memoised: no formula ever runs twice in the same session.' },
-                                        { n: '05', title: 'Reflexive self-audit before output release', body: 'Before any analysis reaches the user, a dedicated reflexive layer examines the full reasoning chain produced by every upstream layer. It scores internal coherence, checks for logical gaps, and returns a release verdict. If the system is not confident in its own conclusions, it suppresses them and reports the uncertainty instead.' },
-                                        { n: '06', title: 'A 10-layer pipeline enforced with explicit contracts', body: 'Each of the 10 layers has a defined input contract and a defined output contract. No layer begins until its required inputs are validated. This is not a design choice for elegance — it is a structural guarantee that the output is traceable to its inputs, every time, without exception.' },
-                                    ].map(item => (
+                                        { n: '01', title: 'SAT contradiction solving applied to investment intelligence', body: 'Boolean satisfiability, normally used to verify logical systems, is applied to investment proposals before any scoring begins. Assumptions are converted to propositional logic and tested for contradiction so impossible briefs are stopped before they contaminate the pipeline.' },
+                                        { n: '02', title: 'Bayesian adversarial debate as a verification gate', body: 'Five expert personas - Skeptic, Advocate, Regulator, Accountant, and Operator - challenge the case with Bayesian belief updating. The output preserves disagreement, adjusts confidence, and prevents a single confident narrative from becoming the decision.' },
+                                        { n: '03', title: 'Live persona calibration from actual outcomes', body: 'Persona influence is no longer static. Once real outcomes are recorded, the system changes persona weights by sector and region so historically over-cautious or over-optimistic perspectives are dampened and reliable perspectives carry more weight.' },
+                                        { n: '04', title: 'Structural twin discovery across regional trajectories', body: 'Every regional brief is matched against structural analogues such as Cebu, Da Nang, Penang, Medellin, Bilbao, and Incheon. The system extracts what worked, what failed, and which lessons are transferable instead of benchmarking against aspirational peers.' },
+                                        { n: '05', title: 'Rawlsian ethics certificates inside the analysis flow', body: 'Ethics is not a paragraph at the end. Hard gates can reject a strategy, create a signed rejection certificate, write an immutable audit entry, and provide compliant alternatives before the rest of the pipeline spends effort on a non-viable path.' },
+                                        { n: '06', title: 'Investor-facing trust score with uncertainty fingerprint', body: 'Every recommendation receives a Trust Score, confidence grade, evidence breakdown, uncertainty fingerprint, and historical calibration check. The platform exposes what it knows, what it is extrapolating, and what must be verified before capital commitment.' },
+                                        { n: '07', title: 'Macro regime-shift warning connected to recalibration', body: 'MEWS monitors political, currency, regulatory, social, infrastructure, and climate baskets. When a regime-shift signal crosses threshold, in-flight assumptions can be flagged for revalidation instead of letting stale analyses survive unchanged.' },
+                                    ].map((item) => (
                                         <div key={item.n} className="bg-slate-900 px-6 py-8">
                                             <p className="text-3xl font-black text-white/10 mb-3">{item.n}</p>
                                             <p className="text-sm font-black text-amber-400 uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
                                             <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
                                         </div>
                                     ))}
+                                    <div className="bg-slate-900 px-6 py-8 md:col-span-2">
+                                        <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-5">Why This Has Never Been Done Before</p>
+                                        <p className="text-sm text-white/50 leading-relaxed">
+                                            Building any one of those components in isolation is achievable. Combining all of them - where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off - required simultaneous expertise across six academic disciplines: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
+                                        </p>
+                                        <p className="text-sm text-white/50 leading-relaxed mt-4">
+                                            No commercial product had demanded that combination until this one. Because until this one, no one had tried to make institutional-grade decision intelligence accessible to organisations that couldn't afford to commission it.
+                                        </p>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
+                                            {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
+                                                <div key={i} className="border border-amber-400/20 px-3 py-3 text-center">
+                                                    <p className="text-[11px] font-bold text-amber-400/80 uppercase tracking-wide leading-snug">{d}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <p className="text-center text-xs text-white/25 mt-4 uppercase tracking-widest">Six disciplines. One pipeline. Never combined before.</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -3190,17 +3208,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-sm text-white/40 mb-8 leading-relaxed max-w-3xl">Ten sequential layers. Each one with a single, non-negotiable job. Parallelism occurs within layers. Every result is memoised. The full audit trail is preserved from input to output.</p>
                                 <div className="space-y-px">
                                     {[
-                                        { layer: 'Layer 0', name: 'The Laws', role: 'Formula instantiation & DAG construction', detail: '38+ proprietary formulas are instantiated as immutable rules. The dependency graph between them is resolved. No formula runs until this map is complete.' },
-                                        { layer: 'Layer 1', name: 'The Shield', role: 'Contradiction detection & input audit', detail: 'Every user input is converted to propositional logic. The SAT solver tests for internal contradictions. Conflicting assumptions are flagged with severity scores before any reasoning begins.' },
-                                        { layer: 'Layer 2', name: 'The Boardroom', role: 'Adversarial debate & consensus resolution', detail: 'Five expert personas debate the validated inputs using Bayesian belief updating. Debate stops when 75% consensus is reached or the proposal is classified as unresolvable. No output advances until debate closes.' },
-                                        { layer: 'Layer 3', name: 'The Engine', role: 'Formula scoring suite', detail: '27+ formulas execute via the DAG scheduler. SPI, RROI, CRI, BARNA, SCF, SEAM, IVAS and all derivative indices run in dependency order. Every score includes a confidence interval.' },
-                                        { layer: 'Layer 4', name: 'The Stress Test', role: 'Monte Carlo scenario simulation', detail: '10,000-iteration probabilistic simulation across all formula outputs. Value-at-Risk (P95), expected shortfall, probability of loss, and regret analysis — the cost of inaction — are all calculated.' },
-                                        { layer: 'Layer 5', name: 'The Brain', role: 'Cognitive bias modelling', detail: 'The user\'s own inputs are analysed for cognitive distortion signatures. Overconfidence, anchoring, optimism bias, and availability heuristic are scored and reported as named, quantified findings.' },
-                                        { layer: 'Layer 6', name: 'The Autonomous', role: 'Novel insight generation & ethical constraint', detail: 'Draws from cross-domain analogies, historical precedents, and comparative case libraries to surface insights that the formula layer cannot reach. Applies Rawlsian fairness and Gini coefficient scoring to every recommendation.' },
-                                        { layer: 'Layer 7', name: 'The Proactive', role: 'Signal monitoring & drift detection', detail: 'Backtests the proposal against historical investment patterns. Detects assumption drift between the user\'s declared intent and their submitted data. Issues forward warnings on known failure modes.' },
-                                        { layer: 'Layer 8', name: 'The Output', role: 'Document synthesis & formatting', detail: 'Compiles every score, debate transcript, bias report, risk flag, and audit trail into board-ready documents. 156 letter templates and 247 document types are available. No content is invented — every sentence traces to a formula result or a debate position.' },
-                                        { layer: 'Layer 9', name: 'The Reflexive', role: 'Self-audit & release gate', detail: 'The system reviews its own reasoning chain before releasing output. Scores internal coherence. If confidence falls below threshold, output is suppressed and uncertainty is reported. This is the only layer that can halt the entire pipeline.' },
-                                    ].map((item, i) => (
+                                        { layer: 'Layer 0', name: 'The Laws', role: 'Formula instantiation & DAG construction', detail: '54+ proprietary formulas are instantiated as immutable rules. The dependency graph between formulas is resolved before execution. No formula runs until its inputs and dependencies are known.' },
+                                        { layer: 'Layer 1', name: 'The Shield', role: 'Contradiction detection & input audit', detail: 'User inputs are converted to propositional logic. The SAT solver tests for contradiction, missing assumptions, and incompatible claims before any analysis begins.' },
+                                        { layer: 'Layer 2', name: 'The Boardroom', role: 'Adversarial debate & consensus resolution', detail: 'Five expert personas debate the validated inputs using Bayesian belief updating. Their influence can now be calibrated from actual outcome history by sector and region.' },
+                                        { layer: 'Layer 3', name: 'The Engine', role: 'Formula scoring suite', detail: '54+ formulas execute via the DAG scheduler. SPI, RROI, CRI, BARNA, SCF, SEAM, IVAS, and derivative indices run in dependency order with memoised outputs.' },
+                                        { layer: 'Layer 4', name: 'The Stress Test', role: 'Monte Carlo scenario simulation', detail: 'Probabilistic scenario simulation calculates downside exposure, expected shortfall, probability of loss, and regret analysis so action and inaction are both priced.' },
+                                        { layer: 'Layer 5', name: 'The Brain', role: 'Cognitive bias modelling', detail: 'The user input stream is analysed for overconfidence, anchoring, optimism bias, availability bias, salience imbalance, and working-memory overload before documents are generated.' },
+                                        { layer: 'Layer 6', name: 'The Ethics Gate', role: 'Rawlsian screening & certificates', detail: 'Strategies are screened against hard and soft ethical gates. Rejected paths produce signed rejection certificates, audit entries, and compliant alternatives.' },
+                                        { layer: 'Layer 7', name: 'The World Mirror', role: 'Structural twins & transfer lessons', detail: 'The region is matched against global structural analogues. The engine extracts what worked, what failed, and which lessons are transferable to the current case.' },
+                                        { layer: 'Layer 8', name: 'The Trust Layer', role: 'Trust score & macro warning', detail: 'The system calculates a Trust Score, uncertainty fingerprint, evidence depth, persona agreement, and MEWS macro alert status before release.' },
+                                        { layer: 'Layer 9', name: 'The Reflexive', role: 'Self-audit & release gate', detail: 'The system reviews its own reasoning chain, coherence, audit trail, and confidence. If the release threshold is not met, the output is withheld or caveated instead of presented as certainty.' },                                    ].map((item, i) => (
                                         <div key={i} className="flex gap-0 border-t border-white/5">
                                             <div className="w-24 flex-shrink-0 bg-white/5 px-4 py-5 flex flex-col justify-start">
                                                 <p className="text-xs font-bold text-white/25 uppercase tracking-widest">{item.layer}</p>
@@ -3219,15 +3236,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             {/* One-off developments */}
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">Developments That Did Not Exist Before This Was Built</p>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Is Now Built Into The Architecture</p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {[
-                                        { title: 'SPI™ — Strategic Positioning Index', body: 'A composite score that evaluates an opportunity\'s strategic position across market readiness, competitive differentiation, stakeholder alignment, and execution capability. Outputs a 0–100 score with a confidence interval. No existing advisory framework produces this as a single, auditable number.' },
-                                        { title: 'RROI™ — Risk-Adjusted Return on Investment', body: 'Not standard ROI. RROI incorporates contradiction scores, Monte Carlo P95 loss estimates, and bias-adjusted optimism correction into the return calculation. The same project with confident assumptions and identical numbers will return a different RROI if those assumptions were flagged as contradictory.' },
-                                        { title: 'Release Gate Protocol', body: 'A structural enforcement mechanism — not a feature — that prevents any analysis from reaching the user until every upstream layer has returned a passing verdict. There is no override. If the reflexive layer suppresses output, the output is suppressed.' },
-                                        { title: 'Cross-Domain Analogical Reasoning Engine', body: 'Every proposal is compared against historical transformations from other sectors and geographies — how Penang built its electronics corridor, how Medellín reversed urban decay, how Rwanda rebuilt its governance layer. Pattern-matching across decades of documented precedent to surface what the formula layer cannot calculate.' },
-                                        { title: 'Provenance Chain Preservation', body: 'Every conclusion in every document traces back through the layer that produced it, the formula that scored it, the debate position that challenged it, and the input that seeded it. Not as a log. As a navigable, structured audit trail embedded in the output itself.' },
-                                        { title: 'Bias-Corrected Document Generation', body: 'Documents are not generated from the user\'s stated position. They are generated from the bias-corrected position — the analysis after the cognitive modelling layer has adjusted for overconfidence, anchoring, and optimism. The document reflects reality, not aspiration.' },
+                                        { title: '54+ Deterministic Formulas', body: 'A proprietary scoring suite spanning strategic positioning, risk-adjusted return, supply chain impact, workforce readiness, governance integrity, market access, resilience, and execution probability. Every formula is auditable and dependency-aware.' },
+                                        { title: 'Bayesian Adversarial Debate Engine', body: 'Five expert personas challenge every proposal before release. The system preserves disagreement, updates beliefs, and now supports outcome-driven persona calibration.' },
+                                        { title: 'SAT Contradiction Solver', body: 'Every assumption can be checked for internal conflict before the expensive analysis starts. If the premise is impossible, the system tells the user why instead of producing polished nonsense.' },
+                                        { title: 'Monte Carlo Stress Testing', body: 'Scenario simulation produces probabilistic downside ranges, loss probability, expected shortfall, and regret analysis, turning risk into a quantified decision variable.' },
+                                        { title: 'Neuroscience-Derived Bias Modelling', body: 'Cognitive distortions are treated as signals in the pipeline, not as generic warnings. The system scores how the input itself may be biased before generating outputs.' },
+                                        { title: 'Reflexive Self-Audit Layer', body: 'The platform checks its own conclusions, scores coherence, and controls release. If the reasoning chain is weak, the system reports uncertainty instead of manufacturing confidence.' },
+                                        { title: 'Live Adversarial Calibration', body: 'Persona weights self-adjust from confirmed outcomes so the debate engine learns which perspectives are reliable in each sector and region.' },
+                                        { title: 'Structural Twin Discovery Engine', body: 'The system finds real regional analogues and extracts transferable lessons from documented development trajectories.' },
+                                        { title: 'Ethical Gate Audit Trail', body: 'Rawlsian and compliance screening can produce signed approval, conditional approval, or rejection certificates with immutable audit history.' },
+                                        { title: 'Confidence Trust Signal Engine', body: 'Investor-facing trust labels expose evidence depth, pattern match strength, data freshness, persona agreement, uncertainty dimensions, and historical calibration.' },
+                                        { title: 'Macro-Signal Early Warning System', body: 'MEWS detects political, regulatory, currency, social, infrastructure, and climate shifts that can make prior analyses obsolete.' },
+                                        { title: 'Autonomous Continual Harness', body: 'Episodes and outcomes feed a scheduled improvement loop for formula weights, persona calibration, prompt directives, and skill crystallisation.' },
+                                        { title: 'Board-Ready Document Generation', body: 'Reports, letters, briefs, and audit-ready outputs are compiled from scores, debates, trust signals, ethics results, and provenance rather than invented from a prompt.' },
                                     ].map((item, i) => (
                                         <div key={i} className="border-t border-white/10 pt-5">
                                             <p className="text-sm font-black text-white mb-2">{item.title}</p>
@@ -3240,11 +3264,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Closing */}
                             <div className="border-t border-white/10 pt-10">
                                 <p className="text-2xl md:text-3xl font-black text-white leading-tight max-w-3xl">
-                                    Six fields. 17 layers. 46 formulas. One pipeline.<br />
+                                    Six disciplines. 10 contract layers. 54+ formulas. Six advancement modules. One pipeline.<br />
                                     <span className="text-amber-400">Built by one person, in sixteen months, from nothing.</span>
                                 </p>
                                 <p className="text-sm text-white/40 mt-4 max-w-2xl leading-relaxed">
-                                    The architecture is not a claim. Every layer is implemented, every contract is enforced, every algorithm is running. The AntifragilityEngine and TemporalArbitrageEngine are live in the pipeline. The system you are looking at is the system described here.
+                                    The architecture is not a claim. The original NSIL stack remains the core: contradiction solving, debate, scoring, simulation, cognitive modelling, document synthesis, and reflexive release control. The new advancement layer adds outcome calibration, structural twins, ethics certificates, trust scoring, MEWS alerts, and continual improvement without reducing the platform to a reactive chatbot.
                                 </p>
                             </div>
                         </div>
@@ -3330,50 +3354,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     ))}
                                 </div>
                             ))}
-
-                            {/* What I Built */}
-                            <div className="border-t border-white/8 pt-10">
-                                <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">What I Built — From Scratch</p>
-                                <p className="text-[15px] text-white/60 leading-relaxed mb-8">Over sixteen months, working alone, I designed and built every component of what you see here:</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
-                                    {[
-                                        { n: '01', label: '54+ Deterministic Formulas', desc: 'A proprietary scoring suite spanning strategic positioning, risk-adjusted return, supply chain impact, workforce readiness, and governance integrity. Every formula is mathematically grounded and fully auditable.' },
-                                        { n: '02', label: 'Bayesian Adversarial Debate Engine', desc: 'Five expert AI personas — Skeptic, Advocate, Regulator, Accountant, Operator — run structured adversarial debate on every proposal. Beliefs update via Bayesian inference. Nothing reaches you until it has survived challenge.' },
-                                        { n: '03', label: 'SAT Contradiction Solver', desc: 'Converts every input into propositional logic and tests for internal contradictions before any analysis runs. If your assumptions are impossible, the system tells you before you act on them.' },
-                                        { n: '04', label: 'Monte Carlo Stress Testing', desc: '10,000-iteration simulation engine producing probabilistic outcome distributions, Value-at-Risk scores, and regret analysis — quantifying the cost of inaction alongside the risk of action.' },
-                                        { n: '05', label: 'Neuroscience-Derived Bias Modelling', desc: 'Identifies cognitive distortions — overconfidence, anchoring, optimism bias — using university-grade decision-science frameworks and flags them before they contaminate the analysis.' },
-                                        { n: '06', label: 'Reflexive Self-Audit Layer', desc: 'The system checks its own conclusions. Before any output is released, a dedicated audit layer examines the reasoning chain and returns a release verdict. If it isn\'t confident, it says so.' },
-                                        { n: '07', label: 'Ten-Layer Structured Intelligence Pipeline', desc: 'A guided intake process that extracts strategic intent, market context, financials, risk tolerance, and governance. No prior expertise required — the system structures the thinking.' },
-                                        { n: '08', label: 'Board-Ready Document Generation', desc: 'Investment memos, risk assessments, partner briefs, concept notes, export declarations — automatically compiled from every score, debate transcript, and audit trail. Institutional-grade. Ready to send.' },
-                                    ].map((item, i) => (
-                                        <div key={i} className="bg-slate-900 px-6 py-7">
-                                            <p className="text-2xl font-black text-white/10 leading-none mb-3">{item.n}</p>
-                                            <p className="text-xs font-black text-amber-400 uppercase tracking-wide mb-2 leading-snug">{item.label}</p>
-                                            <p className="text-sm text-white/40 leading-relaxed">{item.desc}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Never done before */}
-                            <div className="border-t border-white/8 pt-10">
-                                <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">Why This Has Never Been Done Before</p>
-                                <p className="text-[15px] text-white/60 leading-relaxed">
-                                    Building any one of those components in isolation is achievable. Combining all of them — where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off — required simultaneous expertise across six academic disciplines: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
-                                </p>
-                                <p className="text-[15px] text-white/60 leading-relaxed mt-4">
-                                    No commercial product had demanded that combination until this one. Because until this one, no one had tried to make institutional-grade decision intelligence accessible to organisations that couldn&rsquo;t afford to commission it.
-                                </p>
-                                {/* 6 disciplines */}
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-8">
-                                    {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
-                                        <div key={i} className="border border-amber-400/20 px-4 py-3 text-center">
-                                            <p className="text-xs font-bold text-amber-400/80 uppercase tracking-wide">{d}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                                <p className="text-center text-xs text-white/25 mt-3 uppercase tracking-widest">Six disciplines. One pipeline. Never combined before.</p>
-                            </div>
 
                             {/* Why I am telling you this */}
                             <div className="border-t border-white/8 pt-10">
