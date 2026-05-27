@@ -1,0 +1,542 @@
+{
+  "runId": "live-global-2026-05-23T09-14-43-293Z",
+  "generatedAt": "2026-05-23T09:14:43.293Z",
+  "sourceModel": "live_external_apis",
+  "continualHarnessMode": "observe_act_refine_no_human_loop",
+  "sectorsScanned": [
+    "Manufacturing",
+    "Agriculture",
+    "Logistics",
+    "Energy",
+    "ICT",
+    "Textiles",
+    "Tourism",
+    "Healthcare",
+    "Mining",
+    "Finance",
+    "Education",
+    "Climate Infrastructure"
+  ],
+  "countriesScanned": [
+    "India",
+    "Vietnam"
+  ],
+  "totalCitiesScanned": 24,
+  "totalMattersGenerated": 24,
+  "acceptedMatters": 4,
+  "matterScoreFloor": 45,
+  "matters": [
+    {
+      "matterId": "da-nang-vietnam-manufacturing-fdi-capital-gap",
+      "detectedAt": "2026-05-23T09:14:43.623Z",
+      "city": {
+        "city": "Da Nang",
+        "country": "Vietnam",
+        "region": "Southeast Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 68,
+        "infrastructureScore": 74,
+        "overlookedOpportunity": 50,
+        "investmentMomentum": 82,
+        "keySectors": [
+          "ICT",
+          "Tourism",
+          "Manufacturing",
+          "Logistics"
+        ],
+        "strategicAdvantages": [
+          "Deep-water port",
+          "Central coast hub",
+          "IT Park growth"
+        ],
+        "investmentPrograms": [
+          "Da Nang Hi-Tech Park",
+          "Central Vietnam FDI Zone"
+        ],
+        "whyThisCity": "Da Nang (Vietnam) scores 76/100 for your Manufacturing criteria. Key sectors: ICT, Tourism, Manufacturing. Advantages: Deep-water port; Central coast hub. 2 active investment programs available."
+      },
+      "sector": "Manufacturing",
+      "issueTitle": "Da Nang Manufacturing: FDI capital gap",
+      "issueThesis": "Da Nang has ICT, Tourism, Manufacturing capability, 50/100 overlooked opportunity, and 82/100 investment momentum. Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching.",
+      "globalHole": "FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing manufacturing resilience with Da Nang programs: Da Nang Hi-Tech Park; Central Vietnam FDI Zone.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around manufacturing, reducing execution friction, validating buyers/offtakers, and using Vietnam as the sovereign credibility layer for regional city delivery.",
+      "score": 68,
+      "scoreDrivers": {
+        "overlooked": 8,
+        "sectorFit": 15,
+        "investmentMomentum": 11.48,
+        "infrastructureReadiness": 8.14,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 3.9285714285714284,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "UNCTAD World Investment Report 2025",
+          "url": "https://unctad.org/publication/world-investment-report-2025",
+          "source": "official-global-pressure",
+          "snippet": "Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for Vietnam (VNM)."
+        }
+      ],
+      "intelligence": {
+        "country": "Vietnam",
+        "worldBank": {},
+        "imf": [],
+        "countryProfile": null,
+        "wikidata": null,
+        "timestamp": "2026-05-23T09:14:43.622Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 2
+      },
+      "nsil": {
+        "inputId": "input_1779527683625_gc6x8goto",
+        "sessionId": "nsil_1779527683642_2lr6rvmjv",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          }
+        ]
+      }
+    },
+    {
+      "matterId": "coimbatore-india-manufacturing-fdi-capital-gap",
+      "detectedAt": "2026-05-23T09:14:43.654Z",
+      "city": {
+        "city": "Coimbatore",
+        "country": "India",
+        "region": "South Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 75,
+        "infrastructureScore": 68,
+        "overlookedOpportunity": 62,
+        "investmentMomentum": 75,
+        "keySectors": [
+          "Manufacturing",
+          "ICT",
+          "Textiles",
+          "Engineering"
+        ],
+        "strategicAdvantages": [
+          "Manchester of South India",
+          "Engineering hub",
+          "IT corridor growth"
+        ],
+        "investmentPrograms": [
+          "TIDCO Industrial Park",
+          "Smart City Mission",
+          "Tamil Nadu FDI Policy"
+        ],
+        "whyThisCity": "Coimbatore (India) scores 76/100 for your Manufacturing criteria. Key sectors: Manufacturing, ICT, Textiles. Advantages: Manchester of South India; Engineering hub. 3 active investment programs available."
+      },
+      "sector": "Manufacturing",
+      "issueTitle": "Coimbatore Manufacturing: FDI capital gap",
+      "issueThesis": "Coimbatore has Manufacturing, ICT, Textiles capability, 62/100 overlooked opportunity, and 75/100 investment momentum. Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching.",
+      "globalHole": "FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing manufacturing resilience with Coimbatore programs: TIDCO Industrial Park; Smart City Mission; Tamil Nadu FDI Policy.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around manufacturing, reducing execution friction, validating buyers/offtakers, and using India as the sovereign credibility layer for regional city delivery.",
+      "score": 68,
+      "scoreDrivers": {
+        "overlooked": 9.92,
+        "sectorFit": 15,
+        "investmentMomentum": 10.500000000000002,
+        "infrastructureReadiness": 7.48,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 3.9285714285714284,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "UNCTAD World Investment Report 2025",
+          "url": "https://unctad.org/publication/world-investment-report-2025",
+          "source": "official-global-pressure",
+          "snippet": "Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for India (IND)."
+        }
+      ],
+      "intelligence": {
+        "country": "India",
+        "worldBank": {},
+        "imf": [],
+        "countryProfile": null,
+        "wikidata": null,
+        "timestamp": "2026-05-23T09:14:43.654Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 2
+      },
+      "nsil": {
+        "inputId": "input_1779527683655_ktdvy72sy",
+        "sessionId": "nsil_1779527683658_ebxs913s3",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          },
+          {
+            "risk": "Execution Friction - Plans Fail in Implementation",
+            "mitigation": "Dedicated government liaison"
+          }
+        ]
+      }
+    },
+    {
+      "matterId": "da-nang-vietnam-logistics-trade-growth-slowdown",
+      "detectedAt": "2026-05-23T09:14:43.668Z",
+      "city": {
+        "city": "Da Nang",
+        "country": "Vietnam",
+        "region": "Southeast Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 68,
+        "infrastructureScore": 74,
+        "overlookedOpportunity": 50,
+        "investmentMomentum": 82,
+        "keySectors": [
+          "ICT",
+          "Tourism",
+          "Manufacturing",
+          "Logistics"
+        ],
+        "strategicAdvantages": [
+          "Deep-water port",
+          "Central coast hub",
+          "IT Park growth"
+        ],
+        "investmentPrograms": [
+          "Da Nang Hi-Tech Park",
+          "Central Vietnam FDI Zone"
+        ],
+        "whyThisCity": "Da Nang (Vietnam) scores 76/100 for your Logistics criteria. Key sectors: ICT, Tourism, Manufacturing. Advantages: Deep-water port; Central coast hub. 2 active investment programs available."
+      },
+      "sector": "Logistics",
+      "issueTitle": "Da Nang Logistics: Trade growth slowdown",
+      "issueThesis": "Da Nang has ICT, Tourism, Manufacturing capability, 50/100 overlooked opportunity, and 82/100 investment momentum. Merchandise trade growth is slowing, creating value for cities that can reduce logistics friction and offer resilient supply-chain alternatives.",
+      "globalHole": "Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing logistics resilience with Da Nang programs: Da Nang Hi-Tech Park; Central Vietnam FDI Zone.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around logistics, reducing execution friction, validating buyers/offtakers, and using Vietnam as the sovereign credibility layer for regional city delivery.",
+      "score": 68,
+      "scoreDrivers": {
+        "overlooked": 8,
+        "sectorFit": 15,
+        "investmentMomentum": 11.48,
+        "infrastructureReadiness": 8.14,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 3.9285714285714284,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "WTO Global Trade Outlook and Statistics 2026",
+          "url": "https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+          "source": "official-global-pressure",
+          "snippet": "Merchandise trade growth is slowing, creating value for cities that can reduce logistics friction and offer resilient supply-chain alternatives."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for Vietnam (VNM)."
+        }
+      ],
+      "intelligence": {
+        "country": "Vietnam",
+        "worldBank": {},
+        "imf": [],
+        "countryProfile": null,
+        "wikidata": null,
+        "timestamp": "2026-05-23T09:14:43.668Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 2
+      },
+      "nsil": {
+        "inputId": "input_1779527683669_8xwgksjkj",
+        "sessionId": "nsil_1779527683672_rekqm4de9",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          }
+        ]
+      }
+    },
+    {
+      "matterId": "visakhapatnam-india-logistics-trade-growth-slowdown",
+      "detectedAt": "2026-05-23T09:14:43.682Z",
+      "city": {
+        "city": "Visakhapatnam",
+        "country": "India",
+        "region": "South Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 78,
+        "infrastructureScore": 70,
+        "overlookedOpportunity": 58,
+        "investmentMomentum": 78,
+        "keySectors": [
+          "Manufacturing",
+          "Energy",
+          "Logistics",
+          "ICT"
+        ],
+        "strategicAdvantages": [
+          "Proposed new Andhra capital",
+          "Eastern port hub",
+          "Pharma city project"
+        ],
+        "investmentPrograms": [
+          "Vizag-Chennai Industrial Corridor",
+          "APEDB Investment Facilitation"
+        ],
+        "whyThisCity": "Visakhapatnam (India) scores 76/100 for your Logistics criteria. Key sectors: Manufacturing, Energy, Logistics. Advantages: Proposed new Andhra capital; Eastern port hub. 2 active investment programs available."
+      },
+      "sector": "Logistics",
+      "issueTitle": "Visakhapatnam Logistics: Trade growth slowdown",
+      "issueThesis": "Visakhapatnam has Manufacturing, Energy, Logistics capability, 58/100 overlooked opportunity, and 78/100 investment momentum. Merchandise trade growth is slowing, creating value for cities that can reduce logistics friction and offer resilient supply-chain alternatives.",
+      "globalHole": "Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing logistics resilience with Visakhapatnam programs: Vizag-Chennai Industrial Corridor; APEDB Investment Facilitation.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around logistics, reducing execution friction, validating buyers/offtakers, and using India as the sovereign credibility layer for regional city delivery.",
+      "score": 68,
+      "scoreDrivers": {
+        "overlooked": 9.28,
+        "sectorFit": 15,
+        "investmentMomentum": 10.920000000000002,
+        "infrastructureReadiness": 7.7,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 3.9285714285714284,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "WTO Global Trade Outlook and Statistics 2026",
+          "url": "https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+          "source": "official-global-pressure",
+          "snippet": "Merchandise trade growth is slowing, creating value for cities that can reduce logistics friction and offer resilient supply-chain alternatives."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for India (IND)."
+        }
+      ],
+      "intelligence": {
+        "country": "India",
+        "worldBank": {},
+        "imf": [],
+        "countryProfile": null,
+        "wikidata": null,
+        "timestamp": "2026-05-23T09:14:43.682Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 2
+      },
+      "nsil": {
+        "inputId": "input_1779527683683_wdzrwoclf",
+        "sessionId": "nsil_1779527683685_tlhjykn3t",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          },
+          {
+            "risk": "Execution Friction - Plans Fail in Implementation",
+            "mitigation": "Dedicated government liaison"
+          }
+        ]
+      }
+    }
+  ],
+  "harness": {
+    "trajectoriesObserved": 8,
+    "failuresDetected": 0,
+    "refinerChanges": 0,
+    "memoryPatternsWritten": 4
+  },
+  "outputFiles": [
+    "data\\live_global_matters\\live-global-2026-05-23T09-14-43-293Z.json",
+    "data\\live_global_matters\\latest.json",
+    "data\\live_global_matters\\live-global-2026-05-23T09-14-43-293Z.summary.md"
+  ]
+}

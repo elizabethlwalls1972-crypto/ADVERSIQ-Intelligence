@@ -1,0 +1,43 @@
+// DESIGN NOTE: ICON & COLOR CONSISTENCY
+// Ensure all icons are from the same family (e.g., Material, Feather, or custom set) and use a unified style (filled/outline, line weight, etc.).
+// Color palette must match the brand guidelines. Audit all UI elements for off-brand colors and update to the approved palette before launch.
+// Remove or replace any mismatched icons or colors immediately.
+
+/*
+BW Global Advisory is an Australian strategic intelligence firm developing sovereign-grade AI systems for cross-border investment and regional economic development.
+
+BWGA Intelligence Platform – Landing Page Script (Original, Concise)
+
+Headline:
+Unlock Regional Investment Intelligence
+
+Subheadline:
+Accelerate decisions. Eliminate blind spots. Compete globally.
+
+Section 1: Why Choose BWGA?
+- Instantly surface actionable insights for regional investment and partnership.
+- No jargon, no training—just describe your challenge and get expert-grade analysis.
+- Designed for professionals who need answers, not more paperwork.
+
+Section 2: What Sets Us Apart
+- Multi-perspective analysis: Every opportunity is stress-tested from multiple expert viewpoints.
+- Evidence-first: If the data isn’t strong, we tell you what’s missing—no guesswork.
+- Board-ready outputs: Get documents you can use, not just reports to read.
+
+Section 3: How It Works
+1. Describe your opportunity in plain language.
+2. The system validates, debates, and quantifies—showing you strengths, risks, and gaps.
+3. Download actionable documents, ready for your next meeting.
+
+Section 4: Who Benefits
+- Regional agencies: Respond to investors in days, not months.
+- Investors: Screen more deals, faster, with standardized risk and compatibility scores.
+- Corporates: Pre-qualify partners and markets before you travel.
+
+Section 5: Get Started
+- No onboarding required. Try a live demo or contact us for a pilot.
+
+[Call to Action Button: Request Access]
+
+// End of script
+*/

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Letter of Intent - GreenHarvest Technologies</title>
+    <style>
+        @page { size: A4; margin: 25mm; }
+        @media print { 
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+        }
+        body { 
+            font-family: 'Times New Roman', Georgia, serif; 
+            font-size: 12pt; 
+            line-height: 1.7; 
+            max-width: 170mm;
+            margin: 0 auto;
+            padding: 25mm;
+            color: #333;
+            background: white;
+        }
+        .letterhead { 
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15mm;
+            padding-bottom: 8mm;
+            border-bottom: 3px solid #1a5a2e;
+        }
+        .letterhead-left h1 { 
+            font-size: 22pt; 
+            color: #1a5a2e; 
+            margin: 0 0 2mm 0;
+            font-weight: bold;
+        }
+        .letterhead-left .tagline {
+            font-style: italic;
+            color: #666;
+            font-size: 10pt;
+        }
+        .letterhead-right { 
+            text-align: right; 
+            font-size: 10pt;
+            color: #555;
+            line-height: 1.4;
+        }
+        .date { 
+            text-align: right; 
+            margin: 12mm 0 8mm 0;
+            font-size: 11pt;
+        }
+        .recipient { 
+            margin: 8mm 0 12mm 0;
+            line-height: 1.5;
+        }
+        .recipient strong {
+            font-size: 12pt;
+        }
+        .subject { 
+            font-weight: bold; 
+            margin: 12mm 0 8mm 0;
+            text-transform: uppercase;
+            font-size: 11pt;
+            letter-spacing: 0.5px;
+            color: #1a5a2e;
+        }
+        .salutation { 
+            margin: 10mm 0 6mm 0;
+        }
+        .body p { 
+            text-align: justify; 
+            margin-bottom: 5mm;
+            text-indent: 0;
+        }
+        .body p.indent {
+            text-indent: 8mm;
+        }
+        .section-header {
+            font-weight: bold;
+            margin: 8mm 0 4mm 0;
+            color: #1a5a2e;
+        }
+        .terms { 
+            margin: 5mm 0 8mm 10mm;
+        }
+        .terms li { 
+            margin-bottom: 4mm;
+            text-align: justify;
+        }
+        .terms li strong {
+            color: #333;
+        }
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #1a5a2e;
+            padding: 4mm 6mm;
+            margin: 6mm 0;
+        }
+        .closing { 
+            margin-top: 12mm;
+        }
+        .signature-block { 
+            margin-top: 18mm;
+        }
+        .signature-line { 
+            border-top: 1px solid #333; 
+            width: 70mm; 
+            margin: 20mm 0 3mm 0;
+        }
+        .signature-name {
+            font-weight: bold;
+            font-size: 12pt;
+        }
+        .signature-title {
+            color: #555;
+        }
+        .acceptance-block {
+            margin-top: 25mm;
+            padding-top: 10mm;
+            border-top: 1px dashed #ccc;
+        }
+        .acceptance-header {
+            font-weight: bold;
+            margin-bottom: 5mm;
+            color: #1a5a2e;
+        }
+        .page-number {
+            text-align: center;
+            font-size: 10pt;
+            color: #888;
+            margin-top: 15mm;
+        }
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a5a2e;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .print-btn:hover {
+            background: #145224;
+        }
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80pt;
+            color: rgba(26, 90, 46, 0.04);
+            font-weight: bold;
+            pointer-events: none;
+            z-index: -1;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <div class="watermark no-print">DRAFT</div>
+    
+    <div class="letterhead">
+        <div class="letterhead-left">
+            <h1>GreenHarvest Technologies</h1>
+            <div class="tagline">Innovative Agricultural Solutions</div>
+        </div>
+        <div class="letterhead-right">
+            Level 12, 345 Collins Street<br>
+            Melbourne, VIC 3000<br>
+            Australia<br>
+            <br>
+            Tel: +61 3 9555 1234<br>
+            Email: corporate@greenharvest.com.au<br>
+            ABN: 12 345 678 901
+        </div>
+    </div>
+    
+    <div class="date">28 December 2025</div>
+    
+    <div class="recipient">
+        <strong>Vietnam Agricultural Supply Co., Ltd</strong><br>
+        Attention: Mr. Nguyen Van Minh, Chief Executive Officer<br>
+        123 Nguyen Hue Boulevard<br>
+        District 1, Ho Chi Minh City<br>
+        Vietnam
+    </div>
+    
+    <div class="subject">Re: Letter of Intent for Strategic Joint Venture Partnership</div>
+    
+    <div class="salutation">Dear Mr. Nguyen,</div>
+    
+    <div class="body">
+        <p>GreenHarvest Technologies Pty Ltd ("<strong>GreenHarvest</strong>" or "<strong>we</strong>") is pleased to submit this Letter of Intent ("<strong>LOI</strong>") expressing our strong interest in establishing a strategic joint venture partnership with Vietnam Agricultural Supply Co., Ltd ("<strong>VASCO</strong>" or "<strong>you</strong>") for the purpose of introducing advanced agricultural technology solutions to the Vietnamese market.</p>
+        
+        <p>Following our preliminary discussions and the comprehensive market analysis we have undertaken, we believe that a partnership between our organisations presents a compelling opportunity to address the growing demand for agricultural modernisation in Vietnam while creating significant value for both parties.</p>
+
+        <div class="section-header">1. PROPOSED TRANSACTION STRUCTURE</div>
+        
+        <p>We propose the formation of a joint venture company ("<strong>JV Company</strong>") to be established in Vietnam with the following indicative structure:</p>
+        
+        <ol class="terms">
+            <li><strong>Ownership Structure:</strong> GreenHarvest to hold 51% equity interest; VASCO to hold 49% equity interest in the JV Company.</li>
+            
+            <li><strong>Initial Capital Contribution:</strong> Total initial capitalisation of USD $15,000,000 (Fifteen Million United States Dollars), with contributions proportional to equity holdings.</li>
+            
+            <li><strong>GreenHarvest Contribution:</strong> Proprietary agricultural technology, intellectual property licenses, technical expertise, and capital.</li>
+            
+            <li><strong>VASCO Contribution:</strong> Local market knowledge, distribution infrastructure, government relationships, and operational support.</li>
+            
+            <li><strong>Governance:</strong> Board of Directors comprising 5 members (3 appointed by GreenHarvest, 2 appointed by VASCO), with certain reserved matters requiring unanimous consent.</li>
+        </ol>
+
+        <div class="section-header">2. BUSINESS SCOPE</div>
+        
+        <p>The JV Company would focus on:</p>
+        
+        <ol class="terms" style="list-style-type: lower-alpha;">
+            <li>Distribution and sales of GreenHarvest precision agriculture technology across Vietnam;</li>
+            <li>Establishment of demonstration farms and training facilities;</li>
+            <li>Development of localised solutions adapted to Vietnamese agricultural practices;</li>
+            <li>After-sales service, maintenance, and technical support network; and</li>
+            <li>Potential expansion into neighbouring ASEAN markets in subsequent phases.</li>
+        </ol>
+
+        <div class="section-header">3. DUE DILIGENCE AND DEFINITIVE AGREEMENTS</div>
+        
+        <p>This LOI is subject to the satisfactory completion of mutual due diligence and the negotiation and execution of definitive agreements, including but not limited to:</p>
+        
+        <ol class="terms" style="list-style-type: lower-roman;">
+            <li>Joint Venture Agreement;</li>
+            <li>Shareholders' Agreement;</li>
+            <li>Technology License Agreement;</li>
+            <li>Management Services Agreement; and</li>
+            <li>Such other agreements as may be necessary to implement the transaction.</li>
+        </ol>
+
+        <div class="section-header">4. EXCLUSIVITY</div>
+        
+        <div class="highlight-box">
+            <p style="margin: 0;">During the period of <strong>ninety (90) days</strong> from the date of execution of this LOI, neither party shall, directly or indirectly, engage in discussions, negotiations, or enter into agreements with any third party regarding similar transactions in the Vietnamese agricultural technology market.</p>
+        </div>
+
+        <div class="section-header">5. CONFIDENTIALITY</div>
+        
+        <p>Both parties agree to maintain strict confidentiality regarding the existence, terms, and conditions of this LOI and the proposed transaction, as well as any proprietary information exchanged in connection with our discussions. This obligation shall survive the termination of this LOI for a period of two (2) years.</p>
+
+        <div class="section-header">6. NON-BINDING NATURE</div>
+        
+        <p>Except for the provisions relating to Exclusivity, Confidentiality, and Governing Law, this LOI is not intended to create any legally binding obligations between the parties. The terms set forth herein are indicative only and remain subject to the negotiation and execution of definitive agreements.</p>
+
+        <div class="section-header">7. INDICATIVE TIMELINE</div>
+        
+        <ol class="terms">
+            <li><strong>Weeks 1-2:</strong> Execution of LOI and commencement of due diligence</li>
+            <li><strong>Weeks 3-8:</strong> Financial, legal, technical, and commercial due diligence</li>
+            <li><strong>Weeks 9-12:</strong> Negotiation of definitive agreements</li>
+            <li><strong>Weeks 13-16:</strong> Regulatory approvals and execution</li>
+        </ol>
+
+        <div class="section-header">8. GOVERNING LAW</div>
+        
+        <p>This LOI shall be governed by and construed in accordance with the laws of Singapore, and any disputes arising hereunder shall be resolved by arbitration administered by the Singapore International Arbitration Centre in accordance with its prevailing rules.</p>
+
+        <p>We are enthusiastic about the prospect of working together and believe this partnership will create significant value for both organisations while contributing to the advancement of Vietnam's agricultural sector. We look forward to your favourable response and to commencing discussions at your earliest convenience.</p>
+    </div>
+    
+    <div class="closing">
+        Yours sincerely,<br>
+        <strong>For and on behalf of GreenHarvest Technologies Pty Ltd</strong>
+    </div>
+    
+    <div class="signature-block">
+        <div class="signature-line"></div>
+        <div class="signature-name">Sarah Mitchell</div>
+        <div class="signature-title">Chief Executive Officer</div>
+        <div>GreenHarvest Technologies Pty Ltd</div>
+    </div>
+
+    <div class="acceptance-block">
+        <div class="acceptance-header">ACKNOWLEDGEMENT AND ACCEPTANCE</div>
+        <p>Vietnam Agricultural Supply Co., Ltd acknowledges receipt of this Letter of Intent and agrees to the terms set forth herein relating to Exclusivity, Confidentiality, and Governing Law.</p>
+        
+        <div style="display: flex; gap: 40mm; margin-top: 15mm;">
+            <div>
+                <div class="signature-line" style="width: 60mm;"></div>
+                <strong>Name:</strong> _______________________<br>
+                <strong>Title:</strong> _______________________<br>
+                <strong>Date:</strong> _______________________
+            </div>
+            <div>
+                <div style="border: 1px dashed #999; width: 40mm; height: 20mm; display: flex; align-items: center; justify-content: center; color: #999; font-size: 10pt;">
+                    Company Seal
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-number">
+        Page 1 of 1 | Document ID: BW-2025-VN-LOI-001 | Classification: Confidential
+    </div>
+</body>
+</html>

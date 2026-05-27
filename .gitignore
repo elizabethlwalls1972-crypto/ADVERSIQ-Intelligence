@@ -1,0 +1,88 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+dist-server
+*.local
+
+# Environment files (contain secrets)
+.env
+.env.local
+.env.*.local
+
+# Server data
+server/data/
+data/audit_results/
+data/nsil_trajectories/
+data/universal_inputs/
+data/evolved_state/
+data/bootstrap_bundles/
+data/nsil_scenarios/
+data/nsil_evolution_log.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local test artifacts
+e2e-check.json
+test-results/
+test-results-simulation.json
+test-results-*.json
+
+# Local content extraction artifacts
+_doc209_extracted.txt
+_snippet.txt
+_merge_sections.py
+
+# One-off fix/build scripts
+apply_*.py
+find_*.py
+
+# Local build output artifacts
+build_output.txt
+build_error.txt
+build_result.txt
+
+# Temp/recovery files
+*.tmp
+
+# Personal/local scripts
+*.ps1
+!scripts/*.ps1
+
+# Deployment zip files
+bw-nexus-ai-deployment.zip
+
+# Backups and quarantine - not part of source
+backups/
+_quarantine/
+
+# PDF and binary documents
+*.pdf
+*.docx
+*.docx.md
+
+# Local env file
+.env.development
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
