@@ -27,8 +27,8 @@ async function build() {
       entryPoints: ['server/index.ts'],
       bundle: false,
       platform: 'node',
-      target: 'node18',
-      format: 'esm',
+      target: 'node20',
+      format: 'cjs',
       outdir: 'dist-server/server',
       external: [
         // Node built-ins
