@@ -133,6 +133,40 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+// Health check (registered BEFORE rate-limiting and body parsing to ensure zero rate limit/CORS blocks on Railway)
+app.get('/api/health', (req, res) => {
+  const hasOllamaConfig = Boolean(String(process.env.OLLAMA_BASE_URL || process.env.OLLAMA_MODEL || '').trim());
+  const hasOpenAI = Boolean(String(process.env.OPENAI_API_KEY || '').trim());
+  const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
+  const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
+  const hasGemma = Boolean(String(process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || '').trim());
+  const aiConfigured = hasOllamaConfig || hasOpenAI || hasGroq || hasTogether || hasGemma;
+  const frontendUrlOrApi = process.env.FRONTEND_URL || process.env.VITE_API_BASE_URL || 'not configured';
+  const PORT = parseInt(String(process.env.PORT || 3000), 10);
+
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+    backend: {
+      port: PORT,
+      nodeEnv: process.env.NODE_ENV || 'development',
+      serverUrl: `http://localhost:${PORT}`,
+      configuredApiBaseUrl: process.env.VITE_API_BASE_URL || '/api',
+      frontendUrl: frontendUrlOrApi,
+    },
+    ai: {
+      configured: aiConfigured,
+      available: aiConfigured,
+      readinessEndpoint: '/api/ai/readiness',
+      provider: hasOllamaConfig ? 'ollama' : hasGemma ? 'gemma' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
+      message: aiConfigured
+        ? 'AI/local provider env vars detected - call /api/ai/readiness for live status'
+        : 'Local intelligence fallback is available. For model synthesis, run Ollama locally or add GOOGLE_AI_API_KEY/GEMINI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENROUTER_API_KEY, MISTRAL_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY.'
+    }
+  });
+});
+
 // Rate limiting — prevent abuse
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
@@ -181,7 +215,13 @@ if (isProduction) {
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true; // same-origin or non-browser clients
   if (allowedOrigins.some(allowed => allowed && (allowed.endsWith('*') ? origin.startsWith(allowed.slice(0, -1)) : origin === allowed))) return true;
-  const hostname = new URL(origin).hostname;
+  
+  let hostname = '';
+  try {
+    hostname = new URL(origin).hostname;
+  } catch (e) {
+    hostname = origin || '';
+  }
   // Enable known managed hosting domains
   // In production, only allow origins explicitly listed in ALLOWED_ORIGINS env var
   // In development, allow common managed hosting platforms
@@ -265,43 +305,6 @@ app.use(compression());
 // Request ID and structured logging middleware
 app.use(requestIdMiddleware);
 app.use(requestLogger);
-
-// Health check (before other routes for reliability)
-// NOTE: This only checks env-signal presence. For credential-resolved
-// availability use GET /api/ai/readiness which performs actual validation.
-app.get('/api/health', (_req: Request, res: Response) => {
-  const hasOllamaConfig = Boolean(String(process.env.OLLAMA_BASE_URL || process.env.OLLAMA_MODEL || '').trim());
-  const hasOpenAI = Boolean(String(process.env.OPENAI_API_KEY || '').trim());
-  const hasGroq = Boolean(String(process.env.GROQ_API_KEY || '').trim());
-  const hasTogether = Boolean(String(process.env.TOGETHER_API_KEY || '').trim());
-  const hasGemma = Boolean(String(process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY || '').trim());
-  const aiConfigured = hasOllamaConfig || hasOpenAI || hasGroq || hasTogether || hasGemma;
-  const frontendUrlOrApi = frontEndUrl || 'not configured';
-
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    version: '1.0.0',
-    backend: {
-      port: PORT,
-      nodeEnv: process.env.NODE_ENV || 'development',
-      serverUrl: `http://localhost:${PORT}`,
-      configuredApiBaseUrl: process.env.VITE_API_BASE_URL || '/api',
-      frontendUrl: frontendUrlOrApi,
-    },
-    ai: {
-      configured: aiConfigured,
-      // available reflects env-signal presence only; use /api/ai/readiness
-      // for credential-resolved availability.
-      available: aiConfigured,
-      readinessEndpoint: '/api/ai/readiness',
-      provider: hasOllamaConfig ? 'ollama' : hasGemma ? 'gemma' : hasOpenAI ? 'openai' : hasGroq ? 'groq' : hasTogether ? 'together' : null,
-      message: aiConfigured
-        ? 'AI/local provider env vars detected - call /api/ai/readiness for live status'
-        : 'Local intelligence fallback is available. For model synthesis, run Ollama locally or add GOOGLE_AI_API_KEY/GEMINI_API_KEY, GROQ_API_KEY, TOGETHER_API_KEY, OPENROUTER_API_KEY, MISTRAL_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY.'
-    }
-  });
-});
 
 // API Routes
 app.use('/api/auth', authUserLimiter, authRoutes);
