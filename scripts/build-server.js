@@ -27,21 +27,26 @@ async function build() {
       entryPoints: ['server/index.ts'],
       bundle: true,
       platform: 'node',
-      target: 'node18',
+      target: 'node20',
       format: 'esm',
       outdir: 'dist-server/server',
+      // Keep all node_modules external so CommonJS packages (multer, mime-types,
+      // type-is, compression, pdf-parse, etc.) are loaded at runtime from
+      // node_modules rather than bundled — this prevents "Dynamic require of
+      // 'path' is not supported" and similar ESM/CJS interop errors.
+      packages: 'external',
       external: [
-        // Node built-ins
-        'fs', 'path', 'url', 'http', 'https', 'crypto', 'stream', 
+        // Node built-ins (node: protocol and bare specifiers)
+        'node:fs', 'node:path', 'node:url', 'node:http', 'node:https',
+        'node:crypto', 'node:stream', 'node:zlib', 'node:util', 'node:os',
+        'node:events', 'node:buffer', 'node:querystring', 'node:child_process',
+        'node:cluster', 'node:dgram', 'node:dns', 'node:net', 'node:readline',
+        'node:tls', 'node:tty', 'node:v8', 'node:vm', 'node:worker_threads',
+        'node:fs/promises', 'node:module',
+        'fs', 'path', 'url', 'http', 'https', 'crypto', 'stream',
         'zlib', 'util', 'os', 'events', 'buffer', 'querystring',
         'child_process', 'cluster', 'dgram', 'dns', 'net', 'readline',
-        'tls', 'tty', 'v8', 'vm', 'worker_threads', 'fs/promises',
-        // Dependencies that should not be bundled (available in node_modules at runtime)
-        'express', 'cors', 'helmet', 'compression', 'dotenv', 'pg',
-        'express-rate-limit',
-        '@google/generative-ai', 'jsonwebtoken', 'axios',
-        '@aws-sdk/client-bedrock-runtime', 'serverless-http',
-        'uuid',
+        'tls', 'tty', 'v8', 'vm', 'worker_threads', 'fs/promises', 'module',
       ],
       sourcemap: true,
       minify: false, // Keep readable for debugging
