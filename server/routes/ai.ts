@@ -1294,19 +1294,44 @@ const extractReportParamsFromContext = (message: string, context?: unknown): Rec
   const params: Record<string, unknown> = {};
   if (context && typeof context === 'object') {
     const ctx = context as Record<string, unknown>;
+    const cs = (ctx.caseStudy && typeof ctx.caseStudy === 'object' ? ctx.caseStudy : ctx) as Record<string, unknown>;
+
     // Map known context fields to ReportParameters keys
-    if (ctx.country) params.country = String(ctx.country);
-    if (ctx.city) params.userCity = String(ctx.city);
-    if (ctx.region) params.region = String(ctx.region);
-    if (ctx.organization || ctx.org || ctx.organizationName) params.organizationName = String(ctx.organization || ctx.org || ctx.organizationName);
-    if (ctx.industry) params.industry = Array.isArray(ctx.industry) ? ctx.industry : [String(ctx.industry)];
-    if (ctx.sector) params.industry = [String(ctx.sector)];
-    if (ctx.objectives) params.strategicObjectives = Array.isArray(ctx.objectives) ? ctx.objectives : [String(ctx.objectives)];
-    if (ctx.problemStatement) params.problemStatement = String(ctx.problemStatement);
-    if (ctx.investmentSize || ctx.totalInvestment) params.totalInvestment = String(ctx.investmentSize || ctx.totalInvestment);
-    if (ctx.riskTolerance) params.riskTolerance = String(ctx.riskTolerance);
-    if (ctx.targetPartner) params.targetPartner = String(ctx.targetPartner);
-    if (ctx.tier) params.tier = Array.isArray(ctx.tier) ? ctx.tier : [String(ctx.tier)];
+    if (cs.country) params.country = String(cs.country);
+    if (cs.city) params.userCity = String(cs.city);
+    if (cs.region || cs.jurisdiction) params.region = String(cs.region || cs.jurisdiction);
+    if (cs.organizationName || cs.org || cs.organization) {
+      params.organizationName = String(cs.organizationName || cs.org || cs.organization);
+    }
+    
+    // Map industry / sector
+    if (cs.organizationType || cs.sector) {
+      params.industry = [String(cs.organizationType || cs.sector)];
+      params.sector = String(cs.organizationType || cs.sector);
+    } else if (cs.industry) {
+      params.industry = Array.isArray(cs.industry) ? cs.industry : [String(cs.industry)];
+    }
+
+    if (cs.objectives) params.strategicObjectives = Array.isArray(cs.objectives) ? cs.objectives : [String(cs.objectives)];
+    if (cs.currentMatter || cs.problemStatement) params.problemStatement = String(cs.currentMatter || cs.problemStatement);
+    
+    // Extract investment size dynamically
+    let investmentSize: string | null = null;
+    if (cs.totalInvestment || cs.investmentSize || cs.capitalAllocation) {
+      investmentSize = String(cs.totalInvestment || cs.investmentSize || cs.capitalAllocation);
+    } else if (cs.constraints) {
+      const match = String(cs.constraints).match(/\b(\d+(?:\.\d+)?)\s*(million|m|billion|b)\b/i);
+      if (match) investmentSize = match[0];
+    } else if (message) {
+      const match = message.match(/\b(\d+(?:\.\d+)?)\s*(million|m|billion|b)\b/i);
+      if (match) investmentSize = match[0];
+    }
+    if (investmentSize) params.totalInvestment = investmentSize;
+
+    if (cs.riskTolerance) params.riskTolerance = String(cs.riskTolerance);
+    if (cs.targetPartner) params.targetPartner = String(cs.targetPartner);
+    if (cs.tier) params.tier = Array.isArray(cs.tier) ? cs.tier : [String(cs.tier)];
+
     // Spread any additional params the frontend may have passed
     if (ctx.reportParams && typeof ctx.reportParams === 'object') {
       Object.assign(params, ctx.reportParams);

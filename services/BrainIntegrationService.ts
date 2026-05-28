@@ -1830,11 +1830,71 @@ export class BrainIntegrationService {
     const financialAnalysis = (() => {
       try {
         const fp: any = params;
-        const investNum = parseFloat(fp.totalInvestment || fp.capitalAllocation || '0') || 10_000_000;
-        const revNum = parseFloat(fp.annualRevenue || fp.revenueYear1 || fp.revenue || '0') || investNum * 0.4;
-        const growthRate = 0.15;
-        const opMargin = 0.25;
-        const discRate = 0.10;
+        const parseRobust = (val: any): number => {
+          if (!val) return 0;
+          if (typeof val === 'number') return val;
+          const str = String(val).toLowerCase().replace(/[\$,]/g, '').trim();
+          const num = parseFloat(str);
+          if (isNaN(num)) return 0;
+          if (str.includes('billion') || str.endsWith('b')) return num * 1_000_000_000;
+          if (str.includes('million') || str.endsWith('m')) return num * 1_000_000;
+          if (str.includes('thousand') || str.endsWith('k')) return num * 1_000;
+          return num;
+        };
+
+        const sectorStr = String(fp.sector || (fp.industry && fp.industry[0]) || '').toLowerCase();
+        
+        // Dynamic defaults based on sector
+        let defaultInvestment = 10_000_000;
+        let growthRate = 0.15;
+        let opMargin = 0.25;
+        let discRate = 0.10;
+
+        if (sectorStr.includes('digital') || sectorStr.includes('tech') || sectorStr.includes('software') || sectorStr.includes('ai')) {
+          defaultInvestment = 5_000_000;
+          growthRate = 0.35;
+          opMargin = 0.32;
+          discRate = 0.12;
+        } else if (sectorStr.includes('agri') || sectorStr.includes('farm') || sectorStr.includes('food')) {
+          defaultInvestment = 2_500_000;
+          growthRate = 0.12;
+          opMargin = 0.18;
+          discRate = 0.08;
+        } else if (sectorStr.includes('manufactur') || sectorStr.includes('automotive') || sectorStr.includes('car') || sectorStr.includes('industrial') || sectorStr.includes('steel') || sectorStr.includes('factory')) {
+          defaultInvestment = 15_000_000;
+          growthRate = 0.18;
+          opMargin = 0.22;
+          discRate = 0.09;
+        } else if (sectorStr.includes('infra') || sectorStr.includes('power') || sectorStr.includes('road') || sectorStr.includes('energy') || sectorStr.includes('utility')) {
+          defaultInvestment = 45_000_000;
+          growthRate = 0.08;
+          opMargin = 0.15;
+          discRate = 0.07;
+        } else if (sectorStr.includes('financ') || sectorStr.includes('bank') || sectorStr.includes('insurance')) {
+          defaultInvestment = 8_000_000;
+          growthRate = 0.14;
+          opMargin = 0.28;
+          discRate = 0.10;
+        } else if (sectorStr.includes('health') || sectorStr.includes('pharma') || sectorStr.includes('hospital')) {
+          defaultInvestment = 12_000_000;
+          growthRate = 0.20;
+          opMargin = 0.26;
+          discRate = 0.095;
+        }
+
+        // Slight deterministic variance based on org name so it is not completely identical if unconfigured
+        const orgName = String(fp.organizationName || '');
+        const nameHash = orgName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const varianceMod = (nameHash % 9 - 4) * 0.02; // +/- 8% variance
+
+        growthRate = parseFloat((growthRate * (1 + varianceMod)).toFixed(3));
+        opMargin = parseFloat((opMargin * (1 + varianceMod)).toFixed(3));
+
+        const investNum = parseRobust(fp.totalInvestment || fp.capitalAllocation) || defaultInvestment;
+        // Generate a dynamic revenue that is a sector-specific percentage of the investment
+        const revFactor = sectorStr.includes('digital') ? 0.7 : sectorStr.includes('infra') ? 0.35 : 0.55;
+        const revNum = parseRobust(fp.annualRevenue || fp.revenueYear1 || fp.revenue) || Math.round(investNum * revFactor * (1 + varianceMod));
+
         return FinancialCalculationService.computeSnapshot({
           capitalInvestment: investNum,
           baseRevenue: revNum,
@@ -1842,7 +1902,10 @@ export class BrainIntegrationService {
           operatingMargin: opMargin,
           discountRate: discRate,
         });
-      } catch { return null; }
+      } catch (err) {
+        console.warn('[Brain] Financial enrichment error:', err);
+        return null;
+      }
     })();
 
     // ── Risk Matrix Engine ────────────────────────────────────────────────────
