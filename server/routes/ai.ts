@@ -43,6 +43,8 @@ import { runContinualHarnessAudit } from '../../services/nsil/continual_harness_
 import { ContinualHarnessAdapter, type ContinualHarnessAdaptation, type ContinualHarnessState } from '../../services/nsil/continual_harness_adapter.js';
 import { autonomousInteractionLearner } from '../../services/nsil/autonomous_interaction_learner.js';
 import { autonomousResearchCognition, type ResearchEvidenceBundle } from '../../services/nsil/autonomous_research_cognition.js';
+import { NSILTrajectoryLogger } from '../../services/nsil/trajectory_logger.js';
+import { NSILFailureDetector } from '../../services/nsil/failure_detector.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -1838,14 +1840,25 @@ const providerResponseNeedsLocalSynthesis = (userMessage: string, text: string):
   return asksInsteadOfAnswering || greenlightsTooEarly || !(hasCounterpartyGate && hasProcurementGate && hasIntegrityGate && hasSecurityGate);
 };
 
-const consultantHarnessAdapter = new ContinualHarnessAdapter(path.join(process.cwd(), 'data', 'evolved_state'));
+const consultantHarnessAdapter = new ContinualHarnessAdapter(path.join(process.cwd(), 'data', 'live_global_matters', 'evolved_state'));
 
 const buildContinualHarnessPromptBlock = (): {
   block: string;
   adaptation: ContinualHarnessAdaptation;
   state: ContinualHarnessState;
 } => {
-  const adaptation = consultantHarnessAdapter.evolve([], []);
+  let trajectories: any[] = [];
+  let failures: any[] = [];
+  try {
+    const logger = new NSILTrajectoryLogger(path.join(process.cwd(), 'data', 'nsil_trajectories'));
+    trajectories = logger.get_all_trajectories() || [];
+    const detector = new NSILFailureDetector(trajectories);
+    failures = detector.detect_all_failures() || [];
+  } catch (err) {
+    console.warn('[NSIL] Failed to fetch trajectories/failures for evolution (non-blocking):', err);
+  }
+
+  const adaptation = consultantHarnessAdapter.evolve(trajectories, failures);
   const state = consultantHarnessAdapter.getState();
   const lines = [
     'CONTINUAL HARNESS STATE:',
