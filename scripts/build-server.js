@@ -25,7 +25,7 @@ async function build() {
     
     await esbuild.build({
       entryPoints: ['server/index.ts'],
-      bundle: true,
+      bundle: false,
       platform: 'node',
       target: 'node18',
       format: 'esm',
