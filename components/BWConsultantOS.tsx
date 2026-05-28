@@ -16,7 +16,7 @@ import {
   Globe, FileCheck, PenTool, Download, Copy, Check,
   HelpCircle,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle,
-  Mic, MicOff, ChevronDown,
+  Mic, MicOff, ChevronDown, Save, Plus, Trash2, History,
 } from 'lucide-react';
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
@@ -603,12 +603,10 @@ const JURISDICTION_POLICY_PACKS: JurisdictionPolicyPack[] = [
 
 const LEARNING_SIGNALS_STORAGE_KEY = 'bw-consultant-learning-signals-v1';
 const LEARNING_PROFILE_VERSION = 1;
-// sessionStorage: persists within the same tab (survives accidental refresh)
-// but clears automatically when the user opens a new tab or navigates fresh.
-// This means "open a new page" always starts a fresh conversation.
+// localStorage: persists across sessions and page refreshes.
 const CHAT_HISTORY_STORAGE_KEY = 'adversiq-conversation-history-v1';
 const CHAT_HISTORY_MAX_MESSAGES = 200;
-const chatStorage = typeof window !== 'undefined' ? window.sessionStorage : null;
+const chatStorage = typeof window !== 'undefined' ? window.localStorage : null;
 
 // ── Thinking orb component ───────────────────────────────────────────────────
 const ThinkingOrb: React.FC = () => (
@@ -1039,6 +1037,26 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   }, []);
 
   const [showToolsMenu, setShowToolsMenu] = useState(false);
+
+  // Explicit Session Persistence State
+  const [savedSessions, setSavedSessions] = useState<Array<{
+    id: string;
+    name: string;
+    timestamp: string;
+    country?: string;
+    sector?: string;
+    messages: Message[];
+    caseStudy: CaseStudy;
+    currentPhase: CasePhase;
+  }>>([]);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+
+  // UI Dialog Visibility toggles
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [saveSessionName, setSaveSessionName] = useState('');
+  const [showHistoryDialog, setShowHistoryDialog] = useState(false);
+  const [showNewConfirmDialog, setShowNewConfirmDialog] = useState(false);
+
   // Core state
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -3272,6 +3290,139 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
   }, [recommendationBoostMap]);
 
+  // Load saved sessions on mount
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('adversiq-saved-sessions-v1');
+      if (raw) {
+        setSavedSessions(JSON.parse(raw));
+      }
+    } catch (e) {
+      console.warn('Failed to load saved sessions list from localStorage', e);
+    }
+  }, []);
+
+  // Save active session handler
+  const handleSaveActiveSession = (name: string) => {
+    if (!name.trim()) return;
+    const sessionName = name.trim();
+    
+    // Package parameters
+    const sessionId = activeSessionId || `session-${Date.now()}`;
+    const newSessionRecord = {
+      id: sessionId,
+      name: sessionName,
+      timestamp: new Date().toISOString(),
+      country: caseStudy.country || undefined,
+      sector: caseStudy.sector || undefined,
+      messages: messages,
+      caseStudy: caseStudy,
+      currentPhase: currentPhase
+    };
+
+    setSavedSessions(prev => {
+      const filtered = prev.filter(s => s.id !== sessionId);
+      const updated = [newSessionRecord, ...filtered];
+      window.localStorage.setItem('adversiq-saved-sessions-v1', JSON.stringify(updated));
+      return updated;
+    });
+
+    setActiveSessionId(sessionId);
+    setShowSaveDialog(false);
+    setSaveSessionName('');
+  };
+
+  // Load saved session handler
+  const handleLoadSavedSession = (id: string) => {
+    const session = savedSessions.find(s => s.id === id);
+    if (!session) return;
+
+    // Load states synchronously
+    setMessages(session.messages.map(m => ({
+      ...m,
+      timestamp: new Date(m.timestamp)
+    })));
+    setCaseStudy(session.caseStudy);
+    setCurrentPhase(session.currentPhase);
+    setActiveSessionId(session.id);
+    setShowHistoryDialog(false);
+  };
+
+  // Delete saved session handler
+  const handleDeleteSavedSession = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // prevent loading the session on click
+    setSavedSessions(prev => {
+      const updated = prev.filter(s => s.id !== id);
+      window.localStorage.setItem('adversiq-saved-sessions-v1', JSON.stringify(updated));
+      return updated;
+    });
+    if (activeSessionId === id) {
+      setActiveSessionId(null);
+    }
+  };
+
+  // Reset to brand-new session handler
+  const handleStartNewSession = () => {
+    // Reset all parameters back to initial clean state
+    const cleanCaseStudy: CaseStudy = {
+      userName: '',
+      organizationName: '',
+      organizationType: '',
+      contactRole: '',
+      country: '',
+      jurisdiction: '',
+      organizationMandate: '',
+      targetAudience: '',
+      decisionDeadline: '',
+      situationType: '',
+      currentMatter: '',
+      objectives: '',
+      constraints: '',
+      timeline: '',
+      additionalContext: [],
+      uploadedDocuments: [],
+      aiInsights: []
+    };
+
+    const initialMessage: Message = {
+      id: generateId(),
+      role: 'assistant',
+      content: [
+        "Hi, I'm Susan — your strategic intelligence partner.",
+        "",
+        "I'm here because making the right decision, in the right market, at the right time, takes more than a search engine.",
+        "",
+        "Tell me what you're working on — a deal, a market entry, an investment, a partnership, a government engagement — in your own words. I'll take it from there.",
+        "",
+        "Behind our conversation, ten verification layers stand by: adversarial reasoning, contradiction detection, Monte Carlo stress testing, cognitive modelling, entity intelligence, confidence scoring, and a 247-template document factory. Everything you share is verified, cross-checked, and stress-tested before any conclusion comes back to you.",
+        "",
+        "You don't need to know which tools apply. Just describe your situation and I activate automatically."
+      ].join('\n'),
+      timestamp: new Date(),
+      phase: 'discovery'
+    };
+
+    setMessages([initialMessage]);
+    setCaseStudy(cleanCaseStudy);
+    setCurrentPhase('intake');
+    setActiveSessionId(null);
+    setShowNewConfirmDialog(false);
+
+    // Reset local state cache
+    if (chatStorage) {
+      chatStorage.setItem(CHAT_HISTORY_STORAGE_KEY, JSON.stringify([{
+        id: initialMessage.id,
+        role: initialMessage.role,
+        content: initialMessage.content,
+        timestamp: initialMessage.timestamp.toISOString(),
+        phase: initialMessage.phase
+      }]));
+      chatStorage.setItem('adversiq-active-case-study-v1', JSON.stringify(cleanCaseStudy));
+      chatStorage.setItem('adversiq-active-phase-v1', 'intake');
+      chatStorage.removeItem('adversiq-active-session-id-v1');
+    }
+  };
+
   // Restore conversation history from localStorage, or show welcome message
   useEffect(() => {
     if (messages.length === 0) {
@@ -3296,6 +3447,23 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
               restored = true;
             }
           }
+        }
+
+        // Also restore case study and other metadata if they exist
+        const rawCaseStudy = chatStorage ? chatStorage.getItem('adversiq-active-case-study-v1') : null;
+        if (rawCaseStudy) {
+          const parsedCase = JSON.parse(rawCaseStudy) as CaseStudy;
+          setCaseStudy(parsedCase);
+        }
+        
+        const rawPhase = chatStorage ? chatStorage.getItem('adversiq-active-phase-v1') : null;
+        if (rawPhase) {
+          setCurrentPhase(rawPhase as CasePhase);
+        }
+
+        const rawSessionId = chatStorage ? chatStorage.getItem('adversiq-active-session-id-v1') : null;
+        if (rawSessionId) {
+          setActiveSessionId(rawSessionId);
         }
       } catch {
         // localStorage unavailable or corrupt — fall through to welcome message
@@ -3341,6 +3509,23 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
       // localStorage quota or unavailable — non-fatal
     }
   }, [messages]);
+
+  // Persist active caseStudy & activeSessionId & currentPhase to localStorage on change
+  useEffect(() => {
+    try {
+      if (chatStorage) {
+        chatStorage.setItem('adversiq-active-case-study-v1', JSON.stringify(caseStudy));
+        chatStorage.setItem('adversiq-active-phase-v1', currentPhase);
+        if (activeSessionId) {
+          chatStorage.setItem('adversiq-active-session-id-v1', activeSessionId);
+        } else {
+          chatStorage.removeItem('adversiq-active-session-id-v1');
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to persist active case study to localStorage', e);
+    }
+  }, [caseStudy, currentPhase, activeSessionId]);
 
   // Read file content - uses Gemini multimodal for binary documents (PDF, DOCX, etc.)
   const readFileContent = useCallback(async (file: File): Promise<string> => {
@@ -7195,6 +7380,106 @@ ${agentRegistry.current.toManifest()}`;
                 </select>
               </div>
 
+              {/* Explicit Session History visual manager */}
+              <div className="flex items-center gap-1.5">
+                {/* New Case Button */}
+                <button
+                  onClick={() => {
+                    setShowNewConfirmDialog(true);
+                    setShowHistoryDialog(false);
+                    setShowToolsMenu(false);
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
+                  title="Start a new clean decision pipeline"
+                >
+                  <Plus size={13} className="text-blue-600" />
+                  <span className="hidden sm:inline">New Case</span>
+                </button>
+
+                {/* Save Case Button */}
+                <button
+                  onClick={() => {
+                    const currentName = activeSessionId ? savedSessions.find(s => s.id === activeSessionId)?.name || '' : '';
+                    setSaveSessionName(currentName);
+                    setShowSaveDialog(true);
+                    setShowHistoryDialog(false);
+                    setShowToolsMenu(false);
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
+                  title="Save current workspace & timeline"
+                >
+                  <Save size={13} className="text-blue-600" />
+                  <span className="hidden sm:inline">Save Case</span>
+                </button>
+
+                {/* Case History dropdown container */}
+                <div className="relative">
+                  <button
+                    onClick={() => {
+                      setShowHistoryDialog(prev => !prev);
+                      setShowToolsMenu(false);
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
+                    title="View saved advisory cases"
+                  >
+                    <History size={13} className="text-blue-600" />
+                    <span className="hidden sm:inline">Case History</span>
+                    {savedSessions.length > 0 && (
+                      <span className="ml-1 bg-blue-100 text-blue-800 text-[10px] font-bold px-1.5 py-0.25 rounded-full">
+                        {savedSessions.length}
+                      </span>
+                    )}
+                  </button>
+
+                  {showHistoryDialog && (
+                    <div className="absolute right-0 top-full mt-1.5 w-80 bg-white border border-slate-200 shadow-2xl z-50 rounded-lg p-2 max-h-96 overflow-y-auto">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 py-1">Saved Cases</p>
+                      {savedSessions.length === 0 ? (
+                        <p className="text-xs text-slate-400 p-3 text-center">No saved cases found.</p>
+                      ) : (
+                        <div className="space-y-1 mt-1">
+                          {savedSessions.map((session) => (
+                            <div
+                              key={session.id}
+                              onClick={() => handleLoadSavedSession(session.id)}
+                              className={`group w-full text-left px-3 py-2 text-xs flex items-center justify-between transition-colors cursor-pointer border rounded-md ${
+                                activeSessionId === session.id
+                                  ? 'bg-blue-50 border-blue-200 text-blue-900'
+                                  : 'bg-white hover:bg-slate-50 border-slate-100 text-slate-700'
+                              }`}
+                            >
+                              <div className="min-w-0 pr-2">
+                                <p className="font-semibold truncate">{session.name}</p>
+                                <div className="flex items-center gap-2 mt-0.5 text-[9px] text-slate-400">
+                                  <span>{new Date(session.timestamp).toLocaleDateString()}</span>
+                                  {session.country && (
+                                    <span className="bg-slate-100 text-slate-600 px-1 rounded uppercase truncate max-w-[80px]">
+                                      {session.country}
+                                    </span>
+                                  )}
+                                  {session.sector && (
+                                    <span className="bg-blue-50 text-blue-600 px-1 rounded uppercase truncate max-w-[80px]">
+                                      {session.sector}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <button
+                                onClick={(e) => handleDeleteSavedSession(session.id, e)}
+                                className="opacity-0 group-hover:opacity-100 p-1 border border-stone-200 bg-white hover:bg-red-50 text-slate-400 hover:text-red-600 rounded transition-all"
+                                title="Delete saved case"
+                              >
+                                <Trash2 size={11} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Live Research */}
               <button
                 onClick={() => setShowPilotWindow((prev) => !prev)}
@@ -9106,6 +9391,100 @@ ${agentRegistry.current.toManifest()}`;
                 </div>
                 <div className="border border-stone-200 bg-slate-50 p-3">
                   <p className="text-[10px] text-slate-700">Live Research works alongside ADVERSIQ to surface external findings that strengthen verification confidence.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Save Session Dialog Modal */}
+        {showSaveDialog && (
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white border border-stone-200 shadow-2xl rounded-lg overflow-hidden">
+              <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Save Advisory Case</h3>
+                <button
+                  type="button"
+                  onClick={() => setShowSaveDialog(false)}
+                  className="p-1 border border-stone-200 text-slate-400 hover:bg-stone-50 hover:text-slate-600 rounded"
+                >
+                  <X size={13} />
+                </button>
+              </div>
+              <div className="p-4 space-y-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Case Name</label>
+                  <input
+                    type="text"
+                    value={saveSessionName}
+                    onChange={(e) => setSaveSessionName(e.target.value)}
+                    placeholder="e.g. Philippines Solar Hub PPP"
+                    className="w-full px-3 py-2 text-xs border border-slate-200 rounded focus:outline-none focus:border-blue-500 text-slate-800 bg-white"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSaveActiveSession(saveSessionName);
+                    }}
+                    autoFocus
+                  />
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowSaveDialog(false)}
+                    className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-medium rounded transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveActiveSession(saveSessionName)}
+                    disabled={!saveSessionName.trim()}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 text-xs font-medium rounded transition-colors"
+                  >
+                    Save Case
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Start New Session Confirmation Modal */}
+        {showNewConfirmDialog && (
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white border border-stone-200 shadow-2xl rounded-lg overflow-hidden">
+              <div className="px-4 py-3 border-b border-stone-200 bg-slate-50 flex items-center justify-between">
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider text-blue-600">Start New Advisory Case</h3>
+                <button
+                  type="button"
+                  onClick={() => setShowNewConfirmDialog(false)}
+                  className="p-1 border border-stone-200 text-slate-400 hover:bg-stone-50 hover:text-slate-600 rounded"
+                >
+                  <X size={13} />
+                </button>
+              </div>
+              <div className="p-4 space-y-3">
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Are you sure you want to start a new advisory case? 
+                  This will clear the current conversation timeline and reset all active workspace parameters.
+                </p>
+                <div className="bg-blue-50 border border-blue-100 p-3 rounded text-[10px] text-blue-800 leading-relaxed">
+                  <strong>Notice:</strong> Any cases you explicitly saved under <strong>Case History</strong> will remain fully preserved and can be reloaded at any time.
+                </div>
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowNewConfirmDialog(false)}
+                    className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-medium rounded transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleStartNewSession}
+                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded transition-colors"
+                  >
+                    Confirm New Case
+                  </button>
                 </div>
               </div>
             </div>
