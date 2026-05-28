@@ -3146,14 +3146,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             </div>
                         </div>
 
-                        <div className="px-8 md:px-14 py-12 space-y-16">
-
+                        <div>
                             {/* Proof bar */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
                                 {[
                                     { n: '10', label: 'Contracted\nPipeline Layers' },
                                     { n: '54+', label: 'Proprietary\nFormulas' },
-                                    { n: '12+', label: 'World-First\nCombinations' },
+                                    { n: '11+', label: 'World-First\nCombinations' },
                                     { n: '6', label: 'Advancement\nModules' },
                                 ].map((s, i) => (
                                     <div key={i} className="bg-slate-900 px-6 py-7 text-center">
@@ -3163,78 +3162,176 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 ))}
                             </div>
 
-                            {/* World Firsts callout */}
+                            {/* World Firsts — full expanded section */}
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Has Never Been Combined Before</p>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
+                                <div className="flex items-center gap-4 mb-3">
+                                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">What Has Never Been Combined Before</p>
+                                    <div className="flex-1 h-px bg-white/5" />
+                                    <p className="text-[10px] text-white/20 uppercase tracking-widest">11 World-First Combinations</p>
+                                </div>
+                                <p className="text-sm text-white/30 leading-relaxed mb-8 max-w-3xl">
+                                    Each of these exists in academic literature or commercial software in isolation. No platform has ever combined them into a single connected pipeline where the output of each gates the input of the next.
+                                </p>
+
+                                {/* Items 01–07 — Original World Firsts */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 mb-px">
                                     {[
-                                        { n: '01', title: 'SAT contradiction solving applied to investment intelligence', body: 'Boolean satisfiability, normally used to verify logical systems, is applied to investment proposals before any scoring begins. Assumptions are converted to propositional logic and tested for contradiction so impossible briefs are stopped before they contaminate the pipeline.' },
-                                        { n: '02', title: 'Bayesian adversarial debate as a verification gate', body: 'Five expert personas - Skeptic, Advocate, Regulator, Accountant, and Operator - challenge the case with Bayesian belief updating. The output preserves disagreement, adjusts confidence, and prevents a single confident narrative from becoming the decision.' },
-                                        { n: '03', title: 'Live persona calibration from actual outcomes', body: 'Persona influence is no longer static. Once real outcomes are recorded, the system changes persona weights by sector and region so historically over-cautious or over-optimistic perspectives are dampened and reliable perspectives carry more weight.' },
-                                        { n: '04', title: 'Structural twin discovery across regional trajectories', body: 'Every regional brief is matched against structural analogues such as Cebu, Da Nang, Penang, Medellin, Bilbao, and Incheon. The system extracts what worked, what failed, and which lessons are transferable instead of benchmarking against aspirational peers.' },
-                                        { n: '05', title: 'Rawlsian ethics certificates inside the analysis flow', body: 'Ethics is not a paragraph at the end. Hard gates can reject a strategy, create a signed rejection certificate, write an immutable audit entry, and provide compliant alternatives before the rest of the pipeline spends effort on a non-viable path.' },
-                                        { n: '06', title: 'Investor-facing trust score with uncertainty fingerprint', body: 'Every recommendation receives a Trust Score, confidence grade, evidence breakdown, uncertainty fingerprint, and historical calibration check. The platform exposes what it knows, what it is extrapolating, and what must be verified before capital commitment.' },
-                                        { n: '07', title: 'Macro regime-shift warning connected to recalibration', body: 'MEWS monitors political, currency, regulatory, social, infrastructure, and climate baskets. When a regime-shift signal crosses threshold, in-flight assumptions can be flagged for revalidation instead of letting stale analyses survive unchanged.' },
+                                        {
+                                            n: '01',
+                                            tag: 'Formal Logic × Investment Intelligence',
+                                            title: 'SAT Contradiction Solving Applied to Investment Proposals',
+                                            body: 'Boolean satisfiability — normally used to verify chip designs and software logic — is applied to investment briefs before any scoring begins. Every assumption is converted to propositional logic and tested for contradiction. Impossible briefs are stopped at the gate before they contaminate the pipeline and waste computational resources on an indefensible case.',
+                                            discipline: 'Formal Logic',
+                                            color: 'text-violet-400',
+                                            border: 'border-violet-400/20',
+                                        },
+                                        {
+                                            n: '02',
+                                            tag: 'Bayesian Statistics × Strategic Debate',
+                                            title: 'Bayesian Adversarial Debate as a Verification Gate',
+                                            body: 'Five expert personas — Skeptic, Advocate, Regulator, Accountant, and Operator — challenge every case using Bayesian belief updating. Disagreement is preserved, not smoothed. Confidence adjusts as evidence accumulates. No single narrative can dominate. The output is a verified consensus, not a rubber stamp.',
+                                            discipline: 'Bayesian Statistics',
+                                            color: 'text-blue-400',
+                                            border: 'border-blue-400/20',
+                                        },
+                                        {
+                                            n: '03',
+                                            tag: 'Machine Learning × Persona Credibility',
+                                            title: 'Live Persona Calibration From Actual Outcomes',
+                                            body: 'Persona influence weights are not static. As real outcomes are recorded, the system updates each persona\'s sector- and region-specific accuracy. A Skeptic who was reliably correct in infrastructure deals in Southeast Asia carries more weight on the next Southeast Asia infrastructure deal. A historically over-optimistic Advocate is automatically dampened.',
+                                            discipline: 'Adaptive Learning',
+                                            color: 'text-emerald-400',
+                                            border: 'border-emerald-400/20',
+                                        },
+                                        {
+                                            n: '04',
+                                            tag: 'Historical Pattern Matching × Regional Forecasting',
+                                            title: 'Structural Twin Discovery Across Regional Trajectories',
+                                            body: 'Every regional brief is matched against structural analogues — Cebu, Da Nang, Penang, Medellín, Bilbao, Incheon. The system extracts what worked, what failed at each stage, and which lessons transfer. Rather than benchmarking against aspirational global peers, it identifies the most comparable starting point and draws a realistic trajectory forward.',
+                                            discipline: 'Decision Science',
+                                            color: 'text-amber-400',
+                                            border: 'border-amber-400/20',
+                                        },
+                                        {
+                                            n: '05',
+                                            tag: 'Rawlsian Ethics × Pipeline Gate Logic',
+                                            title: 'Ethics Certificates Embedded Inside the Analysis Flow',
+                                            body: 'Ethics is not a paragraph at the end of a report. Hard ethical gates can reject a strategy mid-pipeline, generate a signed rejection certificate, write an immutable audit entry, and present compliant alternatives — all before the rest of the pipeline expends effort on a path that should never have proceeded. The certificate is traceable, dated, and human-readable.',
+                                            discipline: 'Formal Ethics',
+                                            color: 'text-rose-400',
+                                            border: 'border-rose-400/20',
+                                        },
+                                        {
+                                            n: '06',
+                                            tag: 'Trust Engineering × Capital Commitment',
+                                            title: 'Investor-Facing Trust Score With Uncertainty Fingerprint',
+                                            body: 'Every recommendation carries a Trust Score, confidence grade, evidence depth breakdown, uncertainty fingerprint, and historical calibration check. The platform explicitly tells investors what it knows, what it is extrapolating from limited data, and what must be independently verified before capital is committed. Intellectual honesty is structural, not optional.',
+                                            discipline: 'Financial Modelling',
+                                            color: 'text-cyan-400',
+                                            border: 'border-cyan-400/20',
+                                        },
+                                        {
+                                            n: '07',
+                                            tag: 'Macro Surveillance × Assumption Revalidation',
+                                            title: 'Macro Regime-Shift Warning Connected to In-Flight Recalibration',
+                                            body: 'The Macro Early Warning System monitors political, currency, regulatory, social, infrastructure, and climate baskets continuously. When any basket crosses a regime-shift threshold, in-flight analyses are flagged for revalidation instead of being allowed to survive on stale assumptions. The analysis ages with the world, not against it.',
+                                            discipline: 'Decision Science',
+                                            color: 'text-orange-400',
+                                            border: 'border-orange-400/20',
+                                        },
                                     ].map((item) => (
-                                        <div key={item.n} className="bg-slate-900 px-6 py-8">
-                                            <p className="text-3xl font-black text-white/10 mb-3">{item.n}</p>
-                                            <p className="text-sm font-black text-amber-400 uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
-                                            <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
+                                        <div key={item.n} className="bg-slate-900 px-7 py-8 group hover:bg-slate-800/80 transition-colors duration-300">
+                                            <div className="flex items-start justify-between mb-4">
+                                                <p className="text-4xl font-black text-white/8 leading-none">{item.n}</p>
+                                                <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2 py-1 border ${item.border} ${item.color} opacity-70`}>
+                                                    {item.discipline}
+                                                </span>
+                                            </div>
+                                            <p className={`text-[9px] font-bold uppercase tracking-[0.15em] mb-2 ${item.color} opacity-50`}>{item.tag}</p>
+                                            <p className="text-[13px] font-black text-white uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
+                                            <p className="text-[13px] text-white/40 leading-relaxed">{item.body}</p>
                                         </div>
                                     ))}
-                                    <div className="bg-slate-900 px-6 py-8 md:col-span-2">
-                                        <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-5">Why This Has Never Been Done Before</p>
-                                        <p className="text-sm text-white/50 leading-relaxed">
-                                            Building any one of those components in isolation is achievable. Combining all of them - where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off - required simultaneous expertise across six academic disciplines: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
-                                        </p>
-                                        <p className="text-sm text-white/50 leading-relaxed mt-4">
-                                            No commercial product had demanded that combination until this one. Because until this one, no one had tried to make institutional-grade decision intelligence accessible to organisations that couldn't afford to commission it.
-                                        </p>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
-                                            {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
-                                                <div key={i} className="border border-amber-400/20 px-3 py-3 text-center">
-                                                    <p className="text-[11px] font-bold text-amber-400/80 uppercase tracking-wide leading-snug">{d}</p>
+                                </div>
+
+                                {/* Items 08–11 — New World Firsts added in this build */}
+                                <div className="border border-amber-400/10 mb-px">
+                                    <div className="px-7 py-4 bg-amber-400/5 border-b border-amber-400/10">
+                                        <p className="text-[9px] font-black uppercase tracking-[0.3em] text-amber-400">New Additions — Built In This Version</p>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
+                                        {[
+                                            {
+                                                n: '08',
+                                                tag: 'Bayesian Reinforcement × Engine Prioritisation',
+                                                title: 'Hebbian Feedback Learning Applied to Intelligence Engine Weights',
+                                                body: 'User feedback — thumbs up or down on a response — triggers Bayesian weight updates on the specific engines that fired for that query. Engines that consistently produce useful results gain influence. Those that underperform are deprioritised. Co-activation learning tracks which engine combinations produce the best outcomes together. No commercial intelligence platform has applied Hebbian reinforcement to engine orchestration before.',
+                                                discipline: 'Adaptive Learning',
+                                                color: 'text-emerald-400',
+                                                border: 'border-emerald-400/20',
+                                            },
+                                            {
+                                                n: '09',
+                                                tag: 'NLP Signal Extraction × Intelligence Routing',
+                                                title: 'Intent-Adaptive Brain Routing From Unstructured Natural Language',
+                                                body: 'The system extracts country, sector, topic, and document-request intent from conversational natural language without structured forms. A message like "what are the risks of investing in Vietnam solar infrastructure" automatically routes to country risk, sector analysis, and the historical pattern engine — not through user selection menus but through real-time signal extraction applied before any engine fires.',
+                                                discipline: 'Decision Science',
+                                                color: 'text-amber-400',
+                                                border: 'border-amber-400/20',
+                                            },
+                                            {
+                                                n: '10',
+                                                tag: 'Document Intelligence × Live Intelligence Stack',
+                                                title: 'Uploaded Document Text Injected Into the Full Intelligence Pipeline',
+                                                body: 'When a user uploads a PDF, Word document, or CSV, its extracted text is injected into the intelligence stack as a live context block — not as a chatbot attachment but as a first-class input to the SAT solver, adversarial debate engine, and risk matrix. The system reads, reasons about, and generates new documents from the uploaded content using the full 10-layer pipeline.',
+                                                discipline: 'Software Architecture',
+                                                color: 'text-cyan-400',
+                                                border: 'border-cyan-400/20',
+                                            },
+                                            {
+                                                n: '11',
+                                                tag: 'Intelligence Provenance × User Trust',
+                                                title: 'Real-Time Intelligence Provenance Panel With Feedback Loop',
+                                                body: 'Every response surfaces exactly which intelligence engines fired, what confidence level was achieved, and how long it took — in a visible panel attached to the message. Users can see whether the answer came from the 15-index panel, the historical pattern engine, the live World Bank data feed, or the document vault. Feedback buttons are connected to real weight updates, not logged and ignored.',
+                                                discipline: 'Trust Engineering',
+                                                color: 'text-violet-400',
+                                                border: 'border-violet-400/20',
+                                            },
+                                        ].map((item) => (
+                                            <div key={item.n} className="bg-slate-900/60 px-7 py-8 group hover:bg-slate-800/80 transition-colors duration-300">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <p className="text-4xl font-black text-white/8 leading-none">{item.n}</p>
+                                                    <span className={`text-[9px] font-black uppercase tracking-[0.2em] px-2 py-1 border ${item.border} ${item.color} opacity-70`}>
+                                                        {item.discipline}
+                                                    </span>
                                                 </div>
-                                            ))}
-                                        </div>
-                                        <p className="text-center text-xs text-white/25 mt-4 uppercase tracking-widest">Six disciplines. One pipeline. Never combined before.</p>
+                                                <p className={`text-[9px] font-bold uppercase tracking-[0.15em] mb-2 ${item.color} opacity-50`}>{item.tag}</p>
+                                                <p className="text-[13px] font-black text-white uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
+                                                <p className="text-[13px] text-white/40 leading-relaxed">{item.body}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* The 10-Layer pipeline */}
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-amber-400">The NSIL — Nexus Strategic Intelligence Layer</p>
-                                <p className="text-sm text-white/40 mb-8 leading-relaxed max-w-3xl">Ten sequential layers. Each one with a single, non-negotiable job. Parallelism occurs within layers. Every result is memoised. The full audit trail is preserved from input to output.</p>
-                                <div className="space-y-px">
-                                    {[
-                                        { layer: 'Layer 0', name: 'The Laws', role: 'Formula instantiation & DAG construction', detail: '54+ proprietary formulas are instantiated as immutable rules. The dependency graph between formulas is resolved before execution. No formula runs until its inputs and dependencies are known.' },
-                                        { layer: 'Layer 1', name: 'The Shield', role: 'Contradiction detection & input audit', detail: 'User inputs are converted to propositional logic. The SAT solver tests for contradiction, missing assumptions, and incompatible claims before any analysis begins.' },
-                                        { layer: 'Layer 2', name: 'The Boardroom', role: 'Adversarial debate & consensus resolution', detail: 'Five expert personas debate the validated inputs using Bayesian belief updating. Their influence can now be calibrated from actual outcome history by sector and region.' },
-                                        { layer: 'Layer 3', name: 'The Engine', role: 'Formula scoring suite', detail: '54+ formulas execute via the DAG scheduler. SPI, RROI, CRI, BARNA, SCF, SEAM, IVAS, and derivative indices run in dependency order with memoised outputs.' },
-                                        { layer: 'Layer 4', name: 'The Stress Test', role: 'Monte Carlo scenario simulation', detail: 'Probabilistic scenario simulation calculates downside exposure, expected shortfall, probability of loss, and regret analysis so action and inaction are both priced.' },
-                                        { layer: 'Layer 5', name: 'The Brain', role: 'Cognitive bias modelling', detail: 'The user input stream is analysed for overconfidence, anchoring, optimism bias, availability bias, salience imbalance, and working-memory overload before documents are generated.' },
-                                        { layer: 'Layer 6', name: 'The Ethics Gate', role: 'Rawlsian screening & certificates', detail: 'Strategies are screened against hard and soft ethical gates. Rejected paths produce signed rejection certificates, audit entries, and compliant alternatives.' },
-                                        { layer: 'Layer 7', name: 'The World Mirror', role: 'Structural twins & transfer lessons', detail: 'The region is matched against global structural analogues. The engine extracts what worked, what failed, and which lessons are transferable to the current case.' },
-                                        { layer: 'Layer 8', name: 'The Trust Layer', role: 'Trust score & macro warning', detail: 'The system calculates a Trust Score, uncertainty fingerprint, evidence depth, persona agreement, and MEWS macro alert status before release.' },
-                                        { layer: 'Layer 9', name: 'The Reflexive', role: 'Self-audit & release gate', detail: 'The system reviews its own reasoning chain, coherence, audit trail, and confidence. If the release threshold is not met, the output is withheld or caveated instead of presented as certainty.' },                                    ].map((item, i) => (
-                                        <div key={i} className="flex gap-0 border-t border-white/5">
-                                            <div className="w-24 flex-shrink-0 bg-white/5 px-4 py-5 flex flex-col justify-start">
-                                                <p className="text-xs font-bold text-white/25 uppercase tracking-widest">{item.layer}</p>
+                                {/* Why section */}
+                                <div className="bg-gradient-to-br from-slate-900 to-slate-800 px-8 py-10 border-t-2 border-amber-400/20">
+                                    <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-6">Why This Has Never Been Done Before</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                        <p className="text-[14px] text-white/60 leading-relaxed">Building any one of these components in isolation is achievable. Combining all of them — where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off — required simultaneous expertise across six academic disciplines. No commercial product had demanded that combination until this one.</p>
+                                        <p className="text-[14px] text-white/60 leading-relaxed">The eleventh combination — real-time intelligence provenance with Hebbian feedback learning applied to engine orchestration — has no precedent. Every session improves the system. Every correction strengthens the right engines. Every investment case leaves the platform marginally smarter than it was before.</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 md:grid-cols-6 gap-2 mb-6">
+                                        {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
+                                            <div key={i} className="border border-amber-400/20 px-3 py-4 text-center">
+                                                <p className="text-[10px] font-black text-amber-400 uppercase tracking-wide leading-snug">{d}</p>
                                             </div>
-                                            <div className="flex-1 px-6 py-5">
-                                                <div className="flex flex-wrap items-baseline gap-3 mb-1">
-                                                    <p className="text-sm font-black text-white uppercase tracking-wide">{item.name}</p>
-                                                    <p className="text-xs text-amber-400 font-medium">{item.role}</p>
-                                                </div>
-                                                <p className="text-sm text-white/40 leading-relaxed">{item.detail}</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <p className="text-center text-xs text-white/20 uppercase tracking-[0.3em]">Six disciplines. Eleven world-first combinations. One pipeline. Built by one person.</p>
                                 </div>
                             </div>
 
-                            {/* One-off developments */}
+                            {/* What Is Now Built */}
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Is Now Built Into The Architecture</p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -3242,14 +3339,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         { title: '54+ Deterministic Formulas', body: 'A proprietary scoring suite spanning strategic positioning, risk-adjusted return, supply chain impact, workforce readiness, governance integrity, market access, resilience, and execution probability. Every formula is auditable and dependency-aware.' },
                                         { title: 'Bayesian Adversarial Debate Engine', body: 'Five expert personas challenge every proposal before release. The system preserves disagreement, updates beliefs, and now supports outcome-driven persona calibration.' },
                                         { title: 'SAT Contradiction Solver', body: 'Every assumption can be checked for internal conflict before the expensive analysis starts. If the premise is impossible, the system tells the user why instead of producing polished nonsense.' },
-                                        { title: 'Monte Carlo Stress Testing', body: 'Scenario simulation produces probabilistic downside ranges, loss probability, expected shortfall, and regret analysis, turning risk into a quantified decision variable.' },
-                                        { title: 'Neuroscience-Derived Bias Modelling', body: 'Cognitive distortions are treated as signals in the pipeline, not as generic warnings. The system scores how the input itself may be biased before generating outputs.' },
-                                        { title: 'Reflexive Self-Audit Layer', body: 'The platform checks its own conclusions, scores coherence, and controls release. If the reasoning chain is weak, the system reports uncertainty instead of manufacturing confidence.' },
-                                        { title: 'Live Adversarial Calibration', body: 'Persona weights self-adjust from confirmed outcomes so the debate engine learns which perspectives are reliable in each sector and region.' },
-                                        { title: 'Structural Twin Discovery Engine', body: 'The system finds real regional analogues and extracts transferable lessons from documented development trajectories.' },
-                                        { title: 'Ethical Gate Audit Trail', body: 'Rawlsian and compliance screening can produce signed approval, conditional approval, or rejection certificates with immutable audit history.' },
-                                        { title: 'Confidence Trust Signal Engine', body: 'Investor-facing trust labels expose evidence depth, pattern match strength, data freshness, persona agreement, uncertainty dimensions, and historical calibration.' },
-                                        { title: 'Macro-Signal Early Warning System', body: 'MEWS detects political, regulatory, currency, social, infrastructure, and climate shifts that can make prior analyses obsolete.' },
                                         { title: 'Autonomous Continual Harness', body: 'Episodes and outcomes feed a scheduled improvement loop for formula weights, persona calibration, prompt directives, and skill crystallisation.' },
                                         { title: 'Board-Ready Document Generation', body: 'Reports, letters, briefs, and audit-ready outputs are compiled from scores, debates, trust signals, ethics results, and provenance rather than invented from a prompt.' },
                                     ].map((item, i) => (
