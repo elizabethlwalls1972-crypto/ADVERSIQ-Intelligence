@@ -1855,7 +1855,7 @@ export class BrainIntegrationService {
           growthRate = 0.35;
           opMargin = 0.32;
           discRate = 0.12;
-        } else if (sectorStr.includes('agri') || sectorStr.includes('farm') || sectorStr.includes('food')) {
+        } else if (sectorStr.includes('agri') || sectorStr.includes('farm') || sectorStr.includes('food') || sectorStr.includes('canning')) {
           defaultInvestment = 2_500_000;
           growthRate = 0.12;
           opMargin = 0.18;
@@ -1882,6 +1882,14 @@ export class BrainIntegrationService {
           discRate = 0.095;
         }
 
+        // Apply scale factors if parsed from raw prompt (e.g. "small canning factory")
+        const scale = String(fp.scale || '').toLowerCase();
+        if (scale === 'small') {
+          defaultInvestment = defaultInvestment / 5; // e.g. scale down!
+        } else if (scale === 'large') {
+          defaultInvestment = defaultInvestment * 3; // scale up!
+        }
+
         // Slight deterministic variance based on org name so it is not completely identical if unconfigured
         const orgName = String(fp.organizationName || '');
         const nameHash = orgName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -1892,7 +1900,8 @@ export class BrainIntegrationService {
 
         const investNum = parseRobust(fp.totalInvestment || fp.capitalAllocation) || defaultInvestment;
         // Generate a dynamic revenue that is a sector-specific percentage of the investment
-        const revFactor = sectorStr.includes('digital') ? 0.7 : sectorStr.includes('infra') ? 0.35 : 0.55;
+        // Canning, Agribusiness, and Manufacturing have higher asset turnover rates (higher revFactor)
+        const revFactor = sectorStr.includes('digital') ? 0.85 : sectorStr.includes('infra') ? 0.45 : sectorStr.includes('food') || sectorStr.includes('canning') || sectorStr.includes('agri') ? 1.25 : sectorStr.includes('manufactur') ? 0.95 : 0.75;
         const revNum = parseRobust(fp.annualRevenue || fp.revenueYear1 || fp.revenue) || Math.round(investNum * revFactor * (1 + varianceMod));
 
         return FinancialCalculationService.computeSnapshot({

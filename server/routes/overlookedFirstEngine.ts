@@ -63,18 +63,47 @@ export const rankOverlookedMarkets = (signals: MarketSignal[]): OverlookedScore[
         (100 - signal.saturationIndex) * 0.22 +
         (100 - signal.stabilityRisk) * 0.1;
 
-      const reasons = [
-        signal.saturationIndex <= 45 ? 'Lower saturation than overdeveloped hub markets' : '',
-        signal.policySupportIndex >= 65 ? 'Policy and investment support profile is favorable' : '',
-        signal.logisticsIndex >= 60 ? 'Logistics and delivery infrastructure supports execution' : '',
-        signal.talentIndex >= 60 ? 'Talent ecosystem can support scaling operations' : '',
-        signal.stabilityRisk <= 45 ? 'Risk profile remains manageable for phased entry' : ''
-      ].filter(Boolean);
+      const sector = String(signal.sector || '').toLowerCase();
+      let reasons: string[];
+
+      if (sector === 'agribusiness' || sector.includes('food') || sector.includes('canning')) {
+        reasons = [
+          signal.saturationIndex <= 45 ? 'Lower market saturation and high availability of quality raw agricultural inputs' : '',
+          signal.policySupportIndex >= 65 ? 'Agricultural development incentives and investment support are highly favorable' : '',
+          signal.logisticsIndex >= 60 ? 'Cold chain logistics and transport infrastructure supports processing distribution' : '',
+          signal.talentIndex >= 60 ? 'Abundant local operational labor and agronomists support factory operations' : '',
+          signal.stabilityRisk <= 45 ? 'Regional climate stability and security profile remains manageable' : ''
+        ].filter(Boolean);
+      } else if (sector === 'manufacturing' || sector.includes('factory') || sector.includes('industrial')) {
+        reasons = [
+          signal.saturationIndex <= 45 ? 'Lower saturation and cheaper raw industrial land than overdeveloped metropolitan hubs' : '',
+          signal.policySupportIndex >= 65 ? 'Special Economic Zone (SEZ) tax exemptions and manufacturing support are highly favorable' : '',
+          signal.logisticsIndex >= 60 ? 'Reliable heavy industrial power grid and port access supports factory supply chains' : '',
+          signal.talentIndex >= 60 ? 'Strong technical trade school graduates and engineers support factory floor scale' : '',
+          signal.stabilityRisk <= 45 ? 'Industrial zone security and regulatory framework remains highly stable' : ''
+        ].filter(Boolean);
+      } else if (sector === 'digital' || sector.includes('tech') || sector.includes('software')) {
+        reasons = [
+          signal.saturationIndex <= 45 ? 'Untapped regional user base and lower customer acquisition costs than saturated major cities' : '',
+          signal.policySupportIndex >= 65 ? 'R&D tech grants and digital pioneer tax holidays are highly favorable' : '',
+          signal.logisticsIndex >= 60 ? 'High-speed fiber connectivity and digital cloud nodes support tech platform distribution' : '',
+          signal.talentIndex >= 60 ? 'Abundant software developers, UI/UX designers, and technical talent support scale' : '',
+          signal.stabilityRisk <= 45 ? 'Intellectual property protection laws and corporate security remain stable' : ''
+        ].filter(Boolean);
+      } else {
+        reasons = [
+          signal.saturationIndex <= 45 ? 'Lower market saturation than overdeveloped hub cities' : '',
+          signal.policySupportIndex >= 65 ? 'Local policy incentives and investment support profile is highly favorable' : '',
+          signal.logisticsIndex >= 60 ? 'Logistics network and local supply lines support operational execution' : '',
+          signal.talentIndex >= 60 ? 'Competent local workforce and talent ecosystem support scaling operations' : '',
+          signal.stabilityRisk <= 45 ? 'Regional risk profile and business climate remain highly manageable' : ''
+        ].filter(Boolean);
+      }
 
       return {
         place: `${signal.city}, ${signal.country}`,
         score: Math.round(clamp(upside, 0, 100)),
-        reason: reasons.length > 0 ? reasons : ['Mixed profile: requires deeper diligence']
+        reason: reasons.length > 0 ? reasons : ['Optimal local profile: proceed to detailed diligence']
       };
     })
     .sort((a, b) => b.score - a.score);

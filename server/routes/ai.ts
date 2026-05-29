@@ -1310,6 +1310,7 @@ const extractReportParamsFromContext = (message: string, context?: unknown): Rec
       params.sector = String(cs.organizationType || cs.sector);
     } else if (cs.industry) {
       params.industry = Array.isArray(cs.industry) ? cs.industry : [String(cs.industry)];
+      params.sector = String(params.industry[0]);
     }
 
     if (cs.objectives) params.strategicObjectives = Array.isArray(cs.objectives) ? cs.objectives : [String(cs.objectives)];
@@ -1337,6 +1338,61 @@ const extractReportParamsFromContext = (message: string, context?: unknown): Rec
       Object.assign(params, ctx.reportParams);
     }
   }
+
+  // ── High-Fidelity message-based parameter extraction (when starting fresh) ──
+  if (message) {
+    const msg = message.toLowerCase();
+
+    // 1. Dynamic country detection
+    if (!params.country) {
+      const countryMatch = message.match(/\b(philippines|vietnam|china|indonesia|india|germany|uk|united kingdom|us|usa|united states|japan)\b/i);
+      if (countryMatch) {
+        params.country = countryMatch[0];
+      }
+    }
+
+    // 2. Dynamic industry / sector detection from raw message keywords
+    if (!params.sector) {
+      if (/\bcanning\b|\bcanned\b|\bfood\b|\bprocessing\b|\bpackhouse\b|\bagri/i.test(msg)) {
+        params.sector = 'Agriculture/Food Processing';
+        params.industry = ['Agriculture/Food Processing'];
+      } else if (/\bmanufacturing\b|\bfactory\b|\bindustrial\b|\bplant\b|\bassembly/i.test(msg)) {
+        params.sector = 'Manufacturing/Factory';
+        params.industry = ['Manufacturing/Factory'];
+      } else if (/\bsolar\b|\bwind\b|\brenewables?\b|\benergy\b|\bpower\b/i.test(msg)) {
+        params.sector = 'Infrastructure/Energy';
+        params.industry = ['Infrastructure/Energy'];
+      } else if (/\bsoftware\b|\btech\b|\bai\b|\bdigital\b|\bsaas\b|\bapp\b/i.test(msg)) {
+        params.sector = 'Tech/Software/AI';
+        params.industry = ['Tech/Software/AI'];
+      }
+    }
+
+    // 3. Dynamic scale / investment scale factor detection
+    if (!params.scale) {
+      if (/\bsmall\b|\bboutique\b|\bstartup\b|\bmedium-sized\b/i.test(msg)) {
+        params.scale = 'small';
+      } else if (/\blarge\b|\benterprise\b|\bmultinational\b|\bcorporate\b/i.test(msg)) {
+        params.scale = 'large';
+      }
+    }
+
+    // 4. Extract investment size from raw message if still missing
+    if (!params.totalInvestment) {
+      const match = message.match(/\b(\d+(?:\.\d+)?)\s*(million|m|billion|b)\b/i);
+      if (match) {
+        params.totalInvestment = match[0];
+      }
+    }
+
+    // 5. Build dynamic objectives if missing
+    if (!params.strategicObjectives) {
+      if (/\binvest\b|\bexpansion\b|\bsetup\b|\bnew location\b|\bentry\b/i.test(msg)) {
+        params.strategicObjectives = ['Establish new international processing location and scale up production footprint'];
+      }
+    }
+  }
+
   // Ensure there's at least something from the message for engines to work with
   if (!params.problemStatement && message) {
     params.problemStatement = message.substring(0, 500);
