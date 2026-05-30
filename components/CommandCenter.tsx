@@ -402,7 +402,31 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             {/* What ADVERSIQ Intelligence AI Is */}
             <section className="py-20 px-4 bg-slate-950">
                 <div className="max-w-6xl mx-auto">
-                    <div className="border-t border-white/10 pt-12 pb-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pb-16">
+                        <div>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Platform</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
+                                Institutional intelligence.<br />
+                                <span className="font-black">On demand. Without the firm.</span>
+                            </h2>
+                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">A single platform run for verified, auditable insight.</p>
+                            <div>
+                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">Why this matters now</p>
+                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">Meet ADVERSIQ<br /><br />ADVERSIQ delivers institutional-grade strategic intelligence in minutes, not months. Talk to our AI consultant like you'd brief a senior advisor. In 30-45 minutes, you have a complete strategic brief, stress-tested conclusions, and defensible output.</p>
+                            </div>
+                        </div>
+                        <div className="w-full max-w-md mx-auto lg:mx-0">
+                            <div className="aspect-square overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
+                                <img
+                                    src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=1200&h=1200&fit=crop&q=80"
+                                    alt="City skyline at night"
+                                    className="w-full h-full object-cover brightness-110 contrast-110 saturate-125"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-white/10 pt-12">
                         <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl">
                             Your next major decision deserves more than a confident-sounding answer.<br />
                             <span className="text-amber-400">No endless questionnaires. ADVERSIQ Consultant asks the right questions in sequence—building your case in real time through natural dialogue.</span>
@@ -429,30 +453,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 View Architecture
                                 <ArrowRight size={16} />
                             </button>
-                        </div>
-                    </div>
-
-                    <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Platform</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                                Institutional intelligence.<br />
-                                <span className="font-black">On demand. Without the firm.</span>
-                            </h2>
-                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">A single platform run for verified, auditable insight.</p>
-                            <div>
-                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">Why this matters now</p>
-                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">Meet ADVERSIQ<br /><br />ADVERSIQ delivers institutional-grade strategic intelligence in minutes, not months. Talk to our AI consultant like you'd brief a senior advisor. In 30-45 minutes, you have a complete strategic brief, stress-tested conclusions, and defensible output.</p>
-                            </div>
-                        </div>
-                        <div className="w-full max-w-md mx-auto lg:mx-0">
-                            <div className="aspect-square overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
-                                <img
-                                    src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=1200&h=1200&fit=crop&q=80"
-                                    alt="City skyline at night"
-                                    className="w-full h-full object-cover brightness-110 contrast-110 saturate-125"
-                                />
-                            </div>
                         </div>
                     </div>
                 </div>
