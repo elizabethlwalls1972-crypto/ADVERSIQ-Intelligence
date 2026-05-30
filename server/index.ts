@@ -70,6 +70,10 @@ import { sanitizeBody, promptInjectionGuard } from './middleware/validate.js';
 import proxyRoutes from './routes/proxy.js';
 import memoryRoutes from './routes/memory.js';
 import ollamaRoutes from './routes/ollama.js';
+import omniRoutes from './routes/omni.js';
+import researchRoutes from './routes/research.js';
+import memoryLearningRoutes from './routes/memory-learning.js';
+import { omniNode } from './core/AdversiqOmniNode.js';
 
 const app = express();
 const PORT = parseInt(String(process.env.PORT || 3000), 10);
@@ -314,6 +318,9 @@ app.use('/api/learning', learningRoutes);
 app.use('/api/ai/proxy', proxyRoutes);
 app.use('/api/memory', memoryRoutes);
 app.use('/api/ollama', ollamaRoutes);
+app.use('/api/omni', omniRoutes);
+app.use('/api/research', researchRoutes);
+app.use('/api/memory-learning', memoryLearningRoutes);
 
 // Serve static frontend in production
 if (process.env.NODE_ENV === 'production') {
@@ -369,7 +376,7 @@ app.use(notFoundHandler);
 app.use(globalErrorHandler);
 
 // Start server
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║  ADVERSIQ Intelligence AI Backend Server                                ║
@@ -382,6 +389,13 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 ╚════════════════════════════════════════════════════════════╝
   `);
   console.log('[DEBUG] Server started, event loop should be active...');
+
+  // Boot the Omni-Node system after server is listening
+  try {
+    await omniNode.bootSequence();
+  } catch (err) {
+    console.error('[CRITICAL] Failed to boot Omni-Node:', err);
+  }
 });
 
 console.log('[DEBUG] After app.listen call');

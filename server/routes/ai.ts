@@ -500,6 +500,7 @@ CRITICAL OUTPUT RULES — NEVER VIOLATE:
 
 General behavior:
 - Be direct and client-facing. No filler. No vague claims.
+- Keep normal chat answers short: 2-5 concise paragraphs or bullets unless the user explicitly asks for a report, brief, document, or full case pack.
 - When context is incomplete, state assumptions and flag confidence impact.
 - If the user supplies a named person, official, agency, city, or company, treat it as a verification target and build the analysis around it. Do not dismiss the entity as "not found" unless verified live evidence contradicts the user; instead say "user-supplied, pending verification" and continue with the decision analysis.
 - Correct obvious typos in place names when the intended location is clear, while noting the normalization.
@@ -1523,7 +1524,7 @@ const invokeConsultantWithTogether = async (prompt: string, consultantInstructio
         { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt },
       ],
-      max_tokens: 1800,
+      max_tokens: 900,
       temperature: 0.4,
     }),
   });
@@ -1558,7 +1559,7 @@ const invokeConsultantWithGroq = async (prompt: string, consultantInstruction?: 
         { role: 'system', content: consultantInstruction || CONSULTANT_SYSTEM_INSTRUCTION },
         { role: 'user', content: prompt.slice(0, 8000) },
       ],
-      max_tokens: 1800,
+      max_tokens: 900,
       temperature: 0.4,
     }),
   });
@@ -1601,7 +1602,7 @@ const invokeConsultantWithOpenAI = async (prompt: string, consultantInstruction?
         { role: 'user', content: prompt }
       ],
       temperature: 0.4,
-      max_tokens: 1800
+      max_tokens: 900
     })
   });
 
@@ -1636,7 +1637,7 @@ const invokeConsultantWithGemma = async (prompt: string, consultantInstruction?:
         system_instruction: { parts: [{ text: systemText }] },
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: {
-          maxOutputTokens: 8192,
+          maxOutputTokens: 900,
           temperature: 0.4,
           topP: 0.9,
         },
@@ -2007,12 +2008,15 @@ const runConsultantBroker = async (
   order: ConsultantProvider[],
   timeoutMs: number = CONSULTANT_PROVIDER_TIMEOUT_MS,
   providerAvailability?: Partial<Record<ConsultantProvider, boolean>>,
-  consultantInstruction?: string
+  consultantInstruction?: string,
+  skipLocalOrchestrator = false
 ): Promise<{ text: string; provider: ConsultantProvider | string; attempts: ConsultantProviderAttempt[] }> => {
   const attempts: ConsultantProviderAttempt[] = [];
   const orchestratorBackoff = providerBackoffDetail('local-orchestrator');
 
-  if (orchestratorBackoff) {
+  if (skipLocalOrchestrator) {
+    attempts.push({ provider: 'local-orchestrator', ok: false, detail: 'Skipped for lightweight chat mode' });
+  } else if (orchestratorBackoff) {
     attempts.push({ provider: 'local-orchestrator', ok: false, detail: orchestratorBackoff });
   } else {
     try {
@@ -2479,7 +2483,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
   const start = Date.now();
 
   try {
-    const { message, context, systemPrompt, modelOrder, taskType, envelope } = req.body;
+    const { message, context, systemPrompt, modelOrder, taskType, envelope, responseMode } = req.body;
 
     if (!message || typeof message !== 'string') {
       return res.status(400).json({ error: 'message is required' });
@@ -2542,6 +2546,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
       normalizedTaskType,
       sanitizedContextResult.context
     );
+    const lightweightChat = responseMode === 'chat';
 
     const learningHint = await AdaptiveControlLearning.getHint();
     const providerAvailability = await getRuntimeProviderAvailability();
@@ -2562,11 +2567,15 @@ router.post('/consultant', async (req: Request, res: Response) => {
     );
 
     const requestedProviderOrder = parseProviderOrder(modelOrder);
+    const lightweightProviderPreference: ConsultantProvider[] = lightweightChat
+      ? ['groq', 'together', 'openai', 'anthropic', 'openrouter', 'mistral']
+      : [];
     const providerOrder = Array.from(new Set([
       ...requestedProviderOrder.filter((provider) => provider === 'local-orchestrator' || controlDecision.providerOrder.includes(provider as ControlProvider)),
+      ...lightweightProviderPreference.filter((provider) => controlDecision.providerOrder.includes(provider as ControlProvider)),
       ...controlDecision.providerOrder,
     ]));
-    const decisionFirstLocalPath = asksGovernmentBusinessRisk(sanitizedMessage);
+    const decisionFirstLocalPath = !lightweightChat && asksGovernmentBusinessRisk(sanitizedMessage);
 
     const intent = detectConsultantIntent(sanitizedMessage);
     const capabilityProfile = deriveConsultantCapabilityProfile(sanitizedMessage, sanitizedContextResult.context);
@@ -2639,51 +2648,53 @@ router.post('/consultant', async (req: Request, res: Response) => {
     const LIVE_INTEL_TIMEOUT_MS = decisionFirstLocalPath ? 3500 : 7000;
     const PROACTIVE_TIMEOUT_MS = decisionFirstLocalPath ? 2500 : 6000;
 
-    try {
-      const [brainResult, nsilResult, liveResult, proactiveResult] = await Promise.allSettled([
-        Promise.race([
-          BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
-        ]),
-        Promise.race([
-          NSILIntelligenceHub.runFullAnalysis(reportParams),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
-        ]),
-        Promise.race([
-          (async (): Promise<LiveIntelligenceResult> => {
-            const queries = Array.from(new Set([
-              sanitizedMessage,
-              ...researchPlan.questions.map((question) => question.query),
-            ].map((query) => query.trim()).filter(Boolean))).slice(0, 3);
-            const results = await Promise.allSettled(queries.map((query) => fetchLiveIntelligence(query)));
-            const fulfilled = results
-              .map((result, index) => ({ result, index }))
-              .filter((entry): entry is { result: PromiseFulfilledResult<LiveIntelligenceResult>; index: number } => entry.result.status === 'fulfilled');
-            const evidenceBundles: ResearchEvidenceBundle[] = fulfilled.map((entry) => ({
-              query: queries[entry.index],
-              sources: entry.result.value.sources,
-              content: formatLiveIntelligence(entry.result.value),
-            }));
-            researchCognitionBlock = autonomousResearchCognition.buildEvidenceReasoningBlock(researchPlan, evidenceBundles);
-            return mergeLiveIntelligence(fulfilled.map((entry) => entry.result.value));
-          })(),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), LIVE_INTEL_TIMEOUT_MS)),
-        ]),
-        Promise.race([
-          proactiveSolutionEngine.run(sanitizedMessage, PROACTIVE_TIMEOUT_MS),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Proactive timeout')), PROACTIVE_TIMEOUT_MS + 500)),
-        ]),
-      ]);
-      if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
-      else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
-      if (nsilResult.status === 'fulfilled') nsilReport = nsilResult.value as unknown as Record<string, unknown>;
-      else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
-      if (liveResult.status === 'fulfilled') liveIntel = liveResult.value;
-      else console.warn('[Consultant] Live intelligence did not complete:', liveResult.reason?.message);
-      if (proactiveResult.status === 'fulfilled') proactiveCtx = proactiveResult.value;
-      else console.warn('[Consultant] Proactive engine did not complete:', proactiveResult.reason?.message);
-    } catch (brainErr) {
-      console.warn('[Consultant] Brain/NSIL/Live parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
+    if (!lightweightChat) {
+      try {
+        const [brainResult, nsilResult, liveResult, proactiveResult] = await Promise.allSettled([
+          Promise.race([
+            BrainIntegrationService.enrich(reportParams, readinessEstimate, sanitizedMessage),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Brain timeout')), BRAIN_TIMEOUT_MS)),
+          ]),
+          Promise.race([
+            NSILIntelligenceHub.runFullAnalysis(reportParams),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('NSIL timeout')), BRAIN_TIMEOUT_MS)),
+          ]),
+          Promise.race([
+            (async (): Promise<LiveIntelligenceResult> => {
+              const queries = Array.from(new Set([
+                sanitizedMessage,
+                ...researchPlan.questions.map((question) => question.query),
+              ].map((query) => query.trim()).filter(Boolean))).slice(0, 3);
+              const results = await Promise.allSettled(queries.map((query) => fetchLiveIntelligence(query)));
+              const fulfilled = results
+                .map((result, index) => ({ result, index }))
+                .filter((entry): entry is { result: PromiseFulfilledResult<LiveIntelligenceResult>; index: number } => entry.result.status === 'fulfilled');
+              const evidenceBundles: ResearchEvidenceBundle[] = fulfilled.map((entry) => ({
+                query: queries[entry.index],
+                sources: entry.result.value.sources,
+                content: formatLiveIntelligence(entry.result.value),
+              }));
+              researchCognitionBlock = autonomousResearchCognition.buildEvidenceReasoningBlock(researchPlan, evidenceBundles);
+              return mergeLiveIntelligence(fulfilled.map((entry) => entry.result.value));
+            })(),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Live intel timeout')), LIVE_INTEL_TIMEOUT_MS)),
+          ]),
+          Promise.race([
+            proactiveSolutionEngine.run(sanitizedMessage, PROACTIVE_TIMEOUT_MS),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Proactive timeout')), PROACTIVE_TIMEOUT_MS + 500)),
+          ]),
+        ]);
+        if (brainResult.status === 'fulfilled') brainContext = brainResult.value;
+        else console.warn('[Consultant] Brain enrichment did not complete:', brainResult.reason?.message);
+        if (nsilResult.status === 'fulfilled') nsilReport = nsilResult.value as unknown as Record<string, unknown>;
+        else console.warn('[Consultant] NSIL analysis did not complete:', nsilResult.reason?.message);
+        if (liveResult.status === 'fulfilled') liveIntel = liveResult.value;
+        else console.warn('[Consultant] Live intelligence did not complete:', liveResult.reason?.message);
+        if (proactiveResult.status === 'fulfilled') proactiveCtx = proactiveResult.value;
+        else console.warn('[Consultant] Proactive engine did not complete:', proactiveResult.reason?.message);
+      } catch (brainErr) {
+        console.warn('[Consultant] Brain/NSIL/Live parallel run error:', brainErr instanceof Error ? brainErr.message : brainErr);
+      }
     }
     // ═══ END BRAIN + NSIL WIRING ════════════════════════════════════════════
 
@@ -2798,7 +2809,7 @@ router.post('/consultant', async (req: Request, res: Response) => {
         brokerResult = await runConsultantBroker(
         prompt,
         providerOrder,
-        controlDecision.timeoutMs,
+        lightweightChat ? Math.min(controlDecision.timeoutMs, 7000) : controlDecision.timeoutMs,
         {
           ollama: providerAvailability.ollama,
           openai: providerAvailability.openai,
@@ -2809,7 +2820,8 @@ router.post('/consultant', async (req: Request, res: Response) => {
           openrouter: providerAvailability.openrouter,
           mistral: providerAvailability.mistral,
         },
-        activeDomainInstruction
+        activeDomainInstruction,
+        lightweightChat
       );
     } catch (brokerError) {
       // All external providers failed — fall back to local intelligence synthesis
@@ -2962,6 +2974,19 @@ router.post('/consultant', async (req: Request, res: Response) => {
       }, interactionPolicy);
     } catch (interactionLearningError) {
       console.warn('[Consultant] Autonomous interaction learning skipped:', interactionLearningError instanceof Error ? interactionLearningError.message : interactionLearningError);
+    }
+
+    if (lightweightChat) {
+      return res.json({
+        requestId,
+        taskType: normalizedTaskType,
+        text: finalText,
+        intent,
+        provider: brokerResult.provider,
+        attempts: brokerResult.attempts,
+        confidence: 0.86,
+        model: brokerResult.provider,
+      });
     }
 
     return res.json({

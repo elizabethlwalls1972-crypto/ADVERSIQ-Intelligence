@@ -153,7 +153,7 @@ npm run dev:frontend
 
 **Note:** Local Express server uses fallback AI providers (Ollama, Groq, Together). Add to `.env.local`:
 ```
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=[REDACTED_TOKEN]
 GROQ_API_KEY=...
 ```
 

@@ -164,38 +164,24 @@ const resolveApiUrl = (path: string): string => {
 
 const buildSubstantiveConnectionFallback = (input: string): string => {
   const normalized = input.trim();
-  const city = /\bpagad(?:ian|ain)\b/i.test(normalized) ? 'Pagadian City, Zamboanga del Sur' : 'the target location';
-  const mayor = normalized.match(/\bmayor\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,3})/i)?.[1]?.replace(/\b(and|what|which|who|where)\b.*$/i, '').trim();
-  const isAuto = /\b(car|auto|automotive|vehicle|ev|manufactur)/i.test(normalized);
+  if (!normalized) {
+    return "I'm here. Tell me what you want to work through and I'll respond directly.";
+  }
 
-  const stakeholderLine = mayor
-    ? `- Treat Mayor ${mayor} and the city government as the first stakeholder map, but verify current roles, committees, ordinances, and investment priorities from official LGU/DILG sources before relying on them.`
-    : '- Build a city-government stakeholder map first: mayor, city administrator, planning/development office, permits/licensing, investment promotions, engineering, and procurement.';
+  const asksForDeepAnalysis = /\b(report|brief|letter|case pack|due diligence|risk|market entry|investment|partnership|government engagement|strategy|analysis|feasibility|verify|stress test)\b/i.test(normalized);
 
-  const sectorLines = isAuto
-    ? [
-        '- Full vehicle assembly is probably the highest-friction path unless there is already land, power, logistics, supplier depth, and incentive support.',
-        '- Better first investments are automotive parts distribution, service/maintenance hubs, light fabrication, fleet upfitting, body-building, EV/utility vehicle pilots, and government or commercial fleet servicing.',
-        '- The strongest thesis is not "build cars first"; it is "prove demand and operating support first, then localize higher-value manufacturing in stages."',
-      ]
-    : [
-        '- Start with demand validation, operating constraints, land/power/logistics readiness, local incentives, and partner availability before committing capital.',
-        '- Prioritize lower-capex entry points that prove market access before building fixed assets.',
-      ];
+  if (!asksForDeepAnalysis) {
+    return [
+      "I understand. The live intelligence call did not complete cleanly, but we can still work through it.",
+      '',
+      "Tell me the country, the sector, and what you are trying to decide. I'll keep it conversational first, then run deeper checks only when you ask.",
+    ].join('\n');
+  }
 
   return [
-    `I read your brief as: understand ${city}, the local government, and whether it is worth expanding a manufacturing business there.`,
+    "I understand the direction, but the live intelligence call did not complete cleanly.",
     '',
-    '**First-pass investment read**',
-    stakeholderLine,
-    ...sectorLines,
-    '- Key risks to verify: port/highway access, reliable power, skilled technicians, permitting speed, political continuity, land title, flood exposure, and whether local procurement can anchor early revenue.',
-    '',
-    '**Recommended next move**',
-    'Run this as a staged market-entry assessment: 1) LGU/stakeholder verification, 2) automotive demand and fleet mapping, 3) site/logistics screen, 4) partner shortlist, 5) phased capex decision.',
-    '',
-    'The live intelligence call did not return cleanly in this turn, so I am giving you the deterministic first-pass instead of asking you to repeat yourself.',
-    'Tell me whether you want: information only, a solution pathway, a report/brief, a letter/document, or a full case pack.',
+    "Send the country, sector, decision owner, and what outcome you want. I'll keep the next answer short, then move into verification if you ask for it.",
   ].join('\n');
 };
 
@@ -4644,12 +4630,17 @@ ${agentRegistry.current.toManifest()}`;
       const isFastFactQuery = /^(tell me about|tell me more about|more about|what is|what are|who is|explain|describe|give me info|can you tell me|i want to know about|i want to know more about|what do you know about|research|find out about|background on|background about|i want to learn|what can you tell me)\b/i.test(trimmedUserContent)
         && !/\b(strategy|investment|risk|analysis|evaluate|assess|compare|market entry|partnership|joint venture|government engagement|fund|financing|regulatory|compliance|due diligence|feasibility|opportunity|scenario|forecast|projection|letter|report|case study)\b/i.test(trimmedUserContent);
       const isDocBuilderIntent = deliverableIntent === 'report' || deliverableIntent === 'letter' || deliverableIntent === 'full_case';
-      const shouldRunInsights = !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 25) && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery);
+      const requestsDeepAnalysis = /\b(strategy|market entry|investment|partnership|government engagement|expansion|decision|risk|due diligence|compliance|contradiction|verify|stress test|adversarial|feasibility|scenario|forecast|projection|letter|report|case pack|full case)\b/i.test(trimmedUserContent);
+      const isConversationalTurn = !isDocBuilderIntent
+        && !fullSpectrumReasoningMode
+        && !requestsDeepAnalysis
+        && trimmedUserContent.length < 260;
+      const shouldRunInsights = !isConversationalTurn && !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 25) && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery);
       // ── BACKGROUND BRAIN ENRICHMENT (runs in parallel) ──
       // Fire brain on ANY substantive query - even with zero readiness on first turn.
       // The brain can still contribute country data, governance indices, sanctions checks, etc.
       // Document builder intent ALWAYS fires brain for maximum research depth.
-      const shouldFireBrain = !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery) && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 15 || trimmedUserContent.length > 20);
+      const shouldFireBrain = !isConversationalTurn && !isGreetingOnly && !shouldPromptForOutputClarification && (isDocBuilderIntent || fullSpectrumReasoningMode || !isFastFactQuery) && (isDocBuilderIntent || fullSpectrumReasoningMode || liveReadiness >= 15 || trimmedUserContent.length > 20);
       const brainEnrichmentPromise = shouldFireBrain
         ? BrainIntegrationService.enrich(
             { country: caseDraft.country, organizationName: caseDraft.organizationName, organizationType: caseDraft.organizationType || undefined },
@@ -4704,7 +4695,7 @@ ${agentRegistry.current.toManifest()}`;
         // Engines not normally used in standard AI advisory - run synchronously
         // (all are pure computation, no async I/O) and inject as context blocks.
         let advancedIntelligenceBlock = '';
-        if (!isGreetingOnly && !shouldPromptForOutputClarification) {
+        if (!isConversationalTurn && !isGreetingOnly && !shouldPromptForOutputClarification) {
           try {
             const partialParams = {
               organizationName: caseDraft.organizationName || undefined,
@@ -5029,13 +5020,15 @@ ${agentRegistry.current.toManifest()}`;
         }
 
         // ── AI RESPONSE GENERATION ─────────────────────────────────────────────
-        const contextParts = [
-          brainBlock,
-          advancedIntelligenceBlock,
-          multiAgentContextRef.current,
-          locationProfileContextRef.current,
-          eventBusInsightsRef.current,
-        ].filter(Boolean);
+        const contextParts = isConversationalTurn
+          ? []
+          : [
+              brainBlock,
+              advancedIntelligenceBlock,
+              multiAgentContextRef.current,
+              locationProfileContextRef.current,
+              eventBusInsightsRef.current,
+            ].filter(Boolean);
         const systemContext = contextParts.join('\n\n---\n\n');
 
         // For greetings and pure small talk, respond directly without calling the AI.
@@ -5052,7 +5045,7 @@ ${agentRegistry.current.toManifest()}`;
         try {
           // Trim context to avoid blowing through provider token-per-minute limits.
           // The backend system prompt adds further context server-side.
-          const MAX_CONTEXT_CHARS = 6000;
+          const MAX_CONTEXT_CHARS = isConversationalTurn ? 0 : 6000;
           const trimmedContext = systemContext.length > MAX_CONTEXT_CHARS
             ? systemContext.slice(0, MAX_CONTEXT_CHARS) + '\n...[additional context truncated]'
             : systemContext;
@@ -5078,6 +5071,8 @@ ${agentRegistry.current.toManifest()}`;
               body: JSON.stringify({
                 message: userContent,
                 taskType: consultantTaskType,
+                responseMode: isConversationalTurn ? 'chat' : 'full',
+                modelOrder: isConversationalTurn ? ['groq', 'together'] : undefined,
                 context: {
                   phase: inferredPhase,
                   readinessScore: liveReadiness,
@@ -5140,7 +5135,7 @@ ${agentRegistry.current.toManifest()}`;
         // ── TOOL CALL EXECUTION LOOP ───────────────────────────────────────────
         // Try native function calling first (structured JSON-schema tools),
         // then fall back to text-parsed [[TOOL:name]] blocks emitted by the model.
-        if (!isGreetingOnly && !shouldPromptForOutputClarification) {
+        if (!isConversationalTurn && !isGreetingOnly && !shouldPromptForOutputClarification) {
           let nativeFCToolResults: string[] = [];
           try {
             const fcResult = await runWithFunctionCalling(

@@ -7,8 +7,8 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev": "concurrently \"vite\" \"tsx watch server/index.ts\"",
-    "dev:frontend": "vite",
+    "dev": "concurrently \"vite --port 3002\" \"tsx watch server/index.ts\"",
+    "dev:frontend": "vite --port 3002",
     "dev:server": "tsx watch server/index.ts",
     "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:server\"",
     "build": "npm run build:all",
@@ -19,7 +19,7 @@
     "build:all": "npm run build:client && npm run build:server",
     "build:amplify": "node scripts/build-amplify.js",
     "start": "node dist-server/server/index.js",
-    "preview": "npm run build:client && wrangler dev",
+    "preview": "vite preview",
     "test:nsil": "tsx scripts/nsilSimulation.ts",
     "test:interaction-stress": "tsx scripts/interactionStress100.ts",
     "live:global-matters": "tsx scripts/liveGlobalMatterRun.ts",
@@ -32,7 +32,7 @@
     "audit:unused:deps": "depcheck",
     "audit:cycles": "madge --extensions ts,tsx --circular ./",
     "audit:all": "npm run audit:unused:exports && npm run audit:unused:deps && npm run audit:cycles",
-    "deploy": "npm run build:client && wrangler deploy"
+    "deploy": "npm run build:all"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1013.0",
@@ -45,7 +45,7 @@
     "docx": "^8.5.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "express-rate-limit": "^8.2.1",
+    "express-rate-limit": "^8.5.2",
     "framer-motion": "^12.23.25",
     "helmet": "^7.1.0",
     "html2canvas": "^1.4.1",
@@ -66,7 +66,6 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.36.4",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.58.2",
     "@types/compression": "^1.7.5",
@@ -94,7 +93,6 @@
     "ts-prune": "^0.10.3",
     "tsx": "^4.19.1",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0",
-    "wrangler": "^4.90.1"
+    "vite": "^6.2.0"
   }
 }
