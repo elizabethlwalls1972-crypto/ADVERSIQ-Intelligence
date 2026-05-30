@@ -45,6 +45,7 @@ import { autonomousInteractionLearner } from '../../services/nsil/autonomous_int
 import { autonomousResearchCognition, type ResearchEvidenceBundle } from '../../services/nsil/autonomous_research_cognition.js';
 import { NSILTrajectoryLogger } from '../../services/nsil/trajectory_logger.js';
 import { NSILFailureDetector } from '../../services/nsil/failure_detector.js';
+import { CITY_PROFILES } from '../../data/globalLocationProfiles.js';
 
 // ─── Live Intelligence: free web data for grounding AI responses ───────────
 // Sources used (all free, no API key required):
@@ -1883,42 +1884,87 @@ const buildDirectFallbackLead = (
 ): string[] => {
   const location = extractLocationAnchor(userMessage);
   const lines: string[] = [];
-  if (!asksGovernmentBusinessRisk(userMessage)) return lines;
+
+  // Identify matching city profile
+  const matchedProfile = CITY_PROFILES.find(
+    (profile) =>
+      profile.city.toLowerCase().includes(location.toLowerCase()) ||
+      location.toLowerCase().includes(profile.city.toLowerCase()) ||
+      profile.country.toLowerCase() === location.toLowerCase()
+  );
+
+  // Identify sector keywords from message
+  const lowerMsg = userMessage.toLowerCase();
+  const sectorKeywords: Record<string, string[]> = {
+    'Agriculture': ['agri', 'farm', 'crop', 'livestock', 'fish', 'sardine', 'food security'],
+    'Manufacturing': ['manufactur', 'factory', 'plant', 'steel', 'production'],
+    'Energy': ['energy', 'solar', 'wind', 'renew', 'power', 'copperstring', 'grid'],
+    'Tourism': ['tourism', 'hotel', 'resort', 'travel', 'sinulog', 'hospitality'],
+    'Logistics': ['logistics', 'port', 'seaport', 'airport', 'shipping', 'cargo', 'transport'],
+    'ICT': ['ict', 'tech', 'software', 'digital', 'bpo', 'it park', 'data center', 'saas']
+  };
+
+  let matchedSector = 'General Partnership';
+  for (const [sector, kws] of Object.entries(sectorKeywords)) {
+    if (kws.some(kw => lowerMsg.includes(kw))) {
+      matchedSector = sector;
+      break;
+    }
+  }
 
   const holdSignal = tribunal.releaseGate === 'red' || tribunal.verdict.toLowerCase() === 'hold' || strategicPipeline.readinessScore < 65;
   const decision = holdSignal
-    ? 'Do not treat this as a clean green-light yet.'
-    : 'This is workable only as a controlled, staged entry.';
+    ? 'Do not treat this as a clean green-light yet. Hold off on heavy commitments.'
+    : 'This is workable only as a controlled, staged regional entry.';
 
-  lines.push(`### Direct Answer`);
-  lines.push(`${decision} ${location ? `${location} should be handled as a conditional government-business opportunity, not a casual market entry.` : 'This should be handled as a conditional government-business opportunity, not a casual market entry.'}`);
-  lines.push('');
-  lines.push('The practical answer is: explore it remotely and through formal channels, but do not commit capital, travel, sign with intermediaries, or rely on verbal assurances until four checks pass: counterpart authority, procurement legality, anti-corruption controls, and current security/travel risk.');
-  lines.push('');
-  lines.push(`Local signal: tribunal=${tribunal.verdict.toUpperCase()}, gate=${tribunal.releaseGate}, readiness=${strategicPipeline.readinessScore}/100, evidence confidence=${perceptionDelta.confidence}%.`);
-  if (liveIntel?.sources?.length) {
-    lines.push(`Live evidence checked: ${liveIntel.sources.slice(0, 6).join('; ')}.`);
+  lines.push(`### Direct Advisory Answer`);
+  
+  if (matchedProfile) {
+    const isCityMatch = matchedProfile.city.toLowerCase().includes(location.toLowerCase()) || location.toLowerCase().includes(matchedProfile.city.toLowerCase());
+    if (isCityMatch) {
+      lines.push(`**Target Location Focus:** ${matchedProfile.city}, ${matchedProfile.country} (${matchedProfile.region})`);
+      lines.push(`${decision} For your **${matchedSector}** interest in **${matchedProfile.city}**, the system notes that under the local administration of **${matchedProfile.leaders[0]?.name || 'the local Mayor'}**, specific programs like the *${matchedProfile.currentPrograms?.[0]?.name || 'Local Incentives Program'}* (focusing on *${matchedProfile.currentPrograms?.[0]?.focus || 'regional expansion'}*) are active.`);
+      lines.push('');
+      lines.push(`**Local Intelligence Highlights:**`);
+      lines.push(`- **Strategic Advantages:** ${matchedProfile.strategicAdvantages.slice(0, 3).join(', ')}.`);
+      if (matchedProfile.infrastructure?.seaports?.length || matchedProfile.infrastructure?.airports?.length) {
+        const ports = [...(matchedProfile.infrastructure.seaports || []), ...(matchedProfile.infrastructure.airports || [])].map(p => p.name);
+        lines.push(`- **Logistics Infrastructure:** Active gates include ${ports.slice(0, 3).join(', ')}.`);
+      }
+      if (matchedProfile.taxIncentives?.length) {
+        lines.push(`- **Tax Incentives:** ${matchedProfile.taxIncentives.slice(0, 2).join(', ')}.`);
+      }
+      lines.push(`- **Ease of Doing Business:** ${matchedProfile.easeOfDoingBusiness}.`);
+    } else {
+      // Country match
+      lines.push(`**Target Country Focus:** ${matchedProfile.country}`);
+      lines.push(`${decision} When expanding into the **${matchedProfile.country}** market, the system identifies high-viability regional nodes. For your **${matchedSector}** initiative, we recommend comparing comparators like **${CITY_PROFILES.filter(p => p.country === matchedProfile.country).map(p => p.city).join(' and ')}** rather than a generic national strategy.`);
+    }
   } else {
-    lines.push('Live evidence status: no external source returned strongly enough to make this a verified go/no-go; confidence must stay conditional.');
+    // General fallback lead
+    lines.push(`${decision} This should be handled as a conditional government-business opportunity, not a casual market entry. Do not commit capital, travel, sign with intermediaries, or rely on verbal assurances until formal anti-corruption, procurement legality, and counterparty gates pass.`);
+  }
+
+  lines.push('');
+  lines.push(`**Advisory Action Plan:**`);
+  lines.push(`1. **Gate 1 - Official Channels:** Engage exclusively through authorized local facilitators (such as the *${matchedProfile?.investmentLeads?.[0]?.name || 'local Chamber / Promotions Desk'}*).`);
+  lines.push(`2. **Gate 2 - Procurement Check:** Verify if the opportunity is subject to municipal/state bidding rules (e.g. *${matchedProfile?.currentPrograms?.[1]?.name || 'formal tender processes'}*).`);
+  lines.push(`3. **Gate 3 - Compliance:** Align your proposal with local regulatory frameworks (e.g. ${matchedProfile?.laborLaws?.[0] || 'labor standards'} and PEZA rules).`);
+  
+  lines.push('');
+  lines.push(`*Local signal: tribunal=${tribunal.verdict.toUpperCase()}, gate=${tribunal.releaseGate}, readiness=${strategicPipeline.readinessScore}/100, evidence confidence=${perceptionDelta.confidence}%.*`);
+  
+  if (liveIntel?.sources?.length) {
+    lines.push(`*Live evidence checked: ${liveIntel.sources.slice(0, 6).join('; ')}.*`);
   }
   lines.push('');
+
   return lines;
 };
 
 const providerResponseNeedsLocalSynthesis = (userMessage: string, text: string): boolean => {
   const lower = text.toLowerCase();
-  if (lower.includes('[object object]')) return true;
-  if (!asksGovernmentBusinessRisk(userMessage)) return false;
-
-  const hasCounterpartyGate = /\b(counterpart|authority|authorized|official channel|official verification)\b/i.test(text);
-  const hasProcurementGate = /\b(procurement|tender|solicitation|legal route|bidding)\b/i.test(text);
-  const hasIntegrityGate = /\b(anti[- ]?corruption|corruption|integrity|compliance|conflict of interest|due diligence)\b/i.test(text);
-  const hasSecurityGate = /\b(security|travel risk|advisory|safety posture|physical risk)\b/i.test(text);
-  const asksInsteadOfAnswering = /\b(are you looking for|would you like information only|to better understand|i'?d like to ask)\b/i.test(text);
-  const greenlightsTooEarly = /\b(generally considered safe|safe place to do business|no major concerns)\b/i.test(text) &&
-    !(hasCounterpartyGate && hasProcurementGate && hasIntegrityGate && hasSecurityGate);
-
-  return asksInsteadOfAnswering || greenlightsTooEarly || !(hasCounterpartyGate && hasProcurementGate && hasIntegrityGate && hasSecurityGate);
+  return lower.includes('[object object]');
 };
 
 const consultantHarnessAdapter = new ContinualHarnessAdapter(path.join(process.cwd(), 'data', 'live_global_matters', 'evolved_state'));
