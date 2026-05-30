@@ -3126,7 +3126,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <span className="font-black text-amber-400">Built by one person.</span>
                             </h2>
                             <p className="text-[15px] text-white/45 mt-6 max-w-3xl leading-relaxed">
-                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture - with autonomous calibration now running across the stack. Every layer has an explicit input and output contract. The platform now preserves the original NSIL architecture while adding live persona calibration, structural twin discovery, Rawlsian ethics certificates, investor trust signals, macro early-warning alerts, and a continual improvement harness.
+                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture - with autonomous calibration now running across the stack. Every layer has an explicit input and output contract. The platform preserves the original NSIL architecture while adding the Omni-Node autonomous learning system (7 coordinated engines), persistent problem-solution memory (outcome-driven caching), advanced strategic engines (Kinetic, Temporal, Holographic), specialized research agents with mathematical typesetting, live persona calibration, structural twin discovery, Rawlsian ethics certificates, investor trust signals, macro early-warning alerts, and a continual improvement harness that learns from every engagement.
                             </p>
                             {/* 6 Disciplines bar */}
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-px mt-8 bg-white/5">
@@ -3153,8 +3153,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 {[
                                     { n: '10', label: 'Contracted\nPipeline Layers' },
                                     { n: '54+', label: 'Proprietary\nFormulas' },
-                                    { n: '12+', label: 'World-First\nCombinations' },
-                                    { n: '6', label: 'Advancement\nModules' },
+                                    { n: '7', label: 'Autonomous\nOmni-Node Engines' },
+                                    { n: '5', label: 'Research\nAgents' },
                                 ].map((s, i) => (
                                     <div key={i} className="bg-slate-900 px-6 py-7 text-center">
                                         <p className="text-3xl md:text-4xl font-black text-amber-400 leading-none">{s.n}</p>
@@ -3252,6 +3252,12 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         { title: 'Macro-Signal Early Warning System', body: 'MEWS detects political, regulatory, currency, social, infrastructure, and climate shifts that can make prior analyses obsolete.' },
                                         { title: 'Autonomous Continual Harness', body: 'Episodes and outcomes feed a scheduled improvement loop for formula weights, persona calibration, prompt directives, and skill crystallisation.' },
                                         { title: 'Board-Ready Document Generation', body: 'Reports, letters, briefs, and audit-ready outputs are compiled from scores, debates, trust signals, ethics results, and provenance rather than invented from a prompt.' },
+                                        { title: 'Persistent Problem-Solution Memory Engine', body: 'Intelligent caching system that learns from conversations across sessions. Extracts problems, caches solutions with effectiveness ratings, enables outcome-driven calibration, and provides semantic matching for recurring patterns in decision-making.' },
+                                        { title: 'Omni-Node Autonomous Learning System', body: 'Seven coordinated engines (Quorum Gatekeeper, Autonomous Swarm, Algorithmic Mutator, Adversarial Self-Play, Cognitive Universe, Morphic Field, Health Monitor) operate autonomously without human intervention. Self-calibrates from real outcomes, generates scenarios continuously, and evolves formulas based on performance variance.' },
+                                        { title: 'Advanced Strategic Engines', body: 'Three never-before-combined systems: Kinetic Resource Symbiosis (slime mold optimization for capital routing), Temporal Coherence Engine (multi-timeline validation across 2026/2030/2035/2040 baselines with climate and geopolitical adjustments), and Holographic Sovereign Sandbox (digital shadow simulations of adversarial entities to identify deployment vulnerabilities).' },
+                                        { title: 'Research Agent Framework with Mathematical Typesetting', body: 'Five specialized research agents (Economics, Logistics, Policy, Environment, Geopolitics) with 54+ LaTeX formulas, confidence scoring, evidence tracking, and sector applicability mapping. Integrated KaTeX rendering for real-time formula visualization with citations and uncertainty quantification.' },
+                                        { title: 'Live Autonomous Debate & Self-Play', body: 'Background autonomous scenario generation runs continuously. The Quorum debates full scenarios in real-time, identifies friction points without human prompting, archives lessons to JSONL for continual system learning, and creates distributed audit trails of reasoning chains.' },
+                                        { title: 'Interactive Intelligence Dashboard', body: 'Real-time visualization of system status, research domains, mathematical formulas, Omni-Node telemetry, and problem-solution memory metrics. Enables users to inspect the reasoning chain, view confidence levels, and understand what the system knows versus what it is inferring.' },
                                     ].map((item, i) => (
                                         <div key={i} className="border-t border-white/10 pt-5">
                                             <p className="text-sm font-black text-white mb-2">{item.title}</p>
@@ -3264,11 +3270,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* Closing */}
                             <div className="border-t border-white/10 pt-10">
                                 <p className="text-2xl md:text-3xl font-black text-white leading-tight max-w-3xl">
-                                    Six disciplines. 10 contract layers. 54+ formulas. Six advancement modules. One pipeline.<br />
+                                    Six disciplines. 10 contract layers. 54+ formulas. 7 autonomous engines. 5 research agents. Three world-first strategic systems.<br />
                                     <span className="text-amber-400">Built by one person, in sixteen months, from nothing.</span>
                                 </p>
                                 <p className="text-sm text-white/40 mt-4 max-w-2xl leading-relaxed">
-                                    The architecture is not a claim. The original NSIL stack remains the core: contradiction solving, debate, scoring, simulation, cognitive modelling, document synthesis, and reflexive release control. The new advancement layer adds outcome calibration, structural twins, ethics certificates, trust scoring, MEWS alerts, and continual improvement without reducing the platform to a reactive chatbot.
+                                    The architecture is not a claim. The original NSIL stack remains the core: contradiction solving, debate, scoring, simulation, cognitive modelling, document synthesis, and reflexive release control. The autonomous learning layer now adds the Omni-Node system (7 coordinated engines), persistent memory architecture (problem-solution caching with outcome calibration), advanced strategic engines (Kinetic, Temporal, Holographic), research agent framework (5 specialized domains with 54+ mathematical formulas), and continual improvement without reducing the platform to a reactive chatbot.
                                 </p>
                             </div>
                         </div>
