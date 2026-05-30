@@ -20,6 +20,7 @@ import { ReportParameters, CopilotInsight } from '../types';
 import { HistoricalLearningEngine } from './MultiAgentBrainSystem';
 import CompositeScoreService from './CompositeScoreService';
 import { callAIGateway } from './UnifiedAIGateway';
+import { resolveApiUrl } from './config';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES & INTERFACES
@@ -265,7 +266,7 @@ Example: [{"title":"Vietnam GDP Growth Reaches 6.5%","url":"https://worldbank.or
 
   private static async searchWithSerper(query: string): Promise<SearchResult[]> {
     try {
-      const response = await fetch('/api/search/serper', {
+      const response = await fetch(resolveApiUrl('/api/search/serper'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, num: 10 })
@@ -289,7 +290,7 @@ Example: [{"title":"Vietnam GDP Growth Reaches 6.5%","url":"https://worldbank.or
 
   private static async searchWithPerplexity(query: string, context?: any): Promise<SearchResult[]> {
     try {
-      const response = await fetch('/api/ai/perplexity', {
+      const response = await fetch(resolveApiUrl('/api/ai/perplexity'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -404,7 +405,7 @@ Example: [{"title":"Vietnam GDP Growth Reaches 6.5%","url":"https://worldbank.or
 
   private static async queryProvider(provider: AIProvider, prompt: string, context: any): Promise<string> {
     try {
-      const response = await fetch(provider.endpoint, {
+      const response = await fetch(resolveApiUrl(provider.endpoint), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -456,7 +457,7 @@ Create a synthesized response that:
 
       // Try backend first, fall back to direct Gemini
       try {
-        const response = await fetch('/api/ai/multi-agent', {
+        const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -544,7 +545,7 @@ Create a synthesized response that:
     try {
       // Try backend first
       try {
-        const response = await fetch('/api/ai/multi-agent', {
+        const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -677,7 +678,7 @@ Return ONLY a valid JSON array of opportunities with: type, title, description, 
     try {
       // Try backend first
       try {
-        const response = await fetch('/api/ai/multi-agent', {
+        const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1065,7 +1066,7 @@ Return as JSON array with: action, reasoning, expectedOutcome, confidence`,
     // Record learning to backend if available
     if (feedback.actualOutcome) {
       try {
-        await fetch('/api/learning/outcome', {
+        await fetch(resolveApiUrl('/api/learning/outcome'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

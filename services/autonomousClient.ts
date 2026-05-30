@@ -1,9 +1,10 @@
 import { callAIGateway } from './UnifiedAIGateway';
+import { resolveApiUrl } from './config';
 
 export async function solveAndAct(problem: string, context: any, params: any, options: any) {
   // Try backend first
   try {
-    const res = await fetch('/api/autonomous/solve', {
+    const res = await fetch(resolveApiUrl('/api/autonomous/solve'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ problem, context, params, options })

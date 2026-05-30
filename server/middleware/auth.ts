@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
-  if (process.env.NODE_ENV === 'production') {
+  const isDevLifecycle = (process.env.npm_lifecycle_event || '').startsWith('dev');
+  if (process.env.NODE_ENV === 'production' && !isDevLifecycle) {
     // Hard fail in production — a missing JWT secret is a critical security misconfiguration
     throw new Error('[AUTH] FATAL: JWT_SECRET environment variable is required in production. Set it before starting the server.');
   }

@@ -16,6 +16,7 @@
  */
 
 import { type CityProfile, type CityLeader } from '../data/globalLocationProfiles';
+import { resolveApiUrl } from './config';
 
 // ==================== TYPES ====================
 
@@ -88,7 +89,7 @@ export interface CitySearchData {
 export async function googleSearch(query: string, num: number = 10): Promise<LiveSearchResult[]> {
   try {
     // First try our backend API
-    const response = await fetch('/api/search/serper', {
+    const response = await fetch(resolveApiUrl('/api/search/serper'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, num })
@@ -152,7 +153,7 @@ export async function googleSearch(query: string, num: number = 10): Promise<Liv
  */
 export async function googleNewsSearch(query: string): Promise<LiveSearchResult[]> {
   try {
-    const response = await fetch('/api/search/serper', {
+    const response = await fetch(resolveApiUrl('/api/search/serper'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, num: 5, type: 'news' })

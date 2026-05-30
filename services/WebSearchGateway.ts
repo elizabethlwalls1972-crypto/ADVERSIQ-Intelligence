@@ -19,6 +19,7 @@
 
 import { tavilyDeepSearch, type TavilySearchResponse } from './tavilySearchService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
+import { resolveApiUrl } from './config';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -52,7 +53,7 @@ export interface SearchOptions {
 
 async function isServerAvailable(): Promise<boolean> {
   try {
-    const res = await fetch('/api/health', { signal: AbortSignal.timeout(2000) });
+    const res = await fetch(resolveApiUrl('/api/health'), { signal: AbortSignal.timeout(2000) });
     return res.ok;
   } catch {
     return false;
@@ -95,7 +96,7 @@ function setCache(key: string, results: WebSearchResult[]): void {
  */
 async function searchViaServer(query: string, opts: SearchOptions): Promise<WebSearchResult[]> {
   try {
-    const res = await fetch('/api/search/serper', {
+    const res = await fetch(resolveApiUrl('/api/search/serper'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -221,7 +222,7 @@ async function searchViaFallback(query: string, opts: SearchOptions): Promise<We
  */
 async function extractPageContent(url: string): Promise<WebPageContent | null> {
   try {
-    const res = await fetch('/api/search/extract', {
+    const res = await fetch(resolveApiUrl('/api/search/extract'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url }),

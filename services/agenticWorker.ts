@@ -5,6 +5,7 @@ import {
   type AgenticBrainResult
 } from './algorithms/OptimizedAgenticBrain';
 import { EventBus, type ExecutiveBrief, type MemoryCase } from './EventBus';
+import { resolveApiUrl } from './config';
 
 type SimilarCase = {
   id: string;
@@ -141,7 +142,7 @@ function buildExecutiveBrief(payload: ReportPayload): AgenticRun['executiveBrief
 
 async function loadServerReports(): Promise<Partial<ReportParameters>[]> {
   try {
-    const res = await fetch('/api/reports');
+    const res = await fetch(resolveApiUrl('/api/reports'));
     if (!res.ok) return [];
     return (await res.json()) as Partial<ReportParameters>[];
   } catch {

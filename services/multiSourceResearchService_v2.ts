@@ -28,6 +28,7 @@ import { type CityProfile, type CityLeader, type EconomicData } from '../data/gl
 import { locationResearchCache } from './locationResearchCache';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
 import { narrativeSynthesisEngine, type EnhancedNarratives } from './narrativeSynthesisEngine';
+import { resolveApiUrl } from './config';
 
 type WindowWithRuntimeEnv = Window & {
   __ENV__?: Record<string, string | undefined>;
@@ -1962,7 +1963,7 @@ async function tryBackendResearch(
       message: 'Connecting to AI research engine...'
     });
 
-    const response = await fetch('/api/search/location-intelligence', {
+    const response = await fetch(resolveApiUrl('/api/search/location-intelligence'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ location: locationQuery })

@@ -25,8 +25,11 @@ const envPaths = [
   path.resolve(__dirname, '.env.local'),
 ];
 
-// Preserve critical env vars set by the shell/infra before dotenv runs
-const shellNodeEnv = process.env.NODE_ENV;
+// Preserve critical env vars set by the shell/infra before dotenv runs.
+// Local npm dev scripts should stay in development mode even when .env carries
+// production defaults for deployment.
+const lifecycleEvent = process.env.npm_lifecycle_event || '';
+const shellNodeEnv = process.env.NODE_ENV || (lifecycleEvent.startsWith('dev') ? 'development' : undefined);
 const shellPort = process.env.PORT;
 
 const fallbackOverride = shellNodeEnv !== 'production';

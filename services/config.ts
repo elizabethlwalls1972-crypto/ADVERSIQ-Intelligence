@@ -77,6 +77,56 @@ export const config = {
   enableLiveReportBuilder: true,
 };
 
+const isAbsoluteHttpUrl = (value: string): boolean => /^https?:\/\//i.test(value);
+
+const getNodeApiOrigin = (): string => {
+  const explicitOrigin = String(
+    (typeof process !== 'undefined' && (
+      process.env.API_ORIGIN ||
+      process.env.BACKEND_ORIGIN ||
+      process.env.SERVER_ORIGIN ||
+      process.env.APP_URL
+    )) ||
+    ''
+  ).trim();
+
+  if (isAbsoluteHttpUrl(explicitOrigin)) {
+    return explicitOrigin.replace(/\/api\/?$/i, '').replace(/\/$/, '');
+  }
+
+  const port = String(
+    (typeof process !== 'undefined' && (process.env.PORT || process.env.API_PORT)) ||
+    '3000'
+  ).trim();
+
+  return `http://localhost:${port}`;
+};
+
+export const resolveApiUrl = (path: string): string => {
+  const rawPath = String(path || '').trim();
+  if (!rawPath || isAbsoluteHttpUrl(rawPath)) return rawPath;
+
+  const normalizedPath = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  const configuredBase = String(config.apiBaseUrl || '').trim().replace(/\/$/, '');
+  const hasBrowserWindow = typeof window !== 'undefined';
+
+  if (!hasBrowserWindow && !isAbsoluteHttpUrl(configuredBase)) {
+    return `${getNodeApiOrigin()}${normalizedPath}`;
+  }
+
+  if (!configuredBase) return normalizedPath;
+
+  if (configuredBase.endsWith('/api') && normalizedPath.startsWith('/api/')) {
+    return `${configuredBase.slice(0, -4)}${normalizedPath}`;
+  }
+
+  if (configuredBase.endsWith('/api') && !normalizedPath.startsWith('/api/')) {
+    return `${configuredBase}${normalizedPath}`;
+  }
+
+  return `${configuredBase}${normalizedPath}`;
+};
+
 // Helper functions for feature detection
 export const features = {
   shouldUseReal: (feature: keyof typeof config): boolean => {

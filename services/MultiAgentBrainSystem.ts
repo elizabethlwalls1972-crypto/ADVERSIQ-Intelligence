@@ -18,6 +18,7 @@
 import { ReportParameters, ReportData, CopilotInsight, RefinedIntake } from '../types';
 import CompositeScoreService from './CompositeScoreService';
 import { computeFrontierIntelligence } from './algorithms';
+import { resolveApiUrl } from './config';
 
 // 
 // TYPES & INTERFACES
@@ -206,7 +207,7 @@ export class MultiAgentOrchestrator {
   private static async callBedrockAPI(prompt: string, context: any): Promise<{ text: string; confidence: number; reasoning: string[] }> {
     // Try backend first
     try {
-      const response = await fetch('/api/ai/multi-agent', {
+      const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -235,7 +236,7 @@ export class MultiAgentOrchestrator {
 
   private static async callOpenAIAPI(prompt: string, context: any): Promise<{ text: string; confidence: number; reasoning: string[] }> {
     try {
-      const response = await fetch('/api/ai/multi-agent', {
+      const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: 'gpt-4', prompt, context })
@@ -267,7 +268,7 @@ export class MultiAgentOrchestrator {
 
   private static async callClaudeAPI(prompt: string, context: any): Promise<{ text: string; confidence: number; reasoning: string[] }> {
     try {
-      const response = await fetch('/api/ai/multi-agent', {
+      const response = await fetch(resolveApiUrl('/api/ai/multi-agent'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: 'claude', prompt, context })
@@ -721,7 +722,7 @@ export class HistoricalLearningEngine {
     
     // Persist to server
     try {
-      await fetch('/api/learning/outcome', {
+      await fetch(resolveApiUrl('/api/learning/outcome'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ key, outcome, factors, timestamp: this.memory.lastUpdated })

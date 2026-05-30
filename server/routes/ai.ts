@@ -655,6 +655,10 @@ const CONSULTANT_TASK_TYPE_ALIASES: Record<string, ConsultantTaskType> = {
   research: 'info_lookup',
   lookup: 'info_lookup',
   general: 'general_assist',
+  consultation: 'general_assist',
+  consultant: 'general_assist',
+  advice: 'strategy_support',
+  advisory: 'strategy_support',
 };
 
 const normalizeConsultantTaskType = (value: unknown): ConsultantTaskType | null => {

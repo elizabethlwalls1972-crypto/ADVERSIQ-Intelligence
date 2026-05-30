@@ -8,6 +8,8 @@ export interface OsintResult {
   category: OsintCategory;
 }
 
+import { resolveApiUrl } from './config';
+
 const GOVERNMENT_DOMAINS = [
   '.gov', '.gov.au', '.gov.ph', '.gov.uk', '.gov.sg', '.go.jp', '.gov.my',
   '.gob.', '.gouv.', '.govt.', '.government', '.admin.ch', '.europa.eu'
@@ -42,7 +44,7 @@ const categorizeDomain = (domain: string): OsintCategory => {
 };
 
 const fetchSerper = async (query: string, numResults: number): Promise<OsintResult[]> => {
-  const res = await fetch('/api/search/serper', {
+  const res = await fetch(resolveApiUrl('/api/search/serper'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, num: numResults })
