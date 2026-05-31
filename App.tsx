@@ -47,6 +47,7 @@ const NSILBrainPanel = lazyWithReload(() => import('./components/NSILBrainPanel'
 const HumanOversightUI = lazyWithReload(() => import('./components/HumanOversightUI').then(m => ({ default: m.HumanOversightUI })));
 const SystemDashboard = lazyWithReload(() => import('./components/SystemDashboard').then(m => ({ default: m.SystemDashboard })));
 const AgentSpawnerPanel = lazyWithReload(() => import('./components/AgentSpawnerPanel').then(m => ({ default: m.AgentSpawnerPanel })));
+import { OSUtilityMenu } from './components/OSUtilityMenu';
 import useEscapeKey from './hooks/useEscapeKey';
 import type { AgenticRun } from './services/agenticWorker';
 import type { ConsultantInsight } from './services/BWConsultantAgenticAI';

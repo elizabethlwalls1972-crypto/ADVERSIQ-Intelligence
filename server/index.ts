@@ -76,6 +76,7 @@ import ollamaRoutes from './routes/ollama.js';
 import omniRoutes from './routes/omni.js';
 import researchRoutes from './routes/research.js';
 import memoryLearningRoutes from './routes/memory-learning.js';
+import learningDashboardRoutes from './routes/learning-dashboard.js';
 import { omniNode } from './core/AdversiqOmniNode.js';
 
 const app = express();
@@ -324,6 +325,7 @@ app.use('/api/ollama', ollamaRoutes);
 app.use('/api/omni', omniRoutes);
 app.use('/api/research', researchRoutes);
 app.use('/api/memory-learning', memoryLearningRoutes);
+app.use('/api/learning-dashboard', learningDashboardRoutes);
 
 // Serve static frontend in production
 if (process.env.NODE_ENV === 'production') {
