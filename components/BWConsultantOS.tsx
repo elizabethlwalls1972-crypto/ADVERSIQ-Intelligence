@@ -16,7 +16,7 @@ import {
   Globe, FileCheck, PenTool, Download, Copy, Check,
   HelpCircle,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle,
-  Mic, MicOff, ChevronDown,
+  Mic, MicOff, ChevronDown, Settings, RefreshCcw, Save, Trash2, FolderSync
 } from 'lucide-react';
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
@@ -1017,6 +1017,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [showOSMenu, setShowOSMenu] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
@@ -7190,6 +7191,71 @@ ${agentRegistry.current.toManifest()}`;
                 </select>
               </div>
 
+              {/* OS Utilities */}
+              <div className="relative z-20">
+                <button
+                  onClick={() => setShowOSMenu(prev => !prev)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
+                >
+                  <Settings size={13} />
+                  <span className="hidden sm:inline">System</span>
+                </button>
+                {showOSMenu && (
+                  <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowOSMenu(false)}>
+                    <button
+                      onClick={() => {
+                        const transcript = messages.map(m => `[${m.role.toUpperCase()}] ${m.content}`).join('\n\n');
+                        const blob = new Blob([transcript], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `ADVERSIQ_Transcript_${new Date().toISOString().split('T')[0]}.txt`;
+                        a.click();
+                      }}
+                      className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2.5 transition-colors"
+                    >
+                      <Save size={14} /> Export Session
+                    </button>
+                    <button
+                      onClick={() => {
+                        try {
+                          const toStore = messages.slice(-200).map(m => ({
+                            id: m.id,
+                            role: m.role,
+                            content: m.content,
+                            timestamp: m.timestamp.toISOString(),
+                            phase: m.phase,
+                          }));
+                          if (window.sessionStorage) window.sessionStorage.setItem('adversiq-conversation-history-v1', JSON.stringify(toStore));
+                          alert('Session manually saved to local storage.');
+                        } catch {
+                          alert('Failed to save session.');
+                        }
+                      }}
+                      className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2.5 transition-colors"
+                    >
+                      <FolderSync size={14} /> Save Checkpoint
+                    </button>
+                    <div className="border-t border-slate-100 my-1"></div>
+                    <button
+                      onClick={() => {
+                        if (confirm('Are you sure you want to reset the OS? This will clear current session memory and restart the interface.')) {
+                          setMessages([]);
+                          setCurrentPhase('intake');
+                          setInputValue('');
+                          setReadinessScore(0);
+                          setGeneratedDocuments([]);
+                          if (window.sessionStorage) window.sessionStorage.removeItem('adversiq-conversation-history-v1');
+                        }
+                      }}
+                      className="w-full text-left px-4 py-3 md:py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center gap-2.5 transition-colors"
+                    >
+                      <RefreshCcw size={14} /> Reset Environment
+                    </button>
+                  </div>
+                )}
+              </div>
+
               {/* Live Research */}
               <button
                 onClick={() => setShowPilotWindow((prev) => !prev)}
@@ -7209,47 +7275,6 @@ ${agentRegistry.current.toManifest()}`;
                 </button>
               )}
 
-              {/* Tools dropdown */}
-              {onNavigate && (
-                <div className="relative z-20">
-                  <button
-                    onClick={() => setShowToolsMenu(prev => !prev)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition-colors"
-                  >
-                    <Briefcase size={13} />
-                    <span className="hidden sm:inline">Tools</span>
-                  </button>
-                  {showToolsMenu && (
-                    <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowToolsMenu(false)}>
-                      {[
-                        { mode: 'documents', icon: '', label: 'Document Generation Suite' },
-                        { mode: 'advanced-report', icon: '', label: 'Advanced Report Generator' },
-                        { mode: 'exec-summary', icon: '', label: 'Executive Summary' },
-                        { mode: 'letters', icon: '', label: 'Letters & MOUs' },
-                        { mode: 'global-location-intel', icon: '', label: 'Location Intelligence' },
-                        { mode: 'matchmaking', icon: '', label: 'Partner Matchmaking' },
-                        { mode: 'intake', icon: '', label: 'Structured Intake Form' },
-                        { mode: 'nsil-showcase', icon: '', label: 'NSIL Formula Showcase' },
-                        { mode: 'nsil-brain', icon: '', label: 'NSIL Brain Panel (9-Layer)' },
-                        { mode: 'oversight', icon: '', label: 'Human Oversight & Review' },
-                        { mode: 'system-dashboard', icon: '', label: 'System Dashboard' },
-                        { mode: 'admin', icon: '', label: 'Admin Dashboard' },
-                        { mode: 'agent-spawner', icon: '', label: 'Sub-Agent Control Room' },
-                        { mode: 'user-manual', icon: '', label: 'User Manual' },
-                        { mode: 'command-center', icon: '', label: 'Back to Command Center' },
-                      ].map(item => (
-                        <button
-                          key={item.mode}
-                          onClick={() => onNavigate(item.mode)}
-                          className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2.5 transition-colors"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
 
