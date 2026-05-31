@@ -77,7 +77,7 @@ const LaTeXFormula: React.FC<{ latex: string; description?: string }> = ({ latex
       >
         {!rendered && (
           <span style={{ color: '#00cc66' }}>
-            $$\text{KaTeX not available. Raw: } {latex}$$
+            {"$$\\text{KaTeX not available. Raw: } "}{latex}{"$$"}
           </span>
         )}
       </div>

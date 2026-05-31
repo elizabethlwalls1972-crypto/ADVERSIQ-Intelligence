@@ -406,13 +406,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Platform</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                                Institutional intelligence.<br />
-                                <span className="font-black">On demand. Without the firm.</span>
+                                Sovereign Intelligence.<br />
+                                <span className="font-black">Unbiased. Cryptographically Proven.</span>
                             </h2>
-                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">A single platform run for verified, auditable insight.</p>
+                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">A 100-Year Cycle Breaker for Structural Problems.</p>
                             <div>
-                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">Why this matters now</p>
-                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">Meet ADVERSIQ<br /><br />ADVERSIQ delivers institutional-grade strategic intelligence in minutes, not months. Talk to our AI consultant like you'd brief a senior advisor. In 30-45 minutes, you have a complete strategic brief, stress-tested conclusions, and defensible output.</p>
+                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">Why Civilization Needs This Now</p>
+                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">Meet The Systemic Truth Machine<br /><br />ADVERSIQ delivers institutional certainty in minutes, not months. We built a system that strips away political noise and emotional bias to find the actual root of a problem. Instead of endless consulting cycles, you interact with an autonomous intelligence that instantly cross-references a century of historical data. In 45 minutes, it delivers a mathematically proven, stress-tested path forward—giving leaders the undeniable proof they need to act.</p>
                             </div>
                         </div>
                         <div className="w-full max-w-md mx-auto lg:mx-0">
@@ -428,13 +428,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                     <div className="border-t border-white/10 pt-12">
                         <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl">
-                            Your next major decision deserves more than a confident-sounding answer.<br />
-                            <span className="text-amber-400">No endless questionnaires. ADVERSIQ Consultant asks the right questions in sequence—building your case in real time through natural dialogue.</span>
+                            Global challenges deserve more than a confident-sounding compromise.<br />
+                            <span className="text-amber-400">No ideological bottlenecks. ADVERSIQ executes a Sovereign-Grade hunt—stripping emotional bias and building mathematical proofs in real time through autonomous orchestration.</span>
                         </p>
 
                         <div className="mt-10 max-w-3xl border-l-2 border-amber-400 pl-6">
                             <p className="text-base text-slate-300 leading-relaxed">
-                                ADVERSIQ brings institutional rigor to everyone. We built a platform that's more cost-effective and more open, helping clear up misconceptions on both sides. Whether you're a regional authority, development finance institution, or investment operator, you get the clarity and confidence to approach stakeholders on solid ground.
+                                ADVERSIQ is no longer just an automated software engine; it is a Systemic Truth Machine designed to solve the structural stagnation of human society. We built a platform that instantly identifies 100-year cyclical failures and blocks human emotional interference. Whether you're a regional authority, sovereign wealth fund, or global operator, you get an auditable, self-evolving, and cryptographically proven path forward.
                             </p>
                         </div>
 

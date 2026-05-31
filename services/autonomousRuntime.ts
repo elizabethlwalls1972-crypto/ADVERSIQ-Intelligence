@@ -33,8 +33,10 @@ import InputShieldService from './InputShieldService';
 import { enforceBounds, safeDivide } from './FormulaBoundsEngine';
 import { validateField, validateStep } from './validationEngine';
 import { MissingFormulasEngine } from './MissingFormulasEngine';
+import { ApexExecutionLoop } from './ApexExecutionLoop';
 
 let _initialized = false;
+let apexDaemon: ApexExecutionLoop | null = null;
 
 /**
  * Bootstrap all autonomous services. Safe to call multiple times - idempotent.
@@ -60,7 +62,17 @@ export function initAutonomousRuntime(): void {
     console.warn('[AutonomousRuntime] ⚠️ MasterOrchestrator init failed', e);
   }
 
-  // 3. Register remaining singletons (activated via EventBus + direct calls)
+  // 3. APEX DAEMON - The Sovereign Truth Machine execution loop
+  try {
+    apexDaemon = new ApexExecutionLoop();
+    // Fire and forget into the background
+    void apexDaemon.initiateGlobalArbitrage();
+    console.log('[AutonomousRuntime] ✅ ApexExecutionLoop (Sovereign Daemon) engaged in background');
+  } catch (e) {
+    console.warn('[AutonomousRuntime] ⚠️ ApexExecutionLoop init failed', e);
+  }
+
+  // 4. Register remaining singletons (activated via EventBus + direct calls)
   const registered = {
     selfFixingEngine,
     selfImprovementEngine,
