@@ -58,7 +58,12 @@ export class AdversiqOmniNode {
     try {
       // Initialize morphic field synchronization
       console.log(`[BOOT] 1/5 - Initializing Morphic Field Synchronization...`);
-      await this.morphic.syncWithMorphicField([], 0, [0, 0, 0]);
+      await this.morphic.syncWithMorphicField([], 0, {
+        domain: 'system_boot',
+        pattern: [0, 0, 0],
+        confidence: 1.0,
+        timestamp: Date.now()
+      });
       console.log(`[BOOT] ✓ Morphic Field online`);
 
       // Verify Cognitive Universe engine
@@ -140,7 +145,12 @@ export class AdversiqOmniNode {
       // Step 4: Morphic field resonance
       console.log(`[OMNI-NODE] Step 4/5 - Syncing with Morphic Field...`);
       const mandateVector = this.vectorizeText(mandate);
-      await this.morphic.syncWithMorphicField(['SPI', 'SEAM'], 1, mandateVector);
+      await this.morphic.syncWithMorphicField(['SPI', 'SEAM'], 1, {
+        domain: 'mandate',
+        pattern: mandateVector,
+        confidence: 0.9,
+        timestamp: Date.now()
+      });
       console.log(`[OMNI-NODE] ✓ Morphic field updated with mandate patterns`);
 
       // Step 5: Generate recommendation

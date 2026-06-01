@@ -35,3 +35,10 @@
 {"timestamp":"2026-05-31T06:06:03.435Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-05-31T06:06:03.317Z"}}
 {"timestamp":"2026-05-31T06:52:17.234Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-05-31T06:52:17.123Z"}}
 {"timestamp":"2026-05-31T11:01:09.922Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-05-31T11:01:09.776Z"}}
+{"timestamp":"2026-06-01T04:06:33.006Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:06:32.874Z"}}
+{"timestamp":"2026-06-01T04:10:13.292Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:10:13.172Z"}}
+{"timestamp":"2026-06-01T04:10:49.511Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:10:49.387Z"}}
+{"timestamp":"2026-06-01T04:13:19.939Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:13:19.798Z"}}
+{"timestamp":"2026-06-01T04:19:13.472Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:19:13.343Z"}}
+{"timestamp":"2026-06-01T04:28:48.552Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:28:48.400Z"}}
+{"timestamp":"2026-06-01T04:29:56.799Z","category":"SYSTEM","event":"BOOT_COMPLETE","data":{"bootTime":"2026-06-01T04:29:56.617Z"}}

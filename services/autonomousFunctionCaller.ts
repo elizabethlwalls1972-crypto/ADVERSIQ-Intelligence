@@ -1,4 +1,4 @@
-import { callGemmaJSON, callGeminiThinking, GemmaMessage } from './gemmaService';
+import { callGemmaJSON, callGeminiThinking, GemmaMessage } from '../gemmaService';
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════════

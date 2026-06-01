@@ -256,6 +256,7 @@ export interface ReportParameters {
   idealPartnerProfile: string;
   targetPartner?: string;
   analysisTimeframe: string;
+  timelineMonths?: number;
   strategicObjectives: string[];
   strategicLens?: string[];
   priorityThemes?: string[]; 
@@ -418,6 +419,7 @@ export interface RegionProfile {
     id: string;
     name: string;
     country: string;
+    region?: string;
     population: number;
     gdp: number;
     rawFeatures: { name: string; rarityScore: number; relevanceScore: number; marketProxy: number }[];

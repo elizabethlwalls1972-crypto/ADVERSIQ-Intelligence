@@ -1288,12 +1288,12 @@ export const calculateEnhancedSPI = async (
     }));
 
     // Step 3: Discover structural twins (Feature 2)
-    const regionProfile: RegionProfile = {
+    const regionProfile = {
         country: params.country,
         region: params.region,
         sectorHint: params.industry?.[0],
         // Additional properties would be populated from params
-    };
+    } as unknown as RegionProfile;
     const twins = StructuralTwinDiscoveryEngine.discoverTwins(regionProfile, params, 3);
 
     // Step 4: Run ethical safeguards with audit trail (Feature 3)
@@ -1302,7 +1302,7 @@ export const calculateEnhancedSPI = async (
         {
             name: params.problemStatement || 'Strategy',
             sector: params.industry?.[0] || 'General',
-            country: params.country,
+            country: Array.isArray(params.country) ? params.country[0] : params.country,
             projectedROI: baseSPI.spi,
             description: params.strategicIntent || '',
             stakeholders: ['Local Communities', 'Workers', 'Environment'],

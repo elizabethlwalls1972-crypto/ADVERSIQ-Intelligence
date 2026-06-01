@@ -67,8 +67,7 @@ Return ONLY JSON:
 `;
 
     try {
-      const response = await generateLLMPrompt(archetypePrompt);
-      const responseText = typeof response === 'string' ? response : response.content;
+      const responseText = await generateLLMPrompt(archetypePrompt);
       const cleaned = responseText.replace(/```json\n?|\n?```/g, '').trim();
 
       let archetypeData = { archetype: 'THE_SOVEREIGN_CREATOR', bias: '0', reasoning: 'default fallback' };

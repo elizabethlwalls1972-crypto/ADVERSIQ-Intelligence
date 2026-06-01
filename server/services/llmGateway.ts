@@ -10,10 +10,10 @@ export interface LLMPromptResult {
 }
 
 export async function generateLLMPrompt(
-  systemPrompt: string,
-  userPrompt: string,
+  prompt: string,
+  systemPrompt?: string,
   model: string = 'gpt-4'
-): Promise<LLMPromptResult> {
+): Promise<string> {
   // In production: delegate to actual LLM provider
   // For now, return mock response
   
@@ -22,19 +22,15 @@ export async function generateLLMPrompt(
   // Simulate LLM thinking time
   await new Promise(resolve => setTimeout(resolve, 100));
   
-  const promptText = userPrompt || 'No prompt provided';
-  return {
-    content: `Mock response for: ${promptText.substring(0, 50)}...`,
-    provider: 'mock',
-    tokensUsed: 150
-  };
+  const promptText = prompt || 'No prompt provided';
+  return `Mock response for: ${promptText.substring(0, 50)}...`;
 }
 
 export async function batchLLMPrompts(
   prompts: Array<{ system: string; user: string }>,
   model: string = 'gpt-4'
-): Promise<LLMPromptResult[]> {
+): Promise<string[]> {
   return Promise.all(
-    prompts.map(p => generateLLMPrompt(p.system, p.user, model))
+    prompts.map(p => generateLLMPrompt(p.user, p.system, model))
   );
 }

@@ -57,7 +57,7 @@ export interface RecommendationWithConfidence {
   
   // Disclosure
   uncertaintyStatement: string;
-  investorDueDigligence: string[];
+  investorDueDiligence: string[];
 }
 
 export class ConfidenceCalibrationEngine {
@@ -286,7 +286,7 @@ export class ConfidenceCalibrationEngine {
       confidenceBreakdown: breakdown,
       roiSensitivity: sensitivity,
       uncertaintyStatement,
-      investorDueDigligence,
+      investorDueDiligence,
     };
   }
 
