@@ -1011,9 +1011,11 @@ interface BWConsultantOSProps {
   onInitialContextHandled?: () => void;
   /** Active intelligence domain mode — passed from Gateway intake */
   domainMode?: string;
+  /** Launch multi-agent NSIL intelligence system */
+  onLaunchNSILIntelligence?: () => void;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode, onLaunchNSILIntelligence }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -7202,6 +7204,12 @@ ${agentRegistry.current.toManifest()}`;
                 </button>
                 {showOSMenu && (
                   <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowOSMenu(false)}>
+                    <button
+                      onClick={() => onLaunchNSILIntelligence?.()}
+                      className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-green-50 hover:text-green-700 flex items-center gap-2.5 transition-colors border-b border-slate-100"
+                    >
+                      <Zap size={14} /> Multi-Agent Intelligence
+                    </button>
                     <button
                       onClick={() => {
                         const transcript = messages.map(m => `[${m.role.toUpperCase()}] ${m.content}`).join('\n\n');
