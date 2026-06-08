@@ -63,7 +63,12 @@ export const config = {
   enableAuth:         parseBoolean(_env('VITE_ENABLE_AUTH'), false),
 
   // API Configuration
-  apiBaseUrl: _env('VITE_API_BASE_URL', '/api'),
+  // Production: Use Cloudflare Worker API
+  // Development: Use local /api endpoint
+  apiBaseUrl: _env('VITE_API_BASE_URL') || 
+    (_env('NODE_ENV') === 'production' 
+      ? 'https://adversiq-api.elizabethlwalls1972.workers.dev'
+      : '/api'),
 
   // Development flags
   isDevelopment: _env('NODE_ENV') === 'development' || Boolean(publicImportMetaEnv.DEV),
