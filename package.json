@@ -19,7 +19,7 @@
     "build:all": "npm run build:client && npm run build:server",
     "build:amplify": "node scripts/build-amplify.js",
     "start": "node dist-server/server/index.js",
-    "preview": "vite preview",
+    "preview": "npm run build:client && wrangler dev",
     "test:nsil": "tsx scripts/nsilSimulation.ts",
     "test:interaction-stress": "tsx scripts/interactionStress100.ts",
     "live:global-matters": "tsx scripts/liveGlobalMatterRun.ts",
@@ -32,7 +32,7 @@
     "audit:unused:deps": "depcheck",
     "audit:cycles": "madge --extensions ts,tsx --circular ./",
     "audit:all": "npm run audit:unused:exports && npm run audit:unused:deps && npm run audit:cycles",
-    "deploy": "npm run build:all"
+    "deploy": "npm run build:client && wrangler deploy"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1013.0",
@@ -66,6 +66,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.40.0",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.58.2",
     "@types/compression": "^1.7.5",
@@ -93,6 +94,7 @@
     "ts-prune": "^0.10.3",
     "tsx": "^4.19.1",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "wrangler": "^4.98.0"
   }
 }
