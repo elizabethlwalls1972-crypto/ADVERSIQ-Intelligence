@@ -342,6 +342,49 @@ async function handleNexus(request: Request, env: Env) {
   return json({ query, mode: mode || 'analysis', analysis, timestamp: new Date().toISOString() });
 }
 
+async function handleMatchmake(request: Request, env: Env) {
+  const { person1, person2, context } = await request.json() as any;
+  const messages = [
+    { role: 'system', content: 'You are SUSAN, relationship and professional matchmaker. Analyze compatibility between two people. Evaluate: 1) Personality alignment 2) Shared interests 3) Complementary skills 4) Value alignment 5) Potential challenges 6) Compatibility score (0-100) 7) Recommendation. Be specific and insightful.' },
+    { role: 'user', content: `Evaluate match between:\n\nPerson 1:\n${JSON.stringify(person1, null, 2)}\n\nPerson 2:\n${JSON.stringify(person2, null, 2)}\n\nContext: ${context || 'general'}` },
+  ];
+  const analysis = await ai(env, messages, '@cf/meta/llama-3.3-70b-instruct-fp8-fast');
+  await storeMemory(env, 'matchmaking', { person1: person1?.name, person2: person2?.name, compatibility: analysis });
+  return json({ person1: person1?.name, person2: person2?.name, compatibility_analysis: analysis, timestamp: new Date().toISOString() });
+}
+
+async function handleWriteReport(request: Request, env: Env) {
+  const { title, topic, length, style, context } = await request.json() as any;
+  const lengthInstructions = length === 'short' ? '(1-2 pages)' : length === 'medium' ? '(3-5 pages)' : '(10-20 pages)';
+  const styleGuide = style === 'formal' ? 'Use formal, professional language.' : style === 'technical' ? 'Use technical language with specifications.' : 'Use clear, accessible language.';
+  
+  const messages = [
+    { role: 'system', content: `You are SUSAN, senior intelligence analyst. Write a comprehensive report ${lengthInstructions}. ${styleGuide}\n\nStructure:\n1. Executive Summary\n2. Key Findings\n3. Analysis\n4. Recommendations\n5. Conclusion\n\nBe thorough, evidence-based, and actionable.` },
+    { role: 'user', content: `Write report titled: "${title}"\n\nTopic: ${topic}\n\nContext: ${context || 'general'}` },
+  ];
+  const report = await ai(env, messages, '@cf/meta/llama-3.3-70b-instruct-fp8-fast');
+  await storeMemory(env, 'reports', { title, topic, length, style, report_content: report.slice(0, 500) });
+  return json({ title, length, style, report, timestamp: new Date().toISOString() });
+}
+
+async function handleWriteLetter(request: Request, env: Env) {
+  const { letter_type, recipient, subject, context, tone } = await request.json() as any;
+  const toneGuide = tone === 'formal' ? 'Formal and professional' : tone === 'warm' ? 'Warm and personal' : 'Direct and clear';
+  
+  const typeGuide = letter_type === 'recommendation' ? 'Write a compelling recommendation letter highlighting accomplishments and potential.' : 
+                    letter_type === 'introduction' ? 'Write an introduction letter highlighting mutual interests and proposing connection.' :
+                    letter_type === 'proposal' ? 'Write a professional proposal letter with clear value proposition.' :
+                    letter_type === 'request' ? 'Write a professional request letter with clear justification.' : 'Write a professional business letter.';
+  
+  const messages = [
+    { role: 'system', content: `You are SUSAN, professional communication expert. ${typeGuide}\n\nTone: ${toneGuide}\n\nFormat as formal letter with:\n1. Date\n2. Recipient address\n3. Greeting\n4. Body (3-4 paragraphs)\n5. Closing\n6. Signature line` },
+    { role: 'user', content: `Letter type: ${letter_type}\nRecipient: ${recipient}\nSubject: ${subject}\n\nContext: ${context || 'professional correspondence'}` },
+  ];
+  const letter = await ai(env, messages, '@cf/meta/llama-3.3-70b-instruct-fp8-fast');
+  await storeMemory(env, 'letters', { letter_type, recipient, subject, letter_content: letter.slice(0, 300) });
+  return json({ letter_type, recipient, subject, letter, timestamp: new Date().toISOString() });
+}
+
 // ===== ROUTER =====
 
 export const onRequest: PagesFunction<Env> = async (context) => {
@@ -379,8 +422,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     if (path === '/api/memory' && method === 'GET') return handleMemoryGet(env);
     if (path === '/api/memory' && method === 'POST') return handleMemoryPost(request, env);
     if (path === '/api/nexus' && method === 'POST') return handleNexus(request, env);
+    if (path === '/api/matchmake' && method === 'POST') return handleMatchmake(request, env);
+    if (path === '/api/report' && method === 'POST') return handleWriteReport(request, env);
+    if (path === '/api/letter' && method === 'POST') return handleWriteLetter(request, env);
 
-    return json({ error: 'Endpoint not found', available: ['/api/health', '/api/status', '/api/chat', '/api/search', '/api/intelligence', '/api/news', '/api/threats', '/api/osint', '/api/geocode', '/api/analysis', '/api/scrape', '/api/morphic', '/api/adaptive', '/api/ethical', '/api/debate', '/api/consensus', '/api/scan', '/api/memory', '/api/nexus'] }, 404);
+    return json({ error: 'Endpoint not found', available: ['/api/health', '/api/status', '/api/chat', '/api/search', '/api/intelligence', '/api/news', '/api/threats', '/api/osint', '/api/geocode', '/api/analysis', '/api/scrape', '/api/morphic', '/api/adaptive', '/api/ethical', '/api/debate', '/api/consensus', '/api/scan', '/api/memory', '/api/nexus', '/api/matchmake', '/api/report', '/api/letter'] }, 404);
   } catch (err: any) {
     return json({ error: err.message, stack: err.stack?.slice(0, 500) }, 500);
   }
