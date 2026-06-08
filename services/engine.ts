@@ -1298,13 +1298,17 @@ export const calculateEnhancedSPI = async (
 
     // Step 4: Run ethical safeguards with audit trail (Feature 3)
     const ethicsResult = await runEthicalSafeguards(params);
+    const country = Array.isArray(params.country) ? params.country[0] : params.country;
+    const strategicDescription = Array.isArray(params.strategicIntent)
+        ? params.strategicIntent.join(', ')
+        : params.strategicIntent || '';
     const ethicalGateEvaluation = EthicalGateAuditTrail.evaluateStrategy(
         {
             name: params.problemStatement || 'Strategy',
             sector: params.industry?.[0] || 'General',
-            country: Array.isArray(params.country) ? params.country[0] : params.country,
+            country,
             projectedROI: baseSPI.spi,
-            description: params.strategicIntent || '',
+            description: strategicDescription,
             stakeholders: ['Local Communities', 'Workers', 'Environment'],
             environmentalRisk: 40,
             laborConditions: 35,
@@ -1345,7 +1349,7 @@ export const calculateEnhancedSPI = async (
         title: `${params.country} - ${params.industry?.[0] || 'General'} Opportunity`,
         recommendation: `SPI Score: ${baseSPI.spi}/100`,
         sector: params.industry?.[0] || 'General',
-        country: params.country,
+        country,
         projectedROI: baseSPI.spi,
         riskScore: 100 - confidence.score,
         timeframe: params.timelineMonths || 12,
@@ -1364,7 +1368,7 @@ export const calculateEnhancedSPI = async (
             volatility: 30,
         },
         uncertaintyStatement: confidence.description,
-        investorDueDigligence: confidence.caveats,
+        investorDueDiligence: confidence.caveats,
     }];
 
     const trustScorecard = ConfidenceCalibrationEngine.generateTrustScorecard(recommendations);
@@ -1396,15 +1400,15 @@ export const recordPredictionOutcome = async (
     insight: string;
 }> => {
     const wasCorrect = Math.abs(actualROI - projectedROI) < projectedROI * 0.3;
-    const recordId = LiveAdversarialCalibration.recordPrediction(
+    const record = LiveAdversarialCalibration.recordPrediction(
         personaId,
         sector,
         country,
-        projectedROI,
+        `Projected ROI: ${projectedROI}`,
         Math.max(50, Math.min(95, (Math.abs(actualROI - projectedROI) / projectedROI) * 100)) // confidence score
     );
 
-    LiveAdversarialCalibration.verifyOutcome(recordId, actualROI, wasCorrect);
+    LiveAdversarialCalibration.verifyOutcome(record.recordId, `Actual ROI: ${actualROI}`, wasCorrect);
 
     const recalibratedWeights = LiveAdversarialCalibration.getDebateWeights();
     const personaCalibration = LiveAdversarialCalibration.getPersonaCalibration(personaId);

@@ -461,7 +461,7 @@ export class StructuralTwinDiscoveryEngine {
         timeframeYears: study.year,
         impactOnROI: study.roiAchieved,
         transferability: study.outcome === 'success' ? 85 : 65,
-        source: `Regional case study: ${study.region || regionKey}`,
+        source: `Regional case study: ${regionKey}`,
       },
     ]);
   }

@@ -47,6 +47,19 @@ const root = ReactDOM.createRoot(rootElement);
       </React.StrictMode>
     );
 
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then(() => {
+            console.log('BW Nexus AI service worker registered successfully');
+          })
+          .catch((registrationError) => {
+            console.warn('Service worker registration failed:', registrationError);
+          });
+      });
+    }
+
     // Mount indicator removed per user request
   } catch (err: any) {
     const msg = ((err?.message) ?? '').toLowerCase();

@@ -1,9 +1,23 @@
-# Git Push to bwmetadata Repo
+# TODO - Fix ADVERSIQ Decision Verification System Major Bugs
 
-## Steps:
-- [x] 1. git add .
-- [x] 2. git commit -m "Update BW Nexus AI: latest enhancements to components (AdvancedReportGenerator, BWConsultantOS, GlobalLocationIntelligence), services (DocxExporter, ProfessionalDocumentExporter, ReportOrchestrator, EthicalReasoningEngine, externalDataIntegrations), types, new CodebaseReferenceCheck service, and TODO for push" (0d2d008)
-- [ ] 3. git push bwmetadata main
-- [ ] 4. Verify push with git log --oneline -3 and browse https://github.com/braydenmw/bwmetadata/commits/main
+## Plan (confirmed in progress)
+- [ ] Locate the runtime / logic path for the ADVERSIQ Decision Verification System.
+- [ ] Identify the concrete “major bugs” by reproducing/reading failure points (type errors, runtime exceptions, wrong scoring/thresholds).
+- [x] Read core ADVERSIQ verification/adversarial components to find likely bug sources:
+  - [x] services/AdversarialReasoningService.ts
+  - [x] services/OutcomeTracker.ts
+  - [x] services/autonomy/OutcomeVerificationEngine.ts
+  - [x] services/ReasoningTribunal.ts
+  - [x] services/autonomy/AutonomyGovernanceGate.ts
+- [ ] Patch issues in the verification/adversarial pipeline:
+  - [ ] Verify AdversarialReasoningService confidence mapping + guardrails (empty histories, NaNs).
+  - [ ] Verify OutcomeTracker accuracy + calibration logic for division-by-zero/empty states (and bad formulas).
+  - [ ] Verify OutcomeVerificationEngine replan behavior + decision state mapping.
+  - [ ] Verify AutonomyGovernanceGate decision transitions (approved/rejected/review-required).
+- [ ] Add/adjust defensive checks and unit tests.
+- [ ] Run build/tests/lint and fix any compilation errors.
 
-Current status: Ready with staged changes pending.
+## Notes
+- Repo tooling: ripgrep missing in the environment, so codebase-wide search may require alternative approaches (TS compile errors, manual file reads, or node-based search scripts).
+
+

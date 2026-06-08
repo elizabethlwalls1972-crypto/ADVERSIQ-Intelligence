@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, X, Info } from 'lucide-react';
 import DocumentModal, { type DocumentType } from './LegalDocuments';
+import AppInstallButton from './AppInstallButton';
 // OSINT search removed - using unified location research
 
 // Command Center - Complete ADVERSIQ Landing Page
@@ -796,18 +797,25 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         </div>
 
                         {/* Launch Button */}
-                        <button 
-                            disabled={!termsAccepted}
-                            onClick={() => termsAccepted && onEnterPlatform?.()}
-                            className={`w-full py-3.5 text-sm font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 ${
-                                termsAccepted 
-                                    ? 'bg-slate-900 text-white hover:bg-slate-800 cursor-pointer' 
-                                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                            }`}
-                        >
-                            Launch Intelligence OS
-                            <ArrowRight size={16} />
-                        </button>
+                        <div className="flex flex-col gap-4">
+                            <button 
+                                disabled={!termsAccepted}
+                                onClick={() => termsAccepted && onEnterPlatform?.()}
+                                className={`w-full py-3.5 text-sm font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 ${
+                                    termsAccepted 
+                                        ? 'bg-slate-900 text-white hover:bg-slate-800 cursor-pointer' 
+                                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                                }`}
+                            >
+                                Launch Intelligence OS
+                                <ArrowRight size={16} />
+                            </button>
+                            
+                            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                                <p className="text-xs text-slate-500 w-full sm:w-auto">Or get the app:</p>
+                                <AppInstallButton />
+                            </div>
+                        </div>
                     </div>
 
                     {/* Footer Info */}

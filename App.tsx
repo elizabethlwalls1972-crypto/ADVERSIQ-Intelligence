@@ -48,6 +48,7 @@ const HumanOversightUI = lazyWithReload(() => import('./components/HumanOversigh
 const SystemDashboard = lazyWithReload(() => import('./components/SystemDashboard').then(m => ({ default: m.SystemDashboard })));
 const AgentSpawnerPanel = lazyWithReload(() => import('./components/AgentSpawnerPanel').then(m => ({ default: m.AgentSpawnerPanel })));
 import { OSUtilityMenu } from './components/OSUtilityMenu';
+import AppInstallPrompt from './components/PWAInstallPrompt';
 import useEscapeKey from './hooks/useEscapeKey';
 import type { AgenticRun } from './services/agenticWorker';
 import type { ConsultantInsight } from './services/BWConsultantAgenticAI';
@@ -957,6 +958,7 @@ const App: React.FC = () => {
 
     return (
         <div className="h-screen w-full bg-stone-50 font-sans text-stone-900 flex flex-col overflow-hidden">
+            <AppInstallPrompt />
             <ErrorBoundary>
                 <Suspense fallback={<div className="w-full h-full flex items-center justify-center text-sm text-stone-500">Loading workspace...</div>}>
                     {renderContent()}
