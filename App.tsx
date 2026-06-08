@@ -43,7 +43,6 @@ const AdvancedReportGenerator = lazyWithReload(() => import('./components/Advanc
 const ExecutiveSummaryGenerator = lazyWithReload(() => import('./components/ExecutiveSummaryGenerator'));
 const LettersCatalogModal = lazyWithReload(() => import('./components/LettersCatalogModal'));
 const NSILShowcasePage = lazyWithReload(() => import('./components/NSILShowcasePage'));
-const NSILChat = lazyWithReload(() => import('./src/components/NSILChat'));
 const NSILBrainPanel = lazyWithReload(() => import('./components/NSILBrainPanel').then(m => ({ default: m.NSILBrainPanel })));
 const HumanOversightUI = lazyWithReload(() => import('./components/HumanOversightUI').then(m => ({ default: m.HumanOversightUI })));
 const SystemDashboard = lazyWithReload(() => import('./components/SystemDashboard').then(m => ({ default: m.SystemDashboard })));
@@ -71,7 +70,7 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel' | 'admin' | 'intake' | 'matchmaking' | 'documents' | 'advanced-report' | 'exec-summary' | 'letters' | 'nsil-showcase' | 'nsil-intelligence' | 'nsil-brain' | 'oversight' | 'system-dashboard' | 'agent-spawner';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel' | 'admin' | 'intake' | 'matchmaking' | 'documents' | 'advanced-report' | 'exec-summary' | 'letters' | 'nsil-showcase' | 'nsil-brain' | 'oversight' | 'system-dashboard' | 'agent-spawner';
 
 const App: React.FC = () => {
     // --- STATE ---
@@ -675,7 +674,6 @@ const App: React.FC = () => {
                         }}
                         onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
                         onLocationResearched={(data) => setPendingLocationData(data)}
-                        onLaunchNSILIntelligence={() => setViewMode('nsil-intelligence')}
                     />
                 </div>
             );
@@ -691,7 +689,6 @@ const App: React.FC = () => {
                         }}
                         onNavigate={(mode) => setViewMode(mode as ViewMode)}
                         domainMode={params.domainMode}
-                        onLaunchNSILIntelligence={() => setViewMode('nsil-intelligence')}
                     />
                 </div>
             );
@@ -857,22 +854,6 @@ const App: React.FC = () => {
                         onBack={() => setViewMode('consultant-os')}
                         onStart={() => setViewMode('consultant-os')}
                     />
-                </div>
-            );
-        }
-
-        if (viewMode === 'nsil-intelligence') {
-            return (
-                <div className="w-full h-full flex flex-col overflow-hidden">
-                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
-                        </button>
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">NSIL Multi-Agent Intelligence System</span>
-                    </nav>
-                    <div className="flex-1 overflow-hidden">
-                        <NSILChat />
-                    </div>
                 </div>
             );
         }

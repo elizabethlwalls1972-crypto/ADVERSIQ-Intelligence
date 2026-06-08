@@ -17,10 +17,9 @@ interface CommandCenterProps {
         city: string;
         country: string;
     }) => void;
-    onLaunchNSILIntelligence?: () => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched, onLaunchNSILIntelligence }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showPipelineDeepDive, setShowPipelineDeepDive] = useState(false);
@@ -810,19 +809,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             >
                                 Launch Intelligence OS
                                 <ArrowRight size={16} />
-                            </button>
-
-                            <button 
-                                disabled={!termsAccepted}
-                                onClick={() => termsAccepted && onLaunchNSILIntelligence?.()}
-                                className={`w-full py-3.5 text-sm font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 border-2 ${
-                                    termsAccepted 
-                                        ? 'border-slate-900 text-slate-900 hover:bg-slate-50 cursor-pointer' 
-                                        : 'border-slate-200 text-slate-400 cursor-not-allowed'
-                                }`}
-                            >
-                                Launch Multi-Agent Intelligence
-                                <Zap size={16} />
                             </button>
                             
                             <div className="flex flex-col sm:flex-row gap-2 justify-center">

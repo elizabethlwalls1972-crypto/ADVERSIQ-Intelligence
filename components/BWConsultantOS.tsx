@@ -58,6 +58,7 @@ import MotivationDetector from '../services/MotivationDetector';
 import { UserSignalDecoder, type UserSignalReport, type UserInputSnapshot } from '../services/reflexive/UserSignalDecoder';
 import AdversarialReasoningService, { type AdversarialOutputs } from '../services/AdversarialReasoningService';
 import { locationResearchManager } from '../services/agenticLocationIntelligence';
+import NSILBrain from '../src/services/NSILBrain';
 import { DecisionPipeline, type DecisionPacket } from '../services/DecisionPipeline';
 import { EventBus } from '../services/EventBus';
 import { autonomousScheduler } from '../services/AutonomousScheduler';
@@ -1011,20 +1012,31 @@ interface BWConsultantOSProps {
   onInitialContextHandled?: () => void;
   /** Active intelligence domain mode — passed from Gateway intake */
   domainMode?: string;
-  /** Launch multi-agent NSIL intelligence system */
-  onLaunchNSILIntelligence?: () => void;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode, onLaunchNSILIntelligence }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const [showOSMenu, setShowOSMenu] = useState(false);
+  const [showNSILChat, setShowNSILChat] = useState(false);
+  const susanRef = useRef<NSILBrain | null>(null);
+  const [agentThoughts, setAgentThoughts] = useState<string[]>([]);
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  // Initialize SUSAN (Self-Thinking Engine) - Multi-Agent Intelligence Orchestrator
+  useEffect(() => {
+    if (!susanRef.current) {
+      susanRef.current = new NSILBrain();
+      susanRef.current.onThought((thought) => {
+        setAgentThoughts(prev => [...prev.slice(-4), thought]); // Keep last 5 thoughts
+      });
+    }
   }, []);
 
   const [showToolsMenu, setShowToolsMenu] = useState(false);
@@ -7205,10 +7217,13 @@ ${agentRegistry.current.toManifest()}`;
                 {showOSMenu && (
                   <div className="absolute right-0 top-full mt-1.5 w-56 bg-white/95 backdrop-blur-xl rounded-lg border border-slate-200 shadow-2xl z-50 py-1 overflow-hidden" onClick={() => setShowOSMenu(false)}>
                     <button
-                      onClick={() => onLaunchNSILIntelligence?.()}
+                      onClick={() => {
+                        setShowNSILChat(prev => !prev);
+                        setShowOSMenu(false);
+                      }}
                       className="w-full text-left px-4 py-3 md:py-2 text-sm text-slate-600 hover:bg-green-50 hover:text-green-700 flex items-center gap-2.5 transition-colors border-b border-slate-100"
                     >
-                      <Zap size={14} /> Multi-Agent Intelligence
+                      <Zap size={14} /> {showNSILChat ? 'Hide' : 'Show'} SUSAN Intelligence Panel
                     </button>
                     <button
                       onClick={() => {
@@ -9139,6 +9154,68 @@ ${agentRegistry.current.toManifest()}`;
             </div>
           </div>
         )}
+
+      {/* SUSAN Intelligence Panel - Multi-Agent Orchestrator Running Behind ADVERSIQ */}
+      {showNSILChat && (
+        <div className={`fixed top-0 right-0 z-40 h-full ${isMobile ? 'w-full' : 'w-[400px]'} border-l border-slate-200 bg-gradient-to-b from-slate-900 to-slate-800 shadow-2xl flex flex-col text-green-400 font-mono text-sm`}>
+          {/* Header */}
+          <div className="px-4 py-3 border-b border-slate-700 bg-slate-950">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Zap size={16} className="text-green-400 animate-pulse" />
+                <h3 className="font-bold text-green-400">SUSAN Intelligence Engine</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNSILChat(false)}
+                className="text-green-400 hover:text-green-300 p-1"
+              >
+                <X size={16} />
+              </button>
+            </div>
+            <p className="text-[11px] text-green-500 mt-1">Self-Thinking | Multi-Agent Orchestration | 9 Intelligence Agents</p>
+          </div>
+
+          {/* Agent Thoughts Stream */}
+          <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
+            {agentThoughts.length === 0 ? (
+              <div className="text-green-500/60 text-xs mt-4">
+                <p>&gt; SUSAN standing by...</p>
+                <p>&gt; Waiting for consultation input</p>
+                <p>&gt; 9 agents ready for activation</p>
+              </div>
+            ) : (
+              agentThoughts.map((thought, idx) => (
+                <div key={idx} className="border-l border-green-600 pl-2 py-1">
+                  <p className="text-green-400 text-xs break-words">{thought}</p>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Agent Status */}
+          <div className="px-3 py-2 border-t border-slate-700 bg-slate-950 text-xs">
+            <p className="text-green-500 font-bold mb-1">&gt; ACTIVE AGENTS:</p>
+            <div className="grid grid-cols-2 gap-1 text-green-400">
+              <span>• ATLAS</span>
+              <span>• CIPHER</span>
+              <span>• SENTINEL</span>
+              <span>• ORACLE</span>
+              <span>• NEXUS</span>
+              <span>• AEGIS</span>
+              <span>• PHANTOM</span>
+              <span>• REDTEAM</span>
+            </div>
+            <p className="text-green-500 font-bold mt-2 mb-1">&gt; CORE ENGINE:</p>
+            <p className="text-green-400">SUSAN (Self-Thinking)</p>
+          </div>
+
+          {/* Info Footer */}
+          <div className="px-3 py-2 border-t border-slate-700 bg-slate-950 text-[10px] text-green-600">
+            <p>SUSAN orchestrates all 9 agents through ADVERSIQ Decision Verification System. All agent insights automatically feed into your consultation and document generation.</p>
+          </div>
+        </div>
+      )}
 
       {/* Full Document + Letter Catalog Modal */}
       {showFullCatalog && (
