@@ -12,7 +12,40 @@
  * into a competitive advantage.
  */
 
-import crypto from 'crypto';
+// Use browser-compatible crypto API
+const getCrypto = async (content: string): Promise<{ hash: string; signature: string }> => {
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
+    // Browser: use SubtleCrypto
+    const encoder = new TextEncoder();
+    const data = encoder.encode(content);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    
+    // For signature, use a simple HMAC since we don't have a private key in browser
+    const signatureBuffer = await window.crypto.subtle.sign(
+      'HMAC',
+      await window.crypto.subtle.importKey('raw', data, 'SHA-256', false, ['sign']),
+      data
+    );
+    const signatureArray = Array.from(new Uint8Array(signatureBuffer));
+    const signature = signatureArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 64);
+    
+    return { hash, signature };
+  } else {
+    // Fallback: simple hash using string operations
+    let hash = 0;
+    for (let i = 0; i < content.length; i++) {
+      const char = content.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return {
+      hash: Math.abs(hash).toString(16).padStart(64, '0'),
+      signature: btoa(content).substring(0, 64)
+    };
+  }
+};
 
 export interface EthicalGate {
   gateId: string;
@@ -246,7 +279,7 @@ export class EthicalGateAuditTrail {
   /**
    * Generate a digitally signed audit certificate for institutional use.
    */
-  issueCertificate(
+  async issueCertificate(
     organizationId: string,
     organizationName: string,
     analysisStartDate: string,
@@ -273,11 +306,7 @@ export class EthicalGateAuditTrail {
       issuedAt: new Date().toISOString(),
     });
 
-    const contentHash = crypto.createHash('sha256').update(certificateContent).digest('hex');
-    const digitalSignature = crypto
-      .createHmac('sha256', 'bw-ai-ethics-key-prod')
-      .update(contentHash)
-      .digest('hex');
+    const { hash: contentHash, signature: digitalSignature } = await getCrypto(certificateContent);
 
     const certificate: EthicalAuditCertificate = {
       certificateId: `ETH-CERT-${Date.now()}`,

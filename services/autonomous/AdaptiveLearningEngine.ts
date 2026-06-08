@@ -1,20 +1,3 @@
-import fs from 'fs/promises';
-
-const isNode = typeof window === 'undefined';
-
-const normalizeNodePath = (pathStr: string): string => {
-  if (process.platform !== 'win32') return pathStr;
-  return pathStr.startsWith('/') ? pathStr.slice(1).replace(/\//g, '\\') : pathStr.replace(/\//g, '\\');
-};
-
-const DATA_DIR = isNode
-  ? normalizeNodePath(new URL('../../data', import.meta.url).pathname)
-  : './data';
-
-const ADAPTIVE_STATE_FILE = isNode
-  ? normalizeNodePath(new URL('../../data/adaptive-learning.json', import.meta.url).pathname)
-  : './data/adaptive-learning.json';
-
 /**
  * ═══════════════════════════════════════════════════════════════════════════════
  * ADAPTIVE LEARNING ENGINE
@@ -48,6 +31,10 @@ const ADAPTIVE_STATE_FILE = isNode
  *
  * ═══════════════════════════════════════════════════════════════════════════════
  */
+
+// Browser-compatible persistence using localStorage
+const STORAGE_KEY = 'adaptive_learning_state';
+const isNode = typeof window === 'undefined';
 
 // ============================================================================
 // TYPES
@@ -487,10 +474,15 @@ export class AdaptiveLearningEngine {
 
   static async loadState(): Promise<void> {
     try {
-      await fs.mkdir(DATA_DIR, { recursive: true });
-      const raw = await fs.readFile(ADAPTIVE_STATE_FILE, 'utf8');
-      const saved = JSON.parse(raw);
-      console.log(`[AdaptiveLearning] Loaded persisted state: ${saved.patternsLearned || 0} patterns`);
+      if (typeof window !== 'undefined' && localStorage) {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const state = JSON.parse(saved);
+          console.log(`[AdaptiveLearning] Loaded persisted state: ${state.patternsLearned || 0} patterns`);
+        }
+      } else {
+        console.log('[AdaptiveLearning] No persisted state available');
+      }
     } catch {
       /* no saved state */
     }
@@ -498,9 +490,8 @@ export class AdaptiveLearningEngine {
 
   async saveState(): Promise<void> {
     try {
-      await fs.mkdir(DATA_DIR, { recursive: true });
       const report = this.getReport();
-      await fs.writeFile(ADAPTIVE_STATE_FILE, JSON.stringify({
+      const stateData = {
         savedAt: new Date().toISOString(),
         totalInteractions: report.totalInteractions,
         patternsLearned: report.patternsLearned,
@@ -510,7 +501,13 @@ export class AdaptiveLearningEngine {
         learningVelocity: report.learningVelocity,
         topPatterns: report.topPatterns.slice(0, 20),
         beliefUpdates: report.beliefUpdates
-      }, null, 2), 'utf8');
+      };
+      
+      if (typeof window !== 'undefined' && localStorage) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stateData));
+      } else {
+        console.log('[AdaptiveLearning] State update (would be persisted on server):', stateData);
+      }
     } catch (err) {
       console.warn('[AdaptiveLearning] Failed to save state:', err instanceof Error ? err.message : 'Unknown');
     }

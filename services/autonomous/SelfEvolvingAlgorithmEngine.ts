@@ -32,22 +32,9 @@
 // TYPES
 // ============================================================================
 
-import fs from 'fs/promises';
-
+// Browser-compatible persistence using localStorage
+const STORAGE_KEY = 'se_algorithm_evolution_state';
 const isNode = typeof window === 'undefined';
-
-const normalizeNodePath = (pathStr: string): string => {
-  if (process.platform !== 'win32') return pathStr;
-  return pathStr.startsWith('/') ? pathStr.slice(1).replace(/\//g, '\\') : pathStr.replace(/\//g, '\\');
-};
-
-const DATA_DIR = isNode
-  ? normalizeNodePath(new URL('../../data', import.meta.url).pathname)
-  : './data';
-
-const EVOLUTION_STATE_FILE = isNode
-  ? normalizeNodePath(new URL('../../data/evolution-weights.json', import.meta.url).pathname)
-  : './data/evolution-weights.json';
 
 export interface FormulaWeight {
   formulaId: string;
@@ -443,11 +430,16 @@ export class SelfEvolvingAlgorithmEngine {
 
   static async loadState(): Promise<void> {
     try {
-      await fs.mkdir(DATA_DIR, { recursive: true });
-      const raw = await fs.readFile(EVOLUTION_STATE_FILE, 'utf8');
-      const saved = JSON.parse(raw);
-      if (saved?.weights && typeof saved.weights === 'object') {
-        console.log(`[SelfEvolving] Loaded ${Object.keys(saved.weights).length} persisted weights`);
+      if (typeof window !== 'undefined' && localStorage) {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const state = JSON.parse(saved);
+          if (state?.weights && typeof state.weights === 'object') {
+            console.log(`[SelfEvolving] Loaded ${Object.keys(state.weights).length} persisted weights`);
+          }
+        }
+      } else {
+        console.log('[SelfEvolving] No persisted weights available');
       }
     } catch {
       /* no saved state */
@@ -456,13 +448,12 @@ export class SelfEvolvingAlgorithmEngine {
 
   async saveState(): Promise<void> {
     try {
-      await fs.mkdir(DATA_DIR, { recursive: true });
       const report = this.getReport();
       const weightsObj: Record<string, number> = {};
       for (const w of report.weightSummary) {
         weightsObj[`${w.formula}::${w.parameter}`] = w.value;
       }
-      await fs.writeFile(EVOLUTION_STATE_FILE, JSON.stringify({
+      const stateData = {
         savedAt: new Date().toISOString(),
         generation: report.generation,
         fitness: report.fitness,
@@ -471,7 +462,13 @@ export class SelfEvolvingAlgorithmEngine {
         explorationRate: report.currentExplorationRate,
         weights: weightsObj,
         recentHistory: report.weightSummary.slice(0, 10)
-      }, null, 2), 'utf8');
+      };
+      
+      if (typeof window !== 'undefined' && localStorage) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stateData));
+      } else {
+        console.log('[SelfEvolving] State update (would be persisted on server):', stateData);
+      }
     } catch (err) {
       console.warn('[SelfEvolving] Failed to save state:', err instanceof Error ? err.message : 'Unknown');
     }

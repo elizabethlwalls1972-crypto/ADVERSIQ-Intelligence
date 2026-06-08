@@ -1,9 +1,7 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
+// Browser-compatible telemetry using localStorage
+const TELEMETRY_KEY = 'morphic_field_telemetry';
 
 export class MorphicFieldEngine {
-    private readonly telemetryPath = path.join(process.cwd(), 'data', 'omni_node_telemetry.jsonl');
-
     async syncWithMorphicField(tags: string[], version: number, vector: number[]): Promise<void> {
         console.log(`[MORPHIC FIELD] Synchronized global knowledge. tags=${tags.join(',')}`);
         
@@ -17,8 +15,16 @@ export class MorphicFieldEngine {
                 source: 'ApexExecutionLoop'
             };
             
-            await fs.mkdir(path.dirname(this.telemetryPath), { recursive: true });
-            await fs.appendFile(this.telemetryPath, JSON.stringify(entry) + '\n', 'utf-8');
+            // Store in localStorage for browser, or call API for server-side persistence
+            if (typeof window !== 'undefined' && localStorage) {
+                const existing = localStorage.getItem(TELEMETRY_KEY) || '[]';
+                const telemetry = JSON.parse(existing);
+                telemetry.push(entry);
+                localStorage.setItem(TELEMETRY_KEY, JSON.stringify(telemetry.slice(-1000))); // Keep last 1000
+            } else {
+                // Server-side: would need to call an API endpoint
+                console.log('[MORPHIC FIELD] Telemetry entry:', entry);
+            }
         } catch (error) {
             console.error(`[MORPHIC FIELD] Failed to write telemetry:`, error);
         }
