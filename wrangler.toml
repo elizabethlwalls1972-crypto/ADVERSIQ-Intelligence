@@ -8,7 +8,7 @@ binding = "AI"
 
 # KV namespace for persistent agent memory
 [[kv_namespaces]]
-binding = "NSIL_KV"
+binding = "NSIL_MEMORY"
 id = "6b2e2a1e5b864d5f9e3c0a7d1b8e4f2a"
 
 # Build configuration
