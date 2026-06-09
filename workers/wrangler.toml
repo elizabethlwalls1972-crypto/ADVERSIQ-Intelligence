@@ -1,5 +1,4 @@
 name = "adversiq-api"
-type = "service"
 main = "adversiq-api.js"
 compatibility_date = "2024-09-23"
 
@@ -8,7 +7,7 @@ compatibility_date = "2024-09-23"
 binding = "ADVERSIQ_DATA"
 id = "385338eaef31405da6ee1803f4077f8a"  # adversiq-intelligence-data
 
-# Workers AI binding
+# Production environment
 [env.production]
 vars = { ENVIRONMENT = "production" }
 
