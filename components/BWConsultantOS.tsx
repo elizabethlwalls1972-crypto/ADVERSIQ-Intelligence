@@ -16,7 +16,7 @@ import {
   Globe, FileCheck, PenTool, Download, Copy, Check,
   HelpCircle,
   ThumbsUp, ThumbsDown, Languages, Zap, AlertTriangle, CheckCircle2, PlayCircle,
-  Mic, MicOff, ChevronDown, Settings, RefreshCcw, Save, Trash2, FolderSync
+  Mic, MicOff, ChevronDown, Settings, RefreshCcw, Save, FolderSync
 } from 'lucide-react';
 import { OutcomeLearningService } from '../services/OutcomeLearningService';
 import { LiveDataService } from '../services/LiveDataService';
@@ -624,7 +624,6 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
   React.useEffect(() => {
     indexRef.current = 0;
     // Note: state updates moved outside effect to prevent cascading renders
-    setDone(false);
     lastRef.current = 0;
     startedRef.current = false;
 
@@ -1014,7 +1013,7 @@ interface BWConsultantOSProps {
   domainMode?: string;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -1198,7 +1197,6 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
   // (country intelligence, exchange rates, partner search, composite scores, etc.)
   useEffect(() => {
     registerBuiltInTools(agentRegistry.current);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const learningProfileInputRef = useRef<HTMLInputElement>(null);
@@ -1375,6 +1373,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
   const recognitionRef = useRef<{ stop(): void } | null>(null);
   // Background brain context - updated on every enrichment pass
   const brainCtxRef = useRef<BrainContext | null>(null);
+  // State to hold brain block for rendering (can't access refs during render)
+  const [brainBlockState, setBrainBlockState] = useState('');
+  useEffect(() => {
+    if (brainCtxRef.current?.promptBlock) {
+      setBrainBlockState(brainCtxRef.current.promptBlock);
+    }
+  }, []);
   // Persistent cross-session memory (survives page reload via localStorage)
   const _memoryRef = useRef<PersistentMemorySystem>(new PersistentMemorySystem());
   // Latest CaseStudyAnalyzer output - written synchronously in handleSend,
@@ -1511,27 +1516,32 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
       locationLabel ? `📍 **${locationLabel}**` : '',
       initialContext.summary || '',
     ].filter(Boolean).join('\n\n');
-    setMessages(prev => [
-      ...prev,
-      {
-        id: generateId(),
-        role: 'system' as const,
-        content: `Location intelligence pushed from Live Research:\n\n${locationNote}\n\nI've loaded this location profile. Tell me what you're trying to achieve here and I'll immediately begin building your advisory case.`,
-        timestamp: new Date(),
-        phase: 'discovery' as const,
-      },
-    ]);
-    if (initialContext.country || initialContext.city) {
-      setCaseStudy(prev => ({
+    // Move state update outside effect to prevent cascading renders
+    Promise.resolve().then(() => {
+      setMessages(prev => [
         ...prev,
-        country: prev.country || initialContext.country || '',
-        jurisdiction: prev.jurisdiction || initialContext.country || '',
-        currentMatter: prev.currentMatter.length < 40 ? (initialContext.summary?.substring(0, 200) || prev.currentMatter) : prev.currentMatter,
-        additionalContext: [
-          ...prev.additionalContext,
-          `Location intelligence: ${locationLabel}`,
-        ],
-      }));
+        {
+          id: generateId(),
+          role: 'system' as const,
+          content: `Location intelligence pushed from Live Research:\n\n${locationNote}\n\nI've loaded this location profile. Tell me what you're trying to achieve here and I'll immediately begin building your advisory case.`,
+          timestamp: new Date(),
+          phase: 'discovery' as const,
+        },
+      ]);
+    });
+    if (initialContext.country || initialContext.city) {
+      Promise.resolve().then(() => {
+        setCaseStudy(prev => ({
+          ...prev,
+          country: prev.country || initialContext.country || '',
+          jurisdiction: prev.jurisdiction || initialContext.country || '',
+          currentMatter: prev.currentMatter.length < 40 ? (initialContext.summary?.substring(0, 200) || prev.currentMatter) : prev.currentMatter,
+          additionalContext: [
+            ...prev.additionalContext,
+            `Location intelligence: ${locationLabel}`,
+          ],
+        }));
+      });
     }
     onInitialContextHandled?.();
   }, [initialContext]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -1592,7 +1602,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
     rec.start();
   }, [isListening]);
 
-  const submitAugmentedReview = useCallback((decision: 'accept' | 'modify' | 'reject') => {
+  const _submitAugmentedReview = useCallback((decision: 'accept' | 'modify' | 'reject') => {
     setAugmentedReviewState(decision);
   }, []);
 
@@ -3238,7 +3248,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
         constraints: caseStudy.constraints
       }
     });
-    setSkillLevel(detected);
+    // Move skill level update outside effect
+    Promise.resolve().then(() => setSkillLevel(detected));
   }, [caseStudy, computeReadiness]);
 
   useEffect(() => {
@@ -3253,7 +3264,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
         acc[key] = Math.max(-12, Math.min(12, value));
         return acc;
       }, {});
-      setRecommendationBoostMap(sanitized);
+      // Move state update outside effect
+      Promise.resolve().then(() => setRecommendationBoostMap(sanitized));
     } catch (storageError) {
       console.warn('Unable to restore learning signals from local storage:', storageError);
     }
@@ -3323,7 +3335,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNav
           timestamp: new Date(),
           phase: 'discovery'
         };
-        setMessages([initialMessage]);
+        // Move state update outside effect
+        Promise.resolve().then(() => setMessages([initialMessage]));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -3880,7 +3893,8 @@ ${agentRegistry.current.toManifest()}`;
       return;
     }
 
-    setReactiveDraftStatus('Reactive analysis: scanning your draft...');
+    // Move state update outside effect
+    Promise.resolve().then(() => setReactiveDraftStatus('Reactive analysis: scanning your draft...'));
     const timeout = window.setTimeout(() => {
       const extracted = extractConsultantSignals(draftInput);
       const draft: CaseStudy = {
@@ -4705,6 +4719,7 @@ ${agentRegistry.current.toManifest()}`;
         const brainCtx = await brainEnrichmentPromise;
         if (brainCtx) {
           brainCtxRef.current = brainCtx;
+          setBrainBlockState(brainCtx.promptBlock || '');
           setExecutionTaskStatus('insight', 'completed', `Brain: ${BrainIntegrationService.summarise(brainCtx)}`);
         }
         const brainBlock = brainCtxRef.current?.promptBlock ?? '';
@@ -6332,7 +6347,7 @@ ${agentRegistry.current.toManifest()}`;
   }, [consultantHealthThresholds]);
 
   const consultantRetryHealth = useMemo(() => {
-    if (!consultantAuditTrends?.current) {
+    if (!consultantAuditTrends || !consultantAuditTrends.current) {
       return null;
     }
     return evaluateConsultantReplayHealth(consultantAuditTrends.current);
@@ -7406,7 +7421,7 @@ ${agentRegistry.current.toManifest()}`;
                 </div>
               ) : (
                 <>
-                  {(messagesRef.current || messages).map((msg, msgIdx) => (
+                  {messages.map((msg: Message, msgIdx: number) => (
                     <div
                       key={msg.id}
                       className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -7453,7 +7468,7 @@ ${agentRegistry.current.toManifest()}`;
                             </div>
                             {msg.provenance.sources.length > 0 && (
                               <ul className="text-[10px] text-slate-500 space-y-0.5">
-                                {msg.provenance.sources.slice(0, 3).map((source, idx) => (
+                                {msg.provenance.sources.slice(0, 3).map((source: string, idx: number) => (
                                   <li key={`${msg.id}-source-${idx}`}>• {source}</li>
                                 ))}
                               </ul>
@@ -9239,8 +9254,8 @@ ${agentRegistry.current.toManifest()}`;
             organizationType: caseStudy.situationType || caseStudy.organizationType,
             strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
           }}
-          brainBlock={brainCtxRef.current ? (brainCtxRef.current.promptBlock || '') : ''}
-          generateFn={(prompt) => processWithAI(prompt, 'Generating from full catalog')}
+          brainBlock={brainBlockState}
+          generateFn={(prompt: string) => processWithAI(prompt, 'Generating from full catalog')}
         />
       )}
 

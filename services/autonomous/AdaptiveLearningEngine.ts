@@ -34,7 +34,6 @@
 
 // Browser-compatible persistence using localStorage
 const STORAGE_KEY = 'adaptive_learning_state';
-const isNode = typeof window === 'undefined';
 
 // ============================================================================
 // TYPES

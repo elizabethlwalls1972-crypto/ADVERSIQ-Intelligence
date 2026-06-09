@@ -34,7 +34,6 @@
 
 // Browser-compatible persistence using localStorage
 const STORAGE_KEY = 'se_algorithm_evolution_state';
-const isNode = typeof window === 'undefined';
 
 export interface FormulaWeight {
   formulaId: string;
