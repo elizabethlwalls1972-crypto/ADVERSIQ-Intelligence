@@ -43,7 +43,7 @@ export default {
         if (!body.prompt) return json({ error: 'Prompt required' }, 400);
 
         try {
-          const response = await env.AI.run('@cf/meta/llama-2-7b-chat-int8', {
+          const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
             messages: [
               {
                 role: 'system',
@@ -56,7 +56,7 @@ export default {
 
           return json({
             response: response.response,
-            model: '@cf/meta/llama-2-7b-chat-int8',
+            model: '@cf/meta/llama-3.1-8b-instruct',
             prompt: body.prompt,
           });
         } catch (aiError) {
@@ -81,7 +81,7 @@ export default {
             time: new Date().toISOString(),
           });
 
-          const response = await env.AI.run('@cf/meta/llama-2-7b-chat-int8', {
+          const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
             messages: [
               {
                 role: 'system',
@@ -203,7 +203,7 @@ export default {
               // AI inference
               if (data.type === 'ai') {
                 const response = await env.AI.run(
-                  '@cf/meta/llama-2-7b-chat-int8',
+                  '@cf/meta/llama-3.1-8b-instruct',
                   {
                     messages: [{ role: 'user', content: data.prompt }],
                   }

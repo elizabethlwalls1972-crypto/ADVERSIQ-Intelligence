@@ -1322,7 +1322,7 @@ export const calculateEnhancedSPI = async (
     // Issue compliance certificate if applicable
     let ethicalCertificate: EthicalAuditCertificate | undefined;
     if (organizationId && ethicsResult.passed) {
-        ethicalCertificate = EthicalGateAuditTrail.issueCertificate(
+        ethicalCertificate = await EthicalGateAuditTrail.issueCertificate(
             organizationId,
             params.organizationName || 'Organization',
             new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
@@ -1459,17 +1459,17 @@ export const generateTwinLessonsReport = (
  * Get compliance audit trail for investor disclosure.
  * FEATURE 3: Signed ethical certificates for institutional confidence.
  */
-export const getComplianceCertificateForInvestor = (
+export const getComplianceCertificateForInvestor = async (
     organizationId: string,
     organizationName: string
-): {
+): Promise<{
     certificateId: string;
     issuedAt: string;
     complianceScore: number;
     investorFacingStatement: string;
     certificateData: EthicalAuditCertificate;
-} => {
-    const certificate = EthicalGateAuditTrail.issueCertificate(
+}> => {
+    const certificate = await EthicalGateAuditTrail.issueCertificate(
         organizationId,
         organizationName,
         new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(), // 90 days back

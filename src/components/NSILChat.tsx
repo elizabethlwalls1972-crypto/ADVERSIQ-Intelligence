@@ -25,7 +25,7 @@ const NSILChat: React.FC = () => {
   const [proactiveThoughts, setProactiveThoughts] = useState<string[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const brainRef = useRef<NSILBrain | null>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

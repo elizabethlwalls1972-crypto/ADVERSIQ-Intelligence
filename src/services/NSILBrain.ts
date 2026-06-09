@@ -4,7 +4,7 @@
 
 export class NSILBrain {
   private apiBase: string;
-  private sessionId: string;
+  readonly sessionId: string;
   private contextBuffer: string[] = [];
   private isThinking: boolean = false;
   private pendingThoughts: string[] = [];

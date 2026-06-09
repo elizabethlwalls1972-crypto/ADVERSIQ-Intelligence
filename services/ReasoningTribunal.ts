@@ -405,6 +405,5 @@ export function getAvailableJudges(): TribunalJudge[] {
   const available: TribunalJudge[] = [];
   if (hasAnthropicKey()) available.push('claude-thinking');
   if (hasOpenAIKey()) available.push('openai-o3');
-  if (isGemmaAvailable()) available.push('gemini-thinking');
   return available;
 }

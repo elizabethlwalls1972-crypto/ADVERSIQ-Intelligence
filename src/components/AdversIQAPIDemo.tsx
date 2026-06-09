@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { api } from './api';
+import { api } from '../api';
 
 export function AdversIQAPIDemo() {
   const [health, setHealth] = useState<any>(null);
