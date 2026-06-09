@@ -2,16 +2,14 @@ name = "adversiq-intelligence"
 compatibility_date = "2024-09-23"
 pages_build_output_dir = "dist"
 
-# AI binding for Pages Functions
-[env.production]
-binding = "AI"
-
 # KV namespace for persistent agent memory
 [[kv_namespaces]]
 binding = "NSIL_MEMORY"
 id = "6b2e2a1e5b864d5f9e3c0a7d1b8e4f2a"
 
-# Build configuration
-[build]
-command = "npm run build:client"
-cwd = "./"
+# Production environment with AI binding
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# AI binding for Cloudflare Workers AI models (needs to be configured in dashboard)
+# This will be bound to AI variable in your functions

@@ -23,9 +23,8 @@
  */
 
 import { callOllama, checkOllamaAvailable, type OllamaMessage } from './ollamaService';
-import { callGemma, isGemmaAvailable, type GemmaMessage } from '../gemmaService';
 
-export type AIProvider = 'ollama' | 'ollama-qwen3' | 'ollama-openchat' | 'gemma' | 'groq' | 'together' | 'openrouter' | 'mistral' | 'openai' | 'anthropic';
+export type AIProvider = 'ollama' | 'ollama-qwen3' | 'ollama-openchat' | 'groq' | 'together' | 'openrouter' | 'mistral' | 'openai' | 'anthropic';
 
 export type TaskType =
   | 'quick-analysis'    // Short analytical response — Groq preferred
@@ -120,7 +119,8 @@ function getProviderConfigs(): ProviderConfig[] {
     });
   }
 
-  // Gemma/Gemini — Google AI key with independent quota (second priority)
+  // Gemma/Gemini — Google AI key with independent quota (DISABLED - gemmaService.ts removed)
+  /* Gemma provider disabled
   if (isGemmaAvailable()) {
     configs.push({
       name: 'gemma',
@@ -134,6 +134,7 @@ function getProviderConfigs(): ProviderConfig[] {
       costWeight: 0,
     });
   }
+  */
 
   const groqKey = String(process.env.GROQ_API_KEY || '').trim();
   if (groqKey && groqKey.length > 20 && !groqKey.toLowerCase().includes('your-')) {
@@ -376,7 +377,8 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
     };
   }
 
-  // ── Gemma/Gemini (Google AI key with independent quota) ──
+  // ── Gemma/Gemini provider disabled (gemmaService.ts removed) ──
+  /* Gemma provider disabled
   if (config.name === 'gemma') {
     const gemmaMsgs: GemmaMessage[] = options.messages.map(m => ({
       role: m.role as 'system' | 'user' | 'assistant',
@@ -395,6 +397,7 @@ async function callProvider(config: ProviderConfig, options: AICallOptions): Pro
       latencyMs: Date.now() - start,
     };
   }
+  */
 
   if (config.name === 'anthropic') {
     // Anthropic API — supports extended thinking mode

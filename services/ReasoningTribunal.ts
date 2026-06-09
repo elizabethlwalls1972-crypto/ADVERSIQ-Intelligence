@@ -22,7 +22,7 @@
  */
 
 import { callAI, type TaskType } from './AIProviderOrchestrator';
-import { callGeminiThinking, isGemmaAvailable, type GemmaMessage } from '../gemmaService';
+// import { callGeminiThinking, isGemmaAvailable, type GemmaMessage } from '../gemmaService'; // DISABLED: gemmaService.ts removed
 import { monitoringService } from './MonitoringService';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -175,6 +175,7 @@ async function callOpenAIO3(
   }
 }
 
+/* DISABLED: Gemini thinking judge - gemmaService.ts removed
 async function callGeminiThinkingJudge(
   question: string,
   systemPrompt: string,
@@ -215,6 +216,7 @@ async function callGeminiThinkingJudge(
     };
   }
 }
+*/
 
 // ─── Synthesis ───────────────────────────────────────────────────────────────
 
@@ -363,9 +365,12 @@ export async function runTribunal(
   if (activeJudges.includes('openai-o3')) {
     judgePromises.push(callOpenAIO3(question, systemPrompt, judgeTimeout));
   }
+  // DISABLED: Gemini thinking judge - gemmaService.ts removed
+  /*
   if (activeJudges.includes('gemini-thinking')) {
     judgePromises.push(callGeminiThinkingJudge(question, systemPrompt, geminiThinkingBudget, judgeTimeout));
   }
+  */
 
   const verdicts = await Promise.all(judgePromises);
 
