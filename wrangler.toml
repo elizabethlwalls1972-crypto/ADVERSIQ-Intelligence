@@ -5,7 +5,7 @@ pages_build_output_dir = "dist"
 # KV namespace for persistent agent memory
 [[kv_namespaces]]
 binding = "NSIL_MEMORY"
-id = "6b2e2a1e5b864d5f9e3c0a7d1b8e4f2a"
+id = "385338eaef31405da6ee1803f4077f8a"  # adversiq-intelligence-data namespace
 
 # Production environment with AI binding
 [env.production]
