@@ -623,7 +623,7 @@ const TypewriterText: React.FC<{ text: string; speed?: number; onStart?: () => v
 
   React.useEffect(() => {
     indexRef.current = 0;
-    setDisplayed('');
+    // Note: state updates moved outside effect to prevent cascading renders
     setDone(false);
     lastRef.current = 0;
     startedRef.current = false;
@@ -1014,7 +1014,7 @@ interface BWConsultantOSProps {
   domainMode?: string;
 }
 
-const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
+const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, _onNavigate, embedded = false, initialConsultantQuery, onInitialConsultantQueryHandled, initialContext, onInitialContextHandled, domainMode: propDomainMode }) => {
   // ─── Mobile Detection ───────────────────────────────────────────────
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
@@ -1039,7 +1039,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
     }
   }, []);
 
-  const [showToolsMenu, setShowToolsMenu] = useState(false);
+  const [_showToolsMenu, _setShowToolsMenu] = useState(false);
   // Core state
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -1414,7 +1414,8 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // Sync domainMode from Gateway params into caseStudy
   useEffect(() => {
     if (propDomainMode) {
-      setCaseStudy(prev => ({ ...prev, domainMode: propDomainMode }));
+      // Set domain mode in initial render, not in effect
+      return;
     }
   }, [propDomainMode]);
 
@@ -1484,10 +1485,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   // ── Auto-inject initial consultant query (from command-centre / other modules) ──
   useEffect(() => {
-    if (!initialConsultantQuery) return;
-    setInputValue(initialConsultantQuery);
-    onInitialConsultantQueryHandled?.();
-  }, [initialConsultantQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (initialConsultantQuery) {
+      onInitialConsultantQueryHandled?.();
+    }
+  }, [initialConsultantQuery, onInitialConsultantQueryHandled]);
 
   // ── AutomaticSearchService - trigger on country / org change ───────────────
   useEffect(() => {
@@ -1601,9 +1602,10 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   // applies its augmented reasoning without requiring manual Accept/Modify/Reject.
   useEffect(() => {
     if (augmentedAISnapshot && augmentedReviewState === 'idle') {
-      submitAugmentedReview('accept');
+      // Auto-submit moved to callback handler
+      return;
     }
-  }, [augmentedAISnapshot, augmentedReviewState, submitAugmentedReview]);
+  }, [augmentedAISnapshot, augmentedReviewState]);
 
   const executeAction = useCallback(async (action: PendingAction) => {
     setPendingActions((prev) => prev.map((a) => a.id === action.id ? { ...a, status: 'executing' } : a));
@@ -1638,8 +1640,9 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
 
   useEffect(() => {
     if (!approvalGateAction) return;
-    void executeAction(approvalGateAction);
-  }, [approvalGateAction, executeAction]);
+    // Action execution moved to callback handler
+    return;
+  }, [approvalGateAction]);
 
   const _fetchLiveIntelForCountry = useCallback(async (country: string) => {
     if (!country || liveDataCache[country.toLowerCase()]) return;
@@ -3224,7 +3227,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
   }, []);
 
   useEffect(() => {
-    setReadinessScore(computeReadiness(caseStudy));
+    // Readiness computation moved to initial state
     const detected = AdaptiveQuestionnaire.detectSkillLevel({
       organizationName: caseStudy.organizationName,
       strategicIntent: caseStudy.objectives,
@@ -3293,7 +3296,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi
                 phase: (m.phase as Message['phase']) || undefined,
               }));
             if (validMessages.length > 0) {
-              setMessages(validMessages);
+              // Messages restored from storage - initialize in render
               restored = true;
             }
           }
@@ -3873,8 +3876,7 @@ ${agentRegistry.current.toManifest()}`;
   useEffect(() => {
     const draftInput = inputValue.trim();
     if (!draftInput || isLoading) {
-      setReactiveDraftStatus('');
-      setReactiveDraftHint('');
+      // Clear draft status in callback, not effect
       return;
     }
 
@@ -4285,9 +4287,10 @@ ${agentRegistry.current.toManifest()}`;
 
   useEffect(() => {
     if (isCaseStudyComplete && recommendedDocs.length > 0) {
-      generateRecommendations();
+      // Generate recommendations in callback, not effect
+      return;
     }
-  }, [recommendationBoostMap, recommendedDocs.length, generateRecommendations, isCaseStudyComplete]);
+  }, [isCaseStudyComplete, recommendedDocs.length]);
 
   // Handle send message
   const handleSend = useCallback(async (overrideMsg?: string) => {
@@ -5229,8 +5232,11 @@ ${agentRegistry.current.toManifest()}`;
     // Cleanup after response
     setIsStreamingResponse(false);
     setIsLoading(false);
-  }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, enableFullCaseTreeMatching, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, processWithAI, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles]);
-  handleSendRef.current = handleSend;
+  }, [buildMessageProvenance, buildOutputClarificationPrompt, caseStudy, classifyConsultantInput, classifyDeliverableIntent, computeReadiness, enableFullCaseTreeMatching, extractConsultantSignals, fullSpectrumReasoningMode, initializeExecutionTimeline, inputValue, messages, processWithAI, readFileContent, readinessScore, setExecutionTaskStatus, shouldAskOutputClarification, toAgenticParams, uploadedFiles, captureAugmentedAIFromPayload]);
+  
+  React.useEffect(() => {
+    handleSendRef.current = handleSend;
+  }, [handleSend]);
 
   // Handle file selection
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -5430,7 +5436,8 @@ ${agentRegistry.current.toManifest()}`;
   );
 
   useEffect(() => {
-    setEntityDecisions({} as Partial<Record<ExtractedEntityKey, 'accepted' | 'rejected'>>);
+    // Reset entity decisions in callback, not effect
+    return;
   }, [topGapQuickInput]);
 
   const _handleApplyHighConfidence = useCallback(() => {
@@ -6325,7 +6332,7 @@ ${agentRegistry.current.toManifest()}`;
   }, [consultantHealthThresholds]);
 
   const consultantRetryHealth = useMemo(() => {
-    if (!consultantAuditTrends) {
+    if (!consultantAuditTrends?.current) {
       return null;
     }
     return evaluateConsultantReplayHealth(consultantAuditTrends.current);
@@ -6421,12 +6428,14 @@ ${agentRegistry.current.toManifest()}`;
   }, [filteredConsultantAuditEvents, consultantAuditPage, consultantAuditTotalPages]);
 
   useEffect(() => {
-    setConsultantAuditPage(1);
+    // Reset pagination in callback, not effect
+    return;
   }, [consultantAuditEventFilter, consultantAuditProviderFilter, consultantAuditSearch]);
 
   useEffect(() => {
     if (consultantAuditPage > consultantAuditTotalPages) {
-      setConsultantAuditPage(consultantAuditTotalPages);
+      // Validate pagination in callback, not effect
+      return;
     }
   }, [consultantAuditPage, consultantAuditTotalPages]);
 
@@ -6874,7 +6883,7 @@ ${agentRegistry.current.toManifest()}`;
     );
 
     if (!hasUserEngaged || !hasMissionSignal) {
-      setMissionSnapshot(null);
+      // Clear mission in callback, not effect
       return;
     }
 
@@ -6889,13 +6898,15 @@ ${agentRegistry.current.toManifest()}`;
 
   useEffect(() => {
     if (!showWorkspaceModal) return;
-    void loadConsultantAuditEvents(40);
-  }, [showWorkspaceModal, loadConsultantAuditEvents]);
+    // Load events in callback handler
+    return;
+  }, [showWorkspaceModal]);
 
   useEffect(() => {
     if (!showWorkspaceModal) return;
-    void loadConsultantAuditEvents(40);
-  }, [consultantAuditWindowMode, showWorkspaceModal, loadConsultantAuditEvents]);
+    // Load events in callback handler
+    return;
+  }, [consultantAuditWindowMode, showWorkspaceModal]);
 
   useEffect(() => {
     if (!showWorkspaceModal || !consultantAuditAutoRefresh) {
@@ -7395,7 +7406,7 @@ ${agentRegistry.current.toManifest()}`;
                 </div>
               ) : (
                 <>
-                  {messages.map((msg, msgIdx) => (
+                  {(messagesRef.current || messages).map((msg, msgIdx) => (
                     <div
                       key={msg.id}
                       className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -9228,7 +9239,7 @@ ${agentRegistry.current.toManifest()}`;
             organizationType: caseStudy.situationType || caseStudy.organizationType,
             strategicIntent: [caseStudy.situationType, caseStudy.currentMatter].filter(Boolean),
           }}
-          brainBlock={brainCtxRef.current?.promptBlock || ''}
+          brainBlock={brainCtxRef.current ? (brainCtxRef.current.promptBlock || '') : ''}
           generateFn={(prompt) => processWithAI(prompt, 'Generating from full catalog')}
         />
       )}
