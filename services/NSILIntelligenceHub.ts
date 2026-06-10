@@ -62,6 +62,8 @@ import { IFCGlobalStandardsEngine, type GlobalStandardsAssessment } from './IFCG
 // NSIL v2 Universal Intelligence Layer (Layers 11-14)
 import { CompoundIntelligenceOrchestrator, type CompoundIntelligenceReport, type UniversalProblemInput } from './agents/CompoundIntelligenceOrchestrator';
 import type { GlobalProblemAnalysis } from './nsil/global_nsil_orchestrator';
+import { assessRuntimeOSMorphology } from './nsil/os_morphology_runtime';
+import type { WiringTransformResult } from './nsil/mogen_wiring_transformer';
 
 // ============================================================================
 // TYPES
@@ -166,6 +168,10 @@ export interface IntelligenceReport {
     failurePatterns: string[];
     recommendation: string;
   };
+
+  // MoGen-inspired morphology of the OS run: graph structure, weak bridges,
+  // synthetic hard cases, and repair hints for the cognitive wiring itself.
+  mogenMorphology?: WiringTransformResult;
   
   // Autonomous intelligence layer
   autonomous: AutonomousIntelligence;
@@ -395,6 +401,23 @@ export class NSILIntelligenceHub {
       console.warn('[NSILIntelligenceHub] Continual harness bridge failed:', error instanceof Error ? error.message : error);
     }
 
+    const mogenMorphology = assessRuntimeOSMorphology({
+      reportId,
+      params,
+      componentsRun,
+      inputStatus: inputValidation.overallStatus,
+      recommendationAction: recommendation.action,
+      recommendationConfidence: recommendation.confidence,
+      hasPersonaAnalysis: Boolean(personaAnalysis),
+      hasCounterfactual: Boolean(counterfactual),
+      hasUnbiasedAnalysis: Boolean(unbiasedAnalysis),
+      hasGlobalStandards: Boolean(globalStandards),
+      hasUniversalIntelligence: Boolean(universalIntelligence),
+      hasContinualHarness: Boolean(continualHarness),
+      hasReflexive: Boolean(reflexive),
+    });
+    componentsRun.push('MoGenWiringTransformer', 'RuntimeOSMorphology');
+
     return {
       id: reportId,
       timestamp: new Date(),
@@ -406,6 +429,7 @@ export class NSILIntelligenceHub {
       globalStandards,
       universalIntelligence,
       continualHarness,
+      mogenMorphology,
       autonomous,
       reflexive,
       applicableInsights,

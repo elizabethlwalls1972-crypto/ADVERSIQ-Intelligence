@@ -72,6 +72,27 @@ export type {
   ResearchEvidenceBundle,
   ResearchQuestion,
 } from './autonomous_research_cognition';
+export { MoGenWiringTransformer } from './mogen_wiring_transformer';
+export type {
+  BrainWiringGraph,
+  LocalGeometryContext,
+  Point3D,
+  TransformOptions,
+  WiringAnomaly,
+  WiringCondition,
+  WiringEdge,
+  WiringEdgeKind,
+  WiringMorphologyMetrics,
+  WiringNode,
+  WiringNodeKind,
+  WiringPoint,
+  WiringTransformResult,
+} from './mogen_wiring_transformer';
+export {
+  assessRuntimeOSMorphology,
+  buildRuntimeOSGraph,
+} from './os_morphology_runtime';
+export type { RuntimeMorphologyInput } from './os_morphology_runtime';
 export type {
   RegionalDevelopmentProfile,
   RegionalFailureMode,
