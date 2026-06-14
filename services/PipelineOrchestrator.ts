@@ -7,7 +7,7 @@
  * Layers challenge, catch, and build on each other's strengths.
  * 
  * Flow: Adversarial → Contradiction → Stress → Cognitive → Self-Improving
- *       → Reflexive → Entity Verification → Confidence → Orchestration → Generation
+ *       → Reflexive → Entity Verification → Confidence → Orchestration → Synthesis
  */
 
 import { callGemma, callGemmaJSON, callGemmaFast, GemmaMessage } from '../gemmaService';
@@ -326,15 +326,15 @@ async function layer09ParallelOrchestration(state: PipelineState): Promise<Layer
   };
 }
 
-async function layer10DocumentGeneration(state: PipelineState): Promise<Layer10Output> {
+async function layer10CyberSynthesis(state: PipelineState): Promise<Layer10Output> {
   if (!state.layer09) throw new Error('Layer 09 not complete');
 
   const topHypothesis = state.layer09.activeHypotheses[0].hypothesis;
-  const prompt = `Generate final response based on this hypothesis:
+  const prompt = `Synthesize final cyber-defense response based on this validated hypothesis:
 
 ${topHypothesis}
 
-Output in markdown format with clear structure, evidence, and reasoning.`;
+Output in markdown format with clear structure, evidence, reasoning, and cyber validator context.`;
 
   const content = await callGemma([{ role: 'user', content: prompt }]);
 
@@ -426,8 +426,8 @@ export class PipelineOrchestrator {
       console.log('[Layer 09] Parallel Orchestration...');
       state.layer09 = await layer09ParallelOrchestration(state);
 
-      console.log('[Layer 10] Document Generation...');
-      state.layer10 = await layer10DocumentGeneration(state);
+      console.log('[Layer 10] Cyber Validation Synthesis...');
+      state.layer10 = await layer10CyberSynthesis(state);
 
       return state.layer10;
     } catch (err) {

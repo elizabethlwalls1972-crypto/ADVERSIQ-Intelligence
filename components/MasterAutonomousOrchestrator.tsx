@@ -97,8 +97,8 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
       'Initializing autonomous agents...',
       'Running deep thinking analysis...',
       'Executing autonomous research...',
-      'Generating base report payload...',
-      'Enhancing with intelligent document generation...',
+      'Assembling cyber validation payload...',
+      'Applying cyber validator synthesis...',
       'Applying self-improvement optimizations...',
       'Updating persistent memory...',
       'Finalizing orchestration...'
@@ -144,7 +144,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
               <h3 className="text-lg font-semibold mb-2">Full Performance Mode</h3>
               <p className="text-sm opacity-90">
                 Activate all advanced autonomous agents for complete system optimization:
-                Deep Thinking * Autonomous Research * Intelligent Document Generation * Self-Improvement
+                Deep Thinking * Autonomous Research * Cyber Validator Synthesis * Self-Improvement
               </p>
             </div>
           </div>
@@ -241,7 +241,7 @@ const MasterAutonomousOrchestrator: React.FC<MasterAutonomousOrchestratorProps> 
                 <div className="mt-2 text-sm text-green-700">
                   <p>* Deep Thinking Analysis: {result.autonomousEnhancements?.deepThinking ? 'Completed' : 'Pending'}</p>
                   <p>* Autonomous Research: {result.autonomousEnhancements?.researchInsights ? 'Completed' : 'Pending'}</p>
-                  <p>* Document Enhancement: {result.autonomousEnhancements?.documentQuality ? 'Completed' : 'Pending'}</p>
+                  <p>* Cyber Validation: {result.autonomousEnhancements?.documentQuality ? 'Completed' : 'Pending'}</p>
                   <p>* Self-Improvement: {result.autonomousEnhancements?.selfImprovement ? 'Completed' : 'Pending'}</p>
                 </div>
               </div>

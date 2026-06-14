@@ -5,7 +5,7 @@ import { runOpportunityOrchestration } from './engine';
 import { GLOBAL_CITY_DATABASE } from '../constants';
 import { mapToSPI, mapToIVAS, mapToSCF } from './intakeMapping';
 import DerivedIndexService from './DerivedIndexService';
-import AdvancedIndexService from './MissingFormulasEngine';
+import { CybersecurityValidators } from '../server/core/cybersecurityValidators';
 import AdversarialReasoningService from './AdversarialReasoningService';
 import { EventBus } from './EventBus';
 import { GovernanceService } from './GovernanceService';

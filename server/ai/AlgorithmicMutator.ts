@@ -1,14 +1,15 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { generateLLMPrompt } from '../services/llmGateway.js';
+import { CYBER_VALIDATOR_REGISTRY, getCyberValidator } from '../core/formulas.js';
 
 /**
  * AlgorithmicMutator: Self-writing code system
- * Monitors formula performance. If a formula fails backtesting,
+ * Monitors cyber validator performance. If a validator fails backtesting,
  * the system autonomously rewrites its TypeScript code and tests it.
  */
 export class AlgorithmicMutator {
-  private readonly FORMULA_PATH = path.resolve(process.cwd(), 'server', 'core', 'formulas.ts');
+  private readonly VALIDATOR_PATH = path.resolve(process.cwd(), 'server', 'core', 'formulas.ts');
   private readonly MUTATION_LOG = path.resolve(process.cwd(), 'data', 'mutations.jsonl');
   private mutationCount: number = 0;
 
@@ -24,7 +25,7 @@ export class AlgorithmicMutator {
       return { mutated: false, reason: `Variance within acceptable threshold (${performanceMetrics.variance})` };
     }
 
-    console.log(`[MUTATOR] ${formulaName} variance CRITICAL: ${performanceMetrics.variance}`);
+    console.log(`[MUTATOR] Cyber validator ${formulaName} variance CRITICAL: ${performanceMetrics.variance}`);
     return this.initiateEvolutionaryMutation(formulaName, performanceMetrics);
   }
 
@@ -32,39 +33,44 @@ export class AlgorithmicMutator {
     formulaName: string,
     metrics: any
   ): Promise<{ mutated: boolean; reason: string }> {
-    if (!fs.existsSync(this.FORMULA_PATH)) {
-      return { mutated: false, reason: 'Formula source file not found' };
+    if (!fs.existsSync(this.VALIDATOR_PATH)) {
+      return { mutated: false, reason: 'Cyber validator source file not found' };
     }
 
-    const sourceCode = fs.readFileSync(this.FORMULA_PATH, 'utf-8');
+    if (!getCyberValidator(formulaName)) {
+      return { mutated: false, reason: `Cyber validator ${formulaName} not found in registry` };
+    }
+
+    const sourceCode = fs.readFileSync(this.VALIDATOR_PATH, 'utf-8');
     const functionRegex = new RegExp(`export function ${formulaName}\\s*\\([^)]*\\)[^{]*\\{[\\s\\S]*?\\n\\}`, 'g');
     const currentFunction = sourceCode.match(functionRegex)?.[0];
 
     if (!currentFunction) {
-      return { mutated: false, reason: `Function ${formulaName} not found in source` };
+      return { mutated: false, reason: `Cyber validator ${formulaName} not found in source` };
     }
 
     console.log(`[MUTATOR] Current function signature extracted. Initiating rewrite...`);
 
     const mutationPrompt = `
-You are the ADVERSIQ Algorithmic Mutator. A formula has failed and needs evolutionary correction.
+You are the ADVERSIQ Algorithmic Mutator. A cyber validator has failed backtesting and needs evolutionary correction.
 
-CURRENT FUNCTION:
+CURRENT VALIDATOR:
 \`\`\`typescript
 ${currentFunction}
 \`\`\`
 
 FAILURE CONTEXT:
-- Expected: ${metrics.expectedOutcome}
-- Actual: ${metrics.actualOutcome}
+- Expected security outcome: ${metrics.expectedOutcome}
+- Actual security outcome: ${metrics.actualOutcome}
 - Variance: ${metrics.variance}
 - Test cases failed: ${metrics.testCount}
 
 MUTATION DIRECTIVE:
-Rewrite this function to:
-1. Add a dampening coefficient for high-variance scenarios
-2. Introduce stochastic smoothing if the formula is overfitting
+Rewrite this validator to:
+1. Add a dampening coefficient for high-variance security telemetry
+2. Introduce stochastic smoothing if the validator is overfitting to a narrow attack pattern
 3. Maintain the original signature and return type
+4. Keep the validator deterministic enough for CI/CD gating
 
 Return ONLY the rewritten TypeScript function, no markdown or explanation.
 `;
@@ -78,12 +84,12 @@ Return ONLY the rewritten TypeScript function, no markdown or explanation.
       }
 
       const newSourceCode = sourceCode.replace(currentFunction, mutatedCode.trim());
-      fs.writeFileSync(this.FORMULA_PATH, newSourceCode, 'utf-8');
+      fs.writeFileSync(this.VALIDATOR_PATH, newSourceCode, 'utf-8');
 
       this.logMutation(formulaName, currentFunction, mutatedCode, metrics);
-      console.log(`[MUTATOR] SUCCESS: ${formulaName} autonomously evolved.`);
+      console.log(`[MUTATOR] SUCCESS: Cyber validator ${formulaName} autonomously evolved.`);
 
-      return { mutated: true, reason: `Formula evolved to handle variance ${metrics.variance}` };
+      return { mutated: true, reason: `Cyber validator evolved to handle variance ${metrics.variance}` };
     } catch (err) {
       console.error(`[MUTATOR ERROR]`, err);
       return { mutated: false, reason: `Mutation failed: ${String(err)}` };
@@ -112,6 +118,7 @@ Return ONLY the rewritten TypeScript function, no markdown or explanation.
       timestamp: new Date().toISOString(),
       mutationId: this.mutationCount,
       formula: formulaName,
+      validator: formulaName,
       metrics,
       diff: {
         before: before.substring(0, 100),

@@ -34,14 +34,8 @@ const NSILWorkspace = lazyWithReload(() => import('./components/NSILWorkspace'))
 const UserManual = lazyWithReload(() => import('./components/UserManual'));
 const CommandCenter = lazyWithReload(() => import('./components/CommandCenter'));
 const BWConsultantOS = lazyWithReload(() => import('./components/BWConsultantOS'));
-const GlobalLocationIntelligence = lazyWithReload(() => import('./components/GlobalLocationIntelligence'));
 const AdminDashboard = lazyWithReload(() => import('./components/AdminDashboard'));
 const Gateway = lazyWithReload(() => import('./components/Gateway').then(module => ({ default: module.Gateway })));
-const MatchmakingEngine = lazyWithReload(() => import('./components/MatchmakingEngine'));
-const DocumentGenerationSuite = lazyWithReload(() => import('./components/DocumentGenerationSuite'));
-const AdvancedReportGenerator = lazyWithReload(() => import('./components/AdvancedReportGenerator'));
-const ExecutiveSummaryGenerator = lazyWithReload(() => import('./components/ExecutiveSummaryGenerator'));
-const LettersCatalogModal = lazyWithReload(() => import('./components/LettersCatalogModal'));
 const NSILShowcasePage = lazyWithReload(() => import('./components/NSILShowcasePage'));
 const NSILBrainPanel = lazyWithReload(() => import('./components/NSILBrainPanel').then(m => ({ default: m.NSILBrainPanel })));
 const HumanOversightUI = lazyWithReload(() => import('./components/HumanOversightUI').then(m => ({ default: m.HumanOversightUI })));
@@ -54,9 +48,7 @@ import type { AgenticRun } from './services/agenticWorker';
 import type { ConsultantInsight } from './services/BWConsultantAgenticAI';
 // EventBus for ecosystem connectivity
 import { EventBus, type EcosystemPulse } from './services/EventBus';
-// Location intelligence types
-import { type CityProfile } from './data/globalLocationProfiles';
-import { type LocationResult } from './services/geminiLocationService';
+
 
 // --- TYPES & INITIAL STATE ---
 const initialSection: ReportSection = { id: '', title: '', content: '', status: 'pending' };
@@ -70,19 +62,13 @@ const initialReportData: ReportData = {
   risks: { ...initialSection, id: 'risk', title: 'Risk Mitigation Strategy' },
 };
 
-type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'global-location-intel' | 'admin' | 'intake' | 'matchmaking' | 'documents' | 'advanced-report' | 'exec-summary' | 'letters' | 'nsil-showcase' | 'nsil-brain' | 'oversight' | 'system-dashboard' | 'agent-spawner';
+type ViewMode = 'main' | 'user-manual' | 'command-center' | 'consultant-os' | 'report-generator' | 'admin' | 'intake' | 'nsil-showcase' | 'nsil-brain' | 'oversight' | 'system-dashboard' | 'agent-spawner';
 
 const App: React.FC = () => {
     // --- STATE ---
     const [params, setParams] = useState<ReportParameters>(INITIAL_PARAMETERS);
     const [viewMode, setViewMode] = useState<ViewMode>('command-center');
     const [savedReports, setSavedReports] = useState<ReportParameters[]>([]);
-    const [pendingLocationData, setPendingLocationData] = useState<{
-        profile: CityProfile;
-        research: LocationResult;
-        city: string;
-        country: string;
-    } | null>(null);
 
     useEffect(() => {
         const loadReports = async () => {
@@ -456,13 +442,11 @@ const App: React.FC = () => {
         const [
             { ConsultantGateService },
             { ReportOrchestrator },
-            { DocumentIntegrityService },
             { generateReportSectionStream },
             { ReportsService }
         ] = await Promise.all([
             import('./services/ConsultantGateService'),
             import('./services/ReportOrchestrator'),
-            import('./services/DocumentIntegrityService'),
             import('./services/geminiService'),
             import('./services/ReportsService')
         ]);
@@ -529,24 +513,6 @@ const App: React.FC = () => {
             }));
         }
 
-        // 
-        // DOCUMENT INTEGRITY  -  wrap with provenance tracking
-        // 
-        const dataSources = ['NSIL Intelligence Hub', 'Pattern Confidence Engine', 'Historical Parallel Matcher',
-                             'Situation Analysis Engine', 'Formula Suite (29 formulas)', 'Ethical Reasoning Engine'];
-        if ((extendedPayload.patternIntelligence?.matchedPatterns?.length ?? 0) > 0) {
-            dataSources.push('Methodology Knowledge Base');
-        }
-        const integrityConfidence = (reportPayload.confidenceScores?.overall || 50) >= 70 ? 'high' as const
-            : (reportPayload.confidenceScores?.overall || 50) >= 45 ? 'medium' as const
-            : (reportPayload.confidenceScores?.overall || 50) >= 20 ? 'low' as const
-            : 'insufficient-data' as const;
-        DocumentIntegrityService.generateIntegrityHeader({
-            documentType: 'strategic-report',
-            confidence: integrityConfidence,
-            country: params.country,
-            sector: (params.industry || [])[0],
-        });
 
         setReportData(prev => ({
             ...prev,
@@ -633,8 +599,6 @@ const App: React.FC = () => {
             const { runFullyAutonomousAgenticWorker } = await import('./services/agenticWorker');
 
             const result = await runFullyAutonomousAgenticWorker(params, {
-                generateDocument: true,
-                documentAudience: 'executive',
                 executeAutonomousActions: true,
                 enableSelfImprovement: true,
                 spawnSubAgents: true
@@ -672,8 +636,6 @@ const App: React.FC = () => {
                           if (payload?.query) setPendingConsultantQuery(payload.query);
                           setViewMode('consultant-os');
                         }}
-                        onOpenGlobalLocationIntel={() => setViewMode('global-location-intel')}
-                        onLocationResearched={(data) => setPendingLocationData(data)}
                     />
                 </div>
             );
@@ -724,23 +686,6 @@ const App: React.FC = () => {
             );
         }
 
-        if (viewMode === 'global-location-intel') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <GlobalLocationIntelligence
-                        onBack={() => setViewMode('main')}
-                        onOpenCommandCenter={() => setViewMode('command-center')}
-                        pendingLocation={pendingLocationData}
-                        onLocationLoaded={() => setPendingLocationData(null)}
-                        onPushToConsultant={(data) => {
-                            setPendingConsultantContext(data as unknown as { city: string; country: string; summary: string; profile: Record<string, unknown>; research: object | null });
-                            setViewMode('consultant-os');
-                        }}
-                    />
-                </div>
-            );
-        }
-
         if (viewMode === 'admin') {
             return (
                 <div className="w-full h-full overflow-y-auto">
@@ -762,86 +707,6 @@ const App: React.FC = () => {
                         params={params}
                         onUpdate={setParams}
                         onComplete={() => setViewMode('consultant-os')}
-                    />
-                </div>
-            );
-        }
-
-        if (viewMode === 'matchmaking') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
-                        </button>
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Partner Matchmaking</span>
-                    </nav>
-                    <MatchmakingEngine params={params} autoRun />
-                </div>
-            );
-        }
-
-        if (viewMode === 'documents') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
-                        </button>
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Document Generation</span>
-                    </nav>
-                    <DocumentGenerationSuite
-                        entityName={params.organizationName || undefined}
-                        targetMarket={params.country || undefined}
-                        reportParams={params}
-                        reportData={reportData}
-                    />
-                </div>
-            );
-        }
-
-        if (viewMode === 'advanced-report') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
-                        </button>
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Advanced Report</span>
-                    </nav>
-                    <AdvancedReportGenerator
-                        params={params}
-                        onReportGenerated={() => setViewMode('consultant-os')}
-                        onClose={() => setViewMode('consultant-os')}
-                    />
-                </div>
-            );
-        }
-
-        if (viewMode === 'exec-summary') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
-                        <button onClick={() => setViewMode('consultant-os')} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <span className="text-lg leading-none">&larr;</span> Back to Consultant
-                        </button>
-                        <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Executive Summary</span>
-                    </nav>
-                    <ExecutiveSummaryGenerator
-                        entity={params}
-                        targetMarket={params.country || undefined}
-                        targetIndustry={(params.industry?.[0]) || undefined}
-                    />
-                </div>
-            );
-        }
-
-        if (viewMode === 'letters') {
-            return (
-                <div className="w-full h-full overflow-y-auto">
-                    <LettersCatalogModal
-                        isOpen={true}
-                        onClose={() => setViewMode('consultant-os')}
                     />
                 </div>
             );

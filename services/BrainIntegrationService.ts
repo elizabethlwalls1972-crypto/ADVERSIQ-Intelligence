@@ -29,14 +29,9 @@ import { MultiAgentOrchestrator as DomainAgentOrchestrator, type SynthesizedAnal
 import { fetchWorldBankCountryIndicators, fetchOpenCorporatesCompany, fetchNumbeoCityData } from './externalDataIntegrations';
 import { NSILIntelligenceHub } from './NSILIntelligenceHub';
 import { CompositeScoreService } from './CompositeScoreService';
-import { GlobalComplianceFramework } from './GlobalComplianceFramework';
-import { CaseGraphBuilder } from './CaseGraphBuilder';
-import { RegionalDevelopmentOrchestrator } from './RegionalDevelopmentOrchestrator';
 import { PartnerComparisonEngine } from './PartnerComparisonEngine';
 import { DecisionPipeline } from './DecisionPipeline';
-import { DocumentTypeRouter } from './DocumentTypeRouter';
 import { MethodologyKnowledgeBase } from './MethodologyKnowledgeBase';
-import { IFCGlobalStandardsEngine } from './IFCGlobalStandardsEngine';
 import { PatternConfidenceEngine } from './PatternConfidenceEngine';
 import { calculateMaturityScores, generateAIInsights } from './maturityEngine';
 import { ProblemToSolutionGraphService } from './ProblemToSolutionGraphService';
@@ -44,57 +39,35 @@ import { GlobalDataFabricService } from './GlobalDataFabricService';
 import MotivationDetector from './MotivationDetector';
 import CounterfactualEngine from './CounterfactualEngine';
 import { narrativeSynthesisEngine } from './narrativeSynthesisEngine';
-import { HistoricalParallelMatcher, type ParallelMatchResult } from './HistoricalParallelMatcher';
 import { PartnerIntelligenceEngine, type RankedPartner, type PartnerCandidate } from './PartnerIntelligenceEngine';
-import SituationAnalysisEngine from './SituationAnalysisEngine';
-import OutcomeTracker from './OutcomeTracker';
 import { selfLearningEngine } from './selfLearningEngine';
 import { UnbiasedAnalysisEngine } from './UnbiasedAnalysisEngine';
 import PersonaEngine from './PersonaEngine';
 import { DerivedIndexService } from './DerivedIndexService';
-import { findRelevantEngagements, buildAdvisorSnapshot as _buildAdvisorSnapshot } from './GlobalIntelligenceEngine';
 import { buildAdvisorInputFromParams } from './buildAdvisorInputModel';
 import { osintSearch } from './osintSearchService';
 import { ConsultantGateService } from './ConsultantGateService';
 import { ReactiveIntelligenceEngine } from './ReactiveIntelligenceEngine';
 import { GlobalIssueResolver } from './GlobalIssueResolver';
 import { selfImprovementEngine } from './SelfImprovementEngine';
-import { getACLEDSummary } from './acledService';
 import { screenEntitySanctions } from './openSanctionsService';
-import { fetchComtradeData } from './unComtradeService';
 import { tavilyResearchQuestion } from './tavilySearchService';
 import { ReportParameters } from '../types';
 import IntelligenceQualityGate, { type IntelligenceQualityAssessment } from './IntelligenceQualityGate';
-import { resolveCountryCode as resolveGovernanceCountryCode } from './vdemGovernanceService';
 import {
-  ResearchEcosystemScoringService,
-  type ResearchEcosystemAssessment,
 } from './ResearchEcosystemScoringService';
 import {
-  FailureModeGovernanceService,
-  type FailureModeGovernanceAssessment,
 } from './FailureModeGovernanceService';
-import { proactiveOrchestrator, type ProactiveBriefing } from './proactive/ProactiveOrchestrator';
-import type { CurrentContext } from './proactive/ProactiveSignalMiner';
 import { simulateScenario as causalSimulateScenario } from '../core/causal-reasoning-simulation/index';
 import { checkCompliance as coreCheckCompliance, detectBias as coreDetectBias } from '../core/ethics-governance/index';
-import { RegionalCityDiscoveryEngine, type DiscoveryResult } from './RegionalCityDiscoveryEngine';
 import { BotsOnGroundNetwork } from './BotsOnGroundNetwork';
-import { RelocationPathwayEngine } from './RelocationPathwayEngine';
-import { GlobalCityIndex } from './GlobalCityIndex';
-import { RelocationOutcomeTracker } from './RelocationOutcomeTracker';
-import { SupplyChainEcosystemMapper } from './SupplyChainEcosystemMapper';
-import { WorkforceIntelligenceEngine } from './WorkforceIntelligenceEngine';
 import { FunctionLevelSplitter } from './FunctionLevelSplitter';
-import { ESGClimateScorer } from './ESGClimateScorer';
 import { NetworkEffectEngine } from './NetworkEffectEngine';
 import { Tier1ExtractionEngine } from './Tier1ExtractionEngine';
-import { GovernmentIncentiveVault } from './GovernmentIncentiveVault';
 import { QuantumMonteCarlo } from './quantum/QuantumMonteCarlo';
 import { QuantumPatternMatcher } from './quantum/QuantumPatternMatcher';
 import { QuantumCognitionBridge } from './quantum/QuantumCognitionBridge';
 import { SystemCapabilityBoundary, type CapabilitySnapshot } from './SystemCapabilityBoundary';
-import { FinancialCalculationService, type FinancialSnapshot } from './FinancialCalculationService';
 import { RiskMatrixEngine, type RiskMatrixResult } from './RiskMatrixEngine';
 import { runCognitiveAnalysis, formatCognitiveForPrompt, type CognitiveAnalysis } from './CognitiveReasoningEngine';
 import { ConfidenceScorer as _ConfidenceScorer, type ScoringResult } from './ConfidenceScorer';

@@ -4,6 +4,7 @@ import { AdversarialSelfPlay } from '../ai/AdversarialSelfPlay.js';
 import { AlgorithmicMutator } from '../ai/AlgorithmicMutator.js';
 import { CognitiveUniverseEngine } from './CognitiveUniverseEngine.js';
 import { MorphicFieldEngine } from './MorphicFieldEngine.js';
+import { CYBER_VALIDATOR_REGISTRY } from './formulas.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -15,9 +16,9 @@ import * as path from 'path';
  * - Algorithmic Mutator (self-evolving formulas)
  * - Adversarial Self-Play (background scenario generation)
  * - Cognitive Universe Engine (Jungian + Quantum logic)
- * - Morphic Field (global knowledge sync)
+ * - Morphic Field (cyber validator knowledge sync)
  *
- * This is AGI applied to regional economic policy.
+ * This is AGI applied to autonomous cyber-defense validation.
  */
 
 export class AdversiqOmniNode {
@@ -58,8 +59,9 @@ export class AdversiqOmniNode {
     try {
       // Initialize morphic field synchronization
       console.log(`[BOOT] 1/5 - Initializing Morphic Field Synchronization...`);
-      await this.morphic.syncWithMorphicField([], 0, {
-        domain: 'system_boot',
+      const cyberValidatorProviders = CYBER_VALIDATOR_REGISTRY.slice(0, 8).map((validator) => validator.id);
+      await this.morphic.syncWithMorphicField(cyberValidatorProviders, 0, {
+        domain: 'cyber_validator_system_boot',
         pattern: [0, 0, 0],
         confidence: 1.0,
         timestamp: Date.now()
@@ -145,8 +147,9 @@ export class AdversiqOmniNode {
       // Step 4: Morphic field resonance
       console.log(`[OMNI-NODE] Step 4/5 - Syncing with Morphic Field...`);
       const mandateVector = this.vectorizeText(mandate);
-      await this.morphic.syncWithMorphicField(['SPI', 'SEAM'], 1, {
-        domain: 'mandate',
+      const cyberValidatorProviders = CYBER_VALIDATOR_REGISTRY.slice(0, 8).map((validator) => validator.id);
+      await this.morphic.syncWithMorphicField(cyberValidatorProviders, 1, {
+        domain: 'mandate_cyber_validation',
         pattern: mandateVector,
         confidence: 0.9,
         timestamp: Date.now()

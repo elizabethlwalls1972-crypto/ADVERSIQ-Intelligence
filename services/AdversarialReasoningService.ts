@@ -15,7 +15,6 @@ import {
 import { InputShieldService, ShieldReport, ValidationResult } from './InputShieldService';
 import { PersonaEngine, FullPersonaAnalysis, PersonaFinding } from './PersonaEngine';
 import { CounterfactualEngine, CounterfactualAnalysis, Scenario } from './CounterfactualEngine';
-import OutcomeTracker from './OutcomeTracker';
 import MotivationDetector from './MotivationDetector';
 
 export interface AdversarialOutputs {

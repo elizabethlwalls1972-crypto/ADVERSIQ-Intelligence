@@ -25,14 +25,12 @@ import { MasterAutonomousOrchestrator } from './MasterAutonomousOrchestrator';
 import { solveAndAct } from './autonomousClient';
 import { MultiAgentOrchestrator } from './MultiAgentBrainSystem';
 import { narrativeSynthesisEngine } from './narrativeSynthesisEngine';
-import OutcomeTracker from './OutcomeTracker';
 import { loadData, saveData, autoSaveDraft } from './persistenceEngine';
-import { DocumentTemplateService } from './DocumentTemplateService';
 import { validateComprehensiveIntake } from './ComprehensiveIntakeValidation';
 import InputShieldService from './InputShieldService';
 import { enforceBounds, safeDivide } from './FormulaBoundsEngine';
 import { validateField, validateStep } from './validationEngine';
-import { MissingFormulasEngine } from './MissingFormulasEngine';
+import { CybersecurityValidators, VALIDATOR_NAMES } from '../server/core/cybersecurityValidators';
 import { ApexExecutionLoop } from './ApexExecutionLoop';
 
 let _initialized = false;
@@ -82,10 +80,9 @@ export function initAutonomousRuntime(): void {
     MultiAgentOrchestrator,
     SelfImprovementEngine,
     narrativeSynthesisEngine,
-    OutcomeTracker,
-    DocumentTemplateService,
     InputShieldService,
-    MissingFormulasEngine,
+    CybersecurityValidators,
+    VALIDATOR_NAMES,
     // persistence & validation utilities
     loadData, saveData, autoSaveDraft,
     validateComprehensiveIntake,

@@ -4709,23 +4709,15 @@ router.post('/embedding/index', requireApiKey, async (req: Request, res: Respons
   }
 });
 
-// ─── Matchmaking Marketplace Engine ─────────────────────────────────────────
-router.post('/matchmaking/match', requireApiKey, async (req: Request, res: Response) => {
-  try {
-    const { companies, industry, headcount, budget } = req.body;
-    const { MatchmakingEngine } = await import('../../services/MatchmakingEngine.js');
-    if (companies?.length) {
-      const results = MatchmakingEngine.match(companies);
-      res.json(results);
-    } else if (industry) {
-      const results = MatchmakingEngine.matchIndustry(industry, headcount || 100, budget || 1000000);
-      res.json({ matches: results, count: results.length });
-    } else {
-      return res.status(400).json({ error: 'Provide companies array or industry string' });
-    }
-  } catch {
-    res.status(500).json({ error: 'Matchmaking failed' });
-  }
+// ─── Matchmaking Marketplace Engine (DEPRECATED - regional system) ────────
+// This endpoint was part of the regional economic development system.
+// Replaced by cybersecurity patch validation endpoints.
+router.post('/matchmaking/match', requireApiKey, async (_req: Request, res: Response) => {
+  res.status(410).json({ 
+    error: 'This endpoint has been deprecated.',
+    message: 'The system has transitioned from regional economic intelligence to autonomous cybersecurity patch validation.',
+    newEndpoints: ['/threats', '/patches', '/validate-patch', '/deploy-patch']
+  });
 });
 
 // ─── Backend Architecture Reference ────────────────────────────────────────

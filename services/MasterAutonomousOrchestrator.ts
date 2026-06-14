@@ -2,7 +2,6 @@ import { ReportParameters, ReportPayload } from '../types';
 import { ReportOrchestrator } from './ReportOrchestrator';
 import { deepThinkingEngine } from './algorithms/DeepThinkingEngine';
 import { autonomousResearchAgent } from './autonomousResearchAgent';
-import { intelligentDocumentGenerator } from './algorithms/IntelligentDocumentGenerator';
 import { selfImprovementEngine } from './SelfImprovementEngine';
 import { selfFixingEngine } from './SelfFixingEngine';
 import { persistentMemory } from './PersistentMemorySystem';
@@ -39,7 +38,7 @@ export interface MasterOrchestrationResult {
 
 /**
  * Master Autonomous Orchestrator - coordinates all advanced agents for the full performance profile
- * Integrates thinking, research, writing, self-improvement, and autonomous operations
+ * Integrates thinking, research, cyber validation, self-improvement, and autonomous operations
  */
 export class MasterAutonomousOrchestrator {
   private static instance: MasterAutonomousOrchestrator;
@@ -61,7 +60,7 @@ export class MasterAutonomousOrchestrator {
 
   /**
    * Run enhancements on an already-assembled payload (called by ReportOrchestrator).
-   * Adds deep thinking, research, document quality, self-improvement, and memory updates
+   * Adds deep thinking, research, cyber validation, self-improvement, and memory updates
    * without re-assembling the payload (avoids recursive loop).
    */
   async runEnhancements(params: ReportParameters, payload: ReportPayload): Promise<{ confidence: number }> {
@@ -72,7 +71,7 @@ export class MasterAutonomousOrchestrator {
       const [deepThinking, researchInsights, documentQuality, selfImprovement] = await Promise.all([
         this.runDeepThinkingAnalysis(params),
         this.runAutonomousResearch(params),
-        this.runDocumentEnhancement(payload, params),
+        this.runCyberValidatorSynthesis(payload, params),
         this.runSelfImprovement(params, payload)
       ]);
 
@@ -138,9 +137,9 @@ export class MasterAutonomousOrchestrator {
       auditTrail.push({ step: 'base_report_generation', timestamp: new Date().toISOString() });
       const reportPayload = await ReportOrchestrator.assembleReportPayload(params);
 
-      // Step 5: Enhance with intelligent document generation
-      auditTrail.push({ step: 'document_enhancement', timestamp: new Date().toISOString() });
-      const documentQuality = await this.runDocumentEnhancement(reportPayload, params);
+      // Step 5: Apply cyber validator synthesis
+      auditTrail.push({ step: 'cyber_validator_synthesis', timestamp: new Date().toISOString() });
+      const documentQuality = await this.runCyberValidatorSynthesis(reportPayload, params);
 
       // Step 6: Apply self-improvement optimizations
       auditTrail.push({ step: 'self_improvement', timestamp: new Date().toISOString() });
@@ -249,7 +248,7 @@ export class MasterAutonomousOrchestrator {
     // which are assembled later in the pipeline. Return planning context.
     const regionalKernel = RegionalDevelopmentOrchestrator.run({
       regionProfile: params.region || params.organizationType || params.problemStatement || '',
-      sector: params.industry && params.industry.length > 0 ? params.industry[0] : 'regional development',
+      sector: params.industry && params.industry.length > 0 ? params.industry[0] : 'cyber-defense',
       constraints: params.riskTolerance ? String(params.riskTolerance) : 'Not specified',
       fundingEnvelope: params.dealSize || 'Not specified',
       governanceContext: [params.organizationType, params.entityClassification, params.userDepartment].filter(Boolean).join(' '),
@@ -318,32 +317,38 @@ export class MasterAutonomousOrchestrator {
   }
 
   /**
-   * Run document enhancement
+   * Run cyber validator synthesis over the assembled payload.
    */
-  private async runDocumentEnhancement(payload: ReportPayload, params: ReportParameters): Promise<Record<string, unknown>> {
-    console.log('📄 Running document enhancement...');
+  private async runCyberValidatorSynthesis(payload: ReportPayload, params: ReportParameters): Promise<Record<string, unknown>> {
+    console.log('Running cyber validator synthesis...');
 
-    // Score payload completeness across all intelligence dimensions
-    const ci = payload.computedIntelligence;
-    const dimensionScores: Record<string, number> = {};
+    const ciExt = payload.computedIntelligence as Record<string, any>;
+    const validatorScores: Record<string, number> = {};
     let filledDimensions = 0;
     const totalDimensions = 7;
 
-    if (ci?.spi?.spi && ci.spi.spi > 0) { dimensionScores.spi = ci.spi.spi; filledDimensions++; }
-    if (ci?.rroi?.overallScore && ci.rroi.overallScore > 0) { dimensionScores.rroi = ci.rroi.overallScore; filledDimensions++; }
-    if (ci?.seam?.score && ci.seam.score > 0) { dimensionScores.seam = ci.seam.score; filledDimensions++; }
-    if (ci?.ivas?.ivasScore && ci.ivas.ivasScore > 0) { dimensionScores.ivas = ci.ivas.ivasScore; filledDimensions++; }
-    if (ci?.scf?.totalEconomicImpactUSD && ci.scf.totalEconomicImpactUSD > 0) { dimensionScores.scf = Math.min(100, ci.scf.totalEconomicImpactUSD / 1e6); filledDimensions++; }
-    const ciExt = ci as Record<string, unknown>;
-    if (ciExt?.gdi && typeof ciExt.gdi === 'object') { dimensionScores.gdi = 70; filledDimensions++; }
-    if (ciExt?.cvi && typeof ciExt.cvi === 'object') { dimensionScores.cvi = 70; filledDimensions++; }
+    const candidateScores = [
+      ciExt?.cyberSecurity?.aggregateScore,
+      ciExt?.cyberValidation?.aggregateScore,
+      ciExt?.securityPosture?.overallScore,
+      ciExt?.securityPosture?.overall,
+      ciExt?.validation?.aggregateScore,
+      ciExt?.computedIntelligence?.aggregateScore,
+      ciExt?.overallSecurityScore
+    ];
+
+    for (const score of candidateScores) {
+      if (typeof score === 'number' && score > 0) {
+        validatorScores[`validator-${filledDimensions + 1}`] = Math.min(100, score);
+        filledDimensions++;
+      }
+    }
 
     const completeness = (filledDimensions / totalDimensions) * 100;
-    const avgDimensionScore = Object.values(dimensionScores).length > 0
-      ? Object.values(dimensionScores).reduce((a, b) => a + b, 0) / Object.values(dimensionScores).length
+    const avgDimensionScore = Object.values(validatorScores).length > 0
+      ? Object.values(validatorScores).reduce((a, b) => a + b, 0) / Object.values(validatorScores).length
       : 0;
 
-    // Structural quality from params
     let structureScore = 40;
     if (params.problemStatement && params.problemStatement.length > 50) structureScore += 15;
     if (params.country) structureScore += 10;
@@ -357,9 +362,9 @@ export class MasterAutonomousOrchestrator {
 
     const enhancementTypes: string[] = [];
     if (completeness < 50) enhancementTypes.push('data-completeness');
-    if (avgDimensionScore < 60) enhancementTypes.push('intelligence-depth');
+    if (avgDimensionScore < 60) enhancementTypes.push('validator-coverage');
     if (structureScore < 70) enhancementTypes.push('structural-coverage');
-    enhancementTypes.push('formatting', 'coherence');
+    enhancementTypes.push('cyber-coherence');
 
     return {
       qualityScore,
@@ -369,7 +374,7 @@ export class MasterAutonomousOrchestrator {
       structureScore,
       filledDimensions,
       totalDimensions,
-      dimensionScores,
+      dimensionScores: validatorScores,
       enhancementTypes
     };
   }
@@ -423,7 +428,7 @@ export class MasterAutonomousOrchestrator {
     const status: AutonomousSystemStatus = {
       thinkingEngine: await this.checkAgentStatus(deepThinkingEngine),
       researchAgent: await this.checkAgentStatus(autonomousResearchAgent),
-      documentGenerator: await this.checkAgentStatus(intelligentDocumentGenerator),
+      documentGenerator: 'idle',
       selfImprovement: await this.checkAgentStatus(selfImprovementEngine),
       memorySystem: await this.checkAgentStatus(persistentMemory),
       scheduler: await this.checkAgentStatus(autonomousScheduler),
@@ -461,7 +466,7 @@ export class MasterAutonomousOrchestrator {
     const ri = enhancements.researchInsights as Record<string, unknown> | undefined;
     totalConfidence += (typeof ri?.finalCompleteness === 'number' ? ri.finalCompleteness : 0) * weights.researchInsights;
 
-    // Document quality
+    // Cyber validation
     const dq = enhancements.documentQuality as Record<string, unknown> | undefined;
     totalConfidence += (typeof dq?.qualityScore === 'number' ? dq.qualityScore : 0) * weights.documentQuality;
 
@@ -573,13 +578,13 @@ export class MasterAutonomousOrchestrator {
   }
 
   private calculateCurrentPerformance(payload: ReportPayload): number {
-    // Calculate current system performance based on payload completeness
+    const ciExt = payload.computedIntelligence as Record<string, any>;
     const scores = [
-      payload.computedIntelligence?.spi?.spi || 0,
-      payload.computedIntelligence?.rroi?.overallScore || 0,
-      payload.computedIntelligence?.seam?.score || 0,
-      payload.computedIntelligence?.ivas?.ivasScore || 0,
-      payload.computedIntelligence?.scf?.totalEconomicImpactUSD || 0
+      ciExt?.cyberSecurity?.aggregateScore || 0,
+      ciExt?.cyberValidation?.aggregateScore || 0,
+      ciExt?.securityPosture?.overallScore || 0,
+      ciExt?.securityPosture?.overall || 0,
+      ciExt?.validation?.aggregateScore || 0
     ];
 
     return scores.reduce((sum, score) => sum + score, 0) / scores.length;

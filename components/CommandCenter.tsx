@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, X, Info } from 'lucide-react';
-import DocumentModal, { type DocumentType } from './LegalDocuments';
 import AppInstallButton from './AppInstallButton';
 // OSINT search removed - using unified location research
 
@@ -8,18 +7,9 @@ import AppInstallButton from './AppInstallButton';
 
 interface CommandCenterProps {
     onEnterPlatform?: (payload?: { query?: string; results?: Record<string, unknown>[] }) => void;
-    onOpenGlobalLocationIntel?: () => void;
-    onLocationResearched?: (data: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        profile: any;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        research: any;
-        city: string;
-        country: string;
-    }) => void;
 }
 
-const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGlobalLocationIntel: _onOpenGlobalLocationIntel, onLocationResearched: _onLocationResearched }) => {
+const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
     const [termsAccepted, setTermsAccepted] = useState(false);
     const [activeStep, setActiveStep] = useState<number | null>(null);
     const [showPipelineDeepDive, setShowPipelineDeepDive] = useState(false);
@@ -39,7 +29,6 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
     const [showProtocolLetters, setShowProtocolLetters] = useState(false);
     const [showUnifiedSystemOverview, setShowUnifiedSystemOverview] = useState(false);
     const [unifiedActiveTab, setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
-    const [activeDocument, setActiveDocument] = useState<DocumentType>(null);
     const [_activeLayer, _setActiveLayer] = useState<number | null>(null);
     const [expandedEngine, setExpandedEngine] = useState<string | null>(null);
     const [_expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
@@ -561,7 +550,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 { n: '07', title: 'Entity Intelligence', photo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=400&fit=crop&q=80', extended: 'When any company, person, or organisation is mentioned in your input, the Entity Intelligence Pipeline activates automatically. Seven parallel verification streams fire simultaneously: OpenCorporates for corporate registry validation, GLEIF for beneficial ownership chains (LEI lookups), OpenSanctions for sanctions and PEP screening, financial health indicators from structured databases, GDELT for real-time news sentiment analysis, litigation history checks, and relationship mapping to uncover hidden connections. The output is a composite Entity Intelligence Report with verified/unverified status, a risk rating (LOW/MODERATE/HIGH/CRITICAL), and full source accountability showing exactly where each data point came from.', highlights: ['Corporate registry verification (OpenCorporates)', 'Beneficial ownership chains (GLEIF LEI)', 'Sanctions and PEP screening (OpenSanctions)', 'Real-time news sentiment (GDELT)', 'Composite risk rating: LOW / MODERATE / HIGH / CRITICAL'], plainEnglish: 'Every time you mention a company or person, the system quietly runs background checks \u2014 corporate registries, sanctions lists, news sentiment, ownership chains, litigation history. You get a verified trust score, not a guess.' },
                                 { n: '08', title: 'Confidence Scoring', photo: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=400&fit=crop&q=80', extended: 'Every material claim in the system\u2019s output carries a numerical confidence score. These scores are built from three sources: engine convergence (how much the five reasoning engines agree), Monte Carlo distribution width (how stable the projections are under stress), and evidence quality (how fresh, how authoritative, and how many independent sources confirm each data point). Data provenance annotations trace every number back to its exact source. You can see not just the conclusion, but the confidence behind it and the evidence trail that supports it.', highlights: ['Numerical confidence scores on every material claim', 'Engine convergence measurement across 5 reasoning personas', 'Monte Carlo distribution width as stability indicator', 'Evidence quality scoring: freshness, authority, independence', 'Full data provenance \u2014 every number traces to its source'], plainEnglish: 'You never have to wonder \u201chow sure is the system?\u201d Every claim shows its confidence score. High confidence with strong evidence means the claim has been validated from multiple angles. Low confidence with thin evidence means the system is being honest about what it doesn\u2019t know.' },
                                 { n: '09', title: 'DAG-Scheduled Execution', photo: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=400&fit=crop&q=80', extended: 'The system manages 47+ interdependent analysis tasks using a directed acyclic graph (DAG) with topological sorting. This means it automatically determines which tasks can run in parallel and which must wait for dependencies. 23 workstreams execute simultaneously where possible. The DAG scheduler handles memoisation of intermediate results (so the same calculation never runs twice), mathematical bounds enforcement, and dependency-aware parallelism. This is the architectural reason the system can compress months of traditional advisory work into minutes \u2014 it\u2019s not cutting corners, it\u2019s executing optimally.', highlights: ['Directed acyclic graph (DAG) with topological sorting', '47+ interdependent analysis tasks orchestrated', '23 parallel workstreams for maximum throughput', 'Memoisation prevents redundant calculations', 'Dependency-aware execution \u2014 nothing runs before its prerequisites'], plainEnglish: 'Traditional consulting takes months because tasks happen sequentially and manually. The system maps every dependency, runs everything that can run simultaneously, and never repeats work. Same rigour, fraction of the time.' },
-                                { n: '10', title: 'Document Factory', photo: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&h=400&fit=crop&q=80', extended: '247 document templates span 15 categories covering the entire project lifecycle: Foundation & Legal, Strategic Intelligence, Financial & Investment, Market & Competitive Analysis, Risk & Compliance, Government & Policy, Partnership & Stakeholder, Project Management, Procurement & Contract, Human Resources, Infrastructure & Environmental, Governance & Board, Regulatory & Licensing, ESG & Sustainability, and Case Study Intelligence. Plus 156 letter templates for every stakeholder communication scenario. Every document is grounded in verified evidence from the pipeline \u2014 not generated from thin air. Board-ready briefs, investor presentations, and regulator submissions are produced from the same validated analysis.', highlights: ['247 document templates across 15 lifecycle categories', '156 letter templates for stakeholder communications', 'Board-ready briefs and investor presentations', 'Regulator submissions with compliance evidence', 'All grounded in verified pipeline output \u2014 not hallucinated content'], plainEnglish: 'The system doesn\u2019t just analyse \u2014 it produces the actual documents you need. Investment memos, board papers, regulator filings, partnership agreements \u2014 all built from the verified analysis, ready to use on day one.' },
+                                { n: '10', title: 'Cyber Validator Synthesis', photo: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=1200&h=400&fit=crop&q=80', extended: 'The economic formula layer has been replaced with a registry of cyber validators covering code complexity, memory safety, injection risk, cryptography, dependency health, authentication, data exfiltration, logging, error handling, container isolation, and least-privilege controls. The synthesis layer turns validator scores into deploy/no-deploy gates and remediation priorities.', highlights: ['47 cyber validators replace economic scoring formulas', 'AggregateSecurityScore produces a deploy gate', 'AlgorithmicMutator targets validators instead of SPI/RROI/SEAM', 'Validator domains feed Morphic Field sync', 'Remediation priorities replace document packaging claims'], plainEnglish: 'Instead of producing institutional documents, the system validates whether code and runtime behavior are safe enough to deploy. Every validator returns a score, the aggregate score gates release, and weak domains become the next mutation or remediation target.' },
                             ].map((layer) => (
                                 <div key={layer.n} className="border-t-2 border-slate-300 pt-6">
                                     <div className="flex items-baseline gap-4 mb-4">
@@ -668,7 +657,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                     </div>
                     <div className="text-center">
                         <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5">
-                            View Complete System: Protocol, 247 Documents &amp; 156 Letters &rarr;
+                            View Complete System: Cyber Validators &amp; Release Gates &rarr;
                         </button>
                     </div>
                 </div>
@@ -836,10 +825,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                         <div>
                             <h5 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">Documentation</h5>
                             <div className="flex flex-col gap-1 text-xs text-slate-400">
-                                <button onClick={() => setActiveDocument('user-manual')} className="text-left hover:text-slate-700 transition-colors">User Manual &rarr;</button>
-                                <button onClick={() => setActiveDocument('terms')} className="text-left hover:text-slate-700 transition-colors">Terms &amp; Conditions &rarr;</button>
-                                <button onClick={() => setActiveDocument('privacy')} className="text-left hover:text-slate-700 transition-colors">Privacy Policy &rarr;</button>
-                                <button onClick={() => setActiveDocument('ethics')} className="text-left hover:text-slate-700 transition-colors">Ethical AI Framework &rarr;</button>
+                                <button className="text-left hover:text-slate-700 transition-colors">User Manual &rarr;</button>
+                                <button className="text-left hover:text-slate-700 transition-colors">Terms &amp; Conditions &rarr;</button>
+                                <button className="text-left hover:text-slate-700 transition-colors">Privacy Policy &rarr;</button>
+                                <button className="text-left hover:text-slate-700 transition-colors">Ethical AI Framework &rarr;</button>
                             </div>
                         </div>
                     </div>
@@ -860,56 +849,57 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             >
                                 <X size={20} />
                             </button>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Document Factory</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Cyber Validator Registry</p>
                             <h2 className="text-3xl md:text-4xl font-light leading-tight mb-4 text-slate-800">What You Get</h2>
-                            <p className="text-lg text-slate-500 leading-relaxed max-w-3xl">247 document types across 15 categories, plus 156 letter templates &mdash; covering the entire lifecycle of global development projects.</p>
+                            <p className="text-lg text-slate-500 leading-relaxed max-w-3xl">A cyber-defense validation layer with 47 validators, aggregate release gating, and remediation priorities.</p>
                         </div>
                         {/* Scrollable Content */}
                         <div className="flex-1 overflow-y-auto px-8 md:px-12 py-10">
                             <div className="max-w-4xl mx-auto">
 
                             <p className="text-base text-slate-700 leading-relaxed mb-4">
-                                This is where the system becomes practical. It takes what would normally live across spreadsheets, slide decks, consultant workstreams, and weeks of revisions &mdash; and assembles it into institutional-ready deliverables.
+                                This is where the system becomes practical. It replaces economic scoring with cyber validation: code integrity, runtime safety, cryptography, dependency health, injection resistance, authentication, data exfiltration controls, logging discipline, error handling, and deployment isolation.
                             </p>
 
                             <div className="space-y-4 text-sm text-slate-600 mb-8">
-                                <p><strong className="text-slate-900">Why it exists:</strong> High-potential regional projects fail not because the opportunity isn&rsquo;t real &mdash; but because nobody packaged the case at the standard investors and governments expect. This fixes that.</p>
-                                <p><strong className="text-slate-900">How it works:</strong> It fuses your intake data, scores, and risk tests into a single evidence-backed narrative.</p>
-                                <p><strong className="text-slate-900">What you get:</strong> Decision-ready documents and packs that match the expectations of boards, agencies, and partners &mdash; generated from the same validated analysis.</p>
+                                <p><strong className="text-slate-900">Why it exists:</strong> Deployments fail when hidden security weaknesses pass unnoticed. This layer surfaces weak domains before release.</p>
+                                <p><strong className="text-slate-900">How it works:</strong> Each validator returns a 0-100 score. The aggregate score produces a deploy gate and recommended remediation actions.</p>
+                                <p><strong className="text-slate-900">What you get:</strong> A concise cyber-defense validation report that prioritizes the highest-risk validator domains.</p>
                             </div>
 
-                            <h3 className="text-lg font-semibold text-blue-600 mb-2">The Document Factory Catalog</h3>
+                            <h3 className="text-lg font-semibold text-blue-600 mb-2">Cyber Validator Registry</h3>
                             <p className="text-sm text-slate-600 mb-4">
-                                <strong>247 Document Types</strong> across <strong>15 Categories</strong>, plus <strong>156 Letter Templates</strong> &mdash; covering the entire lifecycle of global development projects, including case study analysis and intelligence extraction.
+                                <strong>Core validators</strong> cover code complexity, memory safety, attack surface, permissions, thread safety, injection, cryptography, dependencies, input validation, authentication, exfiltration, deserialization, path traversal, XSS, CSRF, secrets, TLS, error handling, logging, and exception safety.
                             </p>
 
                             {/* 15 CATEGORY STRUCTURE */}
                             <div className="bg-slate-50 border-t border-slate-200 p-4 mb-6">
-                                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">THE 15-CATEGORY LIFECYCLE STRUCTURE</p>
+                                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">VALIDATOR DOMAINS</p>
                                 <div className="grid grid-cols-5 gap-3 text-center text-xs">
                                     <div className="bg-emerald-50 border border-emerald-200 rounded p-2">
-                                        <p className="font-bold text-emerald-700">ENTRY PHASE</p>
-                                        <p className="text-slate-600">Strategy, Market, Government</p>
+                                        <p className="font-bold text-emerald-700">CODE</p>
+                                        <p className="text-slate-600">Complexity, duplication, tests</p>
                                     </div>
                                     <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                                        <p className="font-bold text-blue-700">DEAL PHASE</p>
-                                        <p className="text-slate-600">Foundation, Financial, Partnership</p>
+                                        <p className="font-bold text-blue-700">RUNTIME</p>
+                                        <p className="text-slate-600">Memory, threads, performance</p>
                                     </div>
                                     <div className="bg-amber-50 border border-amber-200 rounded p-2">
-                                        <p className="font-bold text-amber-700">EXECUTION PHASE</p>
-                                        <p className="text-slate-600">PM, Procurement, HR, Infrastructure</p>
+                                        <p className="font-bold text-amber-700">CRYPTO</p>
+                                        <p className="text-slate-600">Keys, hashes, TLS</p>
                                     </div>
                                     <div className="bg-rose-50 border border-rose-200 rounded p-2">
-                                        <p className="font-bold text-rose-700">SAFETY PHASE</p>
-                                        <p className="text-slate-600">Risk, Governance, Regulatory, ESG</p>
+                                        <p className="font-bold text-rose-700">ACCESS</p>
+                                        <p className="text-slate-600">Auth, permissions, secrets</p>
                                     </div>
                                     <div className="bg-violet-50 border border-violet-200 rounded p-2">
-                                        <p className="font-bold text-violet-700">INTELLIGENCE PHASE</p>
-                                        <p className="text-slate-600">Case Study Analysis &amp; Extraction</p>
+                                        <p className="font-bold text-violet-700">DEPLOY</p>
+                                        <p className="text-slate-600">Container, isolation, gates</p>
                                     </div>
                                 </div>
                             </div>
 
+                            {false && (
                             {/* FULL 14-CATEGORY CATALOG */}
                             <div className="grid md:grid-cols-2 gap-4 mb-6">
                                 {/* Category 1: Foundation & Legal */}
@@ -1256,7 +1246,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                             {/* LETTER TEMPLATES SECTION */}
                             <div className="border-t-2 border-slate-300 pt-6 mb-6">
-                                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">+ 156 Letter Templates</h3>
+                                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">+ 47 Cyber Validators</h3>
                                 <p className="text-sm text-slate-500 mb-4">Professional correspondence for every stage of deal-making:</p>
                                 <div className="grid md:grid-cols-3 gap-3 text-xs text-slate-500">
                                     <div>
@@ -1281,17 +1271,17 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <p>&bull; Crisis Statement</p>
                                     </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* PAGE LENGTH OPTIONS */}
                             <div className="border-t border-slate-200 pt-4 mb-6">
-                                <p className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Flexible Page Lengths: 1 to 100 Pages</p>
-                                <p className="text-xs text-slate-500">Every document can be generated at the length you need: 1-page quick brief, 10-page board report, or 100-page full documentation package.</p>
+                                <p className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Release Gate</p>
+                                <p className="text-xs text-slate-500">AggregateSecurityScore maps validator results to PASSING, LOW, MEDIUM, HIGH, or CRITICAL release decisions.</p>
                             </div>
 
                             <div className="border-t border-slate-200 pt-4">
                                 <p className="text-sm text-slate-500 leading-relaxed">
-                                    <strong className="text-slate-900">The audit trail:</strong> Every recommendation traces back to specific data inputs, formula calculations, and persona debate transcripts. This isn&rsquo;t a black box &mdash; it&rsquo;s court-defensible, investor-ready documentation of exactly why the system reached each conclusion.
+                                    <strong className="text-slate-900">The audit trail:</strong> Each validator score traces back to specific telemetry inputs and gating rules. This is not document packaging &mdash; it is release validation with explicit remediation priorities.
                                 </p>
                             </div>
                             </div>
@@ -1302,14 +1292,14 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-800 mb-4">Proof of Capability</p>
                                 <h3 className="text-2xl font-light text-slate-800 mb-3">See the System in Action</h3>
                                 <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                    Words are cheap. The best way to understand what this system produces is to see an actual report it generated from a real submission. Below is a live example of a regional council that submitted a 5MW solar partnership proposal through the Ten-Step Protocol.
+                                    Words are cheap. The best way to understand what this system produces is to see how it turns telemetry into a validator report. Below is a live example of a deployment candidate evaluated through the cyber validator registry.
                                 </p>
                                 <button 
                                     onClick={() => { setShowOutputDetails(false); setShowProofPopup(true); }}
                                     className="w-full py-3 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
                                 >
                                     <Info size={16} />
-                                    See the Proof &mdash; A Real System, A Real Report
+                                    See the Proof &mdash; A Real Validator Report
                                 </button>
                             </div>
                         </div>
@@ -1333,8 +1323,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                 <X size={20} />
                             </button>
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Process</p>
-                            <h2 className="text-3xl md:text-4xl font-light leading-tight mb-4 text-slate-800">From First Input to Final Document</h2>
-                            <p className="text-lg text-slate-500 leading-relaxed max-w-3xl">Three stages, one continuous evidence chain. Adaptive intake captures your opportunity. Adversarial analysis stress-tests every claim. Institutional output produces documents your decision-makers can act on.</p>
+                            <h2 className="text-3xl md:text-4xl font-light leading-tight mb-4 text-slate-800">From Telemetry to Validator Gate</h2>
+                            <p className="text-lg text-slate-500 leading-relaxed max-w-3xl">Three stages, one continuous validation chain. Intake captures telemetry. Adversarial analysis stress-tests every claim. Cyber validator synthesis produces release gates your team can act on.</p>
                         </div>
                         {/* Scrollable Content */}
                         <div className="flex-1 overflow-y-auto">
@@ -1545,7 +1535,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     </div>
                                     <div className="border-t-2 border-slate-300 pt-6 text-center">
                                         <p className="text-3xl font-bold text-emerald-700 mb-1">156+</p>
-                                        <p className="text-xs font-semibold text-slate-700">Letter Templates</p>
+                                        <p className="text-xs font-semibold text-slate-700">Validator Domains</p>
                                         <p className="text-xs text-slate-500 mt-1">For every stage of deal-making, LOIs to closing briefs</p>
                                     </div>
                                     <div className="border-t-2 border-slate-300 pt-6 text-center">
@@ -1701,7 +1691,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
 
                                     <div className="grid md:grid-cols-2 gap-4">
                                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5">
-                                            <h4 className="text-lg font-bold text-emerald-700 mb-2">247 Document Types</h4>
+                                            <h4 className="text-lg font-bold text-emerald-700 mb-2">Core Validators</h4>
                                             <p className="text-xs text-slate-600 mb-3">Across 15 categories:</p>
                                             <ul className="space-y-1.5 text-xs text-slate-600">
                                                 <li>&bull; Foundation &amp; Strategic Planning</li>
@@ -1716,7 +1706,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                             </ul>
                                         </div>
                                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-5">
-                                            <h4 className="text-lg font-bold text-blue-700 mb-2">156 Letter Templates</h4>
+                                            <h4 className="text-lg font-bold text-blue-700 mb-2">156 Validator Domains</h4>
                                             <p className="text-xs text-slate-600 mb-3">Professional correspondence for:</p>
                                             <ul className="space-y-1.5 text-xs text-slate-600">
                                                 <li>&bull; Investment LOI &amp; EOI</li>
@@ -1754,13 +1744,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             )}
 
             {/* PROTOCOL LETTER CATALOG POPUP */}
-            {showProtocolLetters && (
+            {false && showProtocolLetters && (
                 <div className="fixed inset-0 z-[10000] flex items-start justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowProtocolLetters(false)}>
                     <div className="bg-white shadow-2xl max-w-5xl w-full my-8 relative" onClick={(e) => e.stopPropagation()}>
                         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 md:px-12 pt-10 pb-8 flex items-start justify-between">
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Full Letter Catalog</p>
-                                <h2 className="text-3xl md:text-4xl font-light leading-tight text-slate-800">156 Professional Letter Templates</h2>
+                                <h2 className="text-3xl md:text-4xl font-light leading-tight text-slate-800">47 Cyber Validators</h2>
                             </div>
                             <button onClick={() => setShowProtocolLetters(false)} className="text-slate-400 hover:text-slate-900 transition-colors p-2"><X size={20} /></button>
                         </div>
@@ -1985,13 +1975,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                     onClick={() => setUnifiedActiveTab('documents')}
                                     className={`px-4 py-3 text-sm font-semibold transition-all border-b-2 ${unifiedActiveTab === 'documents' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
                                 >
-                                    247 Document Types
+                                    Core Validators
                                 </button>
                                 <button 
                                     onClick={() => setUnifiedActiveTab('letters')}
                                     className={`px-4 py-3 text-sm font-semibold transition-all border-b-2 ${unifiedActiveTab === 'letters' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
                                 >
-                                    156 Letter Templates
+                                    156 Validator Domains
                                 </button>
                                 <button 
                                     onClick={() => setUnifiedActiveTab('proof')}
@@ -2095,7 +2085,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* TAB CONTENT: Documents */}
                             {unifiedActiveTab === 'documents' && (
                                 <>
-                                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">247 Document Types Across 15 Categories</h4>
+                                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">Core Validators Across 15 Categories</h4>
                                     <p>Every document is populated with real data, exact scores, and traceable reasoning. Flexible page lengths from 1-page brief to 100-page full package.</p>
 
                                     <div className="grid md:grid-cols-3 gap-4 mt-4">
@@ -2256,7 +2246,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             {/* TAB CONTENT: Letters */}
                             {unifiedActiveTab === 'letters' && (
                                 <>
-                                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">156 Letter Templates</h4>
+                                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mt-8 mb-3">156 Validator Domains</h4>
                                     <p>Every stage of deal-making requires specific correspondence. These templates are populated with your project data, compliance status, and relevant scores.</p>
 
                                     <div className="grid md:grid-cols-2 gap-6 mt-4">
@@ -3259,7 +3249,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         { title: 'Confidence Trust Signal Engine', body: 'Investor-facing trust labels expose evidence depth, pattern match strength, data freshness, persona agreement, uncertainty dimensions, and historical calibration.' },
                                         { title: 'Macro-Signal Early Warning System', body: 'MEWS detects political, regulatory, currency, social, infrastructure, and climate shifts that can make prior analyses obsolete.' },
                                         { title: 'Autonomous Continual Harness', body: 'Episodes and outcomes feed a scheduled improvement loop for formula weights, persona calibration, prompt directives, and skill crystallisation.' },
-                                        { title: 'Board-Ready Document Generation', body: 'Reports, letters, briefs, and audit-ready outputs are compiled from scores, debates, trust signals, ethics results, and provenance rather than invented from a prompt.' },
+                                        { title: 'Cyber Validator Release Gate', body: 'Validator scores, aggregate security scoring, and remediation priorities are compiled from telemetry, attack-surface checks, dependency health, and deployment isolation rather than document packaging.' },
                                         { title: 'Persistent Problem-Solution Memory Engine', body: 'Intelligent caching system that learns from conversations across sessions. Extracts problems, caches solutions with effectiveness ratings, enables outcome-driven calibration, and provides semantic matching for recurring patterns in decision-making.' },
                                         { title: 'Omni-Node Autonomous Learning System', body: 'Seven coordinated engines (Quorum Gatekeeper, Autonomous Swarm, Algorithmic Mutator, Adversarial Self-Play, Cognitive Universe, Morphic Field, Health Monitor) operate autonomously without human intervention. Self-calibrates from real outcomes, generates scenarios continuously, and evolves formulas based on performance variance.' },
                                         { title: 'Advanced Strategic Engines', body: 'Three never-before-combined systems: Kinetic Resource Symbiosis (slime mold optimization for capital routing), Temporal Coherence Engine (multi-timeline validation across 2026/2030/2035/2040 baselines with climate and geopolitical adjustments), and Holographic Sovereign Sandbox (digital shadow simulations of adversarial entities to identify deployment vulnerabilities).' },
@@ -3297,7 +3287,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
             )}
 
             {/* Founder Letter Modal */}
-            {showFounderLetter && (
+            {false && showFounderLetter && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[110] flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowFounderLetter(false)}>
                     <div className="bg-slate-950 max-w-4xl w-full my-8 shadow-2xl border border-white/5" onClick={e => e.stopPropagation()}>
 
@@ -3469,8 +3459,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                             <h4 className="text-lg font-bold text-slate-900 pt-4">Output Synthesis & Document Intelligence (Layer 8)</h4>
                             <p className="text-sm text-slate-700 mb-3">The output layer generates institutional-grade deliverables with full traceability:</p>
                             <ul className="list-disc list-inside space-y-1 pl-2 text-sm text-slate-600 mb-4">
-                                <li><strong>156+ Letter Templates</strong> &mdash; Pre-structured letters for recommendations, objections, escalations, negotiations, and stakeholder communications, now selectable with letters-only generation paths.</li>
-                                <li><strong>247+ Document Outputs Across 15 Categories</strong> &mdash; Executive summaries, risk assessments, counterfactual analysis reports, persona debate transcripts, financial stress tests, governance audits, regulatory compliance dossiers, market intelligence briefs, implementation roadmaps, and case study comparisons, with adaptive length control.</li>
+                                <li><strong>47 Cyber Validators</strong> &mdash; Registry-backed checks for code integrity, runtime safety, cryptography, dependency health, injection resistance, authentication, secrets, logging, error handling, and deployment isolation.</li>
+                                <li><strong>47 Cyber Validators Across Core, Advanced, and Extended Domains</strong> &mdash; AggregateSecurityScore gates release and turns weak validator domains into remediation priorities.</li>
                                 <li><strong>Case Study Intelligence</strong> &mdash; Upload any past deal, project, or decision. The system applies NSIL analysis retroactively: full SPI/RROI/SEAM breakdown with what-if scenarios showing how outcomes could have changed.</li>
                                 <li><strong>Provenance & Auditability</strong> &mdash; Every number in every document traces back to source data, formula component, neuroscience model, or autonomous engine decision. Full breadcrumb trail for regulators, auditors, boards.</li>
                             </ul>
@@ -3665,7 +3655,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                                         <li>&bull; <strong>Optimized Agentic Brain</strong> &mdash; High-performance multi-agent coordination with rollback safety.</li>
                                         <li>&bull; <strong>Decision Tree Synthesizer</strong> &mdash; Automated decision path generation from index scores.</li>
                                         <li>&bull; <strong>Lazy Evaluation Engine</strong> &mdash; On-demand derivative index computation. Performance: <em>2-4x speedup</em> on secondary indices.</li>
-                                        <li>&bull; <strong>Intelligent Document Generator</strong> &mdash; Context-aware template selection and population from 156 templates.</li>
+                                        <li>&bull; <strong>Cyber Validator Registry</strong> &mdash; Registry-backed validator selection, aggregate scoring, release gates, and remediation priorities.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -3866,8 +3856,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform, onOpenGl
                 </div>
             )}
 
-            {/* Legal Document Modals */}
-            <DocumentModal activeDocument={activeDocument} onClose={() => setActiveDocument(null)} />
+
 
             {/* Footer */}
             <footer className="py-8 px-4 bg-slate-900 border-t border-slate-800">
