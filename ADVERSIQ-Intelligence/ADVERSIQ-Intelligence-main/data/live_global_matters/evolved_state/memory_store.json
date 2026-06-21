@@ -1,0 +1,1490 @@
+[
+  {
+    "id": "pattern_1779527628888_xhm1lpt2e",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527628888_xhm1lpt2e",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.65,
+      "supporting_evidence": []
+    },
+    "created_at": "2026-05-23T09:13:48.888Z",
+    "updated_at": "2026-05-23T09:13:48.888Z",
+    "version": 1
+  },
+  {
+    "id": "pattern_1779527628903_1d0cly00o",
+    "name": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527628903_1d0cly00o",
+      "pattern_text": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.65,
+      "supporting_evidence": []
+    },
+    "created_at": "2026-05-23T09:13:48.903Z",
+    "updated_at": "2026-05-23T09:13:48.903Z",
+    "version": 1
+  },
+  {
+    "id": "pattern_1779527628915_l0fqhmzt6",
+    "name": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527628915_l0fqhmzt6",
+      "pattern_text": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.65,
+      "supporting_evidence": []
+    },
+    "created_at": "2026-05-23T09:13:48.915Z",
+    "updated_at": "2026-05-23T09:13:48.915Z",
+    "version": 1
+  },
+  {
+    "id": "pattern_1779527628927_yetszay64",
+    "name": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527628927_yetszay64",
+      "pattern_text": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.65,
+      "supporting_evidence": []
+    },
+    "created_at": "2026-05-23T09:13:48.927Z",
+    "updated_at": "2026-05-23T09:13:48.927Z",
+    "version": 1
+  },
+  {
+    "id": "pattern_1779527683642_csgszfo95",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527683642_csgszfo95",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T09:14:43.643Z",
+    "updated_at": "2026-05-23T09:14:43.644Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779527683658_ltmd2axa8",
+    "name": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527683658_ltmd2axa8",
+      "pattern_text": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T09:14:43.658Z",
+    "updated_at": "2026-05-23T09:14:43.659Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779527683673_wvlc5vbm9",
+    "name": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527683673_wvlc5vbm9",
+      "pattern_text": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T09:14:43.673Z",
+    "updated_at": "2026-05-23T09:14:43.674Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779527683686_dqvbksjhg",
+    "name": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779527683686_dqvbksjhg",
+      "pattern_text": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T09:14:43.686Z",
+    "updated_at": "2026-05-23T09:14:43.686Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779530632687_e1d0vewkn",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779530632687_e1d0vewkn",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T10:03:52.687Z",
+    "updated_at": "2026-05-23T10:03:52.688Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779530633042_py2zvw9lf",
+    "name": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779530633042_py2zvw9lf",
+      "pattern_text": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T10:03:53.042Z",
+    "updated_at": "2026-05-23T10:03:53.043Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779530633565_o35prmylu",
+    "name": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779530633565_o35prmylu",
+      "pattern_text": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T10:03:53.565Z",
+    "updated_at": "2026-05-23T10:03:53.566Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779530845758_hcvvolabq",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779530845758_hcvvolabq",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-23T10:07:25.758Z",
+    "updated_at": "2026-05-23T10:07:25.759Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602067021_1xvmy4h6t",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602067021_1xvmy4h6t",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:27.021Z",
+    "updated_at": "2026-05-24T05:54:27.024Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602069235_t99ciokp1",
+    "name": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602069235_t99ciokp1",
+      "pattern_text": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:29.235Z",
+    "updated_at": "2026-05-24T05:54:29.237Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602072826_dqqah4uf4",
+    "name": "Visakhapatnam, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602072826_dqqah4uf4",
+      "pattern_text": "Visakhapatnam, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:32.826Z",
+    "updated_at": "2026-05-24T05:54:32.828Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602074820_pyj77mrpy",
+    "name": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602074820_pyj77mrpy",
+      "pattern_text": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:34.820Z",
+    "updated_at": "2026-05-24T05:54:34.824Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602077255_nqjhlaof4",
+    "name": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602077255_nqjhlaof4",
+      "pattern_text": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:37.255Z",
+    "updated_at": "2026-05-24T05:54:37.259Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602077592_z1c0p7svd",
+    "name": "Visakhapatnam, India Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602077592_z1c0p7svd",
+      "pattern_text": "Visakhapatnam, India Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:37.592Z",
+    "updated_at": "2026-05-24T05:54:37.598Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602078485_hc0p9u64t",
+    "name": "Da Nang, Vietnam ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602078485_hc0p9u64t",
+      "pattern_text": "Da Nang, Vietnam ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:38.485Z",
+    "updated_at": "2026-05-24T05:54:38.487Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602078797_q48dpuwam",
+    "name": "Coimbatore, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602078797_q48dpuwam",
+      "pattern_text": "Coimbatore, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:38.797Z",
+    "updated_at": "2026-05-24T05:54:38.800Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079105_43kzh13v7",
+    "name": "Visakhapatnam, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079105_43kzh13v7",
+      "pattern_text": "Visakhapatnam, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.106Z",
+    "updated_at": "2026-05-24T05:54:39.108Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079408_i2db5eoat",
+    "name": "Coimbatore, India Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079408_i2db5eoat",
+      "pattern_text": "Coimbatore, India Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Textiles"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.408Z",
+    "updated_at": "2026-05-24T05:54:39.409Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079415_dztotxpe4",
+    "name": "Da Nang, Vietnam Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079415_dztotxpe4",
+      "pattern_text": "Da Nang, Vietnam Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.415Z",
+    "updated_at": "2026-05-24T05:54:39.417Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079424_pgwcxk2u1",
+    "name": "Ras Al Khaimah, UAE Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079424_pgwcxk2u1",
+      "pattern_text": "Ras Al Khaimah, UAE Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.7,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.424Z",
+    "updated_at": "2026-05-24T05:54:39.425Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079429_88wk8qthj",
+    "name": "Ras Al Khaimah, UAE Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079429_88wk8qthj",
+      "pattern_text": "Ras Al Khaimah, UAE Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.429Z",
+    "updated_at": "2026-05-24T05:54:39.431Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079437_furhhvy58",
+    "name": "Ras Al Khaimah, UAE Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079437_furhhvy58",
+      "pattern_text": "Ras Al Khaimah, UAE Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.7,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.437Z",
+    "updated_at": "2026-05-24T05:54:39.439Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079444_583bl748e",
+    "name": "Davao City, Philippines Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079444_583bl748e",
+      "pattern_text": "Davao City, Philippines Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Davao Region (Region XI)",
+        "Philippines"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.444Z",
+    "updated_at": "2026-05-24T05:54:39.445Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079449_qhme1i4eq",
+    "name": "Cluj-Napoca, Romania Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079449_qhme1i4eq",
+      "pattern_text": "Cluj-Napoca, Romania Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Eastern Europe",
+        "Romania"
+      ],
+      "sectors": [
+        "Healthcare"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ROU/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.449Z",
+    "updated_at": "2026-05-24T05:54:39.450Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079455_9cz801gjl",
+    "name": "Iloilo City, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079455_9cz801gjl",
+      "pattern_text": "Iloilo City, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.455Z",
+    "updated_at": "2026-05-24T05:54:39.457Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079462_aoghcixrk",
+    "name": "Cagayan de Oro, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079462_aoghcixrk",
+      "pattern_text": "Cagayan de Oro, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.462Z",
+    "updated_at": "2026-05-24T05:54:39.464Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079482_v0wmo00m1",
+    "name": "Can Tho, Vietnam Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079482_v0wmo00m1",
+      "pattern_text": "Can Tho, Vietnam Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.482Z",
+    "updated_at": "2026-05-24T05:54:39.484Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079492_y127oibtg",
+    "name": "Tashkent, Uzbekistan Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079492_y127oibtg",
+      "pattern_text": "Tashkent, Uzbekistan Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Central Asia",
+        "Uzbekistan"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/UZB/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.492Z",
+    "updated_at": "2026-05-24T05:54:39.495Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079523_kwp0cfkfi",
+    "name": "Semarang, Indonesia Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079523_kwp0cfkfi",
+      "pattern_text": "Semarang, Indonesia Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Indonesia"
+      ],
+      "sectors": [
+        "Textiles"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IDN/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.523Z",
+    "updated_at": "2026-05-24T05:54:39.525Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079533_yfo6km5qd",
+    "name": "Medellin, Colombia Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079533_yfo6km5qd",
+      "pattern_text": "Medellin, Colombia Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Latin America",
+        "Colombia"
+      ],
+      "sectors": [
+        "Healthcare"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/COL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.533Z",
+    "updated_at": "2026-05-24T05:54:39.534Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079546_fyhm0jmoi",
+    "name": "Kigali, Rwanda Finance: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079546_fyhm0jmoi",
+      "pattern_text": "Kigali, Rwanda Finance: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Africa",
+        "Rwanda"
+      ],
+      "sectors": [
+        "Finance"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/RWA/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.546Z",
+    "updated_at": "2026-05-24T05:54:39.553Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779602079570_lqjcrt1or",
+    "name": "Iloilo City, Philippines Education: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779602079570_lqjcrt1or",
+      "pattern_text": "Iloilo City, Philippines Education: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Education"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-24T05:54:39.570Z",
+    "updated_at": "2026-05-24T05:54:39.572Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869367528_0yngh6d54",
+    "name": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869367528_0yngh6d54",
+      "pattern_text": "Da Nang, Vietnam Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:27.528Z",
+    "updated_at": "2026-05-27T08:09:27.530Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869373542_k34unnc76",
+    "name": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869373542_k34unnc76",
+      "pattern_text": "Coimbatore, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:33.542Z",
+    "updated_at": "2026-05-27T08:09:33.543Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869379561_rwdx4ekhs",
+    "name": "Visakhapatnam, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869379561_rwdx4ekhs",
+      "pattern_text": "Visakhapatnam, India Manufacturing: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Manufacturing"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:39.561Z",
+    "updated_at": "2026-05-27T08:09:39.562Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869381734_x1h9msz8t",
+    "name": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869381734_x1h9msz8t",
+      "pattern_text": "Da Nang, Vietnam Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:41.734Z",
+    "updated_at": "2026-05-27T08:09:41.735Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869387747_nuu0z8pli",
+    "name": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869387747_nuu0z8pli",
+      "pattern_text": "Visakhapatnam, India Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:47.747Z",
+    "updated_at": "2026-05-27T08:09:47.748Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869388677_nwkwulj1n",
+    "name": "Visakhapatnam, India Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869388677_nwkwulj1n",
+      "pattern_text": "Visakhapatnam, India Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:48.677Z",
+    "updated_at": "2026-05-27T08:09:48.678Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869389600_3kfyhtb1h",
+    "name": "Da Nang, Vietnam ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869389600_3kfyhtb1h",
+      "pattern_text": "Da Nang, Vietnam ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:49.600Z",
+    "updated_at": "2026-05-27T08:09:49.601Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869389893_ccknzico6",
+    "name": "Coimbatore, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869389893_ccknzico6",
+      "pattern_text": "Coimbatore, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:49.893Z",
+    "updated_at": "2026-05-27T08:09:49.895Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390240_35xj3zneu",
+    "name": "Visakhapatnam, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390240_35xj3zneu",
+      "pattern_text": "Visakhapatnam, India ICT: Digital investment concentration: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "ICT"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.240Z",
+    "updated_at": "2026-05-27T08:09:50.241Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390563_ylnenr3zb",
+    "name": "Coimbatore, India Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390563_ylnenr3zb",
+      "pattern_text": "Coimbatore, India Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "South Asia",
+        "India"
+      ],
+      "sectors": [
+        "Textiles"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.563Z",
+    "updated_at": "2026-05-27T08:09:50.565Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390568_fzu0pm7v1",
+    "name": "Da Nang, Vietnam Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390568_fzu0pm7v1",
+      "pattern_text": "Da Nang, Vietnam Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.568Z",
+    "updated_at": "2026-05-27T08:09:50.568Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390571_apsszqj5z",
+    "name": "Ras Al Khaimah, UAE Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390571_apsszqj5z",
+      "pattern_text": "Ras Al Khaimah, UAE Logistics: Trade growth slowdown: WTO Global Trade Outlook and Statistics 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Logistics"
+      ],
+      "confidence": 0.7,
+      "supporting_evidence": [
+        "WTO Global Trade Outlook and Statistics 2026 https://www.wto.org/english/res_e/publications_e/gtos0326_e.htm",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.571Z",
+    "updated_at": "2026-05-27T08:09:50.573Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390576_vz80tg8yb",
+    "name": "Ras Al Khaimah, UAE Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390576_vz80tg8yb",
+      "pattern_text": "Ras Al Khaimah, UAE Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.576Z",
+    "updated_at": "2026-05-27T08:09:50.577Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390580_8jaszjcsp",
+    "name": "Ras Al Khaimah, UAE Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390580_8jaszjcsp",
+      "pattern_text": "Ras Al Khaimah, UAE Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Middle East",
+        "UAE"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.7,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ARE/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.580Z",
+    "updated_at": "2026-05-27T08:09:50.581Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390584_xq5dz1eci",
+    "name": "Davao City, Philippines Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390584_xq5dz1eci",
+      "pattern_text": "Davao City, Philippines Tourism: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Davao Region (Region XI)",
+        "Philippines"
+      ],
+      "sectors": [
+        "Tourism"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.584Z",
+    "updated_at": "2026-05-27T08:09:50.586Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390590_80bvcsapf",
+    "name": "Cluj-Napoca, Romania Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390590_80bvcsapf",
+      "pattern_text": "Cluj-Napoca, Romania Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Eastern Europe",
+        "Romania"
+      ],
+      "sectors": [
+        "Healthcare"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/ROU/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.590Z",
+    "updated_at": "2026-05-27T08:09:50.592Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390596_d3v8lrxcx",
+    "name": "Iloilo City, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390596_d3v8lrxcx",
+      "pattern_text": "Iloilo City, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.596Z",
+    "updated_at": "2026-05-27T08:09:50.598Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390601_l98nw4zox",
+    "name": "Cagayan de Oro, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390601_l98nw4zox",
+      "pattern_text": "Cagayan de Oro, Philippines Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.68,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.601Z",
+    "updated_at": "2026-05-27T08:09:50.602Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390606_qn2x25pqx",
+    "name": "Can Tho, Vietnam Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390606_qn2x25pqx",
+      "pattern_text": "Can Tho, Vietnam Agriculture: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Vietnam"
+      ],
+      "sectors": [
+        "Agriculture"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.606Z",
+    "updated_at": "2026-05-27T08:09:50.608Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390611_ul97rfvjn",
+    "name": "Tashkent, Uzbekistan Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390611_ul97rfvjn",
+      "pattern_text": "Tashkent, Uzbekistan Energy: Critical-input volatility: UNCTAD Global Trade Update January 2026. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Central Asia",
+        "Uzbekistan"
+      ],
+      "sectors": [
+        "Energy"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD Global Trade Update January 2026 https://unctad.org/publication/global-trade-update-january-2026-top-trends-redefining-global-trade-2026",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/UZB/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.611Z",
+    "updated_at": "2026-05-27T08:09:50.613Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390616_vkzlj54n5",
+    "name": "Semarang, Indonesia Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390616_vkzlj54n5",
+      "pattern_text": "Semarang, Indonesia Textiles: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Indonesia"
+      ],
+      "sectors": [
+        "Textiles"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/IDN/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.616Z",
+    "updated_at": "2026-05-27T08:09:50.617Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390620_wn8ep4qh4",
+    "name": "Medellin, Colombia Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390620_wn8ep4qh4",
+      "pattern_text": "Medellin, Colombia Healthcare: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Latin America",
+        "Colombia"
+      ],
+      "sectors": [
+        "Healthcare"
+      ],
+      "confidence": 0.66,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/COL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.620Z",
+    "updated_at": "2026-05-27T08:09:50.622Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390626_3pghsdnxv",
+    "name": "Kigali, Rwanda Finance: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390626_3pghsdnxv",
+      "pattern_text": "Kigali, Rwanda Finance: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Africa",
+        "Rwanda"
+      ],
+      "sectors": [
+        "Finance"
+      ],
+      "confidence": 0.67,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/RWA/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.626Z",
+    "updated_at": "2026-05-27T08:09:50.627Z",
+    "version": 3
+  },
+  {
+    "id": "pattern_1779869390631_kc4t9ek8u",
+    "name": "Iloilo City, Philippines Education: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+    "description": "live_global_regional_development_gap pattern",
+    "data": {
+      "pattern_id": "pattern_1779869390631_kc4t9ek8u",
+      "pattern_text": "Iloilo City, Philippines Education: FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "category": "live_global_regional_development_gap",
+      "regions": [
+        "Southeast Asia",
+        "Philippines"
+      ],
+      "sectors": [
+        "Education"
+      ],
+      "confidence": 0.69,
+      "supporting_evidence": [
+        "UNCTAD World Investment Report 2025 https://unctad.org/publication/world-investment-report-2025",
+        "World Bank country indicator API https://api.worldbank.org/v2/country/PHL/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025"
+      ]
+    },
+    "created_at": "2026-05-27T08:09:50.631Z",
+    "updated_at": "2026-05-27T08:09:50.632Z",
+    "version": 3
+  }
+]

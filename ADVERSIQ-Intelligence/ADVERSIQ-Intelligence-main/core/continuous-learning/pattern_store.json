@@ -1,0 +1,20 @@
+[
+  {
+    "id": "pattern-1779868277624-9moeqrbjh",
+    "type": "failure",
+    "features": {
+      "confidence": 0.5,
+      "actionCount": 1,
+      "auditLength": 7,
+      "hasSuccess": 0,
+      "actionDensity": 0.14285714285714285,
+      "hourOfDay": 0.625,
+      "dayOfWeek": 0.42857142857142855
+    },
+    "outcome": 0,
+    "confidence": 0.8,
+    "occurrences": 6,
+    "firstSeen": "2026-05-27T07:51:17.624Z",
+    "lastSeen": "2026-05-30T09:24:54.045Z"
+  }
+]

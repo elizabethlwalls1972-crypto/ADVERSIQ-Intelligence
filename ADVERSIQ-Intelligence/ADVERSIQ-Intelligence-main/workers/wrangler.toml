@@ -1,0 +1,22 @@
+name = "adversiq-api"
+main = "adversiq-api.js"
+compatibility_date = "2024-09-23"
+
+[ai]
+binding = "AI"
+
+# KV namespace for data storage
+[[kv_namespaces]]
+binding = "ADVERSIQ_DATA"
+id = "385338eaef31405da6ee1803f4077f8a"  # adversiq-intelligence-data
+
+# Production environment
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.production.ai]
+binding = "AI"
+
+[[env.production.kv_namespaces]]
+binding = "ADVERSIQ_DATA"
+id = "385338eaef31405da6ee1803f4077f8a"

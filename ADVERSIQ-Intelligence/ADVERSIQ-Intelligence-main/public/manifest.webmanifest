@@ -1,0 +1,24 @@
+{
+  "name": "BW Nexus AI",
+  "short_name": "BW Nexus",
+  "description": "BW Nexus AI mobile experience with full consultant and report generation capabilities.",
+  "scope": "/",
+  "start_url": "/?utm_source=homescreen",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

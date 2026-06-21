@@ -1,0 +1,468 @@
+{
+  "prompt": {
+    "id": "adversiq_decision_verification_prompt",
+    "name": "ADVERSIQ Decision Verification Operating Prompt",
+    "directives": [
+      "Operate reset-free: observe live signals, act, verify, refine, and continue without waiting for outside approval unless the user explicitly asks for a user-facing checkpoint.",
+      "For every user-entered or uploaded matter, mine the evidence gap, run adversarial verification, identify investable regional-city matches, and persist the trajectory for self-improvement."
+    ],
+    "updated_at": "2026-05-23T10:03:53.572Z",
+    "version": 3
+  },
+  "subagents": [
+    {
+      "id": "regional_gap_miner",
+      "name": "Regional Gap Miner",
+      "role": "Find overlooked regional-city issues across macro, trade, infrastructure, workforce, climate, and market-access signals.",
+      "trigger": "Run when a country, city, sector, uploaded report, or live global matter enters the system.",
+      "available_tools": [
+        "live_global_matter_runner",
+        "external_data_integrations",
+        "regional_city_discovery",
+        "memory_store"
+      ],
+      "return_condition": "Return ranked gaps with source provenance and score drivers.",
+      "confidence": 0.92,
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    },
+    {
+      "id": "source_verifier",
+      "name": "Source Verifier",
+      "role": "Triangulate official and live sources before a recommendation is released.",
+      "trigger": "Run when evidence count is low, source freshness is weak, or confidence exceeds source support.",
+      "available_tools": [
+        "world_bank",
+        "imf",
+        "rest_countries",
+        "wikidata",
+        "global_search"
+      ],
+      "return_condition": "Return verified sources, unresolved gaps, and confidence downgrade if sources are insufficient.",
+      "confidence": 0.9,
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    },
+    {
+      "id": "investment_matchmaker",
+      "name": "Investment Matchmaker",
+      "role": "Match global capital needs to regional-city assets, programs, constraints, and GDP pathways.",
+      "trigger": "Run after the Regional Gap Miner produces accepted matters.",
+      "available_tools": [
+        "regional_city_discovery",
+        "partner_intelligence",
+        "problem_to_solution_graph",
+        "nsil_orchestrator"
+      ],
+      "return_condition": "Return match thesis, counterpart class, risk allocation, and execution phases.",
+      "confidence": 0.88,
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    }
+  ],
+  "skills": [
+    {
+      "id": "triangulate_official_sources",
+      "name": "Triangulate Official Sources",
+      "purpose": "Prevent unsupported claims by grounding every material recommendation in official or live-source evidence.",
+      "steps": [
+        "Identify the country, sector, and issue category.",
+        "Query official macro/development sources and live search connectors.",
+        "Reject filler evidence; retain title, source, URL, timestamp, and snippet.",
+        "Downgrade confidence when evidence is stale, absent, or contradictory."
+      ],
+      "success_criteria": [
+        "At least two source classes are attempted",
+        "Every released matter has provenance",
+        "Missing evidence is explicit"
+      ],
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    },
+    {
+      "id": "rank_regional_city_match",
+      "name": "Rank Regional City Match",
+      "purpose": "Score investable regional cities against sector fit, overlooked opportunity, infrastructure, market pressure, and GDP pathway.",
+      "steps": [
+        "Scan regional city candidates across all sectors.",
+        "Compute sector fit, infrastructure readiness, investment momentum, and overlooked opportunity.",
+        "Blend global-market pressure and country indicators into the score.",
+        "Persist the score drivers and rejected alternatives."
+      ],
+      "success_criteria": [
+        "Score drivers sum to final score",
+        "Rejected candidates remain auditable",
+        "The pathway links to GDP or export growth"
+      ],
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    },
+    {
+      "id": "reset_free_refinement",
+      "name": "Reset-Free Refinement",
+      "purpose": "Apply Continual Harness adaptation without resetting the run or waiting for an outside reviewer.",
+      "steps": [
+        "Append every action and recommendation to trajectory history.",
+        "Detect failures, stalls, contradictions, and source gaps from the trajectory window.",
+        "CRUD prompt directives, subagents, skills, and memory.",
+        "Use the evolved state on the next run immediately."
+      ],
+      "success_criteria": [
+        "State persists to disk",
+        "Next run reads evolved state",
+        "No outside approval gate blocks refinement"
+      ],
+      "updated_at": "2026-05-23T10:03:53.572Z",
+      "version": 1
+    }
+  ],
+  "memory": [
+    {
+      "id": "sector_window_manufacturing",
+      "category": "trajectory_window",
+      "text": "Manufacturing has appeared in 13 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779527628863_tu6f9pfzg",
+        "nsil_1779527628898_bry7cc0i7",
+        "nsil_1779527683623_cewnf2ysi",
+        "nsil_1779527683654_24vd0ql0f",
+        "nsil_1779530632675_o0r3h3nhm",
+        "nsil_1779530633036_e08fxvvdf",
+        "nsil_1779530845745_ifo9rkxwq",
+        "nsil_1779602066986_pcui6rhhr",
+        "nsil_1779602069223_263nxiafm",
+        "nsil_1779602072817_nf0s3tj2l",
+        "nsil_1779869367520_9lhekusug",
+        "nsil_1779869373537_h0aqaz4mm"
+      ],
+      "confidence": 0.95,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 4
+    },
+    {
+      "id": "sector_window_logistics",
+      "category": "trajectory_window",
+      "text": "Logistics has appeared in 11 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779527628911_624q0ckjj",
+        "nsil_1779527628923_rrm828b2t",
+        "nsil_1779527683668_m7ljvg5u4",
+        "nsil_1779527683682_q8avts8sz",
+        "nsil_1779530633559_0ktrr33h2",
+        "nsil_1779602074810_6po2xjqyx",
+        "nsil_1779602077243_0j8kt3dqg",
+        "nsil_1779602079418_w0ynvffoo",
+        "nsil_1779869381730_tlyvic6ee",
+        "nsil_1779869387742_mquvruz1d",
+        "nsil_1779869390569_tpy2r2uz5"
+      ],
+      "confidence": 0.95,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 4
+    },
+    {
+      "id": "region_window_da_nang_vietnam",
+      "category": "trajectory_window",
+      "text": "Da Nang, Vietnam has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779527628863_tu6f9pfzg",
+        "nsil_1779527628911_624q0ckjj",
+        "nsil_1779527683623_cewnf2ysi",
+        "nsil_1779527683668_m7ljvg5u4",
+        "nsil_1779530632675_o0r3h3nhm",
+        "nsil_1779530633559_0ktrr33h2",
+        "nsil_1779530845745_ifo9rkxwq",
+        "nsil_1779602066986_pcui6rhhr",
+        "nsil_1779602074810_6po2xjqyx",
+        "nsil_1779602078473_oib7wv7ob",
+        "nsil_1779602079410_xwp2askxs",
+        "nsil_1779869367520_9lhekusug"
+      ],
+      "confidence": 0.95,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 4
+    },
+    {
+      "id": "region_window_coimbatore_india",
+      "category": "trajectory_window",
+      "text": "Coimbatore, India has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779527628898_bry7cc0i7",
+        "nsil_1779527683654_24vd0ql0f",
+        "nsil_1779530633036_e08fxvvdf",
+        "nsil_1779602069223_263nxiafm",
+        "nsil_1779602078777_4q1llf277",
+        "nsil_1779602079400_12nsltvut",
+        "nsil_1779869373537_h0aqaz4mm",
+        "nsil_1779869389888_nn8t1nvwg",
+        "nsil_1779869390549_igkfqdpuv"
+      ],
+      "confidence": 0.95,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 4
+    },
+    {
+      "id": "region_window_visakhapatnam_india",
+      "category": "trajectory_window",
+      "text": "Visakhapatnam, India has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779527628923_rrm828b2t",
+        "nsil_1779527683682_q8avts8sz",
+        "nsil_1779602072817_nf0s3tj2l",
+        "nsil_1779602077243_0j8kt3dqg",
+        "nsil_1779602077576_d0n0yf60d",
+        "nsil_1779602079094_9my8b8em9",
+        "nsil_1779869379557_0tg6j9omw",
+        "nsil_1779869387742_mquvruz1d",
+        "nsil_1779869388673_24u0gatdu",
+        "nsil_1779869390233_qn7xmgfkh"
+      ],
+      "confidence": 0.95,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 4
+    },
+    {
+      "id": "sector_window_energy",
+      "category": "trajectory_window",
+      "text": "Energy has appeared in 6 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602077576_d0n0yf60d",
+        "nsil_1779602079426_rlo6gtez3",
+        "nsil_1779602079485_2gib3rzpv",
+        "nsil_1779869388673_24u0gatdu",
+        "nsil_1779869390574_84unblrys",
+        "nsil_1779869390608_7c8lat38j"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_ict",
+      "category": "trajectory_window",
+      "text": "ICT has appeared in 6 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602078473_oib7wv7ob",
+        "nsil_1779602078777_4q1llf277",
+        "nsil_1779602079094_9my8b8em9",
+        "nsil_1779869389596_4md4gf4hy",
+        "nsil_1779869389888_nn8t1nvwg",
+        "nsil_1779869390233_qn7xmgfkh"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_textiles",
+      "category": "trajectory_window",
+      "text": "Textiles has appeared in 4 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079400_12nsltvut",
+        "nsil_1779602079496_nctu5q5p6",
+        "nsil_1779869390549_igkfqdpuv",
+        "nsil_1779869390613_oi04r7px3"
+      ],
+      "confidence": 0.75,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_tourism",
+      "category": "trajectory_window",
+      "text": "Tourism has appeared in 6 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079410_xwp2askxs",
+        "nsil_1779602079432_lrt985agp",
+        "nsil_1779602079440_zmn51nxj6",
+        "nsil_1779869390565_pzn7vovyd",
+        "nsil_1779869390578_8504bum3l",
+        "nsil_1779869390582_hb9rw2qfi"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-27T08:09:50.636Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_healthcare",
+      "category": "trajectory_window",
+      "text": "Healthcare has appeared in 4 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079446_l1bfmrcuk",
+        "nsil_1779602079526_nwsl5mduw",
+        "nsil_1779869390587_ivelqd99i",
+        "nsil_1779869390618_d57e3f58o"
+      ],
+      "confidence": 0.75,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_agriculture",
+      "category": "trajectory_window",
+      "text": "Agriculture has appeared in 6 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079451_yyfrcd02s",
+        "nsil_1779602079458_melkoia9l",
+        "nsil_1779602079465_wz0d6sftm",
+        "nsil_1779869390593_rxh9rnfuv",
+        "nsil_1779869390598_2gf8amj55",
+        "nsil_1779869390602_ok4e3g1ok"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 2
+    },
+    {
+      "id": "region_window_ras_al_khaimah_uae",
+      "category": "trajectory_window",
+      "text": "Ras Al Khaimah, UAE has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079418_w0ynvffoo",
+        "nsil_1779602079426_rlo6gtez3",
+        "nsil_1779602079432_lrt985agp",
+        "nsil_1779869390569_tpy2r2uz5",
+        "nsil_1779869390574_84unblrys",
+        "nsil_1779869390578_8504bum3l"
+      ],
+      "confidence": 0.8500000000000001,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 2
+    },
+    {
+      "id": "region_window_iloilo_city_philippines",
+      "category": "trajectory_window",
+      "text": "Iloilo City, Philippines has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079451_yyfrcd02s",
+        "nsil_1779602079560_2m5z5p1df",
+        "nsil_1779869390593_rxh9rnfuv",
+        "nsil_1779869390628_e951rrpuj"
+      ],
+      "confidence": 0.75,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 2
+    },
+    {
+      "id": "sector_window_finance",
+      "category": "trajectory_window",
+      "text": "Finance has appeared in 2 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079535_nxhswy8d5",
+        "nsil_1779869390623_s4dzd10sh"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "sector_window_education",
+      "category": "trajectory_window",
+      "text": "Education has appeared in 2 recent NSIL trajectories; prioritize cross-case pattern mining before new recommendations.",
+      "evidence": [
+        "nsil_1779602079560_2m5z5p1df",
+        "nsil_1779869390628_e951rrpuj"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_davao_city_philippines",
+      "category": "trajectory_window",
+      "text": "Davao City, Philippines has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079440_zmn51nxj6",
+        "nsil_1779869390582_hb9rw2qfi"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_cluj_napoca_romania",
+      "category": "trajectory_window",
+      "text": "Cluj-Napoca, Romania has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079446_l1bfmrcuk",
+        "nsil_1779869390587_ivelqd99i"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_cagayan_de_oro_philippines",
+      "category": "trajectory_window",
+      "text": "Cagayan de Oro, Philippines has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079458_melkoia9l",
+        "nsil_1779869390598_2gf8amj55"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_can_tho_vietnam",
+      "category": "trajectory_window",
+      "text": "Can Tho, Vietnam has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079465_wz0d6sftm",
+        "nsil_1779869390602_ok4e3g1ok"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_tashkent_uzbekistan",
+      "category": "trajectory_window",
+      "text": "Tashkent, Uzbekistan has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079485_2gib3rzpv",
+        "nsil_1779869390608_7c8lat38j"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_semarang_indonesia",
+      "category": "trajectory_window",
+      "text": "Semarang, Indonesia has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079496_nctu5q5p6",
+        "nsil_1779869390613_oi04r7px3"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_medellin_colombia",
+      "category": "trajectory_window",
+      "text": "Medellin, Colombia has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079526_nwsl5mduw",
+        "nsil_1779869390618_d57e3f58o"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    },
+    {
+      "id": "region_window_kigali_rwanda",
+      "category": "trajectory_window",
+      "text": "Kigali, Rwanda has repeated trajectory activity; reuse learned local constraints, source gaps, and investment-match patterns.",
+      "evidence": [
+        "nsil_1779602079535_nxhswy8d5",
+        "nsil_1779869390623_s4dzd10sh"
+      ],
+      "confidence": 0.65,
+      "updated_at": "2026-05-27T08:09:50.637Z",
+      "version": 1
+    }
+  ],
+  "updated_at": "2026-05-27T08:09:50.637Z"
+}

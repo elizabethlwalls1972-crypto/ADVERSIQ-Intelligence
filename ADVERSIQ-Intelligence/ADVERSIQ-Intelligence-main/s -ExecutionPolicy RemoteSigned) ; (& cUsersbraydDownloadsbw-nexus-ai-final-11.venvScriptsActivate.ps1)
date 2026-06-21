@@ -1,0 +1,116 @@
+[1mdiff --git a/components/BWConsultantOS.tsx b/components/BWConsultantOS.tsx[m
+[1mindex 131f785..6556d32 100644[m
+[1m--- a/components/BWConsultantOS.tsx[m
+[1m+++ b/components/BWConsultantOS.tsx[m
+[36m@@ -84,7 +84,7 @@[m [mimport { dedupedRequest as _dedupedRequest } from '../services/requestDedup';[m
+ import { checkInputSafety, checkOutputSafety } from '../services/SafetyGuardrailsPipeline';[m
+ import { callWithStructuredOutput as _callWithStructuredOutput } from '../services/StructuredOutputPipeline';[m
+ import { ReportsService as _ReportsService } from '../services/ReportsService';[m
+[31m-import { collectExample } from '../services/FineTuningDataCollector';[m
+[32m+[m[32m// import { collectExample } from '../services/FineTuningDataCollector'; // Removed for browser compatibility[m
+ import { DocumentIntegrityService as _DocumentIntegrityService } from '../services/DocumentIntegrityService';[m
+ import { AgentWorkflowEngine as _AgentWorkflowEngine } from '../services/agent';[m
+ import type { ReportParameters } from '../types';[m
+[36m@@ -1204,559 +1204,9 @@[m [mconst BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, onNavi[m
+       }[m
+     };[m
+ [m
+[31m-    rec.onerror = () => {[m
+[31m-      setIsListening(false);[m
+[31m-      recognitionRef.current = null;[m
+[31m-    };[m
+[31m-[m
+[31m-    rec.onend = () => {[m
+[31m-      // Strip any leftover interim placeholder[m
+[31m-      setInputValue(prev => prev.replace(/\s*\[….*?\]$/, '').trim());[m
+[31m-      setIsListening(false);[m
+[31m-      recognitionRef.current = null;[m
+[31m-    };[m
+[31m-[m
+[32m+[m[32m    rec.onend = () => setIsListening(false);[m
+     rec.start();[m
+   }, [isListening]);[m
+[31m-  const [reactiveDraftStatus, setReactiveDraftStatus] = useState('');[m
+[31m-  const [reactiveDraftHint, setReactiveDraftHint] = useState('');[m
+[31m-  const [executionTimeline, setExecutionTimeline] = useState<ExecutionTask[]>([]);[m
+[31m-  const [showExecutionTimeline, setShowExecutionTimeline] = useState(false);[m
+[31m-  const [currentPhase, setCurrentPhase] = useState<CasePhase>('intake');[m
+[31m-  [m
+[31m-[m
+[31m-  // File upload[m
+[31m-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);[m
+[31m-  const fileInputRef = useRef<HTMLInputElement>(null);[m
+[31m-  const learningProfileInputRef = useRef<HTMLInputElement>(null);[m
+[31m-  const quickSyncSignatureRef = useRef('');[m
+[31m-  const strategicApplySignatureRef = useRef('');[m
+[31m-  const matterFingerprintRef = useRef('');[m
+[31m-  const matterArchiveRef = useRef<Array<{[m
+[31m-    matter: string;[m
+[31m-    country: string;[m
+[31m-    sector: string;[m
+[31m-    entities: string[];[m
+[31m-    timestamp: number;[m
+[31m-  }>>([]);[m
+[31m-  [m
+[31m-  // Workspace modal[m
+[31m-  const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);[m
+[31m-  const [pilotModeEnabled, _setPilotModeEnabled] = useState(true);[m
+[31m-  const [showPilotWindow, setShowPilotWindow] = useState(false);[m
+[31m-  const [showPilotHowTo, setShowPilotHowTo] = useState(false);[m
+[31m-  const [showAboutBWGA, setShowAboutBWGA] = useState(false);[m
+[31m-  const [showFinalReport, setShowFinalReport] = useState(false);[m
+[31m-  const [showFullCatalog, setShowFullCatalog] = useState(false);[m
+[31m-  const [_pilotFocus, setPilotFocus] = useState<PilotModeFocus>('new-markets');[m
+[31m-  const [pilotFocusSelections, setPilotFocusSelections] = useState<PilotModeFocus[]>([]);[m
+[31m-  const [pilotSelectedAddOns, setPilotSelectedAddOns] = useState<string[]>([]);[m
+[31m-  const [pilotOptionPreferences, setPilotOptionPreferences] = useState<Record<string, PilotOptionPreference>>({});[m
+[31m-  const [customPilotOptionInput, setCustomPilotOptionInput] = useState('');[m
+[31m-  const [customPilotOptions, setCustomPilotOptions] = useState<Array<{ id: string; label: string; prompt: string }>>([]);[m
+[31m-  const [pilotOptionMemory, setPilotOptionMemory] = useState<Record<string, { label: string; prompt: string }>>({});[m
+[31m-  const [activeGlobalIssuePack] = useState<string>(''); // not pre-set - resolved from conversation[m
+[31m-  const [quickCountryFocus, setQuickCountryFocus] = useState('');[m
+[31m-  const [quickBusinessTarget, setQuickBusinessTarget] = useState('');[m
+[31m-  const [quickCustomSector] = useState('');[m
+[31m-  const [quickCustomFocus] = useState('');[m
+[31m-  const [quickDraftLines, setQuickDraftLines] = useState('');[m
+[31m-  const [strategicAutoApplyEnabled] = useState(true);[m
+[31m-  const [strategicApplyLoading, setStrategicApplyLoading] = useState(false);[m
+[31m-  const [strategicApplyError, setStrategicApplyError] = useState('');[m
+[31m-  const [, setStrategicApplyUpdatedAt] = useState('');[m
+[31m-  const [liveInsightQuery, setLiveInsightQuery] = useState('');[m
+[31m-  const [liveInsightLoading, setLiveInsightLoading] = useState(false);[m
+[31m-  const [liveInsightError, setLiveInsightError] = useState('');[m
+[31m-  const [liveInsightResults, setLiveInsightResults] = useState<LiveInsightResult[]>([]);[m
+[31m-  const [, setLiveInsightUpdatedAt] = useState('');[m
+[31m-  const [, setLiveInsightQueryUsed] = useState('');[m
+[31m-  const [, setLiveInsightProviderStatus] = useState('');[m
+[31m-  const [, setLiveInsightRunReason] = useState('');[m
+[31m-  const [liveInsightFilter, setLiveInsightFilter] = useState<LiveInsightFilter>('all');[m
+[31m-  const [liveInsightsRequested, setLiveInsightsRequested] = useState(false);[m
+[31m-  const [lastLiveInsightSearchSignature, setLastLiveInsightSearchSignature] = useState('');[m
+[31m-  [m
+[31m-  // Document generation[m
+[31m-  const [recommendedDocs, setRecommendedDocs] = useState<DocumentOption[]>([]);[m
+[31m-  // Report options panel - shown after document upload OR document intent detection[m
+[31m-  const [reportOptionsMenu, setReportOptionsMenu] = useState<ReportOptionsMenu | null>(null);[m
+[31m-  const [reportOptionsDocTitle, setReportOptionsDocTitle] = useState('');[m
+[31m-  const [reportOptionsDocType, setReportOptionsDocType] = useState('');[m
+[31m-  const [showReportOptions, setShowReportOptions] = useState(false);[m
+[31m-  const [_documentBuilderActive, setDocumentBuilderActive] = useState(false);[m
+[31m-  const [uploadedFileContentsRef, setUploadedFileContentsRef] = useState<string[]>([]);[m
+[31m-  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);[m
+[31m-  const [generationScope, setGenerationScope] = useState<'selected' | 'letters-only' | 'reports-only' | 'case-study-only' | 'full-pack'>('selected');[m
+[31m-  const [preferredOutputMode, setPreferredOutputMode] = useState<'auto' | 'letter' | 'document' | 'case-study' | 'full-pack'>('auto');[m
+[31m-  const [enableFullCaseTreeMatching, setEnableFullCaseTreeMatching] = useState(true);[m
+[31m-  const [fullSpectrumReasoningMode, setFullSpectrumReasoningMode] = useState(true);[m
+[31m-  const [generatedContent, setGeneratedContent] = useState<string | null>(null);[m
+[31m-  const [generatedDocuments, setGeneratedDocuments] = useState<Array<{id: string; title: string; content: string; category: 'report'|'letter'; htmlContent: string}>>([]);[m
+[31m-  const [generatingProgress, setGeneratingProgress] = useState<{current: number; total: number} | null>(null);[m
+[31m-  // ── Autonomous Agent state ──────────────────────────────────────────────────────[m
+[31m-  const [isAutonomousRunning, setIsAutonomousRunning] = useState(false);[m
+[31m-  const [autonomousProgress, setAutonomousProgress] = useState<OrchestratorProgress | null>(null);[m
+[31m-  const [copied, setCopied] = useState(false);[m
+[31m-  const [allowAllDocumentAccess, setAllowAllDocumentAccess] = useState(true);[m
+[31m-  const [outputDepth, setOutputDepth] = useState<'brief-1' | 'memo-5' | 'report-20'>('memo-5');[m
+[31m-  const [_adaptiveQuestionsAsked, _setAdaptiveQuestionsAsked] = useState(0);[m
+[31m-  const [_skillLevel, setSkillLevel]

@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-05-27T07:51:17.626Z",
+    "period": "2026-05-20 to 2026-05-27",
+    "totalPredictions": 1,
+    "correctPredictions": 0,
+    "accuracy": 0,
+    "averageConfidence": 0.5,
+    "averageUserRating": 0,
+    "latencyP50": 100,
+    "latencyP95": 250,
+    "modelVersion": "1.0.0"
+  },
+  {
+    "timestamp": "2026-05-30T09:19:24.188Z",
+    "period": "2026-05-23 to 2026-05-30",
+    "totalPredictions": 2,
+    "correctPredictions": 0,
+    "accuracy": 0,
+    "averageConfidence": 0.5,
+    "averageUserRating": 0,
+    "latencyP50": 100,
+    "latencyP95": 250,
+    "modelVersion": "1.1.0"
+  },
+  {
+    "timestamp": "2026-05-30T09:24:54.052Z",
+    "period": "2026-05-23 to 2026-05-30",
+    "totalPredictions": 3,
+    "correctPredictions": 0,
+    "accuracy": 0,
+    "averageConfidence": 0.5,
+    "averageUserRating": 0,
+    "latencyP50": 100,
+    "latencyP95": 250,
+    "modelVersion": "1.2.0"
+  }
+]

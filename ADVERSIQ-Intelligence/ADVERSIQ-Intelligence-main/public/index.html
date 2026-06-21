@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVERSIQ Intelligence - Autonomous Cyber Defence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #f26522;
+            --dark-bg: #000000;
+            --dark-panel: #0a0a0a;
+            --dark-card: #1a1a1a;
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --border-orange: #f26522;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* HERO SPLIT SCREEN */
+        .hero-split {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .hero-left {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-left::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(242, 101, 34, 0.03) 2px, rgba(242, 101, 34, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(242, 101, 34, 0.03) 2px, rgba(242, 101, 34, 0.03) 4px);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .cyber-visual {
+            position: relative;
+            z-index: 1;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .cyber-circle {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 3px solid var(--primary-orange);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        .cyber-circle::before,
+        .cyber-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid var(--primary-orange);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .cyber-circle::before {
+            width: 120%;
+            height: 120%;
+            animation: ripple 3s ease-out infinite;
+        }
+
+        .cyber-circle::after {
+            width: 140%;
+            height: 140%;
+            animation: ripple 3s ease-out infinite 1.5s;
+        }
+
+        @keyframes ripple {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+        }
+
+        .cyber-text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hero-right {
+            flex: 1;
+            height: 100%;
+            background-color: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .logo-box {
+            border: 10px solid var(--border-orange);
+            padding: 60px 140px 60px 60px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .logo-box::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            border: 1px solid var(--primary-orange);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .logo-text {
+            color: var(--text-white);
+            font-size: 8.5rem;
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -2px;
+        }
+
+        .logo-highlight {
+            color: var(--primary-orange);
+        }
+
+        .tagline {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .scroll-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .scroll-arrow {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--primary-orange), transparent);
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(10px); opacity: 0.5; }
+        }
+
+        /* MAIN CONTENT SECTIONS */
+        .content-section {
+            min-height: 100vh;
+            padding: 120px 60px;
+            position: relative;
+        }
+
+        .section-dark {
+            background-color: var(--dark-bg);
+        }
+
+        .section-panel {
+            background-color: var(--dark-panel);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-eyebrow {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+        }
+
+        .section-title .highlight {
+            color: var(--primary-orange);
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* COMPONENT CARDS */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .component-card {
+            background: var(--dark-card);
+            border: 2px solid transparent;
+            padding: 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .component-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: var(--primary-orange);
+            transition: height 0.3s ease;
+        }
+
+        .component-card:hover {
+            border-color: var(--primary-orange);
+            transform: translateY(-5px);
+        }
+
+        .component-card:hover::before {
+            height: 100%;
+        }
+
+        .component-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .component-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--text-white);
+        }
+
+        .component-description {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .component-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.75rem;
+            color: var(--primary-orange);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* STATS SECTION */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px;
+            background: var(--dark-card);
+            border: 2px solid var(--dark-card);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-orange);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA BUTTON */
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: var(--primary-orange);
+            color: var(--dark-bg);
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(242, 101, 34, 0.4);
+        }
+
+        /* DEPLOYMENT CARDS */
+        .deployment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .deployment-card {
+            background: var(--dark-card);
+            padding: 50px 40px;
+            border: 2px solid transparent;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .deployment-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-orange);
+            transition: width 0.3s ease;
+        }
+
+        .deployment-card:hover {
+            border-color: var(--primary-orange);
+        }
+
+        .deployment-card:hover::after {
+            width: 100%;
+        }
+
+        .deployment-icon {
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+
+        .deployment-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--text-white);
+        }
+
+        .deployment-description {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .deployment-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .deployment-features li {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .deployment-features li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary-orange);
+            font-weight: 700;
+        }
+
+        .deployment-meta {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid rgba(242, 101, 34, 0.2);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .deployment-time {
+            color: var(--primary-orange);
+        }
+
+        .deployment-cost {
+            color: var(--text-gray);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--dark-bg);
+            padding: 80px 60px 40px;
+            border-top: 1px solid rgba(242, 101, 34, 0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-brand {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .footer-tagline {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .footer-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-orange);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(242, 101, 34, 0.1);
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .deployment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-split {
+                flex-direction: column;
+            }
+            
+            .logo-text {
+                font-size: 5rem;
+            }
+            
+            .logo-box {
+                border-width: 6px;
+                padding: 30px 60px 30px 30px;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-section {
+                padding: 80px 30px;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO SPLIT SCREEN -->
+    <section class="hero-split">
+        <div class="hero-left">
+            <div class="cyber-visual">
+                <div class="cyber-circle">
+                    <div class="cyber-text-overlay">
+                        Intent Detection<br>Active
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-right">
+            <div class="logo-box">
+                <h1 class="logo-text">
+                    Ad<br>
+                    vers<br>
+                    <span class="logo-highlight">IQ</span>
+                </h1>
+            </div>
+            <div class="tagline">Autonomous Cyber Defence</div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <span class="scroll-text">Explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- THE PROBLEM SECTION -->
+    <section class="content-section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">The Problem</div>
+                <h2 class="section-title">
+                    Zero-Day Exploits Move<br>
+                    <span class="highlight">Faster Than Humans</span>
+                </h2>
+                <p class="section-subtitle">
+                    AI-assisted attackers develop and deploy novel exploits in hours. Ninety zero-day vulnerabilities were exploited in the wild in 2025 alone. Every deployed AI security system still depends on a human engineer to close the loop between detection and remediation.
+                </p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">90</div>
+                    <div class="stat-label">Zero-Days Exploited (2025)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Hours</div>
+                    <div class="stat-label">Attacker Weaponization Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Days</div>
+                    <div class="stat-label">Human Engineer Fix Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Signatures for Zero-Day</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE ARCHITECTURE SECTION -->
+    <section class="content-section section-panel">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">The Architecture</div>
+                <h2 class="section-title">
+                    Eight Components.<br>
+                    <span class="highlight">One Closed Loop.</span>
+                </h2>
+                <p class="section-subtitle">
+                    Every other system stops at detection. ADVERSIQ is the first architecture where finding the threat and deploying the proven fix happen in the same autonomous pipeline.
+                </p>
+            </div>
+            
+            <div class="components-grid">
+                <div class="component-card">
+                    <div class="component-number">01</div>
+                    <h3 class="component-title">IntentContradictionDetector</h3>
+                    <p class="component-description">
+                        Analyzes what code attempts to do versus what it claims. Detects zero-day exploits through intent analysis, not pattern matching. Works on attacks never seen before.
+                    </p>
+                    <div class="component-meta">
+                        <span>589 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">02</div>
+                    <h3 class="component-title">AdversarialSelfPlayEngine</h3>
+                    <p class="component-description">
+                        The system attacks itself continuously. Discovers weaknesses before real attackers do. Generates 1000+ attack scenarios per cycle. No human red team required.
+                    </p>
+                    <div class="component-meta">
+                        <span>589 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">03</div>
+                    <h3 class="component-title">RealWorldAttackMonitor</h3>
+                    <p class="component-description">
+                        Monitors CVE databases, security blogs, dark web forums. Learns from real-world attacks globally. Updates threat models in real-time.
+                    </p>
+                    <div class="component-meta">
+                        <span>489 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">04</div>
+                    <h3 class="component-title">CyberSecurityQuorum</h3>
+                    <p class="component-description">
+                        Five independent AI agents attack and defend every fix. ATTACKER, DEFENDER, AUDITOR, VALIDATOR, SYNTHESIZER. Minimum 4/5 consensus required.
+                    </p>
+                    <div class="component-meta">
+                        <span>689 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">05</div>
+                    <h3 class="component-title">MonteCarloSimulator</h3>
+                    <p class="component-description">
+                        Tests patches across 1000+ attack scenarios. Statistical validation with 88.5% success threshold. Identifies failure modes before deployment.
+                    </p>
+                    <div class="component-meta">
+                        <span>589 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">06</div>
+                    <h3 class="component-title">46 Cybersecurity Validators</h3>
+                    <p class="component-description">
+                        Deterministic validators across 8 security domains. Mathematical proof of safety. No probabilistic guessing. Hard pass/fail criteria.
+                    </p>
+                    <div class="component-meta">
+                        <span>1073 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">07</div>
+                    <h3 class="component-title">CryptoDispatchEngine</h3>
+                    <p class="component-description">
+                        RSA-2048 cryptographic signing. AES-256 encryption. Immutable audit trail. Full rollback capability. Every patch is signed, encrypted, and reversible.
+                    </p>
+                    <div class="component-meta">
+                        <span>589 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-number">08</div>
+                    <h3 class="component-title">SystemIntegrator</h3>
+                    <p class="component-description">
+                        Orchestrates all components into one pipeline. Detection to deployment in seconds. End-to-end automation. Zero human intervention required.
+                    </p>
+                    <div class="component-meta">
+                        <span>489 Lines</span>
+                        <span>✓ Complete</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEPLOYMENT MODELS SECTION -->
+    <section class="content-section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">Deployment Options</div>
+                <h2 class="section-title">
+                    Three Ways to<br>
+                    <span class="highlight">Deploy ADVERSIQ</span>
+                </h2>
+            </div>
+            
+            <div class="deployment-grid">
+                <div class="deployment-card">
+                    <div class="deployment-icon">🛡️</div>
+                    <h3 class="deployment-title">Standalone</h3>
+                    <p class="deployment-description">
+                        Complete security platform on your infrastructure. No cloud dependencies. Full data sovereignty.
+                    </p>
+                    <ul class="deployment-features">
+                        <li>Air-gapped deployment</li>
+                        <li>Web dashboard included</li>
+                        <li>Automatic threat detection</li>
+                        <li>Zero external dependencies</li>
+                    </ul>
+                    <div class="deployment-meta">
+                        <span class="deployment-time">15 Minutes</span>
+                        <span class="deployment-cost">Free (Self-Hosted)</span>
+                    </div>
+                </div>
+                
+                <div class="deployment-card">
+                    <div class="deployment-icon">🏢</div>
+                    <h3 class="deployment-title">Enterprise</h3>
+                    <p class="deployment-description">
+                        Integrate with existing security tools. SIEM, EDR, firewall connectors. Centralized intelligence.
+                    </p>
+                    <ul class="deployment-features">
+                        <li>Multi-vendor integration</li>
+                        <li>Existing tool enhancement</li>
+                        <li>Automated coordination</li>
+                        <li>Scalable architecture</li>
+                    </ul>
+                    <div class="deployment-meta">
+                        <span class="deployment-time">1-2 Hours</span>
+                        <span class="deployment-cost">License-Based</span>
+                    </div>
+                </div>
+                
+                <div class="deployment-card">
+                    <div class="deployment-icon">☁️</div>
+                    <h3 class="deployment-title">Cloud SaaS</h3>
+                    <p class="deployment-description">
+                        Fully managed service. Automatic updates. 24/7 support. No infrastructure management required.
+                    </p>
+                    <ul class="deployment-features">
+                        <li>Rapid deployment</li>
+                        <li>Automatic updates</li>
+                        <li>24/7 support included</li>
+                        <li>Pay-as-you-go pricing</li>
+                    </ul>
+                    <div class="deployment-meta">
+                        <span class="deployment-time">5 Minutes</span>
+                        <span class="deployment-cost">$99/Endpoint/Month</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 80px;">
+                <a href="/dashboard.html" class="cta-button">Launch the Defence Engine</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    Ad<br>vers<span style="color: var(--primary-orange);">IQ</span>
+                </div>
+                <p class="footer-tagline">
+                    The first neuro-symbolic, multi-agent architecture that detects zero-day threats through intent analysis, validates patches mathematically, and deploys fixes autonomously.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="footer-title">Product</h4>
+                <ul class="footer-links">
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#components">Components</a></li>
+                    <li><a href="#deployment">Deployment</a></li>
+                    <li><a href="/dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="ADVERSIQ_RESEARCH_PAPER_V4.0.md">Research Paper</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="footer-title">Contact</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:brayden@adversiq.xyz">brayden@adversiq.xyz</a></li>
+                    <li><a href="#">Melbourne, Australia</a></li>
+                    <li><a href="#">ABN 55 978 113 300</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 ADVERSIQ Intelligence. All rights reserved.</p>
+            <p style="margin-top: 10px; font-size: 0.75rem;">
+                The loop is closed. The system is complete. The architecture is ready.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
+</body>
+</html>

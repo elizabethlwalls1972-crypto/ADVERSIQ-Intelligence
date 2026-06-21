@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVERSIQ Intelligence - The Loop Is Finally Closed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* ANIMATED CYBER BACKGROUND LAYERS */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: fadeInOut 18s infinite;
+            z-index: 0;
+        }
+        
+        .bg-layer-1 {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9IiMwMDAwMDAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQ4IiBmaWxsPSIjZmY2YjM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+R2xvYmFsIE5ldHdvcms8L3RleHQ+PC9zdmc+');
+            animation-delay: 0s;
+        }
+        
+        .bg-layer-2 {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9IiMxYTFhMWEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQ4IiBmaWxsPSIjZmY2YjM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q3liZXIgT3BlcmF0b3I8L3RleHQ+PC9zdmc+');
+            animation-delay: 6s;
+        }
+        
+        .bg-layer-3 {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSIxMDgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIGZpbGw9IiMwYTBhMGEiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQ4IiBmaWxsPSIjZmY2YjM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+QUkgRGF0YSBTdHJlYW08L3RleHQ+PC9zdmc+');
+            animation-delay: 12s;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            33% { opacity: 0.08; }
+            66% { opacity: 0; }
+        }
+        
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
+        }
+        
+        .content-overlay {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-bar {
+            background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 10px 0;
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-bg {
+            background: #000;
+        }
+        
+        .photo-banner {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .photo-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        /* SQUARE BOXES - NO ROUNDED EDGES */
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 2px solid #ff6b35;
+            background: #000;
+            border-radius: 0; /* SQUARE */
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            border-color: #f7931e;
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+            background: #0a0a0a;
+        }
+        
+        .pill-badge {
+            display: inline-block;
+            padding: 10px 24px;
+            background: transparent;
+            border: 2px solid #ff6b35;
+            border-radius: 0; /* SQUARE */
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #ff6b35;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .stat-card {
+            background: #000;
+            border: 2px solid #ff6b35;
+            border-radius: 0; /* SQUARE */
+            padding: 20px;
+        }
+        
+        .layer-number {
+            width: 56px;
+            height: 56px;
+            background: #ff6b35;
+            border-radius: 0; /* SQUARE */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #000;
+        }
+        
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.95);
+        }
+        
+        .modal-content {
+            background-color: #000;
+            margin: 3% auto;
+            padding: 40px;
+            border: 3px solid #ff6b35;
+            border-radius: 0; /* SQUARE */
+            width: 90%;
+            max-width: 1000px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #ff6b35;
+            float: right;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover { color: #f7931e; }
+        
+        /* ORANGE ACCENT ELEMENTS */
+        .orange-accent {
+            color: #ff6b35;
+        }
+        
+        .orange-bg {
+            background: #ff6b35;
+            color: #000;
+        }
+        
+        .orange-border {
+            border-color: #ff6b35;
+        }
+        
+        /* BUTTON STYLES */
+        .btn-primary {
+            background: #ff6b35;
+            color: #000;
+            border: none;
+            padding: 16px 40px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #f7931e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #ff6b35;
+            border: 2px solid #ff6b35;
+            padding: 16px 40px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #ff6b35;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        MonosemanticCognitivePurifierV2 Active  •  5-Agent Quorum Ready  •  AlgorithmicMutator Standby  •  46 Validators Online  •  MorphicField Sync Active
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center px-6 py-20">
+        <div class="max-w-7xl mx-auto w-full">
+            <!-- Eyebrow -->
+            <div class="text-center mb-6">
+                <span class="text-blue-400 text-sm font-semibold uppercase tracking-wider">
+                    Autonomous Cyber Defence  ·  Neuro-Symbolic AI  ·  Self-Patching  ·  Zero Human Delay
+                </span>
+            </div>
+            
+            <!-- H1 -->
+            <h1 class="text-6xl lg:text-8xl font-black text-center mb-8 leading-tight">
+                The Loop Is Finally <span class="gradient-text">Closed.</span><br/>
+                Software That Finds, Proves, and<br/>
+                Fixes Its Own Vulnerabilities.
+            </h1>
+            
+            <!-- Sub-headline -->
+            <p class="text-xl lg:text-2xl text-center text-gray-300 mb-8 max-w-5xl mx-auto">
+                Every AI security tool on the market finds the problem and stops. ADVERSIQ finds it, proves the fix is mathematically sound, and deploys it — without a human in the loop.
+            </p>
+            
+            <!-- Body paragraphs -->
+            <div class="max-w-4xl mx-auto space-y-6 mb-12">
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    Five adversarial AI agents simultaneously attack and defend every proposed fix. A neuro-symbolic validation layer mathematically proves the fix is sound before anything is deployed. The AlgorithmicMutator writes the patch, compiles it in an isolated sandbox, and hot-deploys to production — in seconds, not days.
+                </p>
+                <p class="text-lg text-gray-400 leading-relaxed">
+                    Born from regional economic governance. Discovered to solve the most critical open problem in cybersecurity. The same architecture that strips political bias from investment decisions strips obfuscation from attack vectors — and closes what it finds.
+                </p>
+            </div>
+            
+            <!-- Feature Cards -->
+            <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Threat Verification</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Five-agent adversarial quorum. Neuro-symbolic logic grounding. 46 deterministic safety checks before any fix is deployed.
+                    </p>
+                </div>
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Autonomous Remediation</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        The AlgorithmicMutator writes, compiles, and hot-patches the fix. No human engineer required. Full cryptographic rollback.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Pill Badges -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <span class="pill-badge">Adversarial Quorum</span>
+                <span class="pill-badge">Autonomous Hot-Patch</span>
+                <span class="pill-badge">Neuro-Symbolic Proof</span>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="/dashboard.html" class="px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold rounded-lg hover:from-blue-500 hover:to-blue-400 transition-all text-center text-lg">
+                    Enter the Defence Engine
+                </a>
+                <a href="#how-it-works" class="px-10 py-4 border-2 border-blue-500 text-blue-400 font-bold rounded-lg hover:bg-blue-500 hover:text-white transition-all text-center text-lg">
+                    See How It Closes the Loop
+                </a>
+            </div>
+            
+            <!-- Signal Panel -->
+            <div class="grid md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-12">
+                <div class="stat-card">
+                    <div class="text-xs text-gray-500 uppercase mb-2">Threat Response</div>
+                    <div class="text-sm font-semibold text-blue-400">Detect → Prove → Patch → Deploy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs text-gray-500 uppercase mb-2">Rigour</div>
+                    <div class="text-sm font-semibold text-blue-400">Deterministic, sandbox-compiled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs text-gray-500 uppercase mb-2">Loop Status</div>
+                    <div class="text-sm font-semibold text-blue-400">Closed — no human engineer needed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-xs text-gray-500 uppercase mb-2">Architecture</div>
+                    <div class="text-sm font-semibold text-blue-400">Neuro-Symbolic + 5-Agent Quorum</div>
+                </div>
+            </div>
+            
+            <!-- Pull Quote -->
+            <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-900/30 to-blue-800/30 border-l-4 border-blue-500 p-8 rounded-r-xl mb-8">
+                <p class="text-xl italic text-gray-200 leading-relaxed">
+                    "We don't guess. We prove. Five AI minds debate every proposed fix. The neuro-symbolic core validates it mathematically. The mutator compiles, sandboxes, and hot-patches production — in seconds. The loop is closed."
+                </p>
+            </div>
+            
+            <!-- Scroll Prompt -->
+            <div class="text-center">
+                <p class="text-gray-500 text-sm animate-bounce">Scroll to see how the loop closes ↓</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Banner 1 -->
+    <div class="photo-banner h-96" style="background-image: url('https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1920&q=80');">
+        <div class="relative z-10 h-full flex items-center justify-center">
+            <h2 class="text-5xl font-black text-white text-center">The Problem</h2>
+        </div>
+    </div>
+
+    <!-- Section 3: The Problem -->
+    <section class="py-24 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">WHY THIS EXISTS</div>
+                <h2 class="text-5xl font-black mb-8">The world cannot wait for human-speed fixes.</h2>
+                <p class="text-xl text-gray-400 leading-relaxed max-w-4xl mx-auto">
+                    AI-assisted attackers now move faster than human defenders can respond. Ninety zero-day vulnerabilities were exploited in the wild in 2025 alone. Attackers develop and deploy novel exploits in hours. Defenders still require a human engineer to diagnose, write, test, and deploy a fix — a process measured in days.
+                </p>
+                <p class="text-xl text-gray-300 leading-relaxed max-w-4xl mx-auto mt-6 font-semibold">
+                    ADVERSIQ closes that gap. Not by making humans faster. By replacing the human bottleneck with a mathematically proven, autonomous loop.
+                </p>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid md:grid-cols-3 gap-8 mt-16">
+                <div class="text-center">
+                    <div class="text-6xl font-black gradient-text mb-4">90</div>
+                    <div class="text-gray-400 font-medium">Zero-days exploited in the wild, 2025</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl font-black gradient-text mb-4">Hours</div>
+                    <div class="text-gray-400 font-medium">Time for an AI-assisted attacker to weaponise a new exploit</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl font-black gradient-text mb-4">Days</div>
+                    <div class="text-gray-400 font-medium">Average time for a human engineer to ship a fix</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Banner 2 -->
+    <div class="photo-banner h-96" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80');">
+        <div class="relative z-10 h-full flex items-center justify-center">
+            <h2 class="text-5xl font-black text-white text-center">The Solution</h2>
+        </div>
+    </div>
+
+    <!-- Section 4: The Four Layers -->
+    <section id="how-it-works" class="py-24 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">HOW IT WORKS</div>
+                <h2 class="text-5xl font-black mb-6">Four layers. Seconds to close.</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    Every other system stops at detection. ADVERSIQ is the first architecture where finding the threat and deploying the proven fix happen in the same autonomous pipeline.
+                </p>
+            </div>
+            
+            <!-- Layer Cards -->
+            <div class="space-y-8">
+                <div class="card-hover bg-gray-900 p-8 rounded-xl flex gap-6">
+                    <div class="layer-number flex-shrink-0">01</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-blue-400 mb-3">Cognitive Purification</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Incoming threats are converted to a mathematical vector space. Obfuscation and camouflage are stripped before anything is read. MonosemanticCognitivePurifierV2 with 16,384 features processes threats in <100ms.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl flex gap-6">
+                    <div class="layer-number flex-shrink-0">02</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-blue-400 mb-3">Five-Agent Adversarial Quorum</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            The Attacker, Defender, Auditor, Validator, and Synthesizer attack and defend every proposed fix until only the sound one survives. Minimum 4/5 consensus required. No single agent can dominate.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl flex gap-6">
+                    <div class="layer-number flex-shrink-0">03</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-blue-400 mb-3">Neuro-Symbolic Validation</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            46 deterministic safety checks across 8 security layers. Monte Carlo simulation with 1000+ attack scenarios, 88.5% threshold required. No probabilistic guess reaches production. Proof required.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl flex gap-6">
+                    <div class="layer-number flex-shrink-0">04</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-blue-400 mb-3">Autonomous Hot-Patch</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            The validated fix is compiled in an isolated sandbox (SandboxEnvironment) and deployed live with RSA-2048 cryptographic signing. No human required. Full rollback available. Immutable audit trail.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-2xl font-bold text-blue-400">Detection to deployment: seconds. Human engineers required: zero.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Banner 3 -->
+    <div class="photo-banner h-96" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80');">
+        <div class="relative z-10 h-full flex items-center justify-center">
+            <h2 class="text-5xl font-black text-white text-center">Who This Is For</h2>
+        </div>
+    </div>
+
+    <!-- Section 5: Who This Is For -->
+    <section class="py-24 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">BUILT FOR</div>
+                <h2 class="text-5xl font-black">Organisations that cannot afford to wait.</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Critical Infrastructure Operators</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Power grids, water systems, and communications networks targeted by AI-assisted attacks that move faster than any human security team can respond. ADVERSIQ patches autonomously while your team sleeps.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Sovereign Government Systems</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Air-gapped deployment on bare-metal hardware. Zero cloud exposure. Cryptographic audit trail for every patch. Rollback available in seconds. Defence-grade — without defence-grade procurement timelines.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Enterprise Digital Infrastructure</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Novel zero-day exploits pass every signature-based defence. ADVERSIQ evaluates intent, not pattern. The neuro-symbolic core validates fixes mathematically before deployment. No guessing. No exposure window.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Emerging Regional Nodes</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Smaller institutions that cannot afford enterprise security operations centres. The MorphicField network means one node's defensive learnings harden every node globally — within hours of any successful defence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Banner 4 -->
+    <div class="photo-banner h-96" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80');">
+        <div class="relative z-10 h-full flex items-center justify-center">
+            <h2 class="text-5xl font-black text-white text-center">Why This Is Different</h2>
+        </div>
+    </div>
+
+    <!-- Section 6: Why This Is Different -->
+    <section class="py-24 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">THE DIFFERENCE</div>
+                <h2 class="text-5xl font-black">No one has closed this loop before.</h2>
+            </div>
+            
+            <div class="space-y-12">
+                <div>
+                    <h3 class="text-3xl font-bold text-blue-400 mb-4">The loop was never closed</h3>
+                    <p class="text-xl text-gray-300 leading-relaxed">
+                        Current autonomous red-team and blue-team systems — even the most advanced — identify vulnerabilities and stop. A human engineer writes the fix. ADVERSIQ is the first architecture where detection and validated deployment are the same pipeline.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-3xl font-bold text-blue-400 mb-4">Standard AI can't prove its own code is safe</h3>
+                    <p class="text-xl text-gray-300 leading-relaxed">
+                        Probabilistic language models produce plausible-looking patch code that may introduce its own vulnerabilities. ADVERSIQ forces every output through deterministic validators. Hallucination is architecturally impossible in the deployment step.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-3xl font-bold text-blue-400 mb-4">A governance problem, not a software problem</h3>
+                    <p class="text-xl text-gray-300 leading-relaxed">
+                        This architecture wasn't built from inside cybersecurity's own framework. It came from asking how to make high-stakes decisions without unverified assumptions — strip bias, validate mathematically, stress-test adversarially, act autonomously. That answer works in investment governance. It works in code security.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Banner 5 -->
+    <div class="photo-banner h-96" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&q=80');">
+        <div class="relative z-10 h-full flex items-center justify-center">
+            <h2 class="text-5xl font-black text-white text-center">The Origin</h2>
+        </div>
+    </div>
+
+    <!-- Section 7: The Origin -->
+    <section class="py-24 px-6 bg-black">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">ONE DEVELOPER — NO FUNDING — NO TEAM</div>
+                <h2 class="text-5xl font-black mb-8">Born in regional development.<br/>Discovered to defend the world.</h2>
+            </div>
+            
+            <div class="space-y-6 text-xl text-gray-300 leading-relaxed">
+                <p>
+                    This system was built over two years by one person, with no background in programming, no formal AI training, and no funding. It started as a way to help overlooked regions like Pagadian City compete for global investment. It ended up solving a problem the entire cybersecurity industry has been trying to crack for years.
+                </p>
+                <p>
+                    Because the system was built from governance logic — not software engineering assumptions — it produced an architecture that trained engineers hadn't generated. The boardroom paradigm, mathematised and adversarially structured, turns out to be exactly what digital defence needs.
+                </p>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-2xl font-bold text-blue-400 mb-4">— Brayden Walls, Founder, ADVERSIQ Intelligence</p>
+                <a href="ADVERSIQ_RESEARCH_PAPER_V4.0.md" class="inline-block px-8 py-3 border-2 border-blue-500 text-blue-400 font-bold rounded-lg hover:bg-blue-500 hover:text-white transition-all">
+                    Read the Full Research Paper →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: What The System Produces -->
+    <section class="py-24 px-6 bg-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">WHAT YOU GET</div>
+                <h2 class="text-5xl font-black">What the system produces.</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-black p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Cryptographic Audit Trail</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Every detection, every quorum debate, every validation result, every patch version — logged to an append-only, cryptographically signed record. Every decision is traceable and defensible.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-black p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Zero-Knowledge Node Sync</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Defensive learnings sync across the MorphicField network as mathematical weight deltas — never raw data. No state secrets transmitted. Every node hardens from every other node's defence.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-black p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Immutable Genesis Rollback</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Every codebase mutation is reversible. The append-only transaction log means any prior state can be restored in seconds. The system self-heals. It cannot paint itself into a corner.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Early Partners -->
+    <section class="py-24 px-6 bg-black">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="text-blue-400 text-sm font-bold uppercase tracking-wider mb-4">PARTNERSHIPS</div>
+                <h2 class="text-5xl font-black mb-8">Early partners shape what gets built first.</h2>
+                <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                    We're looking for organisations willing to put this architecture to work on real problems. You get a system nobody else has access to yet. We get the real-world feedback that hardens prototype into production.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Critical Infrastructure Operators</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Deploy ADVERSIQ to protect systems that cannot go offline. Help us calibrate response speed against real-world threat feeds.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Sovereign Government Agencies</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        Air-gapped deployment for national security environments. Your operational requirements become hardened production features.
+                    </p>
+                </div>
+                
+                <div class="card-hover bg-gray-900 p-8 rounded-xl">
+                    <h3 class="text-2xl font-bold text-blue-400 mb-4">Cybersecurity Research Institutions</h3>
+                    <p class="text-gray-300 leading-relaxed">
+                        The neuro-symbolic patch validation architecture is a research frontier. Co-develop the validation layer. Co-author what gets published.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: CTA -->
+    <section class="py-24 px-6 bg-gradient-to-br from-blue-900 to-blue-700">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-6xl font-black mb-6 text-white">Close the loop.</h2>
+            <p class="text-xl text-blue-100 mb-12">
+                The first architecture that autonomously detects, validates, and patches live production code without human intervention. Currently in active development.
+            </p>
+            
+            <!-- Disclosure -->
+            <div class="bg-blue-950/50 border border-blue-400/30 rounded-lg p-6 mb-8 text-left">
+                <p class="text-sm text-blue-200 mb-2">• Strategic Decision Support — All outputs are advisory.</p>
+                <p class="text-sm text-blue-200 mb-2">• Reasoning Governance — Every fix is screened by deterministic validators before deployment.</p>
+                <p class="text-sm text-blue-200 mb-2">• Data Privacy — Strict GDPR and Australian Privacy Act compliance.</p>
+                <p class="text-sm text-blue-200">• Accountability — Operators retain final authority over production deployment.</p>
+            </div>
+            
+            <a href="/dashboard.html" class="inline-block px-12 py-5 bg-white text-blue-900 font-bold rounded-lg hover:bg-gray-100 transition-all text-xl">
+                Launch the Defence Engine
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-black border-t border-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <!-- Brand Block -->
+                <div>
+                    <h3 class="text-3xl font-black gradient-text mb-4">ADVERSIQ</h3>
+                    <p class="text-gray-400 mb-4">Autonomous Cyber Defence Engine</p>
+                    <p class="text-sm text-gray-500 leading-relaxed">
+                        The first neuro-symbolic, multi-agent architecture that detects threats, validates patches mathematically, and deploys fixes to live production without human intervention. Built in Australia. Active development phase.
+                    </p>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-white mb-4">Contact</h4>
+                    <p class="text-gray-400 mb-2">📧 brayden@adversiq.xyz</p>
+                    <p class="text-gray-400">📍 Melbourne, Australia</p>
+                </div>
+                
+                <!-- Development Status -->
+                <div>
+                    <h4 class="font-bold text-white mb-4">Development Status</h4>
+                    <p class="text-sm text-gray-400 mb-2">Current Phase: Active Development</p>
+                    <p class="text-sm text-gray-400 mb-2">Architecture: Neuro-Symbolic + 5-Agent Adversarial Quorum</p>
+                    <p class="text-sm text-gray-500">Operating under Brayden Walls as registered Australian sole trader. Building toward government and enterprise cyber defence deployment.</p>
+                </div>
+            </div>
+            
+            <!-- Documentation Links -->
+            <div class="border-t border-gray-800 pt-8 mb-8">
+                <div class="flex flex-wrap gap-6 justify-center text-sm">
+                    <a href="ADVERSIQ_RESEARCH_PAPER_V4.0.md" class="text-blue-400 hover:text-blue-300">Research Paper →</a>
+                    <a href="#" class="text-blue-400 hover:text-blue-300">Terms & Conditions →</a>
+                    <a href="#" class="text-blue-400 hover:text-blue-300">Privacy Policy →</a>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="text-center text-sm text-gray-600">
+                <p>© 2026 ADVERSIQ Intelligence. All rights reserved.</p>
+                <p class="mt-2">Trading as Sole Trader | ABN 55 978 113 300 | Melbourne, Australia</p>
+            </div>
+        </div>
+    </footer>
+    
+    </div><!-- End content-overlay -->
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+{
+  "runId": "NSIL-GEN-1228A",
+  "generatedAt": "2026-01-01T15:55:41.856Z",
+  "organization": "Japanese Cold-Chain & Export Logistics JV",
+  "location": "General Santos, Philippines",
+  "currentEventContext": "El Nino 2023-2024 supply shocks and Bureau of Customs integrity sweeps necessitate telemetry-backed cold-chain governance in General Santos.",
+  "dataFeeds": [
+    "DOTr port time-stamps (Oct-Dec 2025)",
+    "PSA Fisheries Situationer Q3 2025",
+    "DA El Nino Advisory #07",
+    "DOF trade anomaly alerts",
+    "LGU permit queue exports"
+  ],
+  "models": [
+    "NSIL multi-persona debate",
+    "SPI core engine",
+    "RROI capital stress engine",
+    "SEAM alignment model",
+    "Counterfactual lab (200 trials)"
+  ],
+  "operators": [
+    "BWGA Agentic Brain (Melbourne)",
+    "Trustee sandbox (Manila)",
+    "Customs liaison (Region XII)",
+    "Logistics JV control tower (Tokyo)"
+  ],
+  "quote": "Opportunity signal 48/100 with infrastructure readiness Infrastructure readiness: 27/100.",
+  "overallScore": 59,
+  "synergyScore": 50,
+  "spiScore": 59,
+  "rroiScore": 48,
+  "seamAlignment": 0,
+  "supplyChainDependency": 45,
+  "keyFindings": [
+    "Labor costs above global average",
+    "Infrastructure readiness: 27/100",
+    "Talent readiness Talent availability: 38/100",
+    "Regulatory friction index 30"
+  ],
+  "liveObservations": [
+    "Supply-chain dependency index 45% (requires telemetry enforcement).",
+    "Trade exposure score 44/100 indicates export upside if probity controls hold.",
+    "Tariff sensitivity 36/100; customs fast lanes critical.",
+    "Ethics mitigation tracks 1 actions."
+  ],
+  "riskRegister": [
+    {
+      "risk": "Smuggling interference / procurement capture",
+      "metric": "Corruption index 50",
+      "mitigation": "Independent trustee, double-blind procurement, sealed workflows"
+    },
+    {
+      "risk": "Permit latency",
+      "metric": "Regulatory friction 30",
+      "mitigation": "DOTr facilitation + telemetry SLA visibility"
+    },
+    {
+      "risk": "Supply volatility (El Nino)",
+      "metric": "Cost advantage signal Labor costs above global average",
+      "mitigation": "Flexible throughput, diversified sourcing, demand smoothing"
+    }
+  ],
+  "roadmap": [
+    {
+      "phase": "Pilot",
+      "duration": "3m",
+      "gate": "Telemetry + trustee evidence pack"
+    },
+    {
+      "phase": "Phase 1",
+      "duration": "9m",
+      "gate": "Customs integration + HACCP validation"
+    },
+    {
+      "phase": "Phase 2",
+      "duration": "12m",
+      "gate": "Export corridor scale + financing close"
+    }
+  ],
+  "monitoring": {
+    "kpis": [
+      "Anomaly rate",
+      "Permit latency",
+      "Throughput",
+      "HACCP compliance"
+    ],
+    "evidence": [
+      "Chain-of-custody logs",
+      "Inspector rotation ledger",
+      "Trustee approvals",
+      "Telemetry archive"
+    ]
+  },
+  "recommendedReports": [
+    "Due Diligence Report - Vendors & Inspectors",
+    "Policy Brief - Customs Chain-of-Custody Modernization",
+    "Feasibility Study - Climate-Adjusted Throughput"
+  ],
+  "evidencePacket": [
+    "NSIL Run Log (persona debates, counterfactuals, formula outputs)",
+    "Telemetry Snapshot (RFID seals, anomaly alerts, trustee approvals)",
+    "Data Provenance Sheet (DOTr, PSA, DA, DOF, LGU exports)"
+  ],
+  "nextMoves": [
+    "Activate DOTr-trustee live telemetry corridor (Week 1).",
+    "Publish sealed evidence pack to LGU + customs (Week 2).",
+    "Stage pilot escrow and inspector rotation (Weeks 3-4)."
+  ],
+  "learningSignals": [
+    "Outcome learning samples: 0.",
+    "Adversarial confidence: 0%."
+  ]
+}

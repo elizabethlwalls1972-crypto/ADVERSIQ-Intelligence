@@ -1,0 +1,16 @@
+name = "advers"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "dist"
+
+# Pages Functions environment
+[vars]
+ENVIRONMENT = "production"
+
+# KV namespace for persistent agent memory
+[[kv_namespaces]]
+binding = "NSIL_MEMORY"
+id = "385338eaef31405da6ee1803f4077f8a"
+
+# Workers AI binding
+[ai]
+binding = "AI"
