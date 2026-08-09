@@ -1,0 +1,1010 @@
+{
+  "metadata": {
+    "requesterType": "Private Consortium",
+    "country": "Philippines",
+    "region": "Southeast Asia",
+    "timestamp": "2026-01-01T15:55:41.856Z",
+    "reportId": "NSIL-GEN-1228A",
+    "dataSources": [
+      "World Bank Open Data API",
+      "Open Exchange Rates API",
+      "REST Countries API",
+      "Monte Carlo Simulation (200 trials)",
+      "Composite Score Engine v2"
+    ]
+  },
+  "problemDefinition": {
+    "statedProblem": "Need to de-risk portside cold-chain hub amid smuggling interference and El Nino supply volatility.",
+    "constraints": [
+      "45000000"
+    ],
+    "urgency": "0-6 Months"
+  },
+  "regionalProfile": {
+    "demographics": {
+      "population": 10000000,
+      "gdpPerCapita": 50000,
+      "laborCosts": 50
+    },
+    "infrastructure": {
+      "transportation": 70,
+      "digital": 70,
+      "utilities": 70
+    },
+    "logistics": {
+      "regionalConnectivity": 70,
+      "exportPotential": 70
+    }
+  },
+  "economicSignals": {
+    "tradeExposure": 44,
+    "tariffSensitivity": 36,
+    "costAdvantages": [
+      "Labor costs above global average",
+      "Infrastructure readiness: 27/100",
+      "Talent availability: 38/100"
+    ],
+    "bottleneckReliefPotential": 48
+  },
+  "opportunityMatches": {
+    "sectors": [
+      "Strategic Reference",
+      "Government Agency"
+    ],
+    "partnerTypes": [
+      "South Korea",
+      "Philippines"
+    ],
+    "riskAdjustedROI": 59
+  },
+  "risks": {
+    "political": {
+      "stabilityScore": 70,
+      "regionalConflictRisk": 30
+    },
+    "regulatory": {
+      "corruptionIndex": 50,
+      "regulatoryFriction": 30,
+      "complianceRoadmap": [
+        "Proceed with standard quarterly compliance reviews and annual audits."
+      ]
+    },
+    "operational": {
+      "supplyChainDependency": 45,
+      "currencyRisk": "Moderate stability - assess local conditions"
+    }
+  },
+  "recommendations": {
+    "shortTerm": [
+      "Regulatory harmonization (64/100)",
+      "Digital infrastructure hardening (50/100)"
+    ],
+    "midTerm": [
+      "Phased Approach",
+      "Phased Approach"
+    ],
+    "longTerm": [
+      "Partner with National Logistics Board for Regulator / Enabler",
+      "Partner with Regional Logistics Alliance for Supply Chain",
+      "Partner with Philippines Tech Institute for Talent Pipeline",
+      "Partner with Global Chamber of Commerce for Network Access"
+    ]
+  },
+  "confidenceScores": {
+    "overall": 59,
+    "economicReadiness": 40,
+    "symbioticFit": 50,
+    "politicalStability": 65,
+    "partnerReliability": 65,
+    "ethicalAlignment": 100,
+    "activationVelocity": 63,
+    "transparency": 100
+  },
+  "computedIntelligence": {
+    "spi": {
+      "spi": 59,
+      "ciLow": 59,
+      "ciHigh": 59,
+      "breakdown": [
+        {
+          "label": "Economic Readiness",
+          "value": 40
+        },
+        {
+          "label": "Symbiotic Fit",
+          "value": 50
+        },
+        {
+          "label": "Political Stability",
+          "value": 65
+        },
+        {
+          "label": "Partner Reliability",
+          "value": 65
+        },
+        {
+          "label": "Ethical Alignment",
+          "value": 100
+        },
+        {
+          "label": "Activation Velocity",
+          "value": 63
+        },
+        {
+          "label": "Transparency",
+          "value": 100
+        },
+        {
+          "label": "Interaction Penalty",
+          "value": 100
+        },
+        {
+          "label": "Historical Reference (1997-1999)",
+          "value": 100
+        }
+      ],
+      "dataSources": [
+        "REST Countries API",
+        "Open Exchange Rates",
+        "Composite Score Engine v2"
+      ],
+      "historicalContext": [
+        {
+          "era": "1997-1999",
+          "region": "Southeast Asia",
+          "outcome": "failure",
+          "lesson": "Short-term foreign debt in local currency is toxic"
+        },
+        {
+          "era": "1998-2010",
+          "region": "South Korea",
+          "outcome": "success",
+          "lesson": "Crisis can accelerate necessary reforms"
+        }
+      ]
+    },
+    "rroi": {
+      "overallScore": 48,
+      "summary": "RROI for Philippines (Southeast Asia) reflects guarded readiness across infrastructure 27, talent 38, regulatory 64, and market access 44 using live data feeds (REST Countries API, Open Exchange Rates, Composite Score Engine v2).",
+      "components": {
+        "infrastructure": {
+          "name": "Infrastructure Readiness",
+          "score": 27,
+          "analysis": "Composite of logistics, utilities, and digital throughput."
+        },
+        "talent": {
+          "name": "Talent Availability",
+          "score": 38,
+          "analysis": "Skill depth, education signals, and unemployment corridor."
+        },
+        "regulatory": {
+          "name": "Regulatory Ease",
+          "score": 64,
+          "analysis": "Permitting efficiency plus ease-of-business differentials."
+        },
+        "market": {
+          "name": "Market Access",
+          "score": 44,
+          "analysis": "Trade balance posture, FDI inflows, and regional agreements."
+        }
+      }
+    },
+    "seam": {
+      "score": 55,
+      "ecosystemHealth": "Nascent",
+      "partners": [
+        {
+          "name": "National Logistics Board",
+          "role": "Regulator / Enabler",
+          "synergy": 59
+        },
+        {
+          "name": "Regional Logistics Alliance",
+          "role": "Supply Chain",
+          "synergy": 54
+        },
+        {
+          "name": "Philippines Tech Institute",
+          "role": "Talent Pipeline",
+          "synergy": 50
+        },
+        {
+          "name": "Global Chamber of Commerce",
+          "role": "Network Access",
+          "synergy": 51
+        }
+      ],
+      "gaps": [
+        "Regulatory harmonization (64/100)",
+        "Digital infrastructure hardening (50/100)",
+        "Supply chain observability (65/100)",
+        "Specialized talent pathways (38/100)"
+      ]
+    },
+    "symbioticPartners": [
+      {
+        "entityName": "Historical Success Model Partner",
+        "location": "South Korea",
+        "entityType": "Strategic Reference",
+        "symbiosisScore": 100,
+        "asymmetryAnalysis": "Based on 1998-2010 South Korea success pattern.",
+        "mutualBenefit": "Crisis can accelerate necessary reforms; Tech sector provides escape velocity from middle-income trap",
+        "riskFactors": [
+          "IMF reforms",
+          "Chaebol restructuring"
+        ]
+      },
+      {
+        "entityName": "Philippines Investment Promotion Agency",
+        "location": "Philippines",
+        "entityType": "Government Agency",
+        "symbiosisScore": 81,
+        "asymmetryAnalysis": "Strong regulatory environment (64/100) enables efficient partnership structuring.",
+        "mutualBenefit": "Access to incentive programs and expedited permitting in exchange for job creation commitments.",
+        "riskFactors": [
+          "Short-term foreign debt in local currency is toxic",
+          "Financial innovation can outpace regulation with catastrophic results"
+        ]
+      }
+    ],
+    "diversificationAnalysis": {
+      "hhiScore": 4609,
+      "riskLevel": "High Concentration",
+      "concentrationAnalysis": "Significant dependency on primary market detected. Recommendation: Immediate diversification.",
+      "recommendedMarkets": [
+        {
+          "country": "Vietnam",
+          "growthRate": 3.2771422566595443,
+          "easeOfEntry": 65.24095501172798,
+          "talentAvailability": 45.792684210273265,
+          "innovationIndex": 24.5,
+          "regulatoryFriction": 34.759044988272024,
+          "marketSize": "$476B",
+          "opportunityScore": 52,
+          "recommendedStrategy": "Phased Approach",
+          "rationale": "Composite score 52/100 based on live World Bank data."
+        },
+        {
+          "country": "Poland",
+          "growthRate": 3.257513967868611,
+          "easeOfEntry": 71.66919992091715,
+          "talentAvailability": 46.412336865816755,
+          "innovationIndex": 37.51054475919191,
+          "regulatoryFriction": 28.33080007908285,
+          "marketSize": "$918B",
+          "opportunityScore": 53,
+          "recommendedStrategy": "Phased Approach",
+          "rationale": "Composite score 53/100 based on live World Bank data."
+        },
+        {
+          "country": "Mexico",
+          "growthRate": 2.6702842480277935,
+          "easeOfEntry": 64.08183591102177,
+          "talentAvailability": 49.04266186795101,
+          "innovationIndex": 25.749118576847625,
+          "regulatoryFriction": 35.91816408897823,
+          "marketSize": "$1856B",
+          "opportunityScore": 47,
+          "recommendedStrategy": "Phased Approach",
+          "rationale": "Composite score 47/100 based on live World Bank data."
+        }
+      ]
+    },
+    "ethicsCheck": {
+      "passed": true,
+      "score": 100,
+      "overallFlag": "PASS",
+      "flags": [],
+      "mitigation": [
+        {
+          "step": "Standard Compliance",
+          "detail": "Proceed with standard quarterly compliance reviews and annual audits."
+        }
+      ],
+      "timestamp": "2026-01-01T15:55:40.501Z",
+      "version": "5.0.0-live"
+    },
+    "ivas": {
+      "ivasScore": 47,
+      "activationMonths": 27,
+      "breakdown": {
+        "activationFriction": "Medium",
+        "opportunityQuantum": "High",
+        "complianceFriction": "Elevated"
+      },
+      "p10Months": 23,
+      "p50Months": 27,
+      "p90Months": 36
+    },
+    "scf": {
+      "totalEconomicImpactUSD": 583813187.4917704,
+      "directJobs": 12974,
+      "indirectJobs": 31137,
+      "annualizedImpact": 111466666.66666667,
+      "impactP10": 525969591.41528314,
+      "impactP50": 583813187.4917704,
+      "impactP90": 660937982.2604201,
+      "jobsP10": 11902,
+      "jobsP50": 12974,
+      "jobsP90": 14473
+    },
+    "intakeMapping": {
+      "refinedIntake": {
+        "identity": {
+          "entityName": "Japanese Cold-Chain & Export Logistics JV",
+          "registrationCountry": "Philippines",
+          "registrationCity": "General Santos",
+          "industryClassification": "Logistics",
+          "legalStructure": "Private Consortium"
+        },
+        "mission": {
+          "strategicIntent": [
+            "Cold-Chain Hub Build"
+          ],
+          "objectives": [
+            "Unlock $45M capex",
+            "Reduce anomaly rate <0.5%",
+            "Compress permit latency"
+          ],
+          "timelineHorizon": "0-6 Months"
+        },
+        "counterparties": [
+          {
+            "name": "Regulator",
+            "relationshipStage": "intro"
+          },
+          {
+            "name": "Investor",
+            "relationshipStage": "intro"
+          },
+          {
+            "name": "Operator",
+            "relationshipStage": "intro"
+          }
+        ],
+        "constraints": {
+          "budgetUSD": 45000000,
+          "riskTolerance": "medium"
+        },
+        "proof": {
+          "documents": []
+        },
+        "contacts": {}
+      },
+      "spiInput": {
+        "riskTolerance": "medium",
+        "partnerCount": 3,
+        "hasGovernmentLiaison": false
+      },
+      "ivasInput": {
+        "activationFrictionSeed": 7,
+        "opportunityQuantumSeed": 9
+      },
+      "scfInput": {
+        "baseDealValueUSD": 45000000
+      }
+    },
+    "pri": {
+      "overall": 63,
+      "riskBand": "Medium",
+      "components": {
+        "political": 67,
+        "regulatory": 64,
+        "market": 68,
+        "security": 50
+      },
+      "commentary": [
+        "Political stability indexed at 67/100",
+        "Regulatory readiness indexed at 64/100",
+        "Market risk counterweight indexed at 68/100"
+      ]
+    },
+    "tco": {
+      "fiveYearUSD": 224920736,
+      "annualRunRateUSD": 44984147,
+      "breakdown": {
+        "operating": 191250000,
+        "capital": 32017525,
+        "compliance": 1653211
+      },
+      "sensitivity": {
+        "fxExposure": "Moderate",
+        "inflationOutlook": "Benign inflation environment"
+      },
+      "notes": [
+        "Headcount band 500-1000 translates to ~500 FTEs",
+        "Labor cost index 60/100 approximates base salary of $85,000",
+        "Compliance drag driven by ease-of-doing-business score 65/100"
+      ]
+    },
+    "cri": {
+      "score": 42,
+      "resonanceTier": "Emerging",
+      "components": {
+        "communityFit": 35,
+        "governanceFit": 55,
+        "partnerTrust": 36
+      },
+      "signals": [
+        "Community fit boosted by sustainability index 55/100",
+        "Governance fit tied to regulatory quality 65/100",
+        "Partner trust lifted by 3 declared partner personas"
+      ]
+    },
+    "advancedIndices": {
+      "barna": {
+        "score": 63,
+        "band": "medium",
+        "drivers": [
+          "Multiple partner archetypes available for parallel negotiations"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Prepare alternative phasing (pilot + option) to avoid unfavorable concessions.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "leverageProfile": "balanced",
+        "fallbackPositions": [
+          "Reframe around Tax holidays",
+          "Reframe around Green lane permits"
+        ],
+        "confidence": 0.6000000000000001
+      },
+      "nvi": {
+        "score": 43.0625,
+        "band": "low",
+        "drivers": [
+          "Market access score 44/100",
+          "Innovation index 25/100"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Monetize the value surplus via premium SLAs or proprietary data licensing.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "monetaryValueUSD": 15502500,
+        "intangibleValueNarrative": "Brand signal gains from Southeast Asia plus innovation spillovers lift perceived value even if monetary capture is capped at $15.5M."
+      },
+      "cap": {
+        "score": 70.64473684210526,
+        "band": "medium",
+        "drivers": [
+          "Regulatory quality 64/100",
+          "Ethics score 50/100",
+          "2 partner fit criteria defined"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Proceed with structured engagement playbook.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "counterpartiesAssessed": 3,
+        "trustSignals": [
+          "Regulatory quality 64/100",
+          "Ethics score 50/100",
+          "2 partner fit criteria defined"
+        ],
+        "redFlags": [],
+        "diligenceDepth": "preliminary"
+      },
+      "agi": {
+        "score": 41.62444696527241,
+        "band": "low",
+        "drivers": [
+          "Growth potential 37/100",
+          "Composite strength 48/100"
+        ],
+        "pressurePoints": [
+          "Specialized talent availability"
+        ],
+        "recommendation": "Sequence workstreams to unblock gating factors before scale-up.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "velocityScore": 41.62444696527241,
+        "timeToValueMonths": {
+          "p10": 11,
+          "p50": 16,
+          "p90": 22
+        },
+        "gatingFactors": [
+          "Specialized talent availability"
+        ]
+      },
+      "vci": {
+        "score": 63.98684210526316,
+        "band": "medium",
+        "drivers": [
+          "Cost efficiency 84/100",
+          "Market reach 44/100"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Tie incentives to realized value segments (revenue lift vs. cost savings) for clarity.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "valueBreakdown": {
+          "revenueLiftUSD": 17276447,
+          "costSavingsUSD": 7253835,
+          "strategicPremiumUSD": 76784211
+        }
+      },
+      "ati": {
+        "score": 43.82821560831525,
+        "band": "low",
+        "drivers": [
+          "Digital readiness 50/100",
+          "Infrastructure 27/100"
+        ],
+        "pressurePoints": [
+          "Upskill workforce via TVET partnerships"
+        ],
+        "recommendation": "Sequence transitions with measurable guardrails (runbooks, KPIs).",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "transitionRoutes": [
+          "Pilot > JV > Majority stake",
+          "Sandbox regulatory regime > national license"
+        ],
+        "changeManagementNeeds": [
+          "Upskill workforce via TVET partnerships"
+        ]
+      },
+      "esi": {
+        "score": 34.28081412018618,
+        "band": "critical",
+        "drivers": [
+          "Infrastructure 27/100",
+          "Talent pool 38/100"
+        ],
+        "pressurePoints": [
+          "Need to supplement talent bench with external partners"
+        ],
+        "recommendation": "Close execution gaps via managed services or shared utilities.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "capacityUtilization": 15,
+        "executionGaps": [
+          "Need to supplement talent bench with external partners"
+        ],
+        "opsPlaybook": [
+          "Codify PMO cadence",
+          "Embed KPI cockpit",
+          "Run readiness drills"
+        ]
+      },
+      "isi": {
+        "score": 34.8025724866522,
+        "band": "critical",
+        "drivers": [
+          "Innovation score 25/100"
+        ],
+        "pressurePoints": [
+          "Digital infrastructure not yet aligned with R&D ambitions"
+        ],
+        "recommendation": "Balance portfolio between core cashflows and transformational bets to avoid dilution.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "innovationPortfolioMix": {
+          "core": 58,
+          "adjacent": 25,
+          "transformational": 17
+        },
+        "ipSignals": [
+          "Innovation score 25/100"
+        ]
+      },
+      "osi": {
+        "score": 60.035294117647055,
+        "band": "medium",
+        "drivers": [
+          "Sustainability 55/100",
+          "Supply chain 65/100"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Publish sustainability ledger (emissions + circularity) to unlock green financing.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "sustainabilityMetrics": {
+          "emissionsScore": 55,
+          "circularityScore": 64
+        },
+        "resilienceDrivers": [
+          "Supplier redundancy",
+          "Local clean-energy sourcing"
+        ]
+      },
+      "rni": {
+        "score": 62.39501408371542,
+        "band": "medium",
+        "drivers": [
+          "Regulatory ease 64/100"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Bundle filings (permits + incentives) to reduce sequential drift.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "clearancePath": [
+          "Validate investment incentives with promotion agency",
+          "Secure environmental & labor clearances",
+          "Lodge data-residency compliance package"
+        ],
+        "policyWatchlist": [
+          "Upcoming digital competition rules",
+          "Carbon border adjustments"
+        ],
+        "complianceEffort": "moderate"
+      },
+      "sra": {
+        "score": 67.57368421052632,
+        "band": "medium",
+        "drivers": [
+          "Political stability 67/100",
+          "Risk buffer 68/100"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Structure sovereign protections (FX hedges, political risk insurance) matching the risk band.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "sovereignRiskBand": "watch",
+        "macroSignals": [
+          "GDP growth 3.2%",
+          "Inflation 4.5%"
+        ],
+        "stressEvents": []
+      },
+      "idv": {
+        "score": 95,
+        "band": "high",
+        "drivers": [
+          "Institutional distance 10"
+        ],
+        "pressurePoints": [],
+        "recommendation": "Institutionalize joint steering committee to keep governance gap visible.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "distanceScore": 10,
+        "culturalBridges": [
+          "Mapped partner personas to local influencers"
+        ],
+        "alignmentPlaybook": [
+          "Deploy bilingual negotiation pods",
+          "Create shared compliance dashboard",
+          "Run joint scenario workshops"
+        ]
+      },
+      "rdbi": {
+        "score": 24,
+        "band": "critical",
+        "drivers": [],
+        "pressurePoints": [
+          "Requester and target market are identical; confirmation bias likely.",
+          "No explicit local stakeholder alignment recorded."
+        ],
+        "recommendation": "Pause capital lock until an external reviewer signs off on regional assumptions.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "direction": "home-biased",
+        "referenceRegion": "Southeast Asia",
+        "overrideSwitches": [
+          "Route briefing through external geography reviewer",
+          "Inject contrarian dataset before approvals"
+        ]
+      },
+      "afc": {
+        "score": 25,
+        "band": "critical",
+        "drivers": [
+          "Regulatory readiness 64/100",
+          "Infrastructure 27/100",
+          "Talent coverage 38/100"
+        ],
+        "pressurePoints": [
+          "Regulatory readiness below 75/100.",
+          "Infrastructure score below 70/100.",
+          "Specialized talent coverage under 65/100."
+        ],
+        "recommendation": "Stage go-live with kill switches and pre-signed contingencies before scaling spend.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "coefficient": 0.748069705981416,
+        "dragFactors": [
+          "Regulatory readiness below 75/100.",
+          "Infrastructure score below 70/100.",
+          "Specialized talent coverage under 65/100."
+        ],
+        "accelerationLevers": [
+          "Embed advance permitting squad with host agency.",
+          "Pre-contract shared infrastructure or neutral host facilities.",
+          "Stage talent bridge via JV or managed services.",
+          "Partner capability stack absorbs onboarding drag."
+        ],
+        "timePenaltyMonths": 9
+      },
+      "frs": {
+        "score": 55.526286243326105,
+        "band": "low",
+        "drivers": [
+          "Partner capability lattice can sustain multiple flywheel legs.",
+          "Multi-stage objectives documented for compounding motion."
+        ],
+        "pressurePoints": [
+          "No platform or data priorities flagged."
+        ],
+        "recommendation": "Instrument closed-loop KPIs and assign single-threaded owners before scaling spend.",
+        "dataSources": [
+          "REST Countries API",
+          "Open Exchange Rates",
+          "Composite Score Engine v2"
+        ],
+        "loopDesign": [
+          "Partner onboarding → shared telemetry → reinvest in Department of Transportation (DOTr) corridor → repeat",
+          "Outcome tracing → playbook refresh → redeploy capital"
+        ],
+        "energySources": [
+          "Anchor partner trust: Department of Transportation (DOTr)",
+          "Innovation signal 25/100",
+          "Talent depth 38/100"
+        ],
+        "sustainingRisk": 44.473713756673895,
+        "compoundingHalfLifeMonths": 10,
+        "signals": [
+          "Digital readiness 50/100",
+          "Market access 44/100",
+          "3 partner capabilities instrumented"
+        ]
+      }
+    },
+    "adversarialShield": {
+      "contradictionIndex": 0,
+      "checks": [
+        {
+          "field": "organizationName",
+          "userClaim": "Japanese Cold-Chain & Export Logistics JV",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "organizationName provided",
+          "severity": "info"
+        },
+        {
+          "field": "country",
+          "userClaim": "Philippines",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "country provided",
+          "severity": "info"
+        },
+        {
+          "field": "industry",
+          "userClaim": "Logistics, Cold Chain, Agribusiness",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "industry provided",
+          "severity": "info"
+        },
+        {
+          "field": "country",
+          "userClaim": "Philippines",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "Country not in validation database - manual review recommended",
+          "severity": "info"
+        },
+        {
+          "field": "organizationName",
+          "userClaim": "Japanese Cold-Chain & Export Logistics JV",
+          "externalEvidence": [
+            "OFAC SDN List (partial)"
+          ],
+          "contradictionLevel": 15,
+          "challengePrompt": "No matches found in sanctions watchlist",
+          "severity": "info"
+        },
+        {
+          "field": "targetPartnerName",
+          "userClaim": "Department of Transportation (DOTr)",
+          "externalEvidence": [
+            "OFAC SDN List (partial)"
+          ],
+          "contradictionLevel": 15,
+          "challengePrompt": "No matches found in sanctions watchlist",
+          "severity": "info"
+        },
+        {
+          "field": "budgetCap",
+          "userClaim": "45000000",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "Budget of $45,000,000 is adequate for most operations",
+          "severity": "info"
+        },
+        {
+          "field": "timeline",
+          "userClaim": "0-6 Months",
+          "externalEvidence": [],
+          "contradictionLevel": 15,
+          "challengePrompt": "Timeline appears reasonable for stated scope",
+          "severity": "info"
+        }
+      ],
+      "escalations": [],
+      "reviewedAt": "2026-01-01T15:55:38.100Z"
+    },
+    "personaPanel": {
+      "consensus": "go",
+      "agreementLevel": 95,
+      "insights": [
+        {
+          "persona": "Advocate",
+          "stance": "support",
+          "summary": "Philippines is in the top tier of emerging market growth prospects.",
+          "evidence": [
+            "GDP growth above global average",
+            "Favorable demographic trends"
+          ],
+          "riskCallouts": []
+        }
+      ],
+      "blindSpots": []
+    },
+    "motivationAnalysis": {
+      "statedMotivation": "Unlock probity-assured cold-chain hub for Mindanao exports.",
+      "impliedMotivation": "innovation-driven transformation",
+      "alignmentScore": 78,
+      "redFlags": [],
+      "narrative": "Declared motive centers on innovation-driven transformation. No material motivation contradictions detected. Priority themes (Climate adaptation, Food security, Regional corridors) reinforce the stated posture. Early detection identified 2 patterns in categories: sustainability, trade."
+    },
+    "counterfactuals": {
+      "scenarios": [
+        {
+          "scenario": "Do Nothing / Status Quo",
+          "baseline": "Execute the Cold-Chain Hub Build in Philippines as currently defined.",
+          "opposite": "Maintain current operations without pursuing this initiative.",
+          "impactDelta": {
+            "spiDelta": 40,
+            "rroiDelta": -100,
+            "scfDeltaUSD": -4500000,
+            "activationMonthsDelta": 6
+          },
+          "opportunityCostUSD": 4500000,
+          "regretProbability": 95,
+          "recommendation": "No market entry achieved"
+        },
+        {
+          "scenario": "Reduced Scope / Pilot",
+          "baseline": "Execute the Cold-Chain Hub Build in Philippines as currently defined.",
+          "opposite": "Execute a smaller pilot program before full commitment.",
+          "impactDelta": {
+            "spiDelta": 15,
+            "rroiDelta": -50,
+            "scfDeltaUSD": -2250000,
+            "activationMonthsDelta": 0
+          },
+          "opportunityCostUSD": 2250000,
+          "regretProbability": 90,
+          "recommendation": "70% less capital at risk"
+        },
+        {
+          "scenario": "Aggressive Expansion",
+          "baseline": "Execute the Cold-Chain Hub Build in Philippines as currently defined.",
+          "opposite": "Double down with more resources for faster market capture.",
+          "impactDelta": {
+            "spiDelta": -20,
+            "rroiDelta": 400,
+            "scfDeltaUSD": 18000000,
+            "activationMonthsDelta": 3
+          },
+          "opportunityCostUSD": -18000000,
+          "regretProbability": 40,
+          "recommendation": "Higher capital at risk"
+        },
+        {
+          "scenario": "Partner-Led Entry",
+          "baseline": "Execute the Cold-Chain Hub Build in Philippines as currently defined.",
+          "opposite": "Have local partner lead market entry with our support.",
+          "impactDelta": {
+            "spiDelta": 5,
+            "rroiDelta": 0,
+            "scfDeltaUSD": 0,
+            "activationMonthsDelta": 9
+          },
+          "opportunityCostUSD": 0,
+          "regretProbability": 65,
+          "recommendation": "Lower control over operations"
+        },
+        {
+          "scenario": "Alternative Market Selection",
+          "baseline": "Execute the Cold-Chain Hub Build in Philippines as currently defined.",
+          "opposite": "Consider a different target market instead of Philippines.",
+          "impactDelta": {
+            "spiDelta": -5,
+            "rroiDelta": 20,
+            "scfDeltaUSD": 900000,
+            "activationMonthsDelta": 9
+          },
+          "opportunityCostUSD": -900000,
+          "regretProbability": 55,
+          "recommendation": "Requires new market research"
+        }
+      ],
+      "highestRegretScenario": "Do Nothing / Status Quo"
+    },
+    "outcomeLearning": {
+      "reportId": "NSIL-GEN-1228A",
+      "predictions": [
+        {
+          "metric": "Success prediction accuracy",
+          "predicted": 0,
+          "status": "tracking"
+        },
+        {
+          "metric": "Risk calibration",
+          "predicted": 0,
+          "status": "tracking"
+        },
+        {
+          "metric": "ROI precision",
+          "predicted": 0,
+          "status": "pending"
+        }
+      ],
+      "learningActions": [
+        "success-factor: Local partnerships significantly increase market entry success rates"
+      ],
+      "lastUpdated": "2026-01-01T15:55:38.119Z"
+    },
+    "adversarialConfidence": {
+      "score": 80,
+      "band": "high",
+      "coverage": {
+        "shieldDepth": 79,
+        "personaBreadth": 95,
+        "counterfactualStress": 95,
+        "motivationClarity": 90,
+        "outcomeLearning": 30
+      },
+      "degradationFlags": [],
+      "recommendedHardening": [
+        "Maintain current adversarial cadence; no immediate hardening required."
+      ],
+      "rationale": "Shield depth 79, persona breadth 95, counterfactual stress 95 underpin adversarial confidence."
+    }
+  }
+}

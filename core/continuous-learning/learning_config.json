@@ -1,0 +1,13 @@
+{
+  "autoRetrain": true,
+  "retrainThreshold": 50,
+  "accuracyThreshold": 0.7,
+  "maxDataAge": 90,
+  "modelVersions": [
+    "1.0.0",
+    "1.1.0",
+    "1.2.0",
+    "1.3.0"
+  ],
+  "activeVersion": "1.3.0"
+}

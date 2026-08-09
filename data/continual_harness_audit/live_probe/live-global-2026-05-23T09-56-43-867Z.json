@@ -1,0 +1,448 @@
+{
+  "runId": "live-global-2026-05-23T09-56-43-867Z",
+  "generatedAt": "2026-05-23T09:56:43.867Z",
+  "sourceModel": "live_external_apis",
+  "continualHarnessMode": "observe_act_refine_autonomous",
+  "sectorsScanned": [
+    "Manufacturing",
+    "Agriculture",
+    "Logistics",
+    "Energy",
+    "ICT",
+    "Textiles",
+    "Tourism",
+    "Healthcare",
+    "Mining",
+    "Finance",
+    "Education",
+    "Climate Infrastructure"
+  ],
+  "countriesScanned": [
+    "India",
+    "Vietnam"
+  ],
+  "totalCitiesScanned": 24,
+  "totalMattersGenerated": 24,
+  "acceptedMatters": 2,
+  "matterScoreFloor": 45,
+  "matters": [
+    {
+      "matterId": "da-nang-vietnam-manufacturing-fdi-capital-gap",
+      "detectedAt": "2026-05-23T09:56:49.981Z",
+      "city": {
+        "city": "Da Nang",
+        "country": "Vietnam",
+        "region": "Southeast Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 68,
+        "infrastructureScore": 74,
+        "overlookedOpportunity": 50,
+        "investmentMomentum": 82,
+        "keySectors": [
+          "ICT",
+          "Tourism",
+          "Manufacturing",
+          "Logistics"
+        ],
+        "strategicAdvantages": [
+          "Deep-water port",
+          "Central coast hub",
+          "IT Park growth"
+        ],
+        "investmentPrograms": [
+          "Da Nang Hi-Tech Park",
+          "Central Vietnam FDI Zone"
+        ],
+        "whyThisCity": "Da Nang (Vietnam) scores 76/100 for your Manufacturing criteria. Key sectors: ICT, Tourism, Manufacturing. Advantages: Deep-water port; Central coast hub. 2 active investment programs available."
+      },
+      "sector": "Manufacturing",
+      "issueTitle": "Da Nang Manufacturing: FDI capital gap",
+      "issueThesis": "Da Nang has ICT, Tourism, Manufacturing capability, 50/100 overlooked opportunity, and 82/100 investment momentum. Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching.",
+      "globalHole": "FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing manufacturing resilience with Da Nang programs: Da Nang Hi-Tech Park; Central Vietnam FDI Zone.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around manufacturing, reducing execution friction, validating buyers/offtakers, and using Vietnam as the sovereign credibility layer for regional city delivery.",
+      "score": 68,
+      "scoreDrivers": {
+        "overlooked": 8,
+        "sectorFit": 15,
+        "investmentMomentum": 11.48,
+        "infrastructureReadiness": 8.14,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 3.9285714285714284,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "UNCTAD World Investment Report 2025",
+          "url": "https://unctad.org/publication/world-investment-report-2025",
+          "source": "official-global-pressure",
+          "snippet": "Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/VNM/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for Vietnam (VNM)."
+        }
+      ],
+      "intelligence": {
+        "country": "Vietnam",
+        "worldBank": {
+          "tradeOpenness": null,
+          "internetUsers": null,
+          "year": 2025
+        },
+        "imf": [
+          {
+            "country": "VNM",
+            "indicator": "NGDP_RPCH",
+            "year": 2026,
+            "value": 7.1,
+            "unit": "% change"
+          },
+          {
+            "country": "VNM",
+            "indicator": "PCPIPCH",
+            "year": 2026,
+            "value": 4.9,
+            "unit": "% change"
+          },
+          {
+            "country": "VNM",
+            "indicator": "BCA_NGDPD",
+            "year": 2026,
+            "value": 5.3,
+            "unit": "% change"
+          },
+          {
+            "country": "VNM",
+            "indicator": "GGXWDG_NGDP",
+            "year": 2026,
+            "value": 29.8,
+            "unit": "% change"
+          },
+          {
+            "country": "VNM",
+            "indicator": "LUR",
+            "year": 2026,
+            "value": 2.1,
+            "unit": "units"
+          }
+        ],
+        "countryProfile": {
+          "name": "Vietnam",
+          "officialName": "Socialist Republic of Vietnam",
+          "capital": "Hanoi",
+          "region": "Asia",
+          "subregion": "South-Eastern Asia",
+          "population": 101343800,
+          "area": 331212,
+          "currencies": [
+            "Vietnamese đồng (₫)"
+          ],
+          "languages": [
+            "Vietnamese"
+          ],
+          "borders": [
+            "KHM",
+            "CHN",
+            "LAO"
+          ],
+          "timezones": [
+            "UTC+07:00"
+          ],
+          "gini": 35.7,
+          "flagEmoji": "🇻🇳"
+        },
+        "wikidata": {
+          "id": "Q881",
+          "label": "Vietnam",
+          "description": "country in Southeast Asia",
+          "properties": {
+            "instanceOf": "Q3624078",
+            "country": "Q881",
+            "founded": "+1976-07-02T00:00:00Z",
+            "population": "+91700000",
+            "capital": "Q1858",
+            "currency": "Q192090",
+            "headOfGovernment": "Q10800073",
+            "governmentType": "Q179164"
+          }
+        },
+        "timestamp": "2026-05-23T09:56:49.980Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 4
+      },
+      "nsil": {
+        "inputId": "input_1779530209996_iaedlsa0f",
+        "sessionId": "nsil_1779530210003_krlyqi5f4",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          }
+        ]
+      }
+    },
+    {
+      "matterId": "coimbatore-india-manufacturing-fdi-capital-gap",
+      "detectedAt": "2026-05-23T09:56:52.215Z",
+      "city": {
+        "city": "Coimbatore",
+        "country": "India",
+        "region": "South Asia",
+        "matchScore": 76,
+        "sectorMatch": 100,
+        "costAdvantage": 75,
+        "infrastructureScore": 68,
+        "overlookedOpportunity": 62,
+        "investmentMomentum": 75,
+        "keySectors": [
+          "Manufacturing",
+          "ICT",
+          "Textiles",
+          "Engineering"
+        ],
+        "strategicAdvantages": [
+          "Manchester of South India",
+          "Engineering hub",
+          "IT corridor growth"
+        ],
+        "investmentPrograms": [
+          "TIDCO Industrial Park",
+          "Smart City Mission",
+          "Tamil Nadu FDI Policy"
+        ],
+        "whyThisCity": "Coimbatore (India) scores 76/100 for your Manufacturing criteria. Key sectors: Manufacturing, ICT, Textiles. Advantages: Manchester of South India; Engineering hub. 3 active investment programs available."
+      },
+      "sector": "Manufacturing",
+      "issueTitle": "Coimbatore Manufacturing: FDI capital gap",
+      "issueThesis": "Coimbatore has Manufacturing, ICT, Textiles capability, 62/100 overlooked opportunity, and 75/100 investment momentum. Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching.",
+      "globalHole": "FDI capital gap: UNCTAD World Investment Report 2025. Local indicators show GDP growth 2.50%, FDI inflows 1.50% of GDP, and trade openness 55.00% of GDP.",
+      "investmentMatch": "Match global investors needing manufacturing resilience with Coimbatore programs: TIDCO Industrial Park; Smart City Mission; Tamil Nadu FDI Policy.",
+      "gdpGrowthPathway": "Convert the gap into GDP impact by packaging investable projects around manufacturing, reducing execution friction, validating buyers/offtakers, and using India as the sovereign credibility layer for regional city delivery.",
+      "score": 69,
+      "scoreDrivers": {
+        "overlooked": 9.92,
+        "sectorFit": 15,
+        "investmentMomentum": 10.500000000000002,
+        "infrastructureReadiness": 7.48,
+        "fdiGap": 6.5,
+        "growthNeed": 2.5,
+        "tradePlatform": 4.583333333333333,
+        "digitalReadiness": 5,
+        "liveEvidence": 2.5,
+        "globalPressure": 5
+      },
+      "evidence": [
+        {
+          "title": "UNCTAD World Investment Report 2025",
+          "url": "https://unctad.org/publication/world-investment-report-2025",
+          "source": "official-global-pressure",
+          "snippet": "Productive FDI has weakened, so overlooked regional cities need sharper investable project packaging and verified counterpart matching."
+        },
+        {
+          "title": "World Bank country indicator API",
+          "url": "https://api.worldbank.org/v2/country/IND/indicator/NY.GDP.MKTP.KD.ZG?format=json&date=2020:2025",
+          "source": "world-bank-api",
+          "snippet": "Country macro indicators requested for India (IND)."
+        }
+      ],
+      "intelligence": {
+        "country": "India",
+        "worldBank": {
+          "gdp": null,
+          "gdpGrowth": null,
+          "gdpPerCapita": null,
+          "inflation": null,
+          "tradeOpenness": null,
+          "fdi": null,
+          "internetUsers": 70,
+          "year": 2025
+        },
+        "imf": [],
+        "countryProfile": {
+          "name": "India",
+          "officialName": "Republic of India",
+          "capital": "New Delhi",
+          "region": "Asia",
+          "subregion": "Southern Asia",
+          "population": 1417492000,
+          "area": 3287263,
+          "currencies": [
+            "Indian rupee (₹)"
+          ],
+          "languages": [
+            "English",
+            "Hindi",
+            "Tamil"
+          ],
+          "borders": [
+            "BGD",
+            "BTN",
+            "MMR",
+            "CHN",
+            "NPL",
+            "PAK"
+          ],
+          "timezones": [
+            "UTC+05:30"
+          ],
+          "gini": 35.7,
+          "flagEmoji": "🇮🇳"
+        },
+        "wikidata": {
+          "id": "Q668",
+          "label": "India",
+          "description": "country in South Asia",
+          "properties": {
+            "instanceOf": "Q6256",
+            "founded": "+1947-08-15T00:00:00Z",
+            "population": "+449595489",
+            "capital": "Q987",
+            "currency": "Q80524",
+            "headOfGovernment": "Q1058",
+            "governmentType": "Q512187"
+          }
+        },
+        "timestamp": "2026-05-23T09:56:52.214Z",
+        "sourcesQueried": 4,
+        "sourcesResponded": 4
+      },
+      "nsil": {
+        "inputId": "input_1779530212216_9mruycvao",
+        "sessionId": "nsil_1779530212220_gqp33aynu",
+        "confidence": 95,
+        "successProbability": 92,
+        "approach": "Novel approach combining best practices from multiple domains",
+        "implementationPhases": [
+          {
+            "phase": 1,
+            "description": "Assessment & Planning",
+            "duration": "1-2 months",
+            "budget": "$50K-100K",
+            "success_metrics": [
+              "Stakeholder alignment",
+              "Resource allocation approved"
+            ]
+          },
+          {
+            "phase": 2,
+            "description": "Pilot implementation",
+            "duration": "3-6 months",
+            "budget": "$200K-500K",
+            "success_metrics": [
+              "Target 1 achieved",
+              "Adjustments made"
+            ]
+          },
+          {
+            "phase": 3,
+            "description": "Scale & Optimize",
+            "duration": "6-12 months",
+            "budget": "$500K-2M",
+            "success_metrics": [
+              "Full rollout",
+              "Sustained metrics"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "risk": "Optimism Bias in Infrastructure Planning",
+            "mitigation": "Reference Class Forecasting"
+          },
+          {
+            "risk": "Market Invisibility - Producers Don't Reach Buyers",
+            "mitigation": "Buyer network development"
+          },
+          {
+            "risk": "Execution Friction - Plans Fail in Implementation",
+            "mitigation": "Dedicated government liaison"
+          }
+        ]
+      }
+    }
+  ],
+  "harness": {
+    "trajectoriesObserved": 2,
+    "failuresDetected": 0,
+    "refinerChanges": 0,
+    "promptEdits": 2,
+    "subagentEdits": 3,
+    "skillEdits": 3,
+    "harnessMemoryEdits": 1,
+    "memoryPatternsWritten": 2
+  },
+  "continualHarnessState": {
+    "statePath": "C:\\Users\\brayd\\Downloads\\bw-nexus-ai-final-11\\data\\continual_harness_audit\\live_probe\\evolved_state\\continual_harness_state.json",
+    "adaptation": {
+      "prompt_edits": [
+        "prompt:add:Operate reset-free: observe live signals, act, verify, refine, and continue without waiting for outside approval unless the user explicitly asks for a user-facing checkpoint.",
+        "prompt:add:For every user-entered or uploaded matter, mine the evidence gap, run adversarial verification, identify investable regional-city matches, and persist the trajectory for self-improvement."
+      ],
+      "subagent_edits": [
+        "subagent:add:regional_gap_miner",
+        "subagent:add:source_verifier",
+        "subagent:add:investment_matchmaker"
+      ],
+      "skill_edits": [
+        "skill:add:triangulate_official_sources",
+        "skill:add:rank_regional_city_match",
+        "skill:add:reset_free_refinement"
+      ],
+      "memory_edits": [
+        "memory:add:sector_window_manufacturing"
+      ],
+      "state_path": "C:\\Users\\brayd\\Downloads\\bw-nexus-ai-final-11\\data\\continual_harness_audit\\live_probe\\evolved_state\\continual_harness_state.json"
+    }
+  },
+  "outputFiles": [
+    "C:\\Users\\brayd\\Downloads\\bw-nexus-ai-final-11\\data\\continual_harness_audit\\live_probe\\live-global-2026-05-23T09-56-43-867Z.json",
+    "C:\\Users\\brayd\\Downloads\\bw-nexus-ai-final-11\\data\\continual_harness_audit\\live_probe\\latest.json",
+    "C:\\Users\\brayd\\Downloads\\bw-nexus-ai-final-11\\data\\continual_harness_audit\\live_probe\\live-global-2026-05-23T09-56-43-867Z.summary.md"
+  ]
+}

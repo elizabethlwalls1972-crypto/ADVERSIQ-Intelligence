@@ -1,0 +1,102 @@
+{
+  "runId": "NSIL-GEN-1228A",
+  "generatedAt": "2026-01-01T15:55:37.955Z",
+  "mode": "offline",
+  "scenario": {
+    "type": "Strategic Intelligence",
+    "location": "General Santos, Philippines",
+    "intent": [
+      "Cold-Chain Hub Build"
+    ],
+    "requiredFeeds": [
+      "DOTr port time-stamps",
+      "PSA fisheries situationer",
+      "DA advisory",
+      "DOF trade anomaly alerts",
+      "LGU permit queue exports",
+      "Context note: El Nino 2023-2024 supply shock; Bureau of Customs integrity sweeps."
+    ],
+    "gate": {
+      "ok": true,
+      "blockers": []
+    }
+  },
+  "phases": [
+    {
+      "name": "governance-gate",
+      "status": "passed"
+    },
+    {
+      "name": "data-readiness",
+      "status": "passed"
+    },
+    {
+      "name": "model-bundle-selected",
+      "status": "passed"
+    },
+    {
+      "name": "orchestration-run",
+      "status": "passed"
+    },
+    {
+      "name": "controls-bound",
+      "status": "passed"
+    },
+    {
+      "name": "decision-packet-assembled",
+      "status": "passed"
+    }
+  ],
+  "scores": {
+    "overall": 59,
+    "spi": 59,
+    "rroi": 48,
+    "synergy": 50,
+    "dependency": 45
+  },
+  "risks": [
+    {
+      "risk": "Supply chain dependency",
+      "metric": "45",
+      "mitigation": "Telemetry enforcement and diversified sourcing"
+    },
+    {
+      "risk": "Regulatory friction",
+      "metric": "30",
+      "mitigation": "Fast lane permitting and trustee oversight"
+    }
+  ],
+  "controls": [
+    {
+      "metric": "Supply chain dependency",
+      "threshold": ">= 40%",
+      "action": "Activate telemetry lane and escrow before spend"
+    },
+    {
+      "metric": "Tariff sensitivity",
+      "threshold": ">= 30/100",
+      "action": "Enable customs fast lane and seal workflows"
+    },
+    {
+      "metric": "Overall confidence",
+      "threshold": "< 50/100",
+      "action": "Hold exports and request additional evidence pack"
+    }
+  ],
+  "actions": [],
+  "evidence": [
+    "NSIL run log",
+    "Telemetry snapshot",
+    "Data provenance sheet",
+    "World Bank Open Data API",
+    "Open Exchange Rates API",
+    "REST Countries API",
+    "Monte Carlo Simulation (200 trials)",
+    "Composite Score Engine v2"
+  ],
+  "exports": {
+    "loiReady": true,
+    "reportReady": true,
+    "blockers": []
+  }
+}

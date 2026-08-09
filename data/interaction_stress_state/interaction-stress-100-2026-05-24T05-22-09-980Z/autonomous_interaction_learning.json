@@ -1,0 +1,1666 @@
+{
+  "version": 1,
+  "updatedAt": "2026-05-24T05:22:10.121Z",
+  "observations": [
+    {
+      "requestId": "diagnostic-1",
+      "timestamp": "2026-05-24T05:22:09.991Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 0.8375,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.4222222222222222,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-2",
+      "timestamp": "2026-05-24T05:22:09.995Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 0.7291666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.6277777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.732
+    },
+    {
+      "requestId": "decision-3",
+      "timestamp": "2026-05-24T05:22:09.996Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6166666666666667,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-4",
+      "timestamp": "2026-05-24T05:22:09.997Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.12222222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-5",
+      "timestamp": "2026-05-24T05:22:09.999Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.9125000000000001,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.13333333333333333,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "diagnostic-6",
+      "timestamp": "2026-05-24T05:22:10.000Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.448
+    },
+    {
+      "requestId": "guided-7",
+      "timestamp": "2026-05-24T05:22:10.003Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.14444444444444443,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-8",
+      "timestamp": "2026-05-24T05:22:10.004Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.7722222222222223,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-9",
+      "timestamp": "2026-05-24T05:22:10.006Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-10",
+      "timestamp": "2026-05-24T05:22:10.007Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5833333333333334,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-11",
+      "timestamp": "2026-05-24T05:22:10.008Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-12",
+      "timestamp": "2026-05-24T05:22:10.009Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.17777777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-13",
+      "timestamp": "2026-05-24T05:22:10.010Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-14",
+      "timestamp": "2026-05-24T05:22:10.011Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5611111111111111,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-15",
+      "timestamp": "2026-05-24T05:22:10.012Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.55,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-16",
+      "timestamp": "2026-05-24T05:22:10.013Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.37777777777777777,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-17",
+      "timestamp": "2026-05-24T05:22:10.014Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-18",
+      "timestamp": "2026-05-24T05:22:10.015Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6388888888888888,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-19",
+      "timestamp": "2026-05-24T05:22:10.016Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-20",
+      "timestamp": "2026-05-24T05:22:10.018Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.8708333333333333,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-21",
+      "timestamp": "2026-05-24T05:22:10.019Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 0.8375,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.4222222222222222,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-22",
+      "timestamp": "2026-05-24T05:22:10.021Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 0.7291666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.6277777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.732
+    },
+    {
+      "requestId": "decision-23",
+      "timestamp": "2026-05-24T05:22:10.022Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6166666666666667,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-24",
+      "timestamp": "2026-05-24T05:22:10.023Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.12222222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-25",
+      "timestamp": "2026-05-24T05:22:10.024Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.9125000000000001,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.13333333333333333,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "diagnostic-26",
+      "timestamp": "2026-05-24T05:22:10.025Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.448
+    },
+    {
+      "requestId": "guided-27",
+      "timestamp": "2026-05-24T05:22:10.026Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.14444444444444443,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-28",
+      "timestamp": "2026-05-24T05:22:10.027Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.7611111111111111,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-29",
+      "timestamp": "2026-05-24T05:22:10.028Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-30",
+      "timestamp": "2026-05-24T05:22:10.029Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5833333333333334,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-31",
+      "timestamp": "2026-05-24T05:22:10.030Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-32",
+      "timestamp": "2026-05-24T05:22:10.031Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.17777777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-33",
+      "timestamp": "2026-05-24T05:22:10.032Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-34",
+      "timestamp": "2026-05-24T05:22:10.033Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5611111111111111,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-35",
+      "timestamp": "2026-05-24T05:22:10.034Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.55,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-36",
+      "timestamp": "2026-05-24T05:22:10.035Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.37777777777777777,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-37",
+      "timestamp": "2026-05-24T05:22:10.037Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-38",
+      "timestamp": "2026-05-24T05:22:10.038Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6388888888888888,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-39",
+      "timestamp": "2026-05-24T05:22:10.039Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-40",
+      "timestamp": "2026-05-24T05:22:10.040Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.8708333333333333,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-41",
+      "timestamp": "2026-05-24T05:22:10.041Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 0.8375,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.4222222222222222,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-42",
+      "timestamp": "2026-05-24T05:22:10.042Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 0.7291666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.6277777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.732
+    },
+    {
+      "requestId": "decision-43",
+      "timestamp": "2026-05-24T05:22:10.043Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6166666666666667,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-44",
+      "timestamp": "2026-05-24T05:22:10.044Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.12222222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-45",
+      "timestamp": "2026-05-24T05:22:10.045Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.9125000000000001,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.13333333333333333,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "diagnostic-46",
+      "timestamp": "2026-05-24T05:22:10.047Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.448
+    },
+    {
+      "requestId": "guided-47",
+      "timestamp": "2026-05-24T05:22:10.048Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.14444444444444443,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-48",
+      "timestamp": "2026-05-24T05:22:10.049Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.7722222222222223,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-49",
+      "timestamp": "2026-05-24T05:22:10.051Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-50",
+      "timestamp": "2026-05-24T05:22:10.052Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5833333333333334,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-51",
+      "timestamp": "2026-05-24T05:22:10.054Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-52",
+      "timestamp": "2026-05-24T05:22:10.055Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.17777777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-53",
+      "timestamp": "2026-05-24T05:22:10.056Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-54",
+      "timestamp": "2026-05-24T05:22:10.057Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5611111111111111,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-55",
+      "timestamp": "2026-05-24T05:22:10.058Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.55,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-56",
+      "timestamp": "2026-05-24T05:22:10.059Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.37777777777777777,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-57",
+      "timestamp": "2026-05-24T05:22:10.059Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-58",
+      "timestamp": "2026-05-24T05:22:10.060Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6388888888888888,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-59",
+      "timestamp": "2026-05-24T05:22:10.061Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-60",
+      "timestamp": "2026-05-24T05:22:10.062Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.8708333333333333,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-61",
+      "timestamp": "2026-05-24T05:22:10.064Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 0.8375,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.4222222222222222,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-62",
+      "timestamp": "2026-05-24T05:22:10.065Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 0.7291666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.6277777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.732
+    },
+    {
+      "requestId": "decision-63",
+      "timestamp": "2026-05-24T05:22:10.066Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6166666666666667,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-64",
+      "timestamp": "2026-05-24T05:22:10.067Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.12222222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-65",
+      "timestamp": "2026-05-24T05:22:10.068Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.9125000000000001,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.13333333333333333,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "diagnostic-66",
+      "timestamp": "2026-05-24T05:22:10.070Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.448
+    },
+    {
+      "requestId": "guided-67",
+      "timestamp": "2026-05-24T05:22:10.071Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.14444444444444443,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-68",
+      "timestamp": "2026-05-24T05:22:10.072Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.7611111111111111,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-69",
+      "timestamp": "2026-05-24T05:22:10.074Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-70",
+      "timestamp": "2026-05-24T05:22:10.075Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5833333333333334,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-71",
+      "timestamp": "2026-05-24T05:22:10.076Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-72",
+      "timestamp": "2026-05-24T05:22:10.077Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.17777777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-73",
+      "timestamp": "2026-05-24T05:22:10.079Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-74",
+      "timestamp": "2026-05-24T05:22:10.080Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5611111111111111,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-75",
+      "timestamp": "2026-05-24T05:22:10.082Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.55,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-76",
+      "timestamp": "2026-05-24T05:22:10.084Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.37777777777777777,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-77",
+      "timestamp": "2026-05-24T05:22:10.085Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-78",
+      "timestamp": "2026-05-24T05:22:10.087Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6388888888888888,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-79",
+      "timestamp": "2026-05-24T05:22:10.089Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-80",
+      "timestamp": "2026-05-24T05:22:10.090Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.8708333333333333,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-81",
+      "timestamp": "2026-05-24T05:22:10.092Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 0.8375,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.4222222222222222,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-82",
+      "timestamp": "2026-05-24T05:22:10.093Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 0.7291666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0.9,
+        "decisionComplexity": 0.6277777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.732
+    },
+    {
+      "requestId": "decision-83",
+      "timestamp": "2026-05-24T05:22:10.095Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6166666666666667,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-84",
+      "timestamp": "2026-05-24T05:22:10.096Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.12222222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-85",
+      "timestamp": "2026-05-24T05:22:10.098Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.9125000000000001,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.13333333333333333,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "diagnostic-86",
+      "timestamp": "2026-05-24T05:22:10.100Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.448
+    },
+    {
+      "requestId": "guided-87",
+      "timestamp": "2026-05-24T05:22:10.101Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.14444444444444443,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-88",
+      "timestamp": "2026-05-24T05:22:10.103Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.7722222222222223,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-89",
+      "timestamp": "2026-05-24T05:22:10.105Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-90",
+      "timestamp": "2026-05-24T05:22:10.106Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5833333333333334,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-91",
+      "timestamp": "2026-05-24T05:22:10.108Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.16666666666666666,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-92",
+      "timestamp": "2026-05-24T05:22:10.109Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.17777777777777778,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-93",
+      "timestamp": "2026-05-24T05:22:10.111Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5866666666666667,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "document-94",
+      "timestamp": "2026-05-24T05:22:10.112Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5611111111111111,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-95",
+      "timestamp": "2026-05-24T05:22:10.114Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.6708333333333334,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.55,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    },
+    {
+      "requestId": "diagnostic-96",
+      "timestamp": "2026-05-24T05:22:10.115Z",
+      "mode": "diagnostic",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 1,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.37777777777777777,
+        "documentIntent": 0,
+        "lowReadiness": 0.75,
+        "responseMismatch": 0,
+        "sourceExpectation": 0.85
+      },
+      "outcomeScore": 0.8280000000000001
+    },
+    {
+      "requestId": "guided-97",
+      "timestamp": "2026-05-24T05:22:10.116Z",
+      "mode": "guided_intake",
+      "signals": {
+        "ambiguity": 1,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5944444444444444,
+        "documentIntent": 0,
+        "lowReadiness": 0.85,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.7080000000000001
+    },
+    {
+      "requestId": "decision-98",
+      "timestamp": "2026-05-24T05:22:10.117Z",
+      "mode": "decision_verification",
+      "signals": {
+        "ambiguity": 0.5449999999999999,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.6388888888888888,
+        "documentIntent": 0,
+        "lowReadiness": 0.28,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.864
+    },
+    {
+      "requestId": "document-99",
+      "timestamp": "2026-05-24T05:22:10.119Z",
+      "mode": "document_builder",
+      "signals": {
+        "ambiguity": 0.5966666666666666,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.5722222222222222,
+        "documentIntent": 0.95,
+        "lowReadiness": 0.31999999999999995,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.852
+    },
+    {
+      "requestId": "direct-100",
+      "timestamp": "2026-05-24T05:22:10.121Z",
+      "mode": "direct_answer",
+      "signals": {
+        "ambiguity": 0.8708333333333333,
+        "diagnosticIntent": 0,
+        "correctionPressure": 0,
+        "decisionComplexity": 0.15555555555555556,
+        "documentIntent": 0,
+        "lowReadiness": 0.44999999999999996,
+        "responseMismatch": 0,
+        "sourceExpectation": 0
+      },
+      "outcomeScore": 0.72
+    }
+  ],
+  "policyWeights": {
+    "diagnostic": 0.7974294383887767,
+    "direct_answer": 0.7130849401214767,
+    "guided_intake": 0.6655459149414089,
+    "decision_verification": 0.8473412502661567,
+    "document_builder": 0.8386591994942315
+  },
+  "learnedDirectives": [
+    {
+      "id": "when_ambiguity_is_high_respond_with_an_inferred_case_hypothesis_before_asking_clarifying_q",
+      "text": "When ambiguity is high, respond with an inferred case hypothesis before asking clarifying questions.",
+      "evidence": [
+        "direct-45",
+        "direct-50",
+        "diagnostic-51",
+        "direct-55",
+        "diagnostic-56",
+        "direct-60",
+        "diagnostic-61",
+        "direct-65",
+        "direct-70",
+        "diagnostic-71",
+        "direct-75",
+        "diagnostic-76",
+        "direct-80",
+        "diagnostic-81",
+        "direct-85",
+        "direct-90",
+        "diagnostic-91",
+        "direct-95",
+        "diagnostic-96",
+        "direct-100"
+      ],
+      "confidence": 1,
+      "updatedAt": "2026-05-24T05:22:10.121Z"
+    },
+    {
+      "id": "separate_verified_facts_from_inferred_analysis_whenever_the_user_asks_for_live_sourced_or_",
+      "text": "Separate verified facts from inferred analysis whenever the user asks for live, sourced, or verification-heavy output.",
+      "evidence": [
+        "diagnostic-1",
+        "decision-8",
+        "diagnostic-16",
+        "diagnostic-21",
+        "decision-28",
+        "diagnostic-36",
+        "diagnostic-41",
+        "decision-48",
+        "diagnostic-56",
+        "diagnostic-61",
+        "decision-68",
+        "diagnostic-76",
+        "diagnostic-81",
+        "decision-88",
+        "diagnostic-96"
+      ],
+      "confidence": 1,
+      "updatedAt": "2026-05-24T05:22:10.115Z"
+    }
+  ]
+}

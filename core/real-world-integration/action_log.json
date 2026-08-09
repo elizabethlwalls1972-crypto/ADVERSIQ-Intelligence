@@ -1,0 +1,79 @@
+[
+  {
+    "action": "Pursue opportunity: Historical Success Pattern: 1960-1990",
+    "params": {
+      "id": "opp-action-1",
+      "trigger": "Regional supply chain disruption",
+      "action": "Pursue opportunity: Historical Success Pattern: 1960-1990",
+      "reasoning": "Export discipline forces competitiveness",
+      "expectedOutcome": "Strategic advantage gained",
+      "confidence": 1,
+      "autoExecute": true
+    },
+    "result": {
+      "success": true,
+      "details": "Action 'Pursue opportunity: Historical Success Pattern: 1960-1990' executed with params: {\"id\":\"opp-action-1\",\"trigger\":\"Regional supply chain disruption\",\"action\":\"Pursue opportunity: Historical Success Pattern: 1960-1990\",\"reasoning\":\"Export discipline forces competitiveness\",\"expectedOutcome\":\"Strategic advantage gained\",\"confidence\":1,\"autoExecute\":true}"
+    },
+    "timestamp": "2025-12-26T17:11:34.037Z"
+  },
+  {
+    "id": "action-1779868277616-s0mv71y4o",
+    "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+    "params": {
+      "id": "opp-action-1",
+      "trigger": "Test problem",
+      "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+      "reasoning": "Crisis can accelerate necessary reforms",
+      "expectedOutcome": "Strategic advantage gained",
+      "confidence": 1,
+      "autoExecute": false
+    },
+    "result": {
+      "success": true,
+      "details": "Action 'Pursue opportunity: Historical Success Pattern: 1998-2010' recorded with params: {\"id\":\"opp-action-1\",\"trigger\":\"Test problem\",\"action\":\"Pursue opportunity: Historical Success Pattern: 1998-2010\",\"reasoning\":\"Crisis can accelerate necessary reforms\",\"expectedOutcome\":\"Strategic advantage gained\",\"confidence\":1,\"autoExecute\":false}",
+      "timestamp": "2026-05-27T07:51:17.615Z",
+      "executionTime": 0
+    },
+    "timestamp": "2026-05-27T07:51:17.616Z"
+  },
+  {
+    "id": "action-1780132764171-gohkis7bq",
+    "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+    "params": {
+      "id": "opp-action-1",
+      "trigger": "Test problem",
+      "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+      "reasoning": "Crisis can accelerate necessary reforms",
+      "expectedOutcome": "Strategic advantage gained",
+      "confidence": 1,
+      "autoExecute": false
+    },
+    "result": {
+      "success": true,
+      "details": "Action 'Pursue opportunity: Historical Success Pattern: 1998-2010' recorded with params: {\"id\":\"opp-action-1\",\"trigger\":\"Test problem\",\"action\":\"Pursue opportunity: Historical Success Pattern: 1998-2010\",\"reasoning\":\"Crisis can accelerate necessary reforms\",\"expectedOutcome\":\"Strategic advantage gained\",\"confidence\":1,\"autoExecute\":false}",
+      "timestamp": "2026-05-30T09:19:24.171Z",
+      "executionTime": 0
+    },
+    "timestamp": "2026-05-30T09:19:24.171Z"
+  },
+  {
+    "id": "action-1780133094029-cmrisss7d",
+    "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+    "params": {
+      "id": "opp-action-1",
+      "trigger": "Test problem",
+      "action": "Pursue opportunity: Historical Success Pattern: 1998-2010",
+      "reasoning": "Crisis can accelerate necessary reforms",
+      "expectedOutcome": "Strategic advantage gained",
+      "confidence": 1,
+      "autoExecute": false
+    },
+    "result": {
+      "success": true,
+      "details": "Action 'Pursue opportunity: Historical Success Pattern: 1998-2010' recorded with params: {\"id\":\"opp-action-1\",\"trigger\":\"Test problem\",\"action\":\"Pursue opportunity: Historical Success Pattern: 1998-2010\",\"reasoning\":\"Crisis can accelerate necessary reforms\",\"expectedOutcome\":\"Strategic advantage gained\",\"confidence\":1,\"autoExecute\":false}",
+      "timestamp": "2026-05-30T09:24:54.029Z",
+      "executionTime": 0
+    },
+    "timestamp": "2026-05-30T09:24:54.029Z"
+  }
+]

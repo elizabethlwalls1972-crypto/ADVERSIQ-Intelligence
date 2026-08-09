@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BW Global Advisory</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="BW Nexus AI" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Playfair Display', 'serif'],
+            },
+            colors: {
+              bw: {
+                navy: '#0f172a',
+                gold: '#b49b67',
+                light: '#f8fafc',
+                slate: '#334155'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        scroll-behavior: smooth;
+      }
+      /* Custom scrollbar for chat */
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      /* Custom scrollbar styling */
+      .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+      }
+      .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+      }
+    </style>
+</head>
+  <body>
+    <!-- Global error overlay (shows import-time or runtime errors before React mounts) -->
+    <div id="global-error-overlay" style="display:none;position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:99999;padding:20px;overflow:auto;">
+      <!-- Filled by inline script on error -->
+    </div>
+    <script>
+      (function(){
+        function showError(msg){
+          var el = document.getElementById('global-error-overlay');
+          if(!el) return;
+          var content = '<div style="max-width:980px;margin:40px auto;padding:20px;border-radius:8px;background:#1f2937;color:#fff;font-family:Inter, sans-serif">' +
+            '<h2 style="margin:0 0 8px 0;color:#ffbaba">Application Error</h2>' +
+            '<pre style="white-space:pre-wrap;overflow:auto;max-height:60vh;color:#fff;background:transparent;padding:0;margin:0">' + (msg || 'Unknown error') + '</pre>' +
+            '<div style="margin-top:12px"><button id="dismiss-error" style="background:#111827;color:#fff;border-radius:6px;padding:8px 12px;border:none;cursor:pointer">Dismiss</button></div>' +
+            '</div>';
+          el.innerHTML = content;
+          el.style.display = 'block';
+          var btn = document.getElementById('dismiss-error');
+          if(btn) btn.addEventListener('click', function(){ el.style.display = 'none'; });
+        }
+        window.addEventListener('error', function(e){
+          try { showError((e && e.error && e.error.stack) || e.message || JSON.stringify(e)); } catch(err){ console.error(err); }
+        });
+        window.addEventListener('unhandledrejection', function(e){
+          try { showError((e && e.reason && (e.reason.stack || e.reason.toString())) || 'Unhandled rejection'); } catch(err){ console.error(err); }
+        });
+        // Small boot indicator so user sees the page is running
+        var hb = document.createElement('div'); hb.innerText = 'BW Nexus: initializing...'; hb.style.position='fixed'; hb.style.left='10px'; hb.style.bottom='10px'; hb.style.padding='6px 8px'; hb.style.background='#111827'; hb.style.color='#fff'; hb.style.borderRadius='4px'; hb.style.opacity='0.9'; document.body.appendChild(hb); setTimeout(()=>hb.remove(), 2500);
+      })();
+    </script>
+
+    <div id="root" style="height: 100vh; width: 100%;"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "01",
+    "entity": "São Paulo Metropolitan Housing Authority",
+    "region": "Latin America",
+    "country": "Brazil",
+    "city": "São Paulo",
+    "sector": "Urban Development",
+    "intent": "Blended-Finance PPP",
+    "challenge": "Flood-driven delays halted 48k-unit social housing PPP",
+    "desiredOutcome": "Recompose financing stack and phasing plan",
+    "dealSizeUSD": 75000000
+  },
+  {
+    "id": "12",
+    "entity": "Singapore FinTech Association",
+    "region": "Southeast Asia",
+    "country": "Singapore",
+    "city": "Singapore",
+    "sector": "Financial Services",
+    "intent": "Regulatory Compliance",
+    "challenge": "2300 SMEs must meet Basel III-lite stress tests",
+    "desiredOutcome": "Create templated capital plans with audit trails",
+    "dealSizeUSD": 12000000
+  },
+  {
+    "id": "23",
+    "entity": "Chilean Green Hydrogen Valley",
+    "region": "Latin America",
+    "country": "Chile",
+    "city": "Antofagasta",
+    "sector": "Energy Transition",
+    "intent": "Export Enablement",
+    "challenge": "Ammonia exports need synchronized port and pipeline build",
+    "desiredOutcome": "Align CAPEX, offtake, and EU CBAM compliance",
+    "dealSizeUSD": 450000000
+  },
+  {
+    "id": "34",
+    "entity": "California Inland Port Coalition",
+    "region": "North America",
+    "country": "United States",
+    "city": "Sacramento",
+    "sector": "Logistics",
+    "intent": "Zero-Emission Infrastructure",
+    "challenge": "Labor unions fear automation in inland port plan",
+    "desiredOutcome": "Negotiate just-transition comp and training stack",
+    "dealSizeUSD": 98000000
+  },
+  {
+    "id": "45",
+    "entity": "Ethiopia Coffee Traceability Board",
+    "region": "Africa",
+    "country": "Ethiopia",
+    "city": "Addis Ababa",
+    "sector": "Agriculture",
+    "intent": "Compliance"
+    ,"challenge": "Need EU deforestation law tracking for smallholders",
+    "desiredOutcome": "Deploy satellite-enabled traceability and pricing",
+    "dealSizeUSD": 15000000
+  },
+  {
+    "id": "56",
+    "entity": "India Rural Vaccine Alliance",
+    "region": "South Asia",
+    "country": "India",
+    "city": "Lucknow",
+    "sector": "Healthcare",
+    "intent": "Supply Chain Scale",
+    "challenge": "Cold-chain loss >18% in tier-3 towns",
+    "desiredOutcome": "Finance solar cold-chain and optimized routing",
+    "dealSizeUSD": 32000000
+  },
+  {
+    "id": "67",
+    "entity": "South Africa Battery Precursor JV",
+    "region": "Africa",
+    "country": "South Africa",
+    "city": "Polokwane",
+    "sector": "Advanced Manufacturing",
+    "intent": "Energy Security",
+    "challenge": "Load shedding halts production windows",
+    "desiredOutcome": "Stage captive renewables plus storage",
+    "dealSizeUSD": 88000000
+  },
+  {
+    "id": "78",
+    "entity": "Philippines Disaster Data Mesh",
+    "region": "Southeast Asia",
+    "country": "Philippines",
+    "city": "Manila",
+    "sector": "Resilience Tech",
+    "intent": "Data Interoperability",
+    "challenge": "Local governments store hazard data in silos",
+    "desiredOutcome": "Design data mesh and sharing incentives",
+    "dealSizeUSD": 10000000
+  },
+  {
+    "id": "89",
+    "entity": "Korea eSports Academic League",
+    "region": "East Asia",
+    "country": "South Korea",
+    "city": "Seoul",
+    "sector": "Education",
+    "intent": "Accreditation",
+    "challenge": "Need recognized curriculum and youth protections",
+    "desiredOutcome": "Draft governance plus scholarship model",
+    "dealSizeUSD": 6000000
+  },
+  {
+    "id": "100",
+    "entity": "Global Indigenous Data Sovereignty Alliance",
+    "region": "Global",
+    "country": "Multi-Region",
+    "city": "Geneva",
+    "sector": "Data Governance",
+    "intent": "Federated Platform",
+    "challenge": "Need encrypted consent ledger for cultural data",
+    "desiredOutcome": "Architect secure funding-ready platform",
+    "dealSizeUSD": 25000000
+  }
+]

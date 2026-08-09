@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "lastTrained": "2026-05-30T09:24:54.045Z",
+  "trainingCycles": 3,
+  "accuracy": 0,
+  "sampleCount": 6,
+  "weights": {
+    "confidence": 0.2962430371103798,
+    "actionCount": 0.19248607422075956,
+    "auditLength": 0.04740251954531713,
+    "successRate": 0.4,
+    "hasSuccess": 0,
+    "actionDensity": -0.0010734179684629157,
+    "hourOfDay": -0.004952206502723663,
+    "dayOfWeek": -0.004536840200409122
+  },
+  "biases": {
+    "default": 0.1
+  },
+  "learningRate": 0.011576250000000003,
+  "momentum": 0.9
+}
