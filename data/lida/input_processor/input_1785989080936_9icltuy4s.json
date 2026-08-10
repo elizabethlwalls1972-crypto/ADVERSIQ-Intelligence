@@ -1,0 +1,13 @@
+{
+  "id": "input_1785989080936_9icltuy4s",
+  "timestamp": "2026-08-06T04:04:40.936Z",
+  "format": "text",
+  "language": "english",
+  "domain": "general",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "Regional expansion into Southeast Asia with governance review",
+  "confidence": 0.8
+}

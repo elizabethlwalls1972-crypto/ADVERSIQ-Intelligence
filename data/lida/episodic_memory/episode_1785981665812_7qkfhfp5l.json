@@ -1,0 +1,72 @@
+{
+  "id": "episode_1785981665812_7qkfhfp5l",
+  "timestamp": "2026-08-06T02:01:05.812Z",
+  "content": "Regional rollout with governance review required",
+  "context": {
+    "id": "broadcast_1785981665812_q66fu8f7q",
+    "timestamp": "2026-08-06T02:01:05.812Z",
+    "source": "LIDAController",
+    "content": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785981665810_yjq3m53ib",
+          "timestamp": "2026-08-06T02:01:05.810Z",
+          "content": "Regional rollout with governance review required",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "regional",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "rollout",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "with",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "governance",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "review",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "required",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "regional",
+        "rollout",
+        "with",
+        "governance",
+        "review"
+      ]
+    },
+    "strength": 0.4,
+    "ignition": false,
+    "broadcastTargets": []
+  },
+  "action": null,
+  "outcome": null,
+  "successMetric": 0.5,
+  "temporalContext": {
+    "before": [],
+    "after": []
+  }
+}

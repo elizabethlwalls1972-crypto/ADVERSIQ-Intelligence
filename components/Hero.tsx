@@ -45,22 +45,22 @@ export const Hero: React.FC = () => {
                             </div>
 
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-bw-navy leading-[1.05]">
-                                Beyond Data. Beyond Consulting.
-                                <span className="block mt-3 text-bw-gold">The World's First Adversarial Intelligence Quorum.</span>
+                                Strategic Intelligence for
+                                <span className="block mt-3 text-bw-gold">High-Stakes Decisions.</span>
                             </h1>
 
                             <div className="space-y-5 max-w-3xl text-[15px] sm:text-lg text-slate-700 leading-[1.85]">
                                 <p>
-                                    Every organisation on earth that uses AI to make high-stakes decisions has the same problem: <strong className="text-bw-navy">How do you trust the output?</strong> LLMs hallucinate. Dashboards show data without argument. Consultants give opinions. Nobody formally verifies decisions before they're made.
+                                    ADVERSIQ is a decision intelligence operating layer for leaders navigating complexity: market entry, policy, investment, strategic repositioning, institutional planning, and portfolio decisions.
                                 </p>
                                 <p className="text-bw-navy font-medium">
-                                    This system does. Whether you're an investor, a business owner, a government planner, or a consultant — the ADVERSIQ Consultant formally verifies every decision through adversarial debate, contradiction detection, Monte Carlo stress-testing, and full audit trail before any output reaches you.
+                                    It frames the problem, challenges assumptions, compares options, surfaces uncertainty, and produces decision-ready outputs that can be defended by teams, boards, investors, and public stakeholders.
                                 </p>
                                 <p>
-                                    We architected the <strong className="text-bw-navy">Nexus Strategic Intelligence Layer (NSIL)</strong> — a 10-layer deterministic pipeline where five independent AI minds argue every conclusion, a SAT solver catches logical impossibilities, and 54+ proprietary formulas score every dimension. Nothing is guessed. Everything is auditable.
+                                    The platform combines research orchestration, adversarial reasoning, risk framing, and structured analysis into one workflow — giving decision-makers a clearer path from ambiguity to action without pretending the system replaces human judgment.
                                 </p>
                                 <p>
-                                    Built from the ground up because trillions of dollars in economic potential sit locked in overlooked places — and no tool existed to surface, prove, and defend that value. This system was born in regional development. Its architecture solves the universal problem of decision trust.
+                                    This is not a one-shot chatbot. It is a strategic operating layer for serious decisions: a real foundation for decision intelligence with a credible roadmap toward a broader autonomous OS.
                                 </p>
                             </div>
 

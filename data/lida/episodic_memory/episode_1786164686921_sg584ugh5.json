@@ -1,0 +1,92 @@
+{
+  "id": "episode_1786164686921_sg584ugh5",
+  "timestamp": "2026-08-08T04:51:26.921Z",
+  "content": "We need to expand our cloud platform into Southeast Asia",
+  "context": {
+    "id": "broadcast_1786164686920_imuxqpt6s",
+    "timestamp": "2026-08-08T04:51:26.920Z",
+    "source": "LIDAController",
+    "content": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1786164686908_vbp0d5sfa",
+          "timestamp": "2026-08-08T04:51:26.908Z",
+          "content": "We need to expand our cloud platform into Southeast Asia",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "we",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "need",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "to",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "expand",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "our",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cloud",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "platform",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "asia",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "we",
+        "need",
+        "to",
+        "expand",
+        "our"
+      ]
+    },
+    "strength": 0.4,
+    "ignition": false,
+    "broadcastTargets": []
+  },
+  "action": null,
+  "outcome": null,
+  "successMetric": 0.5,
+  "temporalContext": {
+    "before": [],
+    "after": []
+  }
+}

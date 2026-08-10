@@ -1,0 +1,190 @@
+{
+  "id": "learn_1785838687282_zj7pjjlyb",
+  "timestamp": "2026-08-04T10:18:07.282Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785838687278_ja04hde8a",
+    "timestamp": "2026-08-04T10:18:07.278Z",
+    "content": "We need to expand our cloud platform into Southeast Asian markets",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785838687278_ja04hde8a",
+      "timestamp": "2026-08-04T10:18:07.278Z",
+      "content": "We need to expand our cloud platform into Southeast Asian markets",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785838687278_ja04hde8a",
+          "timestamp": "2026-08-04T10:18:07.278Z",
+          "content": "We need to expand our cloud platform into Southeast Asian markets",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "we",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "need",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "to",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "expand",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "our",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cloud",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "platform",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "asian",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "markets",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "we",
+        "need",
+        "to",
+        "expand",
+        "our"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785838687280_huw8ho51k",
+      "timestamp": "2026-08-04T10:18:07.281Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785838687278_ja04hde8a",
+            "timestamp": "2026-08-04T10:18:07.278Z",
+            "content": "We need to expand our cloud platform into Southeast Asian markets",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "we",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "need",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "to",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "expand",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "our",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cloud",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "platform",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "into",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "southeast",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "asian",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "markets",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "we",
+          "need",
+          "to",
+          "expand",
+          "our"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

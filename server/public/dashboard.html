@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ADVERSIQ Intelligence — Live LIDA Cognitive OS</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, system-ui, sans-serif; background:#0b1020; color:#e6edf3; }
+  header { padding:18px 24px; background:linear-gradient(90deg,#1e3a8a,#7c3aed); display:flex; align-items:center; gap:12px; }
+  header h1 { font-size:18px; margin:0; }
+  .badge { font-size:12px; padding:3px 8px; border-radius:999px; background:rgba(255,255,255,.15); }
+  .ok { background:#16a34a; } .bad { background:#dc2626; }
+  .wrap { max-width:1100px; margin:0 auto; padding:24px; display:grid; gap:20px; }
+  .card { background:#111827; border:1px solid #1f2937; border-radius:12px; padding:18px; }
+  .card h2 { margin:0 0 12px; font-size:15px; color:#93c5fd; }
+  textarea, input { width:100%; background:#0b1020; border:1px solid #334155; color:#e6edf3; border-radius:8px; padding:10px; font-family:monospace; font-size:13px; }
+  button { margin-top:10px; background:#7c3aed; color:#fff; border:0; padding:10px 16px; border-radius:8px; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  pre { background:#0b1020; border:1px solid #1f2937; border-radius:8px; padding:12px; overflow:auto; max-height:320px; font-size:12px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:800px){ .grid2{grid-template-columns:1fr;} }
+  .pill { display:inline-block; padding:2px 8px; border-radius:6px; font-size:11px; margin:2px; background:#1e293b; }
+  .sev-high{background:#7f1d1d;color:#fecaca} .sev-medium{background:#78350f;color:#fde68a} .sev-critical{background:#991b1b;color:#fff}
+  .tag{font-size:11px;color:#94a3b8}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 ADVERSIQ Intelligence</h1>
+  <span class="badge" id="health">checking…</span>
+  <span class="badge">LIDA Cognitive Architecture + NSIL Brain</span>
+</header>
+<div class="wrap">
+  <div class="card">
+    <h2>1 · LIDA Cognitive Cycle (Perception → Attention → Consciousness → Action → Learning)</h2>
+    <textarea id="mandate" rows="3" placeholder="Enter a mandate, e.g. We need to expand our cloud platform into Southeast Asia">We need to expand our cloud platform into Southeast Asia</textarea>
+    <button id="runCycle">Run Cognitive Cycle</button>
+    <pre id="cycleOut">—</pre>
+  </div>
+  <div class="card">
+    <h2>2 · Self-Learning Algorithm (Reads data → Detects issues → Generates solutions)</h2>
+    <textarea id="sldata" rows="4" placeholder="JSON or text data">{ "service":"payment-api", "errors":9, "latency_ms":3200, "failures":["timeout","connection refused"] }</textarea>
+    <button id="runSL">Run Self-Learning Cycle</button>
+    <div id="slOut" class="grid2"></div>
+  </div>
+  <div class="card">
+    <h2>3 · Self-Aware Bootstrap (Knows itself → Diagnoses → Self-heals → Reaches out)</h2>
+    <button id="runBoot">Run Bootstrap Self-Heal Loop</button>
+    <pre id="bootOut">—</pre>
+  </div>
+
+  <div class="card">
+    <h2>5 · Full NSIL Brain (AdversiqOmniNode → LIDA cognitive cycle)</h2>
+    <textarea id="brainIn" rows="2" placeholder="Input for the autonomous brain">Run a full autonomous cognitive pass on regional expansion risk</textarea>
+    <button id="runBrain">Run Full Brain</button>
+    <pre id="brainOut">—</pre>
+  </div>
+  <div class="card">
+    <h2>4 · Live System Status</h2>
+    <button id="runStatus">Refresh Status</button>
+    <pre id="statusOut">—</pre>
+  </div>
+</div>
+<script>
+const API = 'http://localhost:3001/api';
+async function health(){ try{ const r=await fetch(API+'/health'); const j=await r.json(); const b=document.getElementById('health'); b.textContent='SERVER LIVE '+j.status.toUpperCase(); b.className='badge ok'; }catch(e){ const b=document.getElementById('health'); b.textContent='SERVER DOWN'; b.className='badge bad'; } }
+async function post(path, body){ const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); return r.json(); }
+document.getElementById('runCycle').onclick = async ()=>{ const el=document.getElementById('cycleOut'); el.textContent='running…'; const r=await post('/lida/mandate',{mandate:document.getElementById('mandate').value}); el.textContent=JSON.stringify(r,null,2); };
+document.getElementById('runSL').onclick = async ()=>{ const el=document.getElementById('slOut'); el.innerHTML='running…'; let data; try{ data=JSON.parse(document.getElementById('sldata').value); }catch{ data={text:document.getElementById('sldata').value}; }
+  const r=await post('/lida/self-learning/cycle',{data});
+  let html='<div><b>Issues ('+r.issuesDetected+')</b>';
+  (r.topIssues||[]).forEach(i=>html+='<div class="pill sev-'+i.severity+'">'+i.severity.toUpperCase()+'</div> '+i.category+' — '+i.description+'</div>');
+  html+='</div><div><b>Solutions ('+r.solutionsGenerated+')</b>';
+  (r.topSolutions||[]).forEach(s=>html+='<div class="tag">conf '+s.confidence+' · '+s.approach+'</div><div class="tag">steps: '+s.steps.length+' · effort: '+s.estimatedEffort+'</div>');
+  html+='</div>'; el.innerHTML=html; };
+document.getElementById('runBoot').onclick = async ()=>{ const el=document.getElementById('bootOut'); el.textContent='running self-heal loop…'; const r=await post('/lida/bootstrap',{input:'User requested live self-bootstrap.'}); const summary={identity:r.manifest.identity, modules:r.manifest.modules.length, issuesFound:r.issuesFound, healed:r.healed.length, residual:r.residualIssues.length, external:r.externalKnowledge.detail, pipeline:r.pipelineResult?'cycle '+(r.pipelineResult.cycleNumber||'?'):'n/a'}; el.textContent=JSON.stringify(summary,null,2); };
+document.getElementById('runStatus').onclick = async ()=>{ const el=document.getElementById('statusOut'); const r=await (await fetch(API+'/lida/status')).json(); el.textContent=JSON.stringify(r.selfLearning||r,null,2); };
+
+document.getElementById('runBrain').onclick = async ()=>{ const el=document.getElementById('brainOut'); el.textContent='running full brain…'; try{ const r=await (await fetch(API+'/lida/brain',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:document.getElementById('brainIn').value})})); const j=await r.json(); el.textContent=JSON.stringify(j,null,2); }catch(e){ el.textContent='ERROR '+e.message; } };
+
+health(); setInterval(health,10000);
+</script>
+</body>
+</html>

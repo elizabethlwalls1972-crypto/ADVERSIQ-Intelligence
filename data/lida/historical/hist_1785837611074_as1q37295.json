@@ -1,0 +1,20 @@
+{
+  "domain": "technology",
+  "description": "Building a cloud platform in a new market",
+  "actions": [
+    "market research",
+    "local partnerships",
+    "regulatory compliance"
+  ],
+  "outcomes": {
+    "result": "success",
+    "revenue": "$50M ARR"
+  },
+  "successMetric": 0.85,
+  "context": {
+    "region": "Asia-Pacific",
+    "industry": "Technology"
+  },
+  "id": "hist_1785837611074_as1q37295",
+  "timestamp": "2026-08-04T10:00:11.074Z"
+}

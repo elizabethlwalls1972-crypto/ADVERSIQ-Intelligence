@@ -1,0 +1,13 @@
+{
+  "id": "input_1785837644225_6puohw24p",
+  "timestamp": "2026-08-04T10:00:44.225Z",
+  "format": "text",
+  "language": "spanish",
+  "domain": "healthcare",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "Launching a telehealth service in rural Kenya",
+  "confidence": 0.9
+}

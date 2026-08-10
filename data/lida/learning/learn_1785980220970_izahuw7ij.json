@@ -1,0 +1,140 @@
+{
+  "id": "learn_1785980220970_izahuw7ij",
+  "timestamp": "2026-08-06T01:37:00.970Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785980220967_42r9cl6am",
+    "timestamp": "2026-08-06T01:37:00.967Z",
+    "content": "System knows itself and heals itself.",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785980220967_42r9cl6am",
+      "timestamp": "2026-08-06T01:37:00.967Z",
+      "content": "System knows itself and heals itself.",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785980220967_42r9cl6am",
+          "timestamp": "2026-08-06T01:37:00.967Z",
+          "content": "System knows itself and heals itself.",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "system",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "knows",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "itself",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "and",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "heals",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "itself.",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "system",
+        "knows",
+        "itself",
+        "and",
+        "heals"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785980220968_oimqqab8l",
+      "timestamp": "2026-08-06T01:37:00.968Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785980220967_42r9cl6am",
+            "timestamp": "2026-08-06T01:37:00.967Z",
+            "content": "System knows itself and heals itself.",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "system",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "knows",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "itself",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "and",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "heals",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "itself.",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "system",
+          "knows",
+          "itself",
+          "and",
+          "heals"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

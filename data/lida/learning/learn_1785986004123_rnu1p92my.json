@@ -1,0 +1,82 @@
+{
+  "id": "learn_1785986004123_rnu1p92my",
+  "timestamp": "2026-08-06T03:13:24.123Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785986004121_q076rsysm",
+    "timestamp": "2026-08-06T03:13:24.121Z",
+    "content": "live",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785986004121_q076rsysm",
+      "timestamp": "2026-08-06T03:13:24.121Z",
+      "content": "live",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785986004121_q076rsysm",
+          "timestamp": "2026-08-06T03:13:24.121Z",
+          "content": "live",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "live",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "live"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785986004122_icksq912f",
+      "timestamp": "2026-08-06T03:13:24.122Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785986004121_q076rsysm",
+            "timestamp": "2026-08-06T03:13:24.121Z",
+            "content": "live",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "live",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "live"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

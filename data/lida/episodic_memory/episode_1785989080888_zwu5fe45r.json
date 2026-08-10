@@ -1,0 +1,43 @@
+{
+  "id": "episode_1785989080888_zwu5fe45r",
+  "timestamp": "2026-08-06T04:04:40.888Z",
+  "content": "live",
+  "context": {
+    "id": "broadcast_1785989080888_k8iys7gsa",
+    "timestamp": "2026-08-06T04:04:40.888Z",
+    "source": "LIDAController",
+    "content": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785989080887_6uyc5geyj",
+          "timestamp": "2026-08-06T04:04:40.887Z",
+          "content": "live",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "live",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "live"
+      ]
+    },
+    "strength": 0.4,
+    "ignition": false,
+    "broadcastTargets": []
+  },
+  "action": null,
+  "outcome": null,
+  "successMetric": 0.5,
+  "temporalContext": {
+    "before": [],
+    "after": []
+  }
+}

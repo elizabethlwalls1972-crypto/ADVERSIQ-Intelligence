@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ArrowRight, Shield, Users, Zap, CheckCircle2, Scale, Building2, Globe, Mail, Phone, Briefcase, TrendingUp, FileCheck, X, Info } from 'lucide-react';
 import AppInstallButton from './AppInstallButton';
 // OSINT search removed - using unified location research
@@ -317,32 +317,28 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
 
 
-            {/* OUR MISSION  -  Header with B&W photo banner background */}
+            {/* Hero banner */}
             <section id="mission" className="relative pt-36 pb-24 px-4 overflow-hidden">
                 <img 
                     src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&h=1200&fit=crop&q=80" 
-                    alt="Adversarial Intelligence Quorum" 
+                    alt="ADVERSIQ strategic intelligence" 
                     className="absolute inset-0 w-full h-full object-cover" 
                     style={{ filter: 'grayscale(100%)' }}
                 />
                 <div className="absolute inset-0 bg-black/80" />
-                <style>{`
-                    @keyframes heroColor { 0%,100%{color:#ff3366} 25%{color:#00d4ff} 50%{color:#facc15} 75%{color:#a855f7} }
-
-                `}</style>
                 <div className="relative z-10 max-w-5xl mx-auto text-center" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}>
-                    <h1
-                        className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black leading-none mb-4 tracking-tight"
-                        style={{ animation: 'heroColor 4s ease-in-out infinite' }}
-                    >
+                    <div className="mb-6 text-xs font-bold uppercase tracking-[0.38em] text-white/80">
+                        Strategic Decision Intelligence
+                    </div>
+                    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-none mb-5 tracking-tight text-white">
                         ADVERSIQ
                     </h1>
-                    <p className="text-3xl sm:text-4xl md:text-5xl font-light text-white tracking-wide uppercase mb-12">
-                        Adversarial Intelligence Quorum
+                    <p className="text-2xl sm:text-3xl md:text-4xl font-light text-white/90 tracking-wide mb-8">
+                        Decision intelligence for high-stakes strategic moves.
                     </p>
-                    <div className="max-w-5xl mx-auto">
-                        <p className="text-base md:text-lg lg:text-xl text-white font-medium uppercase tracking-widest">
-                            Built for regional councils, investment boards, government agencies, and businesses entering new markets.
+                    <div className="max-w-4xl mx-auto">
+                        <p className="text-base md:text-lg lg:text-xl text-white/85 font-medium tracking-[0.12em] uppercase">
+                            Built for leaders, boards, investment teams, government agencies, and organisations navigating complex decisions in uncertain markets.
                         </p>
                     </div>
                 </div>
@@ -354,14 +350,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Statement */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What Is ADVERSIQ</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What ADVERSIQ does</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
-                                The intelligence platform<br className="hidden md:block" />
-                                <span className="font-black">built for decisions that matter.</span>
+                                A strategic intelligence platform
+                                <span className="font-black block">for complex decisions.</span>
                             </h2>
                             <p className="text-xl md:text-2xl text-slate-700 leading-relaxed mb-4 max-w-3xl">
-                                Start Free Today<br />
-                                5-day full access. No credit card. See how ADVERSIQ turns uncertainty into defensible decisions in the time it takes to grab lunch.
+                                ADVERSIQ helps teams frame the problem, challenge assumptions, compare scenarios, surface uncertainty, and turn strategic signals into decisions that can be defended with confidence.
                             </p>
                         </div>
 
@@ -389,27 +384,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             </section>
 
-            {/* What ADVERSIQ Intelligence AI Is */}
+            {/* What ADVERSIQ Is */}
             <section className="py-20 px-4 bg-slate-950">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pb-16">
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">The Platform</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-amber-400">What this is</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight mb-6">
-                                Sovereign Intelligence.<br />
-                                <span className="font-black">Unbiased. Cryptographically Proven.</span>
+                                A decision intelligence layer
+                                <span className="font-black block">for teams that cannot afford weak assumptions.</span>
                             </h2>
-                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">A 100-Year Cycle Breaker for Structural Problems.</p>
+                            <p className="text-base text-amber-400 uppercase tracking-[0.24em] mb-10">Strategy, investment, policy, market entry, and operational planning.</p>
                             <div>
-                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">Why Civilization Needs This Now</p>
-                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">Meet The Systemic Truth Machine<br /><br />ADVERSIQ delivers institutional certainty in minutes, not months. We built a system that strips away political noise and emotional bias to find the actual root of a problem. Instead of endless consulting cycles, you interact with an autonomous intelligence that instantly cross-references a century of historical data. In 45 minutes, it delivers a mathematically proven, stress-tested path forward—giving leaders the undeniable proof they need to act.</p>
+                                <p className="text-base md:text-lg font-bold uppercase tracking-widest text-amber-400 mb-4">It starts with the real decision, not a generic answer</p>
+                                <p className="text-lg md:text-xl text-white/90 leading-relaxed">ADVERSIQ helps leadership teams structure the problem, stress-test assumptions, compare options, identify missing evidence, and move from ambiguity to a decision that is measurable, defendable, and informed by evidence.</p>
                             </div>
                         </div>
                         <div className="w-full max-w-md mx-auto lg:mx-0">
                             <div className="aspect-square overflow-hidden border border-white/10 shadow-2xl shadow-black/20">
                                 <img
                                     src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=1200&h=1200&fit=crop&q=80"
-                                    alt="City skyline at night"
+                                    alt="ADVERSIQ strategic decision intelligence"
                                     className="w-full h-full object-cover brightness-110 contrast-110 saturate-125"
                                 />
                             </div>
@@ -418,13 +413,13 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
                     <div className="border-t border-white/10 pt-12">
                         <p className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl">
-                            Global challenges deserve more than a confident-sounding compromise.<br />
-                            <span className="text-amber-400">No ideological bottlenecks. ADVERSIQ executes a Sovereign-Grade hunt—stripping emotional bias and building mathematical proofs in real time through autonomous orchestration.</span>
+                            It clarifies the signal.<br />
+                            <span className="text-amber-400">Then it pressures the decision before it reaches the boardroom.</span>
                         </p>
 
                         <div className="mt-10 max-w-3xl border-l-2 border-amber-400 pl-6">
                             <p className="text-base text-slate-300 leading-relaxed">
-                                ADVERSIQ is no longer just an automated software engine; it is a Systemic Truth Machine designed to solve the structural stagnation of human society. We built a platform that instantly identifies 100-year cyclical failures and blocks human emotional interference. Whether you're a regional authority, sovereign wealth fund, or global operator, you get an auditable, self-evolving, and cryptographically proven path forward.
+                                The platform brings together research orchestration, adversarial reasoning, risk framing, and structured output into one workflow. It can challenge weak assumptions, compare option sets, identify missing evidence, and turn analysis into defensible briefs — while still leaving the final strategic judgment with the human decision-maker.
                             </p>
                         </div>
 
@@ -433,7 +428,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 onClick={() => setShowFounderLetter(true)}
                                 className="inline-flex items-center gap-3 px-8 py-4 bg-amber-400 text-slate-900 text-sm font-bold uppercase tracking-[0.15em] hover:bg-amber-300 transition-colors"
                             >
-                                One Developer
+                                From the Builder
                                 <ArrowRight size={16} />
                             </button>
                             <button
@@ -458,7 +453,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
                                     src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=900&fit=crop&q=80"
-                                    alt="Diverse teams making strategic decisions"
+                                    alt="Strategic decision-making teams"
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -466,10 +461,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Who This Is For</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">You don&rsquo;t need to be an expert. The system already is.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Who it is for</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">For organisations where a poor decision creates real financial or strategic cost.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                                The same engine serves first-time exporters and seasoned investment boards. Beginners get guided walkthroughs and plain-language explanations. Experts get full control over advanced settings, detailed audit trails, and granular data breakdowns. Same engine &mdash; different depth.
+                                The platform is built for leaders making investment decisions, market-entry moves, policy choices, strategic planning calls, and institutional reviews. It gives teams the structure and depth to think more clearly before committing capital or credibility.
                             </p>
                         </div>
                     </div>
@@ -477,10 +472,10 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     {/* Four audience cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
-                            { title: 'Regional Councils & Development Agencies', desc: 'Get the same depth of analysis as a top-tier advisory firm \u2014 financial projections, supply chain mapping, workforce analysis \u2014 without the consulting invoice.', photo: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop&q=80' },
-                            { title: 'Government Agencies & Investment Boards', desc: 'Defensible decision trails. Stress-tested assumptions, surfaced deal-killers, and documented rationale you can stand behind.', photo: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400&h=250&fit=crop&q=80' },
-                            { title: 'Businesses Expanding Into New Regions', desc: 'Research any location instantly \u2014 regulatory landscape, real cost of entry, partner credibility \u2014 and flag what will go wrong before you commit capital.', photo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop&q=80' },
-                            { title: 'First-Time Exporters & Entrepreneurs', desc: 'Never written an investment prospectus? The guided 10-step intake asks the right questions and produces the documents that open doors.', photo: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Investment Boards & Sovereign Funds', desc: 'Run the full NSIL cognitive pipeline on any mandate — SAT validation, adversarial debate, Monte Carlo stress-testing, ethics gate — and get a confidence-scored, audit-trailed recommendation in minutes instead of months.', photo: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Government Agencies & Development Bodies', desc: 'Defensible decision trails with hard-stop compliance gates. Every assumption stress-tested, every deal-killer surfaced, every recommendation traceable to its source data and reasoning chain.', photo: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Enterprises Entering New Markets', desc: 'Research any location or partner instantly — regulatory exposure, real cost of entry, cultural compatibility score, symbiotic match analysis — and flag what will break before you commit capital.', photo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop&q=80' },
+                            { title: 'Founders & First-Time Exporters', desc: "Never written an investment brief? The guided intake captures your situation through natural conversation. The system builds the case model, detects logical contradictions in your assumptions, and generates investor-ready documents.", photo: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=250&fit=crop&q=80' },
                         ].map((item, i) => (
                             <div key={i} className="group">
                                 <div className="h-36 overflow-hidden mb-4">
@@ -582,13 +577,27 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Text */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Experience</p>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">How It Works</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">
-                                You describe your situation. The system figures out the rest.
+                                A real decision process, not a single answer.
                             </h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                                You don&rsquo;t need to know which formula applies, which jurisdiction pack to select, or which document your situation requires. The system learns your case as the conversation develops. It detects signals while you type, builds the case model in the background, checks compliance for your jurisdiction, and tells you exactly what to generate when you&rsquo;re ready.
+                                You describe the situation in plain language. ADVERSIQ then follows a disciplined institutional sequence: it defines the problem clearly, challenges the assumptions behind it, tests whether the logic holds, evaluates uncertainty and risk, compares competing viewpoints, and then produces a defensible recommendation backed by evidence, confidence scores, and an audit trail.
                             </p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                                {[
+                                    'Define the problem',
+                                    'Challenge assumptions',
+                                    'Test contradictions',
+                                    'Evaluate uncertainty',
+                                    'Compare viewpoints',
+                                    'Produce a defensible recommendation'
+                                ].map((step) => (
+                                    <div key={step} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm">
+                                        {step}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Right — Photo */}
@@ -596,7 +605,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
                                 <img
                                     src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=900&fit=crop&q=80"
-                                    alt="Intelligence experience interface"
+                                    alt="ADVERSIQ cognitive pipeline in action"
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -606,16 +615,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     {/* Three detail columns */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Signal Detection</h4>
-                            <p className="text-sm text-slate-500 leading-relaxed">The system reads intent, context, urgency, and complexity from your natural language. Mention a company &mdash; entity verification triggers automatically. Mention a country &mdash; jurisdiction compliance loads in the background.</p>
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">SAT Contradiction Gate</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">Before any engine fires, your inputs are converted into propositional logic clauses and run through a DPLL satisfiability solver. &ldquo;Low risk + 40% ROI + 6-month timeline&rdquo; is caught as mathematically impossible in under 2ms — before any API call is made. No other business intelligence platform does this.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Adaptive Depth</h4>
-                            <p className="text-sm text-slate-500 leading-relaxed">First-time users get guided walkthroughs and plain-language explanations. Experienced analysts get full control over advanced settings, detailed audit trails, and granular data breakdowns.</p>
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Adversarial Quorum</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">Five independent AI personas — Skeptic, Advocate, Regulator, Accountant, Operator — debate every conclusion using Bayesian belief updating. Disagreements are preserved in the output, not smoothed away. You see exactly where the system disagrees with itself and why that matters for your risk.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Guided 10-Step Intake</h4>
-                            <p className="text-sm text-slate-500 leading-relaxed">A structured 10-step protocol captures everything the system needs: opportunity definition, strategic alignment, market analysis, financial structure, risk assessment, stakeholder mapping, implementation, compliance, partnership terms, and success metrics.</p>
+                            <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Ethics Hard Stops</h4>
+                            <p className="text-sm text-slate-500 leading-relaxed">The compliance engine doesn&rsquo;t warn. It stops. Sanctioned countries, restricted industries, and explicitly harmful actions trigger a hard block with the exact regulation cited and the alternative parameters that would pass. This is a gate, not a suggestion.</p>
                         </div>
                     </div>
                 </div>
@@ -627,37 +636,37 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
                         {/* Left — Text */}
                         <div>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Deliverables</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">What you walk away with.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">What You Get</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">A decision you can defend — not just a polished answer.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                                A verified strategy &mdash; one that has been challenged by five independent AI systems, checked for contradictions, scored for confidence on every claim, and assembled in the right order automatically. Ready for board presentations, investor conversations, and regulator submissions on day one.
+                                Not a document that sounds confident and says the obvious. ADVERSIQ produces a recommendation that has been stress-tested against contradictions, uncertainty, competing views, and governance constraints. It shows where the risk sits, where the assumptions are weak, and why the recommendation is the most defensible path forward.
                             </p>
                         </div>
 
                         {/* Right — Photo */}
                         <div>
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=900&fit=crop&q=80" alt="Person walking with confidence" className="w-full h-full object-cover" />
+                                <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=900&fit=crop&q=80" alt="ADVERSIQ decision output" className="w-full h-full object-cover" />
                             </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Start Anywhere</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Global baseline works in any country, immediately. No jurisdiction pre-selection required.</p>
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Confidence-Scored Output</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Every material claim carries a numerical confidence score built from three sources: how much the five reasoning engines agree, how stable the Monte Carlo projections are under stress, and how fresh and authoritative the evidence is. You see the answer and the certainty behind it.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Investor-Ready</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Every report scored against IFC Performance Standards (PS1&ndash;PS8) and UN SDGs. Compliance opens doors to DFI financing.</p>
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Immutable Audit Trail</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Every number traces to its exact source. Every formula used is cited. Every compliance rule evaluated is logged. Every engine verdict is recorded. The audit trail is not a summary — it is the complete reasoning record, structured for regulator and board submission.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Protected</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Exact compliance risks flagged before they become deal-killers. Matching local regulations surfaced with legal references, forms, and filing deadlines.</p>
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Self-Improving on Your Domain</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Every decision you make trains the ML pipeline. Feature weights update after every outcome. Pattern recognition improves with every case. The system doesn&rsquo;t just know your domain — it gets better at your domain the more you use it.</p>
                         </div>
                     </div>
                     <div className="text-center">
                         <button onClick={() => { setUnifiedActiveTab('protocol'); setShowUnifiedSystemOverview(true); }} className="text-xs font-semibold text-slate-500 hover:text-blue-600 border-b border-transparent hover:border-blue-600 transition-colors pb-0.5">
-                            View Complete System: Cyber Validators &amp; Release Gates &rarr;
+                            View Complete Engine Architecture &amp; Release Gates &rarr;
                         </button>
                     </div>
                 </div>
@@ -670,7 +679,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         {/* Left — Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&h=900&fit=crop&q=80" alt="Partnership collaboration" className="w-full h-full object-cover" />
+                                <img src="https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&h=900&fit=crop&q=80" alt="Strategic partnerships" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
@@ -679,22 +688,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                             <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Partnerships</p>
                             <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Early partners shape what this becomes.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                                We&rsquo;re looking for organisations willing to put this system to work on real problems. You get a system nobody else has access to yet. We get the real-world feedback that turns good software into something indispensable.
+                                The five product lines this system is evolving toward — ADVERSIQ Gov, Enterprise, Cyber, Atlas, and Match — are not roadmap fiction. They are direct extensions of engines already built and running. We are looking for organisations willing to put this system to work on real mandates. You get access before anyone else. We get the domain-specific feedback that sharpens every engine.
                             </p>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         <div className="border-t-2 border-slate-300 pt-6">
                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Investment Promotion Agencies</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Faster, defensible assessments while directly shaping what gets built next.</p>
+                            <p className="text-sm text-slate-500 leading-relaxed">Replace months of consultant cycles with minutes of cognitive pipeline output. Faster, defensible SEZ and FDI assessments — with full audit trails your board can stand behind — while shaping what gets built next.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Regional Economic Development</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Intelligence designed for regional economies &mdash; not retrofitted from corporate tools.</p>
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Regional Development Bodies</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Intelligence designed for regional economies — not retrofitted from corporate advisory tools built for Fortune 500 contexts. The NSIL pipeline was built from the ground up for development mandates, not financialisation.</p>
                         </div>
                         <div className="border-t-2 border-slate-300 pt-6">
-                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Public-Private Partnerships</h3>
-                            <p className="text-sm text-slate-500 leading-relaxed">Work directly with the developer. Your pain points become features.</p>
+                            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Enterprise Decision-Makers</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed">Give every major decision — acquisition, market entry, partnership — the adversarial rigour that boards and investors expect but rarely get. An AI board of directors that debates, dissents, and delivers a confidence-scored recommendation.</p>
                         </div>
                     </div>
                 </div>
@@ -707,16 +716,16 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         {/* Left — Photo */}
                         <div className="order-2 lg:order-1">
                             <div className="h-80 lg:h-[28rem] overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=900&fit=crop&q=80" alt="Accessible intelligence pricing" className="w-full h-full object-cover" />
+                                <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&h=900&fit=crop&q=80" alt="ADVERSIQ access" className="w-full h-full object-cover" />
                             </div>
                         </div>
 
                         {/* Right — Text */}
                         <div className="order-1 lg:order-2">
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Pricing</p>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Verified decisions for everyone.</h2>
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Access</p>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Institutional-grade intelligence. Accessible pricing.</h2>
                             <p className="text-lg md:text-xl text-slate-600 leading-relaxed mb-6">
-                                Not just those who can afford elite advisory firms. During beta and in future subscriptions, <strong className="text-slate-700">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility.
+                                The same cognitive pipeline that replaces McKinsey-grade analysis for a government advisory board is accessible to a first-time founder. During beta and in future subscriptions, <strong className="text-slate-700">10% of every paid transaction</strong> goes back into initiatives that support economic development and intelligence accessibility in underserved regions.
                             </p>
                         </div>
                     </div>
@@ -751,7 +760,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">Get Started</p>
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Launch the Intelligence OS.</h2>
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-light leading-tight mb-6 text-slate-800">Enter the Cognitive Decision OS.</h2>
                     </div>
 
                     <div className="max-w-2xl mx-auto">
@@ -899,570 +908,11 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                 </div>
                             </div>
 
-                            {false && (
-                            {/* FULL 14-CATEGORY CATALOG */}
-                            <div className="grid md:grid-cols-2 gap-4 mb-6">
-                                {/* Category 1: Foundation & Legal */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">1. Foundation &amp; Legal (10 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Letter of Intent (LOI)</li>
-                                        <li>&bull; Memorandum of Understanding (MOU)</li>
-                                        <li>&bull; Non-Disclosure Agreement (NDA)</li>
-                                        <li>&bull; Term Sheet</li>
-                                        <li>&bull; Expression of Interest (EOI)</li>
-                                        <li>&bull; Request for Information (RFI)</li>
-                                        <li>&bull; Request for Proposal (RFP)</li>
-                                        <li>&bull; Request for Quotation (RFQ)</li>
-                                        <li>&bull; Invitation to Tender (ITT)</li>
-                                        <li>&bull; Pre-Qualification Document</li>
-                                    </ul>
-                                </div>
+                            {/* FULL 14-CATEGORY CATALOG (hidden) */}
+                            {/* Detailed validator catalog removed for build stability. */}
 
-                                {/* Category 2: Strategic Intelligence */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">2. Strategic Intelligence (12 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Executive Summary</li>
-                                        <li>&bull; Strategic Brief</li>
-                                        <li>&bull; Strategic Plan</li>
-                                        <li>&bull; Business Case</li>
-                                        <li>&bull; Feasibility Study</li>
-                                        <li>&bull; Market Entry Strategy</li>
-                                        <li>&bull; Growth Strategy</li>
-                                        <li>&bull; Exit Strategy</li>
-                                        <li>&bull; Turnaround Plan</li>
-                                        <li>&bull; Transformation Roadmap</li>
-                                        <li>&bull; Vision Document</li>
-                                        <li>&bull; White Paper</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 3: Financial & Investment */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">3. Financial &amp; Investment (19 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Financial Model (5-Year Projections)</li>
-                                        <li>&bull; Investment Memo</li>
-                                        <li>&bull; Investment Thesis</li>
-                                        <li>&bull; Capital Raise Deck</li>
-                                        <li>&bull; Private Placement Memorandum (PPM)</li>
-                                        <li>&bull; Prospectus</li>
-                                        <li>&bull; Bond Offering Document</li>
-                                        <li>&bull; Project Finance Model</li>
-                                        <li>&bull; Valuation Report</li>
-                                        <li>&bull; Fairness Opinion</li>
-                                        <li>&bull; Solvency Opinion</li>
-                                        <li>&bull; Credit Analysis</li>
-                                        <li>&bull; Cash Flow Analysis</li>
-                                        <li>&bull; Budget Proposal</li>
-                                        <li>&bull; Cost-Benefit Analysis</li>
-                                        <li>&bull; ROI Analysis</li>
-                                        <li>&bull; NPV/IRR Analysis</li>
-                                        <li>&bull; Sensitivity Analysis</li>
-                                        <li>&bull; Monte Carlo Simulation Report</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 4: Risk & Due Diligence */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">4. Risk &amp; Due Diligence (21 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Risk Assessment Report</li>
-                                        <li>&bull; Blind Spot Audit</li>
-                                        <li>&bull; Risk Register</li>
-                                        <li>&bull; Risk Mitigation Plan</li>
-                                        <li>&bull; Due Diligence Request List</li>
-                                        <li>&bull; Due Diligence Report</li>
-                                        <li>&bull; Legal Due Diligence</li>
-                                        <li>&bull; Financial Due Diligence</li>
-                                        <li>&bull; Commercial Due Diligence</li>
-                                        <li>&bull; Technical Due Diligence</li>
-                                        <li>&bull; Environmental Due Diligence</li>
-                                        <li>&bull; Tax Due Diligence</li>
-                                        <li>&bull; HR Due Diligence</li>
-                                        <li>&bull; IT Due Diligence</li>
-                                        <li>&bull; Background Check Report</li>
-                                        <li>&bull; Integrity Due Diligence</li>
-                                        <li>&bull; Sanctions Screening Report</li>
-                                        <li>&bull; AML/KYC Report</li>
-                                        <li>&bull; Political Risk Assessment</li>
-                                        <li>&bull; Country Risk Report</li>
-                                        <li>&bull; Currency Risk Analysis</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 5: Government & Policy */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2">5. Government &amp; Policy (21 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Policy Brief</li>
-                                        <li>&bull; Position Paper</li>
-                                        <li>&bull; Regulatory Impact Assessment</li>
-                                        <li>&bull; Legislative Proposal</li>
-                                        <li>&bull; Cabinet Memo</li>
-                                        <li>&bull; Ministerial Briefing</li>
-                                        <li>&bull; Budget Submission</li>
-                                        <li>&bull; Public Consultation Document</li>
-                                        <li>&bull; PPP Proposal Framework</li>
-                                        <li>&bull; Concession Agreement</li>
-                                        <li>&bull; Sovereign Guarantee Request</li>
-                                        <li>&bull; Bilateral Investment Treaty Template</li>
-                                        <li>&bull; Free Trade Agreement Analysis</li>
-                                        <li>&bull; Economic Impact Assessment</li>
-                                        <li>&bull; Social Impact Assessment</li>
-                                        <li>&bull; National Development Plan</li>
-                                        <li>&bull; Sector Development Strategy</li>
-                                        <li>&bull; Special Economic Zone Proposal</li>
-                                        <li>&bull; Investment Promotion Brief</li>
-                                        <li>&bull; Grant Application</li>
-                                        <li>&bull; Subsidy Application</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 6: Partnership & Consortium */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">6. Partnership &amp; Consortium (14 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Partnership Proposal</li>
-                                        <li>&bull; Partnership Assessment</li>
-                                        <li>&bull; Partner Comparison Matrix</li>
-                                        <li>&bull; Alliance Framework</li>
-                                        <li>&bull; Consortium Agreement</li>
-                                        <li>&bull; Joint Venture Agreement</li>
-                                        <li>&bull; Teaming Agreement</li>
-                                        <li>&bull; Co-Development Agreement</li>
-                                        <li>&bull; Technology Transfer Agreement</li>
-                                        <li>&bull; Capacity Building Program</li>
-                                        <li>&bull; Local Content Plan</li>
-                                        <li>&bull; Stakeholder Mapping</li>
-                                        <li>&bull; Stakeholder Engagement Strategy</li>
-                                        <li>&bull; Partnership Scorecard</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 7: Execution & Project Management */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">7. Execution &amp; Project Management (18 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Implementation Roadmap</li>
-                                        <li>&bull; 100-Day Plan</li>
-                                        <li>&bull; Project Charter</li>
-                                        <li>&bull; Project Plan</li>
-                                        <li>&bull; Gantt Chart</li>
-                                        <li>&bull; Critical Path Analysis</li>
-                                        <li>&bull; Milestone Report</li>
-                                        <li>&bull; Status Report</li>
-                                        <li>&bull; Lessons Learned</li>
-                                        <li>&bull; Change Management Plan</li>
-                                        <li>&bull; Integration Plan</li>
-                                        <li>&bull; Post-Merger Integration Playbook</li>
-                                        <li>&bull; Transition Plan</li>
-                                        <li>&bull; Business Continuity Plan</li>
-                                        <li>&bull; Disaster Recovery Plan</li>
-                                        <li>&bull; Quality Management System</li>
-                                        <li>&bull; Process Documentation (SOP)</li>
-                                        <li>&bull; Performance Metrics (KPI Framework)</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 8: Governance & Board */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">8. Governance &amp; Board Reporting (12 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Board Charter</li>
-                                        <li>&bull; Steering Committee Report</li>
-                                        <li>&bull; Decision Rights Matrix</li>
-                                        <li>&bull; Governance Report</li>
-                                        <li>&bull; Annual Report</li>
-                                        <li>&bull; Quarterly Report</li>
-                                        <li>&bull; Board Presentation</li>
-                                        <li>&bull; Shareholder Letter</li>
-                                        <li>&bull; Proxy Statement</li>
-                                        <li>&bull; Committee Charter</li>
-                                        <li>&bull; Board Resolution Template</li>
-                                        <li>&bull; Corporate Minutes Template</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 9: Human Capital */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2">9. Human Capital &amp; Capability (12 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Organizational Chart</li>
-                                        <li>&bull; Talent Gap Analysis</li>
-                                        <li>&bull; Key Personnel Bios</li>
-                                        <li>&bull; Capability Assessment</li>
-                                        <li>&bull; Training Materials</li>
-                                        <li>&bull; HR Due Diligence Report</li>
-                                        <li>&bull; Compensation Benchmarking</li>
-                                        <li>&bull; Succession Planning</li>
-                                        <li>&bull; Performance Management Framework</li>
-                                        <li>&bull; Employee Handbook</li>
-                                        <li>&bull; Onboarding Program</li>
-                                        <li>&bull; Culture Assessment</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 10: Procurement & Supply Chain */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">10. Procurement &amp; Supply Chain (13 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Procurement Strategy</li>
-                                        <li>&bull; Vendor Assessment Scorecard</li>
-                                        <li>&bull; Supply Chain Mapping</li>
-                                        <li>&bull; Tender Document</li>
-                                        <li>&bull; Bid Evaluation Matrix</li>
-                                        <li>&bull; Supplier Qualification</li>
-                                        <li>&bull; Purchase Order Template</li>
-                                        <li>&bull; Master Service Agreement</li>
-                                        <li>&bull; Supply Agreement</li>
-                                        <li>&bull; Distribution Agreement</li>
-                                        <li>&bull; Logistics Plan</li>
-                                        <li>&bull; Inventory Management</li>
-                                        <li>&bull; Supplier Risk Assessment</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 11: ESG & Social Impact */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-2">11. ESG &amp; Social Impact (19 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; ESG Report</li>
-                                        <li>&bull; Sustainability Report</li>
-                                        <li>&bull; Carbon Footprint Assessment</li>
-                                        <li>&bull; Net Zero Roadmap</li>
-                                        <li>&bull; Environmental Impact Assessment</li>
-                                        <li>&bull; Social Impact Assessment</li>
-                                        <li>&bull; Community Engagement Plan</li>
-                                        <li>&bull; Human Rights Due Diligence</li>
-                                        <li>&bull; Labor Standards Assessment</li>
-                                        <li>&bull; Supply Chain Ethical Audit</li>
-                                        <li>&bull; Diversity &amp; Inclusion Report</li>
-                                        <li>&bull; Governance Report</li>
-                                        <li>&bull; Ethics Policy / Code of Conduct</li>
-                                        <li>&bull; Whistleblower Policy</li>
-                                        <li>&bull; Anti-Bribery Program</li>
-                                        <li>&bull; Green Bond Framework</li>
-                                        <li>&bull; Social Bond Framework</li>
-                                        <li>&bull; Impact Measurement Report</li>
-                                        <li>&bull; UN SDG Alignment Report</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 12: Regulatory & Compliance */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">12. Regulatory &amp; Compliance (16 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Permit Application</li>
-                                        <li>&bull; Regulatory Clearance Timeline</li>
-                                        <li>&bull; Compliance Certificate</li>
-                                        <li>&bull; Regulatory Filing</li>
-                                        <li>&bull; License Application</li>
-                                        <li>&bull; Regulatory Pathway Document</li>
-                                        <li>&bull; Compliance Checklist</li>
-                                        <li>&bull; Anti-Corruption Policy</li>
-                                        <li>&bull; Data Protection Policy (GDPR)</li>
-                                        <li>&bull; Sanctions Clearance Certificate</li>
-                                        <li>&bull; Export Control Assessment</li>
-                                        <li>&bull; Customs Declaration</li>
-                                        <li>&bull; Trade Compliance Report</li>
-                                        <li>&bull; Regulatory Change Impact</li>
-                                        <li>&bull; Audit Response Document</li>
-                                        <li>&bull; Dispute Resolution Brief</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 13: Communications & IR */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">13. Communications &amp; IR (17 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Press Release</li>
-                                        <li>&bull; Media Kit</li>
-                                        <li>&bull; Investor Presentation</li>
-                                        <li>&bull; Board Presentation Deck</li>
-                                        <li>&bull; Stakeholder Update</li>
-                                        <li>&bull; Crisis Communication Plan</li>
-                                        <li>&bull; Internal Memo</li>
-                                        <li>&bull; Newsletter Template</li>
-                                        <li>&bull; Case Study</li>
-                                        <li>&bull; Testimonial Collection</li>
-                                        <li>&bull; FAQ Document</li>
-                                        <li>&bull; Talking Points</li>
-                                        <li>&bull; Speech Draft</li>
-                                        <li>&bull; Op-Ed Template</li>
-                                        <li>&bull; Social Media Strategy</li>
-                                        <li>&bull; Brand Guidelines</li>
-                                        <li>&bull; Content Calendar</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 14: Asset & Infrastructure */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2">14. Asset &amp; Infrastructure (17 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Site Selection Report</li>
-                                        <li>&bull; Asset Utilization Plan</li>
-                                        <li>&bull; Technical Requirements Brief</li>
-                                        <li>&bull; Infrastructure Assessment</li>
-                                        <li>&bull; Grid Connection Study</li>
-                                        <li>&bull; Engineering Study</li>
-                                        <li>&bull; Feasibility Engineering</li>
-                                        <li>&bull; Resource Assessment</li>
-                                        <li>&bull; Reserve Report (Mining/Oil)</li>
-                                        <li>&bull; Power Purchase Agreement (PPA)</li>
-                                        <li>&bull; Offtake Agreement</li>
-                                        <li>&bull; Construction Contract (EPC)</li>
-                                        <li>&bull; O&amp;M Agreement</li>
-                                        <li>&bull; Technology Roadmap</li>
-                                        <li>&bull; Patent/IP Landscape Analysis</li>
-                                        <li>&bull; Safety Assessment</li>
-                                        <li>&bull; Equipment Specification</li>
-                                    </ul>
-                                </div>
-
-                                {/* Category 15: Case Study Intelligence */}
-                                <div className="bg-white border-t border-slate-200 p-4">
-                                    <h5 className="text-xs font-bold text-violet-600 uppercase tracking-wider mb-2">15. Case Study Intelligence (15 types)</h5>
-                                    <ul className="space-y-0.5 text-xs text-slate-600">
-                                        <li>&bull; Case Study Analysis Report</li>
-                                        <li>&bull; Strength/Weakness Diagnostic</li>
-                                        <li>&bull; NSIL Section Scoring Report</li>
-                                        <li>&bull; Adversarial Debate Transcript</li>
-                                        <li>&bull; Historical Parallel Matching Report</li>
-                                        <li>&bull; Replication Viability Assessment</li>
-                                        <li>&bull; Financial Gap Analysis</li>
-                                        <li>&bull; Governance Framework Assessment</li>
-                                        <li>&bull; Stakeholder Engagement Plan</li>
-                                        <li>&bull; Implementation Roadmap</li>
-                                        <li>&bull; Partner Proposal Template</li>
-                                        <li>&bull; Executive Brief (from uploaded case)</li>
-                                        <li>&bull; Case Study Rewrite (institutional format)</li>
-                                        <li>&bull; Community Impact Assessment</li>
-                                        <li>&bull; Due Diligence Summary (from uploaded evidence)</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            {/* LETTER TEMPLATES SECTION */}
-                            <div className="border-t-2 border-slate-300 pt-6 mb-6">
-                                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3">+ 47 Cyber Validators</h3>
-                                <p className="text-sm text-slate-500 mb-4">Professional correspondence for every stage of deal-making:</p>
-                                <div className="grid md:grid-cols-3 gap-3 text-xs text-slate-500">
-                                    <div>
-                                        <p className="font-semibold text-slate-900 mb-1">Outreach &amp; Introduction</p>
-                                        <p>&bull; Partnership Introduction</p>
-                                        <p>&bull; Investment Promotion</p>
-                                        <p>&bull; Ministerial Introduction</p>
-                                        <p>&bull; Trade Mission Request</p>
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-slate-900 mb-1">Deal &amp; Negotiation</p>
-                                        <p>&bull; Commitment Confirmation</p>
-                                        <p>&bull; JV Invitation</p>
-                                        <p>&bull; Co-Investment Invitation</p>
-                                        <p>&bull; Price Negotiation</p>
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-slate-900 mb-1">Operations &amp; Compliance</p>
-                                        <p>&bull; Vendor Onboarding</p>
-                                        <p>&bull; Audit Response</p>
-                                        <p>&bull; License Renewal</p>
-                                        <p>&bull; Crisis Statement</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* PAGE LENGTH OPTIONS */}
-                            <div className="border-t border-slate-200 pt-4 mb-6">
-                                <p className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-2">Release Gate</p>
-                                <p className="text-xs text-slate-500">AggregateSecurityScore maps validator results to PASSING, LOW, MEDIUM, HIGH, or CRITICAL release decisions.</p>
-                            </div>
-
-                            <div className="border-t border-slate-200 pt-4">
-                                <p className="text-sm text-slate-500 leading-relaxed">
-                                    <strong className="text-slate-900">The audit trail:</strong> Each validator score traces back to specific telemetry inputs and gating rules. This is not document packaging &mdash; it is release validation with explicit remediation priorities.
-                                </p>
-                            </div>
-                            </div>
-
-                        {/* --- PROOF OF CAPABILITY --- */}
-                        <div className="py-10 px-6 md:px-8 bg-white border-t border-slate-200">
-                            <div className="max-w-4xl mx-auto">
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-800 mb-4">Proof of Capability</p>
-                                <h3 className="text-2xl font-light text-slate-800 mb-3">See the System in Action</h3>
-                                <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                                    Words are cheap. The best way to understand what this system produces is to see how it turns telemetry into a validator report. Below is a live example of a deployment candidate evaluated through the cyber validator registry.
-                                </p>
-                                <button 
-                                    onClick={() => { setShowOutputDetails(false); setShowProofPopup(true); }}
-                                    className="w-full py-3 bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <Info size={16} />
-                                    See the Proof &mdash; A Real Validator Report
-                                </button>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* ----------------------------------------------------------- */}
-            {/* TEN-STEP PROTOCOL  -  Detail Popup Modal  -  REDESIGNED      */}
-            {/* ----------------------------------------------------------- */}
-            {showProtocolDetails && (
-                <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/40 backdrop-blur-sm p-4" onClick={() => setShowProtocolDetails(false)}>
-                    <div className="bg-white shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
-                        {/* Header — Landing page style */}
-                        <div className="px-8 md:px-12 pt-10 pb-8 border-b border-slate-200 flex-shrink-0 relative">
-                            <button 
-                                onClick={() => setShowProtocolDetails(false)} 
-                                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"
-                            >
-                                <X size={20} />
-                            </button>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4 text-slate-800">The Process</p>
-                            <h2 className="text-3xl md:text-4xl font-light leading-tight mb-4 text-slate-800">From Telemetry to Validator Gate</h2>
-                            <p className="text-lg text-slate-500 leading-relaxed max-w-3xl">Three stages, one continuous validation chain. Intake captures telemetry. Adversarial analysis stress-tests every claim. Cyber validator synthesis produces release gates your team can act on.</p>
-                        </div>
-                        {/* Scrollable Content */}
-                        <div className="flex-1 overflow-y-auto">
-                        
-                        {/* Content sections */}
-                        <section className="py-8 px-6 md:px-8 bg-white border-b border-slate-200">
-                            <div className="max-w-4xl mx-auto">
-
-                                {/* ADVERSIQ Consultant intro */}
-                                    <div className="bg-white border-t border-slate-200 p-6 mb-6 shadow-sm">
-                                        <div className="flex items-start gap-4 mb-4">
-                                            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <span className="text-white font-bold text-[7px] tracking-tight">ADV</span>
-                                            </div>
-                                            <div>
-                                                <h3 className="text-lg font-semibold text-slate-900 leading-tight">ADVERSIQ Consultant</h3>
-                                                <p className="text-xs text-blue-600 font-medium mt-0.5">Powered by NSIL Agentic Runtime &bull; Case Study Builder</p>
-                                            </div>
-                                        </div>
-
-                                        {/* 5-Phase Flow */}
-                                        <div className="flex items-center gap-1.5 mb-5 overflow-x-auto pb-1">
-                                            {[
-                                                { label: '1. Intake', color: 'bg-stone-900 text-white border-stone-900' },
-                                                { label: '2. Discovery', color: 'bg-stone-700 text-white border-stone-700' },
-                                                { label: '3. Analysis', color: 'bg-amber-600 text-white border-amber-600' },
-                                                { label: '4. Recommendations', color: 'bg-amber-500 text-white border-amber-500' },
-                                                { label: '5. Generation', color: 'bg-blue-600 text-white border-blue-600' },
-                                            ].map((phase, i, arr) => (
-                                                <div key={phase.label} className="flex items-center gap-1.5 flex-shrink-0">
-                                                    <div className={`px-3 py-1.5 rounded-full border text-xs font-bold tracking-wide ${phase.color}`}>{phase.label}</div>
-                                                    {i < arr.length - 1 && <span className="text-stone-400 text-sm font-bold">&rarr;</span>}
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <p className="text-sm text-slate-700 leading-relaxed mb-3">
-                                            Hello &mdash; welcome, and thank you for being here.<br /><br />
-                                            I'm your ADVERSIQ Consultant. I'm here to assist you in any way I can to help you better connect with those who wish to do business or invest in regional areas, no matter where they are in the world. Whether it's preparing the right documents, understanding a new market, building a compelling case, or simply working through an idea &mdash; this is what I do.<br /><br />
-                                            Are you looking to know more about something? Need help writing a letter or proposal? Want to build a case study for a project you're working on? Or do you just need some guidance on where to start?<br /><br />
-                                            Let me know what you need and we'll get to work.
-                                        </p>
-                                        {/* Add logic to capture name/location and act on it in subsequent steps */}
-                                        {/* This would be handled in the chat logic or intake form, e.g. */}
-                                        {/* <NameLocationCapture onSubmit={(name, location) => setUserInfo({ name, location })} /> */}
-                                    </div>
-
-                                {/* Three Stages Overview  -  Clickable Cards */}
-                                <div className="grid md:grid-cols-3 gap-4 mb-6">
-                                    <button 
-                                        onClick={() => setActiveWorkflowStage('intake')}
-                                        className="text-left bg-white border-2 border-blue-200 rounded-lg p-5 hover:border-blue-400 hover:shadow-lg transition-all group"
-                                    >
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-bold">1</div>
-                                            <span className="text-xs text-blue-600 uppercase tracking-wider font-bold">STAGE ONE</span>
-                                        </div>
-                                        <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-blue-700">Adaptive Intake</h4>
-                                        <p className="text-xs text-slate-600">ADVERSIQ Consultant captures 10 dimensions through conversation &mdash; scope, financials, risk, compliance, and partnership terms</p>
-                                        <p className="text-xs text-blue-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
-                                    </button>
-
-                                    <button 
-                                        onClick={() => setActiveWorkflowStage('analysis')}
-                                        className="text-left bg-white border-2 border-amber-200 rounded-lg p-5 hover:border-amber-400 hover:shadow-lg transition-all group"
-                                    >
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold">2</div>
-                                            <span className="text-xs text-amber-600 uppercase tracking-wider font-bold">STAGE TWO</span>
-                                        </div>
-                                        <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-amber-700">Adversarial Analysis</h4>
-                                        <p className="text-xs text-slate-600">Stress-test with 5 personas, 54+ formulas, and Monte Carlo simulation</p>
-                                        <p className="text-xs text-amber-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
-                                    </button>
-
-                                    <button 
-                                        onClick={() => setActiveWorkflowStage('output')}
-                                        className="text-left bg-white border-2 border-emerald-200 rounded-lg p-5 hover:border-emerald-400 hover:shadow-lg transition-all group"
-                                    >
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">3</div>
-                                            <span className="text-xs text-emerald-600 uppercase tracking-wider font-bold">STAGE THREE</span>
-                                        </div>
-                                        <h4 className="text-base font-semibold text-slate-900 mb-2 group-hover:text-emerald-700">Institutional Output</h4>
-                                        <p className="text-xs text-slate-600">Compile evidence into 247 document types and 156 letter templates</p>
-                                        <p className="text-xs text-emerald-600 mt-3 font-medium group-hover:underline">Click to explore &rarr;</p>
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
-
-                        {/* The 10 Steps Grid */}
-                        <section className="py-8 px-6 md:px-8 bg-white">
-                            <div className="max-w-4xl mx-auto">
-                                <p className="text-blue-600 uppercase tracking-[0.2em] text-xs mb-3 font-bold">ADVERSIQ CONSULTANT &mdash; INTAKE PHASE</p>
-                                <h3 className="text-xl font-semibold text-slate-900 mb-2">What Gets Captured Across 10 Dimensions</h3>
-                                <p className="text-sm text-slate-600 mb-1">Most users complete this in 30&ndash;45 minutes. ADVERSIQ Consultant builds this picture through conversation &mdash; asking the right questions in sequence so you never face a blank form. By the end, the system has clear scope, quantified assumptions, full risk visibility, and a consistent dataset the reasoning engine can trust.</p>
-                                <p className="text-sm text-slate-500 mb-6">Click any dimension to see what gets captured:</p>
-
-                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                                    {tenStepProtocol.map((item) => (
-                                        <button
-                                            key={item.step}
-                                            onClick={() => setActiveStep(activeStep === item.step ? null : item.step)}
-                                            className={`text-left transition-all rounded-lg p-4 border-2 ${
-                                                activeStep === item.step
-                                                    ? 'bg-blue-100 border-blue-400 shadow-md'
-                                                    : item.gliEnabled
-                                                        ? 'bg-indigo-50 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-300'
-                                                        : 'bg-slate-50 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
-                                            }`}
-                                        >
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                                                    activeStep === item.step ? 'bg-blue-600 text-white' : item.gliEnabled ? 'bg-indigo-200 text-indigo-700' : 'bg-slate-200 text-slate-600'
-                                                }`}>
-                                                    {item.step}
-                                                </div>
-                                                {item.gliEnabled && <span className="text-[10px] px-1.5 py-0.5 bg-indigo-100 text-indigo-600 rounded font-medium">GLI</span>}
-                                            </div>
-                                            <h4 className="text-xs font-semibold text-slate-700 leading-tight">{item.title}</h4>
-                                        </button>
-                                    ))}
-                                </div>
-
-                                {/* Active Step Detail */}
-                                {activeStep && (
-                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-6">
-                                        <h4 className="text-sm font-semibold text-slate-900 mb-2">Step {activeStep}: {tenStepProtocol[activeStep - 1].title}</h4>
-                                        <p className="text-sm text-slate-600 mb-4">{tenStepProtocol[activeStep - 1].description}</p>
-
-                                        {tenStepProtocol[activeStep - 1].gliEnabled && tenStepProtocol[activeStep - 1].gliNote && (
-                                            <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 mb-4">
-                                                <p className="text-xs text-indigo-700 font-medium"><span className="font-bold">BW Intel Integration:</span> {tenStepProtocol[activeStep - 1].gliNote}</p>
-                                            </div>
-                                        )}
-
-                                        <div className="bg-white rounded-lg p-4 border border-slate-200">
+                            {activeStep && (
+                                <div className="bg-white rounded-lg p-4 border border-slate-200">
                                             <h5 className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3">Data Requirements:</h5>
                                             <ul className="grid md:grid-cols-2 gap-2">
                                                 {tenStepProtocol[activeStep - 1].details.map((detail, idx) => (
@@ -1473,10 +923,8 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                                 ))}
                                             </ul>
                                         </div>
-                                    </div>
                                 )}
                             </div>
-                        </section>
 
                         {/* Stage 2 - Adversarial Analysis */}
                         <section className="py-8 px-6 md:px-8 bg-slate-50 border-t border-slate-200">
@@ -1550,7 +998,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         {/* Close Button */}
                         <div className="p-4 border-t border-slate-200 flex justify-end bg-slate-50 rounded-b-sm">
                             <button 
-                                onClick={() => setShowProtocolDetails(false)}
+                                onClick={() => setShowOutputDetails(false)}
                                 className="px-6 py-2 bg-slate-800 text-white rounded-sm text-sm font-semibold hover:bg-slate-900 transition-colors"
                             >
                                 Close
@@ -2021,7 +1469,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                                     ))}
                                 </div>
                                 <p className="text-sm text-slate-700 leading-relaxed">
-                                    ADVERSIQ Consultant is the conversational intelligence layer that feeds the full analysis engine. Instead of a form, you talk. The system listens, asks the highest-value follow-up questions, builds the structured case brief in the background, and routes it through three stages: <strong className="text-slate-900">Adaptive Intake</strong> (10 dimensions captured through natural conversation with case-method gating), <strong className="text-slate-900">Adversarial Analysis</strong> (54+ formulas, 5 personas, Monte Carlo across 5,000 scenarios, Regional Development Kernel with partner intelligence and causal graphs), and <strong className="text-slate-900">Institutional Output</strong> (247+ document types across 15 categories and 156+ letter templates, all populated with your actual scores and traceable reasoning &mdash; not AI placeholder text). Plus <strong className="text-slate-900">Case Study Intelligence</strong> &mdash; upload any report, proposal, or mandate and the system reads, scores, debates, and diagnoses it instantly.
+                                    ADVERSIQ Consultant is the front-end intelligence layer for the broader decision workflow. It captures the problem through conversation, structures the brief into clear decision dimensions, and routes the case into analysis, risk framing, and recommendation stages. The live system is strongest when it is treated as a structured strategic advisor: it helps define the brief, test assumptions, surface uncertainty, and generate evidence-based outputs. It is still evolving beyond a simple prompt-driven assistant into a fuller autonomous operating layer.
                                 </p>
                             </div>
 
@@ -3116,91 +2564,64 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         <div className="px-8 md:px-14 pt-14 pb-12 border-b border-white/8 relative">
                             <button onClick={() => setShowArchitecture(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-white/30 hover:text-white transition-colors"><X size={20} /></button>
                             <div className="inline-block border border-amber-400/40 px-3 py-1 mb-6">
-                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-400">Unprecedented — Never Been Combined</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-400">What this is now</p>
                             </div>
                             <h2 className="text-3xl md:text-5xl font-light text-white leading-tight">
-                                Six disciplines.<br />
-                                <span className="font-black">One pipeline.</span><br />
-                                <span className="font-black text-amber-400">Built by one person.</span>
+                                Strategic decision intelligence<br />
+                                <span className="font-black">with a real workflow.</span>
                             </h2>
-                            <p className="text-[15px] text-white/45 mt-6 max-w-3xl leading-relaxed">
-                                ADVERSIQ is not built on a single idea. It is the convergence of formal logic, Bayesian statistics, decision science, cognitive neuroscience, financial modelling, and software architecture - with autonomous calibration now running across the stack. Every layer has an explicit input and output contract. The platform preserves the original NSIL architecture while adding the Omni-Node autonomous learning system (7 coordinated engines), persistent problem-solution memory (outcome-driven caching), advanced strategic engines (Kinetic, Temporal, Holographic), specialized research agents with mathematical typesetting, live persona calibration, structural twin discovery, Rawlsian ethics certificates, investor trust signals, macro early-warning alerts, and a continual improvement harness that learns from every engagement.
+                            <p className="text-[15px] text-white/55 mt-6 max-w-3xl leading-relaxed">
+                                ADVERSIQ is a strategic decision-intelligence platform built around structured intake, adversarial reasoning, risk framing, and evidence-based recommendation workflows. The live codebase already supports a serious working foundation: problem framing, research orchestration, scoring and comparison, contradiction checks, uncertainty awareness, and document generation.
                             </p>
-                            {/* 6 Disciplines bar */}
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-px mt-8 bg-white/5">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-px mt-8 bg-white/5">
                                 {[
-                                    { d: 'Formal Logic', note: 'SAT contradiction solver' },
-                                    { d: 'Bayesian Statistics', note: 'Belief-updating debate engine' },
-                                    { d: 'Decision Science', note: '10-layer structured pipeline' },
-                                    { d: 'Cognitive Neuroscience', note: '7 university models implemented' },
-                                    { d: 'Financial Modelling', note: '54+ proprietary formulas' },
-                                    { d: 'Software Architecture', note: 'DAG scheduling + contracts' },
+                                    { label: 'Intake', value: 'Clear brief framing' },
+                                    { label: 'Analysis', value: 'Reasoning + risk' },
+                                    { label: 'Output', value: 'Recommendations' },
+                                    { label: 'Roadmap', value: 'Autonomous expansion' },
                                 ].map((item, i) => (
                                     <div key={i} className="bg-slate-900 px-5 py-4">
-                                        <p className="text-xs font-black text-amber-400 uppercase tracking-wide">{item.d}</p>
-                                        <p className="text-[11px] text-white/30 mt-1">{item.note}</p>
+                                        <p className="text-[10px] font-black text-amber-400 uppercase tracking-[0.2em]">{item.label}</p>
+                                        <p className="text-sm text-white/70 mt-2">{item.value}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
                         <div className="px-8 md:px-14 py-12 space-y-16">
-
-                            {/* Proof bar */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
-                                {[
-                                    { n: '10', label: 'Contracted\nPipeline Layers' },
-                                    { n: '54+', label: 'Proprietary\nFormulas' },
-                                    { n: '7', label: 'Autonomous\nOmni-Node Engines' },
-                                    { n: '5', label: 'Research\nAgents' },
-                                ].map((s, i) => (
-                                    <div key={i} className="bg-slate-900 px-6 py-7 text-center">
-                                        <p className="text-3xl md:text-4xl font-black text-amber-400 leading-none">{s.n}</p>
-                                        <p className="text-[10px] text-white/30 uppercase tracking-[0.1em] mt-2 leading-snug whitespace-pre-line">{s.label}</p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* World Firsts callout */}
                             <div>
-                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">What Has Never Been Combined Before</p>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5">
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-amber-400">Current product posture</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     {[
-                                        { n: '01', title: 'SAT contradiction solving applied to investment intelligence', body: 'Boolean satisfiability, normally used to verify logical systems, is applied to investment proposals before any scoring begins. Assumptions are converted to propositional logic and tested for contradiction so impossible briefs are stopped before they contaminate the pipeline.' },
-                                        { n: '02', title: 'Bayesian adversarial debate as a verification gate', body: 'Five expert personas - Skeptic, Advocate, Regulator, Accountant, and Operator - challenge the case with Bayesian belief updating. The output preserves disagreement, adjusts confidence, and prevents a single confident narrative from becoming the decision.' },
-                                        { n: '03', title: 'Live persona calibration from actual outcomes', body: 'Persona influence is no longer static. Once real outcomes are recorded, the system changes persona weights by sector and region so historically over-cautious or over-optimistic perspectives are dampened and reliable perspectives carry more weight.' },
-                                        { n: '04', title: 'Structural twin discovery across regional trajectories', body: 'Every regional brief is matched against structural analogues such as Cebu, Da Nang, Penang, Medellin, Bilbao, and Incheon. The system extracts what worked, what failed, and which lessons are transferable instead of benchmarking against aspirational peers.' },
-                                        { n: '05', title: 'Rawlsian ethics certificates inside the analysis flow', body: 'Ethics is not a paragraph at the end. Hard gates can reject a strategy, create a signed rejection certificate, write an immutable audit entry, and provide compliant alternatives before the rest of the pipeline spends effort on a non-viable path.' },
-                                        { n: '06', title: 'Investor-facing trust score with uncertainty fingerprint', body: 'Every recommendation receives a Trust Score, confidence grade, evidence breakdown, uncertainty fingerprint, and historical calibration check. The platform exposes what it knows, what it is extrapolating, and what must be verified before capital commitment.' },
-                                        { n: '07', title: 'Macro regime-shift warning connected to recalibration', body: 'MEWS monitors political, currency, regulatory, social, infrastructure, and climate baskets. When a regime-shift signal crosses threshold, in-flight assumptions can be flagged for revalidation instead of letting stale analyses survive unchanged.' },
+                                        { title: 'What is real', body: 'Structured intake, strategic analysis flow, reasoning layers, risk and uncertainty framing, and decision-document generation are active parts of the project.' },
+                                        { title: 'What is still being built', body: 'Full autonomous defense, deeper production-grade Monte Carlo, enterprise-grade auth and trust controls, and broader autonomous runtime capability are part of the roadmap.' },
+                                        { title: 'What matters most', body: 'The platform is strongest when positioned as a decision-intelligence layer rather than a finished autonomous OS.' },
+                                        { title: 'How to use it', body: 'Use it as a disciplined research and advisory engine that tests assumptions, compares paths, and keeps uncertainty visible.' },
                                     ].map((item) => (
-                                        <div key={item.n} className="bg-slate-900 px-6 py-8">
-                                            <p className="text-3xl font-black text-white/10 mb-3">{item.n}</p>
-                                            <p className="text-sm font-black text-amber-400 uppercase tracking-wide mb-3 leading-snug">{item.title}</p>
-                                            <p className="text-sm text-white/50 leading-relaxed">{item.body}</p>
+                                        <div key={item.title} className="bg-slate-900 border border-white/5 px-6 py-6">
+                                            <p className="text-sm font-black text-amber-400 uppercase tracking-wide mb-3">{item.title}</p>
+                                            <p className="text-sm text-white/55 leading-relaxed">{item.body}</p>
                                         </div>
                                     ))}
-                                    <div className="bg-slate-900 px-6 py-8 md:col-span-2">
-                                        <p className="text-xs font-black uppercase tracking-[0.25em] text-amber-400 mb-5">Why This Has Never Been Done Before</p>
-                                        <p className="text-sm text-white/50 leading-relaxed">
-                                            Building any one of those components in isolation is achievable. Combining all of them - where the output of each feeds the input of the next, where the contradiction solver must run before the debate engine, where the audit layer must see the full chain before it signs off - required simultaneous expertise across six academic disciplines: formal logic, Bayesian statistics, decision science, neuroscience, financial modelling, and software architecture.
-                                        </p>
-                                        <p className="text-sm text-white/50 leading-relaxed mt-4">
-                                            No commercial product had demanded that combination until this one. Because until this one, no one had tried to make institutional-grade decision intelligence accessible to organisations that couldn't afford to commission it.
-                                        </p>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
-                                            {['Formal Logic', 'Bayesian Statistics', 'Decision Science', 'Cognitive Neuroscience', 'Financial Modelling', 'Software Architecture'].map((d, i) => (
-                                                <div key={i} className="border border-amber-400/20 px-3 py-3 text-center">
-                                                    <p className="text-[11px] font-bold text-amber-400/80 uppercase tracking-wide leading-snug">{d}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <p className="text-center text-xs text-white/25 mt-4 uppercase tracking-widest">Six disciplines. One pipeline. Never combined before.</p>
-                                    </div>
                                 </div>
                             </div>
 
-                            {/* The 10-Layer pipeline */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] mb-5 text-amber-400">The live architecture is grounded in four core moves</p>
+                                <div className="space-y-px">
+                                    {[
+                                        { title: 'Problem framing', body: 'The system starts by clarifying the decision, the assumptions, and what success actually means.' },
+                                        { title: 'Research and comparison', body: 'It gathers evidence, compares strategic options, and identifies contradictions or blind spots.' },
+                                        { title: 'Risk and uncertainty', body: 'It surfaces probability, downside exposure, governance issues, and what still needs validation.' },
+                                        { title: 'Recommendation and output', body: 'It turns the work into a structured brief, decision memo, or advisory output with the reasoning path in view.' },
+                                    ].map((item) => (
+                                        <div key={item.title} className="bg-slate-900 px-6 py-5 border border-white/5">
+                                            <p className="text-sm font-black text-white mb-2">{item.title}</p>
+                                            <p className="text-sm text-white/55 leading-relaxed">{item.body}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                             <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-amber-400">The NSIL — Nexus Strategic Intelligence Layer</p>
                                 <p className="text-sm text-white/40 mb-8 leading-relaxed max-w-3xl">Ten sequential layers. Each one with a single, non-negotiable job. Parallelism occurs within layers. Every result is memoised. The full audit trail is preserved from input to output.</p>
@@ -3890,5 +3311,7 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
 };
 
 export default CommandCenter;
+
+
 
 

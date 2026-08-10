@@ -1,0 +1,13 @@
+{
+  "id": "input_1785837644231_6k01pc1fk",
+  "timestamp": "2026-08-04T10:00:44.231Z",
+  "format": "text",
+  "language": "english",
+  "domain": "general",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "Building a digital banking solution for Latin America",
+  "confidence": 0.8
+}

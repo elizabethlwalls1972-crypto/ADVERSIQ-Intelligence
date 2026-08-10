@@ -1,0 +1,170 @@
+{
+  "id": "learn_1785981510408_14sp6ulkl",
+  "timestamp": "2026-08-06T01:58:30.408Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785981510405_1mn3t1o5f",
+    "timestamp": "2026-08-06T01:58:30.405Z",
+    "content": "All missing code built. System now knows itself fully.",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785981510405_1mn3t1o5f",
+      "timestamp": "2026-08-06T01:58:30.405Z",
+      "content": "All missing code built. System now knows itself fully.",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785981510405_1mn3t1o5f",
+          "timestamp": "2026-08-06T01:58:30.405Z",
+          "content": "All missing code built. System now knows itself fully.",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "all",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "missing",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "code",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "built.",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "system",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "now",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "knows",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "itself",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "fully.",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "all",
+        "missing",
+        "code",
+        "built.",
+        "system"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785981510406_i4pgoi3lp",
+      "timestamp": "2026-08-06T01:58:30.406Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785981510405_1mn3t1o5f",
+            "timestamp": "2026-08-06T01:58:30.405Z",
+            "content": "All missing code built. System now knows itself fully.",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "all",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "missing",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "code",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "built.",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "system",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "now",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "knows",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "itself",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "fully.",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "all",
+          "missing",
+          "code",
+          "built.",
+          "system"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

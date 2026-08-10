@@ -1,0 +1,13 @@
+{
+  "id": "input_1786164686926_awb66296v",
+  "timestamp": "2026-08-08T04:51:26.926Z",
+  "format": "text",
+  "language": "english",
+  "domain": "general",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "We need to expand our cloud platform into Southeast Asia",
+  "confidence": 0.8
+}

@@ -1,0 +1,13 @@
+{
+  "id": "input_1785981665818_g2g0uepuh",
+  "timestamp": "2026-08-06T02:01:05.818Z",
+  "format": "text",
+  "language": "unknown",
+  "domain": "general",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "Regional rollout with governance review required",
+  "confidence": 0.65
+}

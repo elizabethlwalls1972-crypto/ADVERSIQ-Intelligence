@@ -1,0 +1,140 @@
+{
+  "id": "learn_1785987477010_8otn1mnw8",
+  "timestamp": "2026-08-06T03:37:57.010Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785987477004_bf41jgmf6",
+    "timestamp": "2026-08-06T03:37:57.004Z",
+    "content": "Test cognitive cycle: analyze system status.",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785987477004_bf41jgmf6",
+      "timestamp": "2026-08-06T03:37:57.004Z",
+      "content": "Test cognitive cycle: analyze system status.",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785987477004_bf41jgmf6",
+          "timestamp": "2026-08-06T03:37:57.004Z",
+          "content": "Test cognitive cycle: analyze system status.",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "test",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cognitive",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cycle:",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "analyze",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "system",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "status.",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "test",
+        "cognitive",
+        "cycle:",
+        "analyze",
+        "system"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785987477007_e0lstvjs0",
+      "timestamp": "2026-08-06T03:37:57.007Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785987477004_bf41jgmf6",
+            "timestamp": "2026-08-06T03:37:57.004Z",
+            "content": "Test cognitive cycle: analyze system status.",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "test",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cognitive",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cycle:",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "analyze",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "system",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "status.",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "test",
+          "cognitive",
+          "cycle:",
+          "analyze",
+          "system"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

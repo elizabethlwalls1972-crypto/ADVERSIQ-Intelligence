@@ -1,0 +1,94 @@
+{
+  "id": "learn_1785984848452_y8k1ud9pw",
+  "timestamp": "2026-08-06T02:54:08.452Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785984848451_uudgc49yy",
+    "timestamp": "2026-08-06T02:54:08.451Z",
+    "content": "live test",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785984848451_uudgc49yy",
+      "timestamp": "2026-08-06T02:54:08.451Z",
+      "content": "live test",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785984848451_uudgc49yy",
+          "timestamp": "2026-08-06T02:54:08.451Z",
+          "content": "live test",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "live",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "test",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "live",
+        "test"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785984848452_n7a2jsfm1",
+      "timestamp": "2026-08-06T02:54:08.452Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785984848451_uudgc49yy",
+            "timestamp": "2026-08-06T02:54:08.451Z",
+            "content": "live test",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "live",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "test",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "live",
+          "test"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

@@ -1,0 +1,20 @@
+{
+  "domain": "finance",
+  "description": "Digital banking expansion into emerging markets",
+  "actions": [
+    "regulatory navigation",
+    "mobile-first design",
+    "agent network"
+  ],
+  "outcomes": {
+    "result": "failure",
+    "revenue": "$0"
+  },
+  "successMetric": 0.15,
+  "context": {
+    "region": "Latin America",
+    "industry": "Financial Services"
+  },
+  "id": "hist_1785837644214_bb5t6ec91",
+  "timestamp": "2026-08-04T10:00:44.214Z"
+}

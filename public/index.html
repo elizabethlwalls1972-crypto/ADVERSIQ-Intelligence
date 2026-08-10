@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVERSIQ - The Defence Loop Has Been Closed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <!-- Hero Split Screen -->
+    <section class="hero-split">
+        <div class="hero-left">
+            <div class="hero-image-container">
+                <!-- Replace with your high-quality image -->
+                <img src="images/hero-professional.png" alt="Professional at desk" class="hero-image" 
+                     onerror="this.style.background='linear-gradient(135deg, #ff9f4a 0%, #E67E22 50%, #d35400 100%)'; this.alt='Hero Image';">
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="logo-box">
+                <span class="text-line">Ad</span>
+                <span class="text-line">vers</span>
+                <span class="text-line iq-line">IQ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <h1 class="section-title">The defence loop has been open for thirty years. We closed it.</h1>
+        
+        <p class="section-text">Every cybersecurity system ever built does the same thing when it finds a threat.</p>
+        <p class="section-text"><span class="highlight">It stops.</span></p>
+        <p class="section-text">It raises an alert. It waits for a human engineer to read it, understand it, write a fix, test the fix, and deploy it. That process takes hours. Sometimes days. The attacker is already inside.</p>
+        <p class="section-text">This is not a gap in one product. It is a structural flaw in the entire field — present in every AI security system available today, including the current 2026 state of the art.</p>
+        <p class="section-text"><span class="highlight">ADVERSIQ is the first architecture in which detection and validated, autonomous remediation occur inside the same closed pipeline.</span></p>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <div class="comparison-grid">
+            <div class="comparison-card">
+                <div class="comparison-image">
+                    <img src="images/traditional-security.png" alt="Traditional Security" 
+                         onerror="this.style.background='linear-gradient(135deg, #ff4444 0%, #cc0000 100%)'; this.alt='Traditional Security';">
+                </div>
+                <h3 class="comparison-title">Traditional Security: Reactive</h3>
+                <p class="comparison-text">Alerts pile up. Engineers scramble. Hours pass while threats propagate. The breach deepens with every second of human delay.</p>
+            </div>
+            <div class="comparison-card">
+                <div class="comparison-image">
+                    <img src="images/adversiq-autonomous.png" alt="ADVERSIQ Autonomous" 
+                         onerror="this.style.background='linear-gradient(135deg, #E67E22 0%, #4ec9b0 100%)'; this.alt='ADVERSIQ Autonomous';">
+                </div>
+                <h3 class="comparison-title">ADVERSIQ: Autonomous</h3>
+                <p class="comparison-text">Detect. Reason. Validate. Deploy. All in seconds. No human delay. The loop closes automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What That Actually Means -->
+    <section class="content-section dark-bg">
+        <h2 class="section-title">What that actually means</h2>
+        <p class="section-text">Most security tools detect. Some explain. A few recommend.</p>
+        <p class="section-text"><span class="highlight">None of them fix.</span></p>
+        <p class="section-text"><span class="highlight">ADVERSIQ fixes.</span></p>
+        <p class="section-text">It detects the threat, reasons about its intent, writes a patch, attacks that patch with five independent AI agents, stress-tests it across thousands of simulated attack scenarios, cryptographically signs it, and deploys it to production — autonomously, mathematically validated, without waiting for a human to wake up.</p>
+        <p class="section-text">That is not an incremental improvement on what exists. <span class="highlight">That is a different category of system.</span></p>
+    </section>
+
+    <!-- How It Works -->
+    <section class="mechanism-section">
+        <div class="content-wrapper">
+            <h2 class="section-title">How it works</h2>
+            <p class="section-text">ADVERSIQ is a neuro-symbolic, multi-agent cybersecurity architecture built on four mechanisms that have never been combined in a deployed security system.</p>
+        </div>
+
+        <div class="mechanisms-grid">
+            <div class="mechanism-card">
+                <div class="mechanism-number">01</div>
+                <div class="mechanism-icon">
+                    <img src="images/icon-nsil.png" alt="NSIL" onerror="this.style.display='none';">
+                </div>
+                <h3 class="mechanism-title">The Neuro-Symbolic Intelligence Layer (NSIL)</h3>
+                <p class="mechanism-text">46 deterministic code-integrity validators across eight security domains. Every proposed fix is not generated and hoped for — it is grounded in hard mathematical constraints. The system cannot hallucinate a patch that passes. It either satisfies all 46 validators or it does not proceed.</p>
+            </div>
+
+            <div class="mechanism-card">
+                <div class="mechanism-number">02</div>
+                <div class="mechanism-icon">
+                    <img src="images/icon-quorum.png" alt="Five-Agent Quorum" onerror="this.style.display='none';">
+                </div>
+                <h3 class="mechanism-title">The Five-Agent Adversarial Quorum</h3>
+                <p class="mechanism-text">Five independent AI agents — Exploiter, Auditor, Architect, Tester, Synthesiser — each receive the candidate patch without seeing the others' analysis. The Exploiter tries to break it. The Auditor checks compliance. The Architect validates the logic. The Tester runs it against failure scenarios. The Synthesiser integrates all findings. Four of five must agree before anything moves forward. One agent alone cannot approve a fix. The system is designed so that no single point of confidence can override the whole.</p>
+            </div>
+
+            <div class="mechanism-card">
+                <div class="mechanism-number">03</div>
+                <div class="mechanism-icon">
+                    <img src="images/icon-mutator.png" alt="AlgorithmicMutator" onerror="this.style.display='none';">
+                </div>
+                <h3 class="mechanism-title">The AlgorithmicMutator</h3>
+                <p class="mechanism-text">This is the mechanism that closes the loop. It autonomously writes the remediation code, compiles it inside a sandbox, validates it against the quorum and the NSIL, and hot-patches production without human initiation. Not a recommendation. Not a draft. A deployed fix — validated end to end before it touches your live environment.</p>
+            </div>
+
+            <div class="mechanism-card">
+                <div class="mechanism-number">04</div>
+                <div class="mechanism-icon">
+                    <img src="images/icon-morphicfield.png" alt="MorphicField" onerror="this.style.display='none';">
+                </div>
+                <h3 class="mechanism-title">The MorphicField Federated Learning Layer</h3>
+                <p class="mechanism-text">Every threat resolved by any node in the network makes every other node harder to breach — without a single byte of raw threat data ever crossing a node boundary. Defensive intelligence propagates as mathematical weight deltas. Organisations in sensitive, classified, or air-gapped environments share strength without sharing data.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Illustrations -->
+    <section class="features-section">
+        <div class="feature-card">
+            <div class="feature-image">
+                <img src="images/intent-detection.png" alt="Intent-Based Detection" 
+                     onerror="this.style.background='linear-gradient(135deg, #569cd6 0%, #4ec9b0 100%)'; this.alt='Intent Detection';">
+            </div>
+            <div class="feature-content">
+                <h3 class="feature-title">Intent-Based Detection</h3>
+                <p class="feature-text">ADVERSIQ doesn't match patterns. It reasons about what code is trying to do — catching zero-day exploits before they execute.</p>
+            </div>
+        </div>
+
+        <div class="feature-card reverse">
+            <div class="feature-content">
+                <h3 class="feature-title">Global MorphicField Network</h3>
+                <p class="feature-text">Every deployment strengthens the entire network. Intelligence propagates globally without sharing raw data. Your security improves from threats detected anywhere in the world.</p>
+            </div>
+            <div class="feature-image">
+                <img src="images/global-network.png" alt="Global Network" 
+                     onerror="this.style.background='linear-gradient(135deg, #E67E22 0%, #4ec9b0 100%)'; this.alt='Global Network';">
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-image">
+                <img src="images/autonomous-remediation.png" alt="Autonomous Remediation" 
+                     onerror="this.style.background='linear-gradient(135deg, #4ec9b0 0%, #E67E22 100%)'; this.alt='Autonomous Remediation';">
+            </div>
+            <div class="feature-content">
+                <h3 class="feature-title">Autonomous Remediation</h3>
+                <p class="feature-text">From detection to deployed fix in seconds. No human intervention. No waiting. The system validates, tests, and patches automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why This Has Never Existed Before -->
+    <section class="content-section">
+        <h2 class="section-title">Why this has never existed before</h2>
+        <p class="section-text">ADVERSIQ did not come from inside the cybersecurity industry.</p>
+        <p class="section-text">It was built by <span class="highlight">Brayden Walls, founder of BW Global Advisory in Melbourne, Australia</span> — while solving a completely different problem: how to make AI-driven investment decisions auditable, deterministic, and impossible to manipulate.</p>
+        <p class="section-text">The mechanisms he built for investment logic validation — SAT contradiction solving, Bayesian adversarial debate, cognitive bias detection, DAG parallel scheduling — turned out to be exactly what cybersecurity needed and had never had.</p>
+        <p class="section-text">Cybersecurity engineers did not build this because they were trained to look for known attack signatures, not to reason about intent. They built better and better pattern-matching systems on top of a fundamentally reactive architecture.</p>
+        <p class="section-text"><span class="highlight">ADVERSIQ does not match patterns. It reasons about what code is trying to do — and that works on attacks that have never existed before.</span></p>
+        <p class="section-text">That is why a 127-publication systematic review of neuro-symbolic AI in cybersecurity confirmed the field had identified the right direction but had not produced a deployed system that closes the remediation loop.</p>
+        <p class="section-text"><span class="highlight">ADVERSIQ closes it.</span></p>
+    </section>
+
+    <!-- Who This Is For -->
+    <section class="content-section dark-bg">
+        <h2 class="section-title">Who this is for</h2>
+        <p class="section-text">If you run systems where a breach is not an inconvenience but a catastrophe — this was built for you.</p>
+        <p class="section-text"><span class="highlight">Critical infrastructure. Financial institutions. Government and defence. Enterprises that cannot afford the hours between detection and a human response.</span></p>
+        <p class="section-text">ADVERSIQ is not another dashboard. It is not another alert. It is the thing that acts while everything else is still notifying.</p>
+    </section>
+
+    <!-- World First -->
+    <section class="content-section">
+        <h2 class="section-title">This is a world first</h2>
+        <p class="section-text">Not a world first in marketing language. <span class="highlight">A world first in the documented, peer-reviewed, research-confirmed sense.</span></p>
+        <p class="section-text">No published or deployed system combines intent-based zero-day detection, neuro-symbolic mathematical grounding, a five-agent adversarial quorum, Monte Carlo stress-testing across thousands of attack scenarios, autonomous sandbox compilation, and live hot-patching — without human intervention — inside a single closed pipeline.</p>
+        <p class="section-text">That system now exists.</p>
+        <p class="section-text"><span class="highlight">It is called ADVERSIQ.</span></p>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="cta-title">Early access is open.</h2>
+        <p class="cta-subtitle">Built in Melbourne. Built for the world.</p>
+        <a href="mailto:brayden@adversiq.xyz" class="cta-button">Request Access</a>
+        
+        <div class="contact-info">
+            <p><a href="mailto:brayden@adversiq.xyz">brayden@adversiq.xyz</a></p>
+            <p><a href="https://adversiq.xyz" target="_blank">adversiq.xyz</a> | <a href="https://adversiq.xyz/dashboard.html" target="_blank">Dashboard</a></p>
+        </div>
+    </section>
+
+</body>
+</html>

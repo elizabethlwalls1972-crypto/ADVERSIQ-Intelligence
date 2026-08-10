@@ -1,0 +1,286 @@
+{
+  "id": "learn_1785837644230_lclo0310w",
+  "timestamp": "2026-08-04T10:00:44.230Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785837644227_hh15qgwxy",
+    "timestamp": "2026-08-04T10:00:44.227Z",
+    "content": "Launching a telehealth service in rural Kenya",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 2,
+    "perception": {
+      "id": "percept_1785837644227_hh15qgwxy",
+      "timestamp": "2026-08-04T10:00:44.227Z",
+      "content": "Launching a telehealth service in rural Kenya",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785837644227_hh15qgwxy",
+          "timestamp": "2026-08-04T10:00:44.227Z",
+          "content": "Launching a telehealth service in rural Kenya",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        },
+        {
+          "id": "percept_1785837644220_xlxt0djx3",
+          "timestamp": "2026-08-04T10:00:44.220Z",
+          "content": "We need to expand our cloud platform into the Southeast Asian market",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "launching",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "a",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "telehealth",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "service",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "in",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "rural",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "kenya",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "we",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "need",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "to",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "expand",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "our",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "cloud",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "platform",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "the",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "asian",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "market",
+          "weight": 0.95,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 2,
+      "dominantFeatures": [
+        "launching",
+        "a",
+        "telehealth",
+        "service",
+        "in"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785837644228_36epvzq7k",
+      "timestamp": "2026-08-04T10:00:44.228Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785837644227_hh15qgwxy",
+            "timestamp": "2026-08-04T10:00:44.227Z",
+            "content": "Launching a telehealth service in rural Kenya",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          },
+          {
+            "id": "percept_1785837644220_xlxt0djx3",
+            "timestamp": "2026-08-04T10:00:44.220Z",
+            "content": "We need to expand our cloud platform into the Southeast Asian market",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "launching",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "a",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "telehealth",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "service",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "in",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "rural",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "kenya",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "we",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "need",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "to",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "expand",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "our",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "cloud",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "platform",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "into",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "the",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "southeast",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "asian",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "market",
+            "weight": 0.95,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 2,
+        "dominantFeatures": [
+          "launching",
+          "a",
+          "telehealth",
+          "service",
+          "in"
+        ]
+      },
+      "strength": 0.48000000000000004,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

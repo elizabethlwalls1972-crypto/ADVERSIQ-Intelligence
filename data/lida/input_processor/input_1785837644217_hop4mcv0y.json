@@ -1,0 +1,13 @@
+{
+  "id": "input_1785837644217_hop4mcv0y",
+  "timestamp": "2026-08-04T10:00:44.217Z",
+  "format": "text",
+  "language": "english",
+  "domain": "economics",
+  "urgency": 0.5,
+  "intent": "analyze",
+  "entities": [],
+  "constraints": [],
+  "rawContent": "We need to expand our cloud platform into the Southeast Asian market",
+  "confidence": 0.9
+}

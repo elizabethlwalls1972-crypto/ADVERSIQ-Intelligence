@@ -1,0 +1,77 @@
+{
+  "id": "episode_1785979411535_frpn0dvxv",
+  "timestamp": "2026-08-06T01:23:31.535Z",
+  "content": "System bootstrap: know thyself, heal thyself, then run.",
+  "context": {
+    "id": "broadcast_1785979411535_gso1othwq",
+    "timestamp": "2026-08-06T01:23:31.535Z",
+    "source": "LIDAController",
+    "content": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785979411522_vab0b28oe",
+          "timestamp": "2026-08-06T01:23:31.523Z",
+          "content": "System bootstrap: know thyself, heal thyself, then run.",
+          "source": "external",
+          "salience": 0.5714285714285714,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "thyself,",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "system",
+          "weight": 0.5,
+          "priority": 3
+        },
+        {
+          "feature": "bootstrap:",
+          "weight": 0.5,
+          "priority": 3
+        },
+        {
+          "feature": "know",
+          "weight": 0.5,
+          "priority": 3
+        },
+        {
+          "feature": "heal",
+          "weight": 0.5,
+          "priority": 3
+        },
+        {
+          "feature": "then",
+          "weight": 0.5,
+          "priority": 3
+        },
+        {
+          "feature": "run.",
+          "weight": 0.5,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 0.5714285714285714,
+      "dominantFeatures": [
+        "thyself,",
+        "system",
+        "bootstrap:",
+        "know",
+        "heal"
+      ]
+    },
+    "strength": 0.4,
+    "ignition": false,
+    "broadcastTargets": []
+  },
+  "action": null,
+  "outcome": null,
+  "successMetric": 0.5,
+  "temporalContext": {
+    "before": [],
+    "after": []
+  }
+}

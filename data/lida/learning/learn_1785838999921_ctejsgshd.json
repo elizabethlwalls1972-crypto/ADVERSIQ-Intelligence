@@ -1,0 +1,256 @@
+{
+  "id": "learn_1785838999921_ctejsgshd",
+  "timestamp": "2026-08-04T10:23:19.921Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785838999918_t9x1421us",
+    "timestamp": "2026-08-04T10:23:19.918Z",
+    "content": "Test the LIDA cognitive cycle",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 2,
+    "perception": {
+      "id": "percept_1785838999918_t9x1421us",
+      "timestamp": "2026-08-04T10:23:19.918Z",
+      "content": "Test the LIDA cognitive cycle",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785838999918_t9x1421us",
+          "timestamp": "2026-08-04T10:23:19.918Z",
+          "content": "Test the LIDA cognitive cycle",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        },
+        {
+          "id": "percept_1785838687278_ja04hde8a",
+          "timestamp": "2026-08-04T10:18:07.278Z",
+          "content": "We need to expand our cloud platform into Southeast Asian markets",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "test",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "the",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "lida",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cognitive",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cycle",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "we",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "need",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "to",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "expand",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "our",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "cloud",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "platform",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "asian",
+          "weight": 0.95,
+          "priority": 3
+        },
+        {
+          "feature": "markets",
+          "weight": 0.95,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 2,
+      "dominantFeatures": [
+        "test",
+        "the",
+        "lida",
+        "cognitive",
+        "cycle"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785838999919_6499d6hgn",
+      "timestamp": "2026-08-04T10:23:19.919Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785838999918_t9x1421us",
+            "timestamp": "2026-08-04T10:23:19.918Z",
+            "content": "Test the LIDA cognitive cycle",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          },
+          {
+            "id": "percept_1785838687278_ja04hde8a",
+            "timestamp": "2026-08-04T10:18:07.278Z",
+            "content": "We need to expand our cloud platform into Southeast Asian markets",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "test",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "the",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "lida",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cognitive",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cycle",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "we",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "need",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "to",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "expand",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "our",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "cloud",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "platform",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "into",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "southeast",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "asian",
+            "weight": 0.95,
+            "priority": 3
+          },
+          {
+            "feature": "markets",
+            "weight": 0.95,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 2,
+        "dominantFeatures": [
+          "test",
+          "the",
+          "lida",
+          "cognitive",
+          "cycle"
+        ]
+      },
+      "strength": 0.48000000000000004,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

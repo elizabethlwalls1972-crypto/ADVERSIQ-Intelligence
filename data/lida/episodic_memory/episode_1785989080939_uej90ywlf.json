@@ -1,0 +1,82 @@
+{
+  "id": "episode_1785989080939_uej90ywlf",
+  "timestamp": "2026-08-06T04:04:40.939Z",
+  "content": "Regional expansion into Southeast Asia with governance review",
+  "context": {
+    "id": "broadcast_1785989080939_oifpafhsh",
+    "timestamp": "2026-08-06T04:04:40.939Z",
+    "source": "LIDAController",
+    "content": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785989080937_w2k52f9ca",
+          "timestamp": "2026-08-06T04:04:40.937Z",
+          "content": "Regional expansion into Southeast Asia with governance review",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "regional",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "expansion",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "asia",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "with",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "governance",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "review",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "regional",
+        "expansion",
+        "into",
+        "southeast",
+        "asia"
+      ]
+    },
+    "strength": 0.4,
+    "ignition": false,
+    "broadcastTargets": []
+  },
+  "action": null,
+  "outcome": null,
+  "successMetric": 0.5,
+  "temporalContext": {
+    "before": [],
+    "after": []
+  }
+}

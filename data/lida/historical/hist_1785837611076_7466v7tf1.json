@@ -1,0 +1,20 @@
+{
+  "domain": "healthcare",
+  "description": "Launching telehealth services in rural areas",
+  "actions": [
+    "infrastructure investment",
+    "local talent acquisition",
+    "government partnerships"
+  ],
+  "outcomes": {
+    "result": "partial_success",
+    "revenue": "$12M ARR"
+  },
+  "successMetric": 0.55,
+  "context": {
+    "region": "Sub-Saharan Africa",
+    "industry": "Healthcare"
+  },
+  "id": "hist_1785837611076_7466v7tf1",
+  "timestamp": "2026-08-04T10:00:11.076Z"
+}

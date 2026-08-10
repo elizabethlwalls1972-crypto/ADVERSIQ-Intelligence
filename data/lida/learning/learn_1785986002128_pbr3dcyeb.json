@@ -1,0 +1,140 @@
+{
+  "id": "learn_1785986002128_pbr3dcyeb",
+  "timestamp": "2026-08-06T03:13:22.128Z",
+  "type": "procedural",
+  "input": {
+    "id": "percept_1785986002125_2qk4r0obd",
+    "timestamp": "2026-08-06T03:13:22.125Z",
+    "content": "Expand cloud platform into Southeast Asia",
+    "source": "external",
+    "salience": 1,
+    "features": {}
+  },
+  "output": null,
+  "feedback": {
+    "cycleNumber": 1,
+    "perception": {
+      "id": "percept_1785986002125_2qk4r0obd",
+      "timestamp": "2026-08-06T03:13:22.125Z",
+      "content": "Expand cloud platform into Southeast Asia",
+      "source": "external",
+      "salience": 1,
+      "features": {}
+    },
+    "attention": {
+      "gatedPercepts": [
+        {
+          "id": "percept_1785986002125_2qk4r0obd",
+          "timestamp": "2026-08-06T03:13:22.125Z",
+          "content": "Expand cloud platform into Southeast Asia",
+          "source": "external",
+          "salience": 1,
+          "features": {}
+        }
+      ],
+      "attentionWeights": [
+        {
+          "feature": "expand",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "cloud",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "platform",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "into",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "southeast",
+          "weight": 1,
+          "priority": 3
+        },
+        {
+          "feature": "asia",
+          "weight": 1,
+          "priority": 3
+        }
+      ],
+      "totalSalience": 1,
+      "dominantFeatures": [
+        "expand",
+        "cloud",
+        "platform",
+        "into",
+        "southeast"
+      ]
+    },
+    "consciousContent": {
+      "id": "broadcast_1785986002126_h9l9xlvsw",
+      "timestamp": "2026-08-06T03:13:22.127Z",
+      "source": "LIDAController",
+      "content": {
+        "gatedPercepts": [
+          {
+            "id": "percept_1785986002125_2qk4r0obd",
+            "timestamp": "2026-08-06T03:13:22.125Z",
+            "content": "Expand cloud platform into Southeast Asia",
+            "source": "external",
+            "salience": 1,
+            "features": {}
+          }
+        ],
+        "attentionWeights": [
+          {
+            "feature": "expand",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "cloud",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "platform",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "into",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "southeast",
+            "weight": 1,
+            "priority": 3
+          },
+          {
+            "feature": "asia",
+            "weight": 1,
+            "priority": 3
+          }
+        ],
+        "totalSalience": 1,
+        "dominantFeatures": [
+          "expand",
+          "cloud",
+          "platform",
+          "into",
+          "southeast"
+        ]
+      },
+      "strength": 0.4,
+      "ignition": false,
+      "broadcastTargets": []
+    },
+    "selectedAction": null,
+    "episodeStored": true
+  },
+  "success": true
+}

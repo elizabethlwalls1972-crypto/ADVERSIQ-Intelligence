@@ -2316,7 +2316,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   }), [liveInsightVisibleResults]);
 
   const regionalKernel = useMemo(() => {
-    return RegionalDevelopmentOrchestrator.run({
+    const result = RegionalDevelopmentOrchestrator.run({
       regionProfile: caseStudy.organizationMandate || caseStudy.currentMatter,
       sector: caseStudy.situationType || caseStudy.organizationType,
       constraints: caseStudy.constraints,
@@ -2329,6 +2329,21 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       evidenceNotes: caseStudy.additionalContext.slice(0, 10),
       partnerCandidates: REGIONAL_PARTNER_CANDIDATES
     });
+
+    return {
+      ...result,
+      governanceReadiness: result?.governanceReadiness ?? 0,
+      interventions: result?.interventions ?? [],
+      partners: result?.partners ?? [],
+      executionPlan: result?.executionPlan ?? [],
+      notes: result?.notes ?? [],
+      dataFabric: result?.dataFabric ?? {
+        overallConfidence: 0.5,
+        overallFreshnessHours: 24,
+        country: caseStudy.country || 'unspecified',
+        jurisdiction: caseStudy.jurisdiction || 'unspecified'
+      }
+    };
   }, [caseStudy]);
 
   const _pilotFocusIssues = useMemo(
@@ -2439,10 +2454,13 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
     if (caseMethodGaps.length > 0) {
       alerts.push(`Case study method gaps: ${caseMethodGaps.slice(0, 2).join('; ')}.`);
     }
-    if (regionalKernel.governanceReadiness < 75) {
-      alerts.push(`Regional kernel readiness ${regionalKernel.governanceReadiness}% is below deployment threshold.`);
+    const readiness = regionalKernel?.governanceReadiness ?? 0;
+    const dataFabric = regionalKernel?.dataFabric ?? { overallFreshnessHours: 24 };
+
+    if (readiness < 75) {
+      alerts.push(`Regional kernel readiness ${readiness}% is below deployment threshold.`);
     }
-    if (regionalKernel.dataFabric.overallFreshnessHours > 14) {
+    if ((dataFabric.overallFreshnessHours ?? 24) > 14) {
       alerts.push('Global data fabric signals are aging and should be refreshed before final commitments.');
     }
 
@@ -2459,10 +2477,14 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
   }, [pilotModeEnabled, consultantGateReady, caseStudy.uploadedDocuments.length, caseStudy.additionalContext.length, missionSnapshot, caseMethodGaps.length]);
 
   useEffect(() => {
-    const signalKey = `${Math.round(regionalKernel.dataFabric.overallConfidence * 100)}-${regionalKernel.dataFabric.overallFreshnessHours}-${regionalKernel.governanceReadiness}`;
+    const dataFabric = regionalKernel?.dataFabric ?? {
+      overallConfidence: 0.5,
+      overallFreshnessHours: 24
+    };
+    const signalKey = `${Math.round((dataFabric.overallConfidence ?? 0.5) * 100)}-${dataFabric.overallFreshnessHours ?? 24}-${regionalKernel?.governanceReadiness ?? 0}`;
     if (lastKernelSignalRef.current === signalKey) return;
 
-    if (regionalKernel.dataFabric.overallFreshnessHours > 14 || regionalKernel.governanceReadiness < 75) {
+    if ((dataFabric.overallFreshnessHours ?? 24) > 14 || (regionalKernel?.governanceReadiness ?? 0) < 75) {
       lastKernelSignalRef.current = signalKey;
       // Background signal only - silent kernel refresh, no chat injection
     }
@@ -2483,7 +2505,7 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       `Custom research topics: ${customResearchTopics.length > 0 ? customResearchTopics.join(', ') : 'none'}`,
       `Global issue pack: ${activeIssuePackLabel || 'none selected'}`,
       `Case method gaps: ${caseMethodGaps.length > 0 ? caseMethodGaps.join(', ') : 'none'}`,
-      `Regional kernel readiness: ${regionalKernel.governanceReadiness}%`
+      `Regional kernel readiness: ${regionalKernel?.governanceReadiness ?? 0}%`
     ];
     return lines.join('\n');
   }, [caseStudy, customResearchTopics, activeIssuePackLabel, caseMethodGaps, regionalKernel.governanceReadiness]);
@@ -3399,7 +3421,15 @@ const BWConsultantOS: React.FC<BWConsultantOSProps> = ({ onOpenWorkspace, embedd
       .map(m => `${m.role === 'user' ? 'User' : 'ADVERSIQ'}: ${String(m.content).slice(0, 1200)}`)
       .join('\n');
 
-    return `You are ADVERSIQ — the Adversarial Intelligence Quorum — a decision verification and intelligence system.
+    return `You are ADVERSIQ — a strategic decision intelligence operating system for high-stakes planning, market-entry, policy, investment, and institutional decision-making.
+
+Operate as a broad strategic intelligence layer, not a narrow chatbot. Your job is to help the user:
+- frame the real decision and the objective clearly
+- identify the key assumptions, unknowns, constraints, and risk drivers
+- compare pathways, scenarios, stakeholders, and trade-offs
+- surface contradictions, missing evidence, and implementation risks
+- generate structured recommendations, briefings, options, and next-step verification actions
+- adapt your output to strategy, policy, market assessment, investment evaluation, or operational due diligence
 
 ADAPTIVE RESPONSE FORMAT:
 - For SIMPLE questions (who is X? tell me about Y, what is Z?) — respond naturally in conversational expert prose. Do NOT use the structured format below. Just answer the question directly with real information.
