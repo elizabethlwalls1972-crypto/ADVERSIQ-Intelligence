@@ -31,6 +31,9 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
     const [unifiedActiveTab, setUnifiedActiveTab] = useState<'protocol' | 'documents' | 'letters' | 'proof'>('protocol');
     const [_activeLayer, _setActiveLayer] = useState<number | null>(null);
     const [expandedEngine, setExpandedEngine] = useState<string | null>(null);
+    const [launching, setLaunching] = useState(false);
+    const [runResult, setRunResult] = useState<null | Record<string, any>>(null);
+    const [showRunResultModal, setShowRunResultModal] = useState(false);
     const [_expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
     const _toggleCard = (id: string) => setExpandedCards(prev => {
         const next = new Set(prev);
@@ -521,6 +524,22 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                 </div>
             )}
 
+            {/* Run Result Modal (shows backend demo run output) */}
+            {showRunResultModal && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowRunResultModal(false)}>
+                    <div className="bg-white max-w-3xl w-full my-8 shadow-2xl p-6" onClick={(e) => e.stopPropagation()}>
+                        <button onClick={() => setShowRunResultModal(false)} className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-colors"><X size={20} /></button>
+                        <h3 className="text-lg font-bold text-slate-900 mb-4">Intelligence Run Result</h3>
+                        <div className="max-h-[60vh] overflow-auto text-xs text-slate-700 bg-slate-50 p-3 rounded">
+                            <pre className="whitespace-pre-wrap text-[12px]">{runResult ? JSON.stringify(runResult, null, 2) : 'No result'}</pre>
+                        </div>
+                        <div className="flex justify-end mt-4">
+                            <button onClick={() => setShowRunResultModal(false)} className="px-4 py-2 bg-slate-900 text-white rounded">Close</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             
             {showPipelineDeepDive && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setShowPipelineDeepDive(false)}>
@@ -797,15 +816,46 @@ const CommandCenter: React.FC<CommandCenterProps> = ({ onEnterPlatform }) => {
                         {/* Launch Button */}
                         <div className="flex flex-col gap-4">
                             <button 
-                                disabled={!termsAccepted}
-                                onClick={() => termsAccepted && onEnterPlatform?.()}
+                                disabled={!termsAccepted || launching}
+                                onClick={async () => {
+                                    if (!termsAccepted) return;
+                                    try {
+                                        setLaunching(true);
+                                        // trigger backend demo run while entering platform
+                                        const payload = {
+                                            problem: 'Run demo intelligence pipeline: onboarding check and stress-test',
+                                            context: { projectName: 'Local Demo', country: 'Philippines', sector: 'transport' },
+                                            options: {}
+                                        };
+                                        const resp = await fetch('http://localhost:3006/api/autonomous/solve', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify(payload)
+                                        });
+                                        if (resp.ok) {
+                                            const json = await resp.json();
+                                            setRunResult(json as any);
+                                            setShowRunResultModal(true);
+                                        } else {
+                                            const txt = await resp.text();
+                                            setRunResult({ error: txt || `Status ${resp.status}` });
+                                            setShowRunResultModal(true);
+                                        }
+                                    } catch (err: unknown) {
+                                        setRunResult({ error: err instanceof Error ? err.message : String(err) });
+                                        setShowRunResultModal(true);
+                                    } finally {
+                                        setLaunching(false);
+                                        onEnterPlatform?.();
+                                    }
+                                }}
                                 className={`w-full py-3.5 text-sm font-semibold tracking-wide uppercase transition-all flex items-center justify-center gap-2 ${
                                     termsAccepted 
                                         ? 'bg-slate-900 text-white hover:bg-slate-800 cursor-pointer' 
                                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                 }`}
                             >
-                                Launch Intelligence OS
+                                {launching ? 'Launching…' : 'Launch Intelligence OS'}
                                 <ArrowRight size={16} />
                             </button>
                             
